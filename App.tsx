@@ -89,14 +89,15 @@ function Attribution({source}: AttributionProps): JSX.Element {
 
 type ChatEntryProps = PropsWithChildren<{
   source: string;
+  submit: (string) => void;
 }>;
 
-function ChatEntry({source}: ChatEntryProps): JSX.Element {
+function ChatEntry({source, submit}: ChatEntryProps): JSX.Element {
   const [value, onChangeText] = React.useState(null);
 
-  const submit = () => {
-    console.log(value);
-  }
+  const submitValue = () => {
+    submit(value);
+  };
 
   return (
     <View style={styles.horizontalContainer}>
@@ -105,11 +106,10 @@ function ChatEntry({source}: ChatEntryProps): JSX.Element {
         placeholder="Ask me anything"
         style={{flexGrow: 1, marginRight: 12}}
         onChangeText={text => onChangeText(text)}
-        value={value}
-        onEndEditing={submit}/>
+        value={value}/>
       <Button
         title="Submit"
-        onPress={submit}/>
+        onPress={submitValue}/>
     </View>
   );
 }
@@ -121,9 +121,11 @@ type ConsentSwitchProps = PropsWithChildren<{
 }>;
 
 function ConsentSwitch({title, source, defaultValue}: ConsentSwitchProps): JSX.Element {
+  const [value, onValueChange] = React.useState(defaultValue);
+
   return (
     <View style={[styles.horizontalContainer, {marginBottom: 8}]}>
-      <Switch value={defaultValue}/>
+      <Switch value={value} onValueChange={onValueChange}/>
       <View>
         <Text>{title}</Text>
         <Attribution source={source}/>
@@ -150,6 +152,8 @@ function ImageSelection({image}: ImageSelectionProps): JSX.Element {
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
+
+  const [entries, setEntries] = React.useState([]);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -241,8 +245,19 @@ function App(): JSX.Element {
           <Image style={styles.dalleImage} source={require('./assets/compositebox.png')}/>
           <Attribution source="Adobe Creative Cloud subscription"/>
         </AISection>
+        {entries.map((entry, entryIndex) => (
+          <>
+            <HumanSection key={entryIndex}>
+              <Text>{entry}</Text>
+            </HumanSection> 
+            <AISection>
+              <Text>I cannot help you with "{entry}".</Text>
+            </AISection>
+          </>
+        ))}
         <HumanSection>
-          <ChatEntry/>
+          <ChatEntry
+            submit={(newEntry) => setEntries([...entries, newEntry])}/>
         </HumanSection>
       </View>
     </ScrollView>
