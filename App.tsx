@@ -89,12 +89,13 @@ function Attribution({source}: AttributionProps): JSX.Element {
 type ConsentSwitchProps = PropsWithChildren<{
   title: string;
   source: string;
+  defaultValue: boolean;
 }>;
 
-function ConsentSwitch({title, source}: ConsentSwitchProps): JSX.Element {
+function ConsentSwitch({title, source, defaultValue}: ConsentSwitchProps): JSX.Element {
   return (
     <View style={[styles.horizontalContainer, {marginBottom: 8}]}>
-      <Switch></Switch>
+      <Switch value={defaultValue}/>
       <View>
         <Text>{title}</Text>
         <Attribution source={source}/>
@@ -139,11 +140,15 @@ function App(): JSX.Element {
         </HumanSection>
         <AISection>
           <Text>Sure! To do this best It would be helpful to add this information, do you consent?</Text>
-          <ConsentSwitch title="Your BoardGameGeek.com play history" source="graph"/>
+          <ConsentSwitch title="Your BoardGameGeek.com play history" source="graph" defaultValue={true}/>
           <ConsentSwitch title="Your contact list of friends" source="facebook"/>
-          <ConsentSwitch title="Your schedule for the next week" source="Google calendar"/>
+          <ConsentSwitch title="Your schedule for the next week" source="Google calendar" defaultValue={true}/>
           <ConsentSwitch title="Your bank account information for funding materials" source="Chase Bank"/>
           <Button title="Agree and Continue" onPress={() => {}}/>
+        </AISection>
+        <AISection>
+          <Text>Thank you! Here is what I was able to come up with the information you provided to me:</Text>
+          <Text>...</Text>
         </AISection>
         <HumanSection>
           <Text>I think we're ready for a box design. Can you provide one?</Text>
