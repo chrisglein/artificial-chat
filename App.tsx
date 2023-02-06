@@ -142,7 +142,7 @@ function ImageSelection({image}: ImageSelectionProps): JSX.Element {
       <Image style={styles.dalleImage} source={image}/>
       <View style={[styles.horizontalContainer, {marginTop: 4, justifyContent: 'space-between'}]}>
         <Button title="Variations"/>
-        <Button title="Choose this"/>
+        <Button title="Select"/>
       </View>
     </View>
   );
@@ -189,12 +189,6 @@ function App(): JSX.Element {
           <Text>...</Text>
         </AISection>
         <HumanSection>
-          <Text>...</Text>
-        </HumanSection>
-        <AISection>
-          <Text>...</Text>
-        </AISection>
-        <HumanSection>
           <Text>I think we're ready for a box design. Can you provide one?</Text>
         </HumanSection>
         <AISection>
@@ -224,18 +218,18 @@ function App(): JSX.Element {
           <Text>Sure, here are some ways we can do that. Please choose one</Text>
           <View style={styles.horizontalContainer}>
             <View style={styles.inlineCard}>
-              <Text>Access profile photos?</Text>
+              <Button title="Access profile photos" onPress={() => {}}/>
               <Attribution source="OneDrive"/>
-              <Button title="I consent" onPress={() => {}}/>
             </View>
             <View style={styles.inlineCard}>
-              <Text>📷</Text>
-              <Text>Take a picture now</Text>
-              <Button title="Snapshot" onPress={() => {}}/>
+              <Button title="Generate a placeholder image" onPress={() => {}}/>
+              <Attribution source="DALL-E"/>
             </View>
             <View style={styles.inlineCard}>
-              <Text>Provide your own</Text>
-              <Button title="Upload" onPress={() => {}}/>
+              <Button title="Take a picture now" onPress={() => {}}/>
+            </View>
+            <View style={styles.inlineCard}>
+              <Button title="Upload your own" onPress={() => {}}/>
             </View>
           </View>
         </AISection>
@@ -290,8 +284,8 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   dalleImage: {
-    width: 200,
-    height: 200,
+    width: 150,
+    height: 150,
   },
   inlineCard: {
     borderColor: 'gray',
