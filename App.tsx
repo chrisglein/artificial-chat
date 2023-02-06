@@ -14,6 +14,7 @@ import {
   StyleSheet,
   Switch,
   Text,
+  TextInput,
   useColorScheme,
   View,
 } from 'react-native';
@@ -86,6 +87,33 @@ function Attribution({source}: AttributionProps): JSX.Element {
   );
 }
 
+type ChatEntryProps = PropsWithChildren<{
+  source: string;
+}>;
+
+function ChatEntry({source}: ChatEntryProps): JSX.Element {
+  const [value, onChangeText] = React.useState(null);
+
+  const submit = () => {
+    console.log(value);
+  }
+
+  return (
+    <View style={styles.horizontalContainer}>
+      <TextInput
+        multiline={true}
+        placeholder="Ask me anything"
+        style={{flexGrow: 1, marginRight: 12}}
+        onChangeText={text => onChangeText(text)}
+        value={value}
+        onEndEditing={submit}/>
+      <Button
+        title="Submit"
+        onPress={submit}/>
+    </View>
+  );
+}
+
 type ConsentSwitchProps = PropsWithChildren<{
   title: string;
   source: string;
@@ -140,14 +168,30 @@ function App(): JSX.Element {
         </HumanSection>
         <AISection>
           <Text>Sure! To do this best It would be helpful to add this information, do you consent?</Text>
-          <ConsentSwitch title="Your BoardGameGeek.com play history" source="graph" defaultValue={true}/>
-          <ConsentSwitch title="Your contact list of friends" source="facebook"/>
-          <ConsentSwitch title="Your schedule for the next week" source="Google calendar" defaultValue={true}/>
-          <ConsentSwitch title="Your bank account information for funding materials" source="Chase Bank"/>
+          <ConsentSwitch
+            title="Your BoardGameGeek.com play history"
+            source="graph"
+            defaultValue={true}/>
+          <ConsentSwitch
+            title="Your contact list of friends"
+            source="facebook"/>
+          <ConsentSwitch
+            title="Your schedule for the next week"
+            source="Google calendar"
+            defaultValue={true}/>
+          <ConsentSwitch
+            title="Your bank account information for funding materials"
+            source="Chase Bank"/>
           <Button title="Agree and Continue" onPress={() => {}}/>
         </AISection>
         <AISection>
           <Text>Thank you! Here is what I was able to come up with the information you provided to me:</Text>
+          <Text>...</Text>
+        </AISection>
+        <HumanSection>
+          <Text>...</Text>
+        </HumanSection>
+        <AISection>
           <Text>...</Text>
         </AISection>
         <HumanSection>
@@ -161,9 +205,20 @@ function App(): JSX.Element {
             <ImageSelection image={require('./assets/dinobox3.png')}/>
             <ImageSelection image={require('./assets/dinobox4.png')}/>
           </View>
+          <Attribution source="DALL-E, 14 monthly credits remaining"/>
+        </AISection>
+        <AISection>
+          <Text>Here are variations on the image you selected</Text>
+          <View style={styles.horizontalContainer}>
+            <ImageSelection image={require('./assets/dinobox3_variation1.png')}/>
+            <ImageSelection image={require('./assets/dinobox3_variation2.png')}/>
+            <ImageSelection image={require('./assets/dinobox3_variation3.png')}/>
+            <ImageSelection image={require('./assets/dinobox3_variation4.png')}/>
+          </View>
+          <Attribution source="DALL-E, 13 monthly credits remaining"/>
         </AISection>
         <HumanSection>
-          <Text>I'd like my picture on the box, since I'm the designer, can we do that?</Text>
+          <Text>I like the original best, let's stick with that. But I'd like my picture on the box, since I'm the designer, can we do that?</Text>
         </HumanSection>
         <AISection>
           <Text>Sure, here are some ways we can do that. Please choose one</Text>
@@ -174,17 +229,27 @@ function App(): JSX.Element {
               <Button title="I consent" onPress={() => {}}/>
             </View>
             <View style={styles.inlineCard}>
+              <Text>📷</Text>
               <Text>Take a picture now</Text>
               <Button title="Snapshot" onPress={() => {}}/>
             </View>
+            <View style={styles.inlineCard}>
+              <Text>Provide your own</Text>
+              <Button title="Upload" onPress={() => {}}/>
+            </View>
           </View>
         </AISection>
+        <HumanSection>
+          <Image style={styles.dalleImage} source={require('./assets/designerphoto.png')}/>
+        </HumanSection>
         <AISection>
           <Text>Thanks! Here is the updated box design that incorporate your photo</Text>
-          <View style={styles.horizontalContainer}>
-            <Image style={styles.dalleImage} source={require('./assets/compositebox.png')}/>
-          </View>
+          <Image style={styles.dalleImage} source={require('./assets/compositebox.png')}/>
+          <Attribution source="Adobe Creative Cloud subscription"/>
         </AISection>
+        <HumanSection>
+          <ChatEntry/>
+        </HumanSection>
       </View>
     </ScrollView>
   );
@@ -220,6 +285,7 @@ const styles = StyleSheet.create({
   },
   horizontalContainer: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     alignItems: 'center',
     gap: 12,
   },
