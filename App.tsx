@@ -8,10 +8,11 @@
 import React from 'react';
 import type {PropsWithChildren} from 'react';
 import {
-  SafeAreaView,
+  Button,
+  Image,
   ScrollView,
-  StatusBar,
   StyleSheet,
+  Switch,
   Text,
   useColorScheme,
   View,
@@ -19,10 +20,6 @@ import {
 
 import {
   Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
 type SectionProps = PropsWithChildren<{
@@ -49,8 +46,57 @@ function Section({children, title}: SectionProps): JSX.Element {
             color: isDarkMode ? Colors.light : Colors.dark,
           },
         ]}>
-        {children}
       </Text>
+      {children}
+    </View>
+  );
+}
+
+function HumanSection({children, title}: SectionProps): JSX.Element {
+  const isDarkMode = useColorScheme() === 'dark';
+  return (
+    <View style={[styles.sectionContainer, styles.humanSection]}>
+      <Text style={styles.sectionTitle}>HUMAN</Text>
+      {children}
+    </View>
+  );
+}
+
+function AISection({children, title}: SectionProps): JSX.Element {
+  const isDarkMode = useColorScheme() === 'dark';
+  return (
+    <View style={[styles.sectionContainer, styles.aiSection]}>
+      <Text style={styles.sectionTitle}>AI</Text>
+      {children}
+    </View>
+  );
+}
+
+type ConsentSwitchProps = PropsWithChildren<{
+  title: string;
+}>;
+
+function ConsentSwitch({title}: ConsentSwitchProps): JSX.Element {
+  return (
+    <View style={styles.horizontalContainer}>
+      <Switch></Switch>
+      <Text>{title}</Text>
+    </View>
+  );
+}
+
+type ImageSelectionProps = PropsWithChildren<{
+  image: ImageSourcePropType;
+}>;
+
+function ImageSelection({image}: ImageSelectionProps): JSX.Element {
+  return (
+    <View style={{marginRight: 12}}>
+      <Image style={styles.dalleImage} source={image}/>
+      <View style={[styles.horizontalContainer, {marginTop: 4, justifyContent: 'space-between'}]}>
+        <Button title="Variations"/>
+        <Button title="Choose this"/>
+      </View>
     </View>
   );
 }
@@ -63,46 +109,81 @@ function App(): JSX.Element {
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
+      style={backgroundStyle}>
+      <View
+        style={{
+          backgroundColor: isDarkMode ? Colors.black : Colors.white,
+        }}>
+        <HumanSection>
+          <Text>I want to design a board game about dinosaurs to play with my friends. Can you help?</Text>
+        </HumanSection>
+        <AISection>
+          <Text>Sure! To do this best It would be helpful to add this information, do you consent?</Text>
+          <ConsentSwitch title="Your BoardGameGeek.com play history"/>
+          <ConsentSwitch title="Your contact list of friends"/>
+          <ConsentSwitch title="Your schedule for the next week"/>
+          <ConsentSwitch title="Your bank account information for funding materials"/>
+          <Button title="Agree and Continue" onPress={() => {}}/>
+        </AISection>
+        <HumanSection>
+          <Text>I think we're ready for a box design. Can you provide one?</Text>
+        </HumanSection>
+        <AISection>
+          <Text>Here are some box designs</Text>
+          <View style={styles.horizontalContainer}>
+            <ImageSelection image={require('./assets/dinobox1.png')}/>
+            <ImageSelection image={require('./assets/dinobox2.png')}/>
+            <ImageSelection image={require('./assets/dinobox3.png')}/>
+            <ImageSelection image={require('./assets/dinobox4.png')}/>
+          </View>
+        </AISection>
+        <HumanSection>
+          <Text>I'd like my picture on the box, since I'm the designer, can we do that?</Text>
+        </HumanSection>
+        <AISection>
+          <Text>Sure, here are some ways we can do that. Please choose one</Text>
+          <View style={styles.horizontalContainer}>
+            <View style={styles.inlineCard}>
+              <Text>Access profile photos?</Text>
+              <Button title="I consent" onPress={() => {}}/>
+            </View>
+            <View style={styles.inlineCard}>
+              <Text>Take a picture</Text>
+              <Button title="Snapshot" onPress={() => {}}/>
+            </View>
+          </View>
+        </AISection>
+        <AISection>
+          <Text>Thanks! Here is the updated box design that incorporate your photo</Text>
+          <View style={styles.horizontalContainer}>
+            <Image style={styles.dalleImage} source={require('./assets/compositebox.png')}/>
+          </View>
+        </AISection>
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   sectionContainer: {
-    marginTop: 32,
+    marginTop: 12,
+    marginHorizontal: 12,
     paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 8,
+  },
+  humanSection: {
+    backgroundColor: 'lightblue',
+    marginRight: 36,
+  },
+  aiSection: {
+    backgroundColor: 'lightgray',
+    marginLeft: 36,
   },
   sectionTitle: {
-    fontSize: 24,
+    fontSize: 12,
     fontWeight: '600',
   },
   sectionDescription: {
@@ -113,6 +194,22 @@ const styles = StyleSheet.create({
   highlight: {
     fontWeight: '700',
   },
+  horizontalContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  dalleImage: {
+    width: 200,
+    height: 200,
+  },
+  inlineCard: {
+    borderColor: 'gray',
+    borderWidth: 2,
+    borderRadius: 8,
+    padding: 8,
+    marginRight: 12,
+  }
 });
 
 export default App;
