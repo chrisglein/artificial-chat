@@ -72,15 +72,33 @@ function AISection({children, title}: SectionProps): JSX.Element {
   );
 }
 
-type ConsentSwitchProps = PropsWithChildren<{
-  title: string;
+type AttributionProps = PropsWithChildren<{
+  source: string;
 }>;
 
-function ConsentSwitch({title}: ConsentSwitchProps): JSX.Element {
+function Attribution({source}: AttributionProps): JSX.Element {
   return (
-    <View style={styles.horizontalContainer}>
+    <View style={{flexDirection: 'row'}}>
+      <Text style={{fontSize: 12, fontStyle: 'italic'}}>source:</Text>
+      <Text style={{fontSize: 12, marginHorizontal: 4}}>{source}</Text>
+      <Text style={{fontSize: 12}}>🔍</Text>
+    </View>
+  );
+}
+
+type ConsentSwitchProps = PropsWithChildren<{
+  title: string;
+  source: string;
+}>;
+
+function ConsentSwitch({title, source}: ConsentSwitchProps): JSX.Element {
+  return (
+    <View style={[styles.horizontalContainer, {marginBottom: 8}]}>
       <Switch></Switch>
-      <Text>{title}</Text>
+      <View>
+        <Text>{title}</Text>
+        <Attribution source={source}/>
+      </View>
     </View>
   );
 }
@@ -121,10 +139,10 @@ function App(): JSX.Element {
         </HumanSection>
         <AISection>
           <Text>Sure! To do this best It would be helpful to add this information, do you consent?</Text>
-          <ConsentSwitch title="Your BoardGameGeek.com play history"/>
-          <ConsentSwitch title="Your contact list of friends"/>
-          <ConsentSwitch title="Your schedule for the next week"/>
-          <ConsentSwitch title="Your bank account information for funding materials"/>
+          <ConsentSwitch title="Your BoardGameGeek.com play history" source="graph"/>
+          <ConsentSwitch title="Your contact list of friends" source="facebook"/>
+          <ConsentSwitch title="Your schedule for the next week" source="Google calendar"/>
+          <ConsentSwitch title="Your bank account information for funding materials" source="Chase Bank"/>
           <Button title="Agree and Continue" onPress={() => {}}/>
         </AISection>
         <HumanSection>
@@ -147,10 +165,11 @@ function App(): JSX.Element {
           <View style={styles.horizontalContainer}>
             <View style={styles.inlineCard}>
               <Text>Access profile photos?</Text>
+              <Attribution source="OneDrive"/>
               <Button title="I consent" onPress={() => {}}/>
             </View>
             <View style={styles.inlineCard}>
-              <Text>Take a picture</Text>
+              <Text>Take a picture now</Text>
               <Button title="Snapshot" onPress={() => {}}/>
             </View>
           </View>
