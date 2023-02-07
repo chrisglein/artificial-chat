@@ -349,11 +349,11 @@ const styles = StyleSheet.create({
   },
   humanSection: {
     backgroundColor: 'lightblue',
-    marginRight: 36,
+    marginRight: 64,
   },
   aiSection: {
     backgroundColor: 'lightgray',
-    marginLeft: 36,
+    marginLeft: 64,
   },
   sectionTitle: {
     fontSize: 12,
