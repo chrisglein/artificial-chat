@@ -39,15 +39,6 @@ function Section({children, title}: SectionProps): JSX.Element {
   );
 }
 
-function HumanSection({children, title}: SectionProps): JSX.Element {
-  return (
-    <View style={[styles.sectionContainer, styles.humanSection]}>
-      <Text style={styles.sectionTitle}>HUMAN</Text>
-      {children}
-    </View>
-  );
-}
-
 type FeedbackButtonProps = PropsWithChildren<{
   content: string;
   onPress: () => void;
@@ -69,6 +60,28 @@ function FeedbackButton({content, onPress}: FeedbackButtonProps): JSX.Element {
           <Text >{content}</Text>
         </View>        
       )}
+    </Pressable>
+  );
+}
+
+type HumanSectionProps = PropsWithChildren<{
+  title: string;
+  disableEdit: boolean;
+}>;
+
+function HumanSection({children, title, disableEdit}: HumanSectionProps): JSX.Element {
+  const [hovering, setHovering] = React.useState(false);
+
+  return (
+    <Pressable
+      style={[styles.sectionContainer, styles.humanSection]}
+      onHoverIn={() => setHovering(true)}
+      onHoverOut={() => setHovering(false)}>
+      <View style={{flexDirection: 'row', minHeight: 26}}>
+        <Text style={[styles.sectionTitle, {flexGrow: 1}]}>HUMAN</Text>
+        {!disableEdit && hovering && <FeedbackButton content="📝" onPress={() => console.log("edit")}/>}
+      </View>
+      {children}
     </Pressable>
   );
 }
@@ -262,7 +275,7 @@ function App(): JSX.Element {
         <View style={{alignSelf: 'center', marginTop: 12}}>
           <Button title="🔁 Regenerate response"/>
         </View>
-        <HumanSection>
+        <HumanSection disableEdit={true}>
           <ChatEntry
             submit={(newEntry) => setEntries([...entries, newEntry])}/>
         </HumanSection>
