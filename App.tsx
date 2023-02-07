@@ -10,6 +10,7 @@ import type {PropsWithChildren} from 'react';
 import {
   Button,
   Image,
+  Pressable,
   ScrollView,
   StyleSheet,
   Switch,
@@ -63,11 +64,32 @@ function HumanSection({children, title}: SectionProps): JSX.Element {
   );
 }
 
+type FeedbackButtonProps = PropsWithChildren<{
+  content: string;
+  onPress: () => void;
+}>;
+
+function FeedbackButton({content, onPress}: FeedbackButtonProps): JSX.Element {
+  const pressedStyle = {backgroundColor: 'lightblue'};
+  const unpressedStyle = {backgroundColor: 'transparent'};
+  return (
+    <Pressable onPress={onPress}>
+      {({pressed}) => (
+        <Text style={pressed ? pressedStyle : unpressedStyle}>{content}</Text>
+      )}
+    </Pressable>
+  );
+}
+
 function AISection({children, title}: SectionProps): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <View style={[styles.sectionContainer, styles.aiSection]}>
-      <Text style={styles.sectionTitle}>AI</Text>
+      <View style={{flexDirection: 'row'}}>
+        <Text style={[styles.sectionTitle, {flexGrow: 1}]}>AI</Text>
+        <FeedbackButton content="👍" onPress={() => console.log("like")}/>
+        <FeedbackButton content="👎" onPress={() => console.log("dislike")}/>
+      </View>
       {children}
     </View>
   );
@@ -155,18 +177,11 @@ function App(): JSX.Element {
 
   const [entries, setEntries] = React.useState([]);
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
   return (
     <ScrollView
-      contentInsetAdjustmentBehavior="automatic"
-      style={backgroundStyle}>
+      contentInsetAdjustmentBehavior="automatic">
       <View
-        style={{
-          backgroundColor: isDarkMode ? Colors.black : Colors.white,
-        }}>
+        style={{marginBottom: 12}}>
         <HumanSection>
           <Text>I want to design a board game about dinosaurs to play with my friends. Can you help?</Text>
         </HumanSection>
@@ -255,6 +270,9 @@ function App(): JSX.Element {
             </AISection>
           </>
         ))}
+        <View style={{alignSelf: 'center', marginTop: 12}}>
+          <Button title="🔁 Regenerate response"/>
+        </View>
         <HumanSection>
           <ChatEntry
             submit={(newEntry) => setEntries([...entries, newEntry])}/>
