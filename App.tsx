@@ -263,17 +263,17 @@ function App(): JSX.Element {
           <Attribution source="Adobe Creative Cloud subscription"/>
         </AISection>
         {entries.map((entry, entryIndex) => (
-          <>
-            <HumanSection key={entryIndex}>
+          <View key={entryIndex}>
+            <HumanSection>
               <Text>{entry}</Text>
             </HumanSection> 
             <AISection>
               <Text>I cannot help you with "{entry}".</Text>
             </AISection>
-          </>
+          </View>
         ))}
         <View style={{alignSelf: 'center', marginTop: 12}}>
-          <Button title="🔁 Regenerate response"/>
+          <Button title="🔁 Regenerate response" onPress={() => console.log("regenerate response")}/>
         </View>
         <HumanSection disableEdit={true}>
           <ChatEntry
