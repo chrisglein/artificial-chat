@@ -29,25 +29,10 @@ type SectionProps = PropsWithChildren<{
 }>;
 
 function Section({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
   return (
     <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
+      <Text style={styles.sectionTitle}>
         {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
       </Text>
       {children}
     </View>
@@ -55,7 +40,6 @@ function Section({children, title}: SectionProps): JSX.Element {
 }
 
 function HumanSection({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
   return (
     <View style={[styles.sectionContainer, styles.humanSection]}>
       <Text style={styles.sectionTitle}>HUMAN</Text>
@@ -82,7 +66,6 @@ function FeedbackButton({content, onPress}: FeedbackButtonProps): JSX.Element {
 }
 
 function AISection({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
   return (
     <View style={[styles.sectionContainer, styles.aiSection]}>
       <View style={{flexDirection: 'row'}}>
@@ -173,8 +156,6 @@ function ImageSelection({image}: ImageSelectionProps): JSX.Element {
 }
 
 function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
   const [entries, setEntries] = React.useState([]);
 
   return (
