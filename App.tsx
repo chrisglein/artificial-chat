@@ -16,28 +16,13 @@ import {
   Switch,
   Text,
   TextInput,
-  useColorScheme,
   View,
 } from 'react-native';
-
 import {
-  Colors,
-} from 'react-native/Libraries/NewAppScreen';
+  Popup,
+} from 'react-native-windows';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): JSX.Element {
-  return (
-    <View style={styles.sectionContainer}>
-      <Text style={styles.sectionTitle}>
-        {title}
-      </Text>
-      {children}
-    </View>
-  );
-}
+const FeedbackContext = React.createContext({});
 
 type FeedbackButtonProps = PropsWithChildren<{
   content: string;
@@ -86,13 +71,25 @@ function HumanSection({children, title, disableEdit}: HumanSectionProps): JSX.El
   );
 }
 
-function AISection({children, title}: SectionProps): JSX.Element {
+type AISectionProps = PropsWithChildren<{
+  title: string;
+}>;
+
+function AISection({children, title}: AISectionProps): JSX.Element {
+  const feedbackContext = React.useContext(FeedbackContext);
+
+  const showFeedbackPopup = (positive: boolean) => {
+    if (feedbackContext) {
+      feedbackContext.showFeedback(positive);
+    }
+  }
+
   return (
     <View style={[styles.sectionContainer, styles.aiSection]}>
       <View style={{flexDirection: 'row'}}>
         <Text style={[styles.sectionTitle, {flexGrow: 1}]}>AI</Text>
-        <FeedbackButton content="👍" onPress={() => console.log("like")}/>
-        <FeedbackButton content="👎" onPress={() => console.log("dislike")}/>
+        <FeedbackButton content="👍" onPress={() => { showFeedbackPopup(true); }}/>
+        <FeedbackButton content="👎" onPress={() => { showFeedbackPopup(false); }}/>
       </View>
       {children}
     </View>
@@ -178,109 +175,167 @@ function ImageSelection({image}: ImageSelectionProps): JSX.Element {
 
 function App(): JSX.Element {
   const [entries, setEntries] = React.useState([]);
+  const [showFeedbackPopup, setShowFeedbackPopup] = React.useState(false);
+  const [feedbackText, setFeedbackText] = React.useState(null);
+  const [feedbackIsPositive, setFeedbackIsPositive] = React.useState(false);
+
+  const context = {
+    showFeedback: (positive: boolean) => {
+      setFeedbackIsPositive(positive);
+      setShowFeedbackPopup(true);
+    }
+  }
 
   return (
-    <ScrollView
-      contentInsetAdjustmentBehavior="automatic">
-      <View
-        style={{marginBottom: 12}}>
-        <HumanSection>
-          <Text>I want to design a board game about dinosaurs to play with my friends. Can you help?</Text>
-        </HumanSection>
-        <AISection>
-          <Text>Sure! To do this best It would be helpful to add this information, do you consent?</Text>
-          <ConsentSwitch
-            title="Your BoardGameGeek.com play history"
-            source="graph"
-            defaultValue={true}/>
-          <ConsentSwitch
-            title="Your contact list of friends"
-            source="facebook"/>
-          <ConsentSwitch
-            title="Your schedule for the next week"
-            source="Google calendar"
-            defaultValue={true}/>
-          <ConsentSwitch
-            title="Your bank account information for funding materials"
-            source="Chase Bank"/>
-          <Button title="Agree and Continue" onPress={() => {}}/>
-        </AISection>
-        <AISection>
-          <Text>Thank you! Here is what I was able to come up with the information you provided to me:</Text>
-          <Text>...</Text>
-        </AISection>
-        <HumanSection>
-          <Text>I think we're ready for a box design. Can you provide one?</Text>
-        </HumanSection>
-        <AISection>
-          <Text>Here are some box designs</Text>
-          <View style={styles.horizontalContainer}>
-            <ImageSelection image={require('./assets/dinobox1.png')}/>
-            <ImageSelection image={require('./assets/dinobox2.png')}/>
-            <ImageSelection image={require('./assets/dinobox3.png')}/>
-            <ImageSelection image={require('./assets/dinobox4.png')}/>
-          </View>
-          <Attribution source="DALL-E, 14 monthly credits remaining"/>
-        </AISection>
-        <AISection>
-          <Text>Here are variations on the image you selected</Text>
-          <View style={styles.horizontalContainer}>
-            <ImageSelection image={require('./assets/dinobox3_variation1.png')}/>
-            <ImageSelection image={require('./assets/dinobox3_variation2.png')}/>
-            <ImageSelection image={require('./assets/dinobox3_variation3.png')}/>
-            <ImageSelection image={require('./assets/dinobox3_variation4.png')}/>
-          </View>
-          <Attribution source="DALL-E, 13 monthly credits remaining"/>
-        </AISection>
-        <HumanSection>
-          <Text>I like the original best, let's stick with that. But I'd like my picture on the box, since I'm the designer, can we do that?</Text>
-        </HumanSection>
-        <AISection>
-          <Text>Sure, here are some ways we can do that. Please choose one</Text>
-          <View style={styles.horizontalContainer}>
-            <View style={styles.inlineCard}>
-              <Button title="Access profile photos" onPress={() => {}}/>
-              <Attribution source="OneDrive"/>
-            </View>
-            <View style={styles.inlineCard}>
-              <Button title="Generate a placeholder image" onPress={() => {}}/>
-              <Attribution source="DALL-E"/>
-            </View>
-            <View style={styles.inlineCard}>
-              <Button title="Take a picture now" onPress={() => {}}/>
-            </View>
-            <View style={styles.inlineCard}>
-              <Button title="Upload your own" onPress={() => {}}/>
-            </View>
-          </View>
-        </AISection>
-        <HumanSection>
-          <Image style={styles.dalleImage} source={require('./assets/designerphoto.png')}/>
-        </HumanSection>
-        <AISection>
-          <Text>Thanks! Here is the updated box design that incorporate your photo</Text>
-          <Image style={styles.dalleImage} source={require('./assets/compositebox.png')}/>
-          <Attribution source="Adobe Creative Cloud subscription"/>
-        </AISection>
-        {entries.map((entry, entryIndex) => (
-          <View key={entryIndex}>
+    <FeedbackContext.Provider value={context}>
+      <View>
+        <ScrollView
+          contentInsetAdjustmentBehavior="automatic">
+          <View
+            style={{marginBottom: 12, opacity: showFeedbackPopup ? 0.3 : 1.0}}>
             <HumanSection>
-              <Text>{entry}</Text>
-            </HumanSection> 
+              <Text>I want to design a board game about dinosaurs to play with my friends. Can you help?</Text>
+            </HumanSection>
             <AISection>
-              <Text>I cannot help you with "{entry}".</Text>
+              <Text>Sure! To do this best It would be helpful to add this information, do you consent?</Text>
+              <ConsentSwitch
+                title="Your BoardGameGeek.com play history"
+                source="graph"
+                defaultValue={true}/>
+              <ConsentSwitch
+                title="Your contact list of friends"
+                source="facebook"/>
+              <ConsentSwitch
+                title="Your schedule for the next week"
+                source="Google calendar"
+                defaultValue={true}/>
+              <ConsentSwitch
+                title="Your bank account information for funding materials"
+                source="Chase Bank"/>
+              <Button title="Agree and Continue" onPress={() => {}}/>
             </AISection>
+            <AISection>
+              <Text>Thank you! Here is what I was able to come up with the information you provided to me:</Text>
+              <Text>...</Text>
+            </AISection>
+            <HumanSection>
+              <Text>I think we're ready for a box design. Can you provide one?</Text>
+            </HumanSection>
+            <AISection>
+              <Text>Here are some box designs</Text>
+              <View style={styles.horizontalContainer}>
+                <ImageSelection image={require('./assets/dinobox1.png')}/>
+                <ImageSelection image={require('./assets/dinobox2.png')}/>
+                <ImageSelection image={require('./assets/dinobox3.png')}/>
+                <ImageSelection image={require('./assets/dinobox4.png')}/>
+              </View>
+              <Attribution source="DALL-E, 14 monthly credits remaining"/>
+            </AISection>
+            <AISection>
+              <Text>Here are variations on the image you selected</Text>
+              <View style={styles.horizontalContainer}>
+                <ImageSelection image={require('./assets/dinobox3_variation1.png')}/>
+                <ImageSelection image={require('./assets/dinobox3_variation2.png')}/>
+                <ImageSelection image={require('./assets/dinobox3_variation3.png')}/>
+                <ImageSelection image={require('./assets/dinobox3_variation4.png')}/>
+              </View>
+              <Attribution source="DALL-E, 13 monthly credits remaining"/>
+            </AISection>
+            <HumanSection>
+              <Text>I like the original best, let's stick with that. But I'd like my picture on the box, since I'm the designer, can we do that?</Text>
+            </HumanSection>
+            <AISection>
+              <Text>Sure, here are some ways we can do that. Please choose one</Text>
+              <View style={styles.horizontalContainer}>
+                <View style={styles.inlineCard}>
+                  <Button title="Access profile photos" onPress={() => {}}/>
+                  <Attribution source="OneDrive"/>
+                </View>
+                <View style={styles.inlineCard}>
+                  <Button title="Generate a placeholder image" onPress={() => {}}/>
+                  <Attribution source="DALL-E"/>
+                </View>
+                <View style={styles.inlineCard}>
+                  <Button title="Take a picture now" onPress={() => {}}/>
+                </View>
+                <View style={styles.inlineCard}>
+                  <Button title="Upload your own" onPress={() => {}}/>
+                </View>
+              </View>
+            </AISection>
+            <HumanSection>
+              <Image style={styles.dalleImage} source={require('./assets/designerphoto.png')}/>
+            </HumanSection>
+            <AISection>
+              <Text>Thanks! Here is the updated box design that incorporate your photo</Text>
+              <Image style={styles.dalleImage} source={require('./assets/compositebox.png')}/>
+              <Attribution source="Adobe Creative Cloud subscription"/>
+            </AISection>
+            {entries.map((entry, entryIndex) => (
+              <View key={entryIndex}>
+                <HumanSection>
+                  <Text>{entry}</Text>
+                </HumanSection> 
+                <AISection>
+                  <Text>I cannot help you with "{entry}".</Text>
+                </AISection>
+              </View>
+            ))}
+            <View style={{alignSelf: 'center', marginTop: 12}}>
+              <Button title="🔁 Regenerate response" onPress={() => console.log("regenerate response")}/>
+            </View>
+            <HumanSection disableEdit={true}>
+              <ChatEntry
+                submit={(newEntry) => setEntries([...entries, newEntry])}/>
+            </HumanSection>
           </View>
-        ))}
-        <View style={{alignSelf: 'center', marginTop: 12}}>
-          <Button title="🔁 Regenerate response" onPress={() => console.log("regenerate response")}/>
-        </View>
-        <HumanSection disableEdit={true}>
-          <ChatEntry
-            submit={(newEntry) => setEntries([...entries, newEntry])}/>
-        </HumanSection>
+        </ScrollView>
+        <Popup
+          isOpen={showFeedbackPopup}
+          isLightDismissEnabled={true}
+          onDismiss={() => setShowFeedbackPopup(false)}>
+          <View style={{backgroundColor: 'white', padding: 12, borderRadius: 8, minWidth: 300}}>
+            <View style={{flexDirection: 'row', marginBottom: 4}}>
+              <View style={{backgroundColor: feedbackIsPositive ? 'green' : 'red', borderRadius: 4, marginRight: 4}}>
+                <Text>{feedbackIsPositive ? "👍" : "👎"}</Text>
+              </View>
+              <Text>Provide additional feedback</Text>
+            </View>
+            <TextInput
+              multiline={true}
+              placeholder="What would the ideal answer have been?"
+              style={{flexGrow: 1, minHeight: 32}}
+              onChangeText={value => setFeedbackText(value)}
+              value={feedbackText}/>
+              {!feedbackIsPositive && (
+                <View>
+                  <View style={styles.horizontalContainer}>
+                    <Switch/>
+                    <Text>This is harmful / unsafe</Text>
+                  </View>
+                  <View style={styles.horizontalContainer}>
+                    <Switch/>
+                    <Text>This isn't true</Text>
+                  </View>
+                  <View style={styles.horizontalContainer}>
+                    <Switch/>
+                    <Text>This isn't helpful</Text>
+                  </View>
+                </View>
+              )}
+            <View style={{marginTop: 12, alignSelf: 'flex-end'}}>
+              <Button
+                title="Submit feedback"
+                onPress={() => {
+                  console.log(feedbackIsPositive ? "like" : "dislike");
+                  console.log(feedbackText);
+                  setShowFeedbackPopup(false);
+                }}/>
+            </View>
+          </View>
+        </Popup>
       </View>
-    </ScrollView>
+    </FeedbackContext.Provider>
   );
 }
 
