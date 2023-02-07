@@ -54,12 +54,20 @@ type FeedbackButtonProps = PropsWithChildren<{
 }>;
 
 function FeedbackButton({content, onPress}: FeedbackButtonProps): JSX.Element {
-  const pressedStyle = {backgroundColor: 'lightblue'};
-  const unpressedStyle = {backgroundColor: 'transparent'};
+  const [hovering, setHovering] = React.useState(false);
+
+  const backgroundBaseStyle = {padding: 2, borderRadius: 8, borderWidth: 1, borderColor: 'transparent'};
+  const backgroundPressedStyle = {borderColor: 'white', backgroundColor: 'black'};
+  const backgroundHoverStyle = {borderColor: 'white', backgroundColor: 'gray'};
   return (
-    <Pressable onPress={onPress}>
+    <Pressable
+      onPress={onPress}
+      onHoverIn={() => setHovering(true)}
+      onHoverOut={() => setHovering(false)}>
       {({pressed}) => (
-        <Text style={pressed ? pressedStyle : unpressedStyle}>{content}</Text>
+        <View style={[backgroundBaseStyle, pressed ? backgroundPressedStyle : hovering ? backgroundHoverStyle : null]}>
+          <Text >{content}</Text>
+        </View>        
       )}
     </Pressable>
   );
