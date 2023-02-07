@@ -140,14 +140,17 @@ function ChatEntry({source, submit}: ChatEntryProps): JSX.Element {
 type ConsentSwitchProps = PropsWithChildren<{
   title: string;
   source: string;
+  details: string;
   defaultValue: boolean;
 }>;
 
-function ConsentSwitch({title, source, defaultValue}: ConsentSwitchProps): JSX.Element {
+function ConsentSwitch({title, source, defaultValue, details}: ConsentSwitchProps): JSX.Element {
   const [value, onValueChange] = React.useState(defaultValue);
 
   return (
-    <View style={[styles.horizontalContainer, {marginBottom: 8}]}>
+    <View
+      style={[styles.horizontalContainer, {marginBottom: 8}]}
+      tooltip={details}>
       <Switch value={value} onValueChange={onValueChange}/>
       <View>
         <Text>{title}</Text>
@@ -200,17 +203,21 @@ function App(): JSX.Element {
               <Text>Sure! To do this best It would be helpful to add this information, do you consent?</Text>
               <ConsentSwitch
                 title="Your BoardGameGeek.com play history"
-                source="graph"
+                details="This will help me understand what games you like to play and what you like about them."
+                source="BoardGameGeek.com"
                 defaultValue={true}/>
               <ConsentSwitch
                 title="Your contact list of friends"
+                details="This will help me understand who you play games with and what games they like to play."
                 source="facebook"/>
               <ConsentSwitch
                 title="Your schedule for the next week"
+                details="Knowing your availability and the deadline for completing the game will help me suggest an appropriate pace and scope for the project, and ensure that the game can be completed within the desired time frame."
                 source="Google calendar"
                 defaultValue={true}/>
               <ConsentSwitch
                 title="Your bank account information for funding materials"
+                details="This will help me understand how much money you have available to spend on materials for the game."
                 source="Chase Bank"/>
               <Button title="Agree and Continue" onPress={() => {}}/>
             </AISection>
