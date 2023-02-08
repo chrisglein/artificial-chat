@@ -189,6 +189,7 @@ function AppContent(): JSX.Element {
   const [showFeedbackPopup, setShowFeedbackPopup] = React.useState(false);
   const [feedbackText, setFeedbackText] = React.useState(null);
   const [feedbackIsPositive, setFeedbackIsPositive] = React.useState(false);
+  const scrollViewRef : React.RefObject<ScrollView> = React.createRef();
 
   const context = {
     showFeedback: (positive: boolean) => {
@@ -201,7 +202,8 @@ function AppContent(): JSX.Element {
     <FeedbackContext.Provider value={context}>
       <View style={styles.appContent}>
         <ScrollView
-          contentInsetAdjustmentBehavior="automatic">
+          contentInsetAdjustmentBehavior="automatic"
+          ref={scrollViewRef}>
           <View
             style={{marginBottom: 12, opacity: showFeedbackPopup ? 0.3 : 1.0}}>
             <HumanSection>
@@ -301,7 +303,13 @@ function AppContent(): JSX.Element {
             </View>
             <HumanSection disableEdit={true}>
               <ChatEntry
-                submit={(newEntry) => setEntries([...entries, newEntry])}/>
+                submit={(newEntry) => {
+                  setEntries([...entries, newEntry]);
+                  // Wait for the new entry to be rendered
+                  setTimeout(() => {
+                    scrollViewRef.current?.scrollToEnd();
+                  }, 200);
+                }}/>
             </HumanSection>
           </View>
         </ScrollView>
