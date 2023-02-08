@@ -309,7 +309,7 @@ function AppContent(): JSX.Element {
           isOpen={showFeedbackPopup}
           isLightDismissEnabled={true}
           onDismiss={() => setShowFeedbackPopup(false)}>
-          <View style={{backgroundColor: 'white', padding: 12, borderRadius: 8, minWidth: 300}}>
+          <View style={styles.feedbackDialog}>
             <View style={{flexDirection: 'row', marginBottom: 4}}>
               <View style={{backgroundColor: feedbackIsPositive ? 'green' : 'red', borderRadius: 4, marginRight: 4}}>
                 <Text>{feedbackIsPositive ? "👍" : "👎"}</Text>
@@ -413,6 +413,12 @@ function App(): JSX.Element {
       borderRadius: 8,
       padding: 8,
       marginRight: 12,
+    },
+    feedbackDialog: {
+      backgroundColor: isDarkMode ? 'black' : 'white',
+      padding: 12,
+      borderRadius: 8,
+      minWidth: 300
     }
   });
 
