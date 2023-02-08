@@ -8,6 +8,7 @@
 import React from 'react';
 import type {PropsWithChildren} from 'react';
 import {
+  Appearance,
   Button,
   Image,
   Pressable,
@@ -23,6 +24,7 @@ import {
 } from 'react-native-windows';
 
 const FeedbackContext = React.createContext({});
+const StylesContext = React.createContext({});
 
 type FeedbackButtonProps = PropsWithChildren<{
   content: string;
@@ -56,6 +58,7 @@ type HumanSectionProps = PropsWithChildren<{
 
 function HumanSection({children, title, disableEdit}: HumanSectionProps): JSX.Element {
   const [hovering, setHovering] = React.useState(false);
+  const styles = React.useContext(StylesContext);
 
   return (
     <Pressable
@@ -77,6 +80,7 @@ type AISectionProps = PropsWithChildren<{
 
 function AISection({children, title}: AISectionProps): JSX.Element {
   const feedbackContext = React.useContext(FeedbackContext);
+  const styles = React.useContext(StylesContext);
 
   const showFeedbackPopup = (positive: boolean) => {
     if (feedbackContext) {
@@ -116,6 +120,7 @@ type ChatEntryProps = PropsWithChildren<{
 }>;
 
 function ChatEntry({source, submit}: ChatEntryProps): JSX.Element {
+  const styles = React.useContext(StylesContext);
   const [value, onChangeText] = React.useState(null);
 
   const submitValue = () => {
@@ -145,6 +150,7 @@ type ConsentSwitchProps = PropsWithChildren<{
 }>;
 
 function ConsentSwitch({title, source, defaultValue, details}: ConsentSwitchProps): JSX.Element {
+  const styles = React.useContext(StylesContext);
   const [value, onValueChange] = React.useState(defaultValue);
 
   return (
@@ -165,6 +171,7 @@ type ImageSelectionProps = PropsWithChildren<{
 }>;
 
 function ImageSelection({image}: ImageSelectionProps): JSX.Element {
+  const styles = React.useContext(StylesContext);
   return (
     <View style={{marginRight: 12}}>
       <Image style={styles.dalleImage} source={image}/>
@@ -176,7 +183,8 @@ function ImageSelection({image}: ImageSelectionProps): JSX.Element {
   );
 }
 
-function App(): JSX.Element {
+function AppContent(): JSX.Element {
+  const styles = React.useContext(StylesContext);
   const [entries, setEntries] = React.useState([]);
   const [showFeedbackPopup, setShowFeedbackPopup] = React.useState(false);
   const [feedbackText, setFeedbackText] = React.useState(null);
@@ -191,7 +199,7 @@ function App(): JSX.Element {
 
   return (
     <FeedbackContext.Provider value={context}>
-      <View>
+      <View style={styles.appContent}>
         <ScrollView
           contentInsetAdjustmentBehavior="automatic">
           <View
@@ -346,51 +354,75 @@ function App(): JSX.Element {
   );
 }
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 12,
-    marginHorizontal: 12,
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    borderRadius: 8,
-  },
-  humanSection: {
-    backgroundColor: 'lightblue',
-    marginRight: 64,
-  },
-  aiSection: {
-    backgroundColor: 'lightgray',
-    marginLeft: 64,
-  },
-  sectionTitle: {
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  horizontalContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    gap: 12,
-  },
-  dalleImage: {
-    width: 150,
-    height: 150,
-  },
-  inlineCard: {
-    borderColor: 'gray',
-    borderWidth: 2,
-    borderRadius: 8,
-    padding: 8,
-    marginRight: 12,
-  }
-});
+function App(): JSX.Element {
+  const [currentTheme, setCurrentTheme] = React.useState(Appearance.getColorScheme());
+  const isDarkMode = currentTheme === 'dark';
+
+  const onAppThemeChanged = () => {
+    setCurrentTheme(Appearance.getColorScheme());
+  };
+
+  React.useEffect(() => {
+    Appearance.addChangeListener(onAppThemeChanged);
+  });
+
+  const styles = StyleSheet.create({
+    appContent: {
+      backgroundColor: isDarkMode ? 'black' : 'white',
+    },
+    sectionContainer: {
+      marginTop: 12,
+      marginHorizontal: 12,
+      paddingHorizontal: 24,
+      paddingVertical: 12,
+      borderRadius: 8,
+    },
+    humanSection: {
+      backgroundColor: isDarkMode ? '#333355' : 'lightblue',
+      marginRight: 64,
+    },
+    aiSection: {
+      backgroundColor: isDarkMode ? '#444444' : 'lightgray',
+      marginLeft: 64,
+    },
+    sectionTitle: {
+      fontSize: 12,
+      fontWeight: '600',
+    },
+    sectionDescription: {
+      marginTop: 8,
+      fontSize: 18,
+      fontWeight: '400',
+    },
+    highlight: {
+      fontWeight: '700',
+    },
+    horizontalContainer: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      gap: 12,
+    },
+    dalleImage: {
+      width: 150,
+      height: 150,
+    },
+    inlineCard: {
+      borderColor: 'gray',
+      borderWidth: 2,
+      borderRadius: 8,
+      padding: 8,
+      marginRight: 12,
+    }
+  });
+
+  return (
+    <StylesContext.Provider value={styles}>
+      <View>
+        <AppContent/>
+      </View>
+    </StylesContext.Provider>
+  );
+}
 
 export default App;
