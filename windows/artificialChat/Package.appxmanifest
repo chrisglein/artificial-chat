@@ -9,7 +9,7 @@
   <Identity
     Name="8b7614a1-05c5-4f65-bec8-343650bf10ba"
     Publisher="CN=cglein"
-    Version="1.0.0.0" />
+    Version="1.0.4.0" />
 
   <mp:PhoneIdentity PhoneProductId="8b7614a1-05c5-4f65-bec8-343650bf10ba" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
@@ -33,12 +33,13 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="artificialChat.App">
       <uap:VisualElements
-        DisplayName="artificialChat"
+        DisplayName="Artificial Chat"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="artificialChat"
-        BackgroundColor="transparent">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
+        Description="Talk to an artificial entity"
+        BackgroundColor="#515FB7">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png" ShortName="Artificial Chat">
+        </uap:DefaultTile >
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
     </Application>
