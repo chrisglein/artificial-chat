@@ -1,10 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
 import type {PropsWithChildren} from 'react';
 import {
@@ -23,8 +16,26 @@ import {
   Popup,
 } from 'react-native-windows';
 
-const FeedbackContext = React.createContext({});
-const StylesContext = React.createContext({});
+type FeedbackType = {
+  showFeedback : (positive: boolean) => void;
+}
+
+type StylesType = {
+  appContent: any;
+  sectionContainer: any;
+  humanSection: any;
+  aiSection: any;
+  sectionTitle: any;
+  sectionDescription: any;
+  highlight: any;
+  horizontalContainer: any;
+  dalleImage: any;
+  inlineCard: any;
+  feedbackDialog: any;
+}
+
+const FeedbackContext = React.createContext<FeedbackType>({showFeedback: () => {}});
+const StylesContext = React.createContext<StylesType>({});
 
 type FeedbackButtonProps = PropsWithChildren<{
   content: string;
@@ -52,11 +63,10 @@ function FeedbackButton({content, onPress}: FeedbackButtonProps): JSX.Element {
 }
 
 type HumanSectionProps = PropsWithChildren<{
-  title: string;
-  disableEdit: boolean;
+  disableEdit?: boolean;
 }>;
 
-function HumanSection({children, title, disableEdit}: HumanSectionProps): JSX.Element {
+function HumanSection({children, disableEdit}: HumanSectionProps): JSX.Element {
   const [hovering, setHovering] = React.useState(false);
   const styles = React.useContext(StylesContext);
 
@@ -74,11 +84,7 @@ function HumanSection({children, title, disableEdit}: HumanSectionProps): JSX.El
   );
 }
 
-type AISectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function AISection({children, title}: AISectionProps): JSX.Element {
+function AISection({children}: PropsWithChildren): JSX.Element {
   const feedbackContext = React.useContext(FeedbackContext);
   const styles = React.useContext(StylesContext);
 
@@ -115,13 +121,12 @@ function Attribution({source}: AttributionProps): JSX.Element {
 }
 
 type ChatEntryProps = PropsWithChildren<{
-  source: string;
-  submit: (string) => void;
+  submit: (text : string) => void;
 }>;
 
-function ChatEntry({source, submit}: ChatEntryProps): JSX.Element {
+function ChatEntry({submit}: ChatEntryProps): JSX.Element {
   const styles = React.useContext(StylesContext);
-  const [value, onChangeText] = React.useState(null);
+  const [value, setValue] = React.useState("");
 
   const submitValue = () => {
     submit(value);
@@ -133,7 +138,7 @@ function ChatEntry({source, submit}: ChatEntryProps): JSX.Element {
         multiline={true}
         placeholder="Ask me anything"
         style={{flexGrow: 1, marginRight: 12}}
-        onChangeText={text => onChangeText(text)}
+        onChangeText={newValue => setValue(newValue)}
         value={value}/>
       <Button
         title="Submit"
@@ -146,7 +151,7 @@ type ConsentSwitchProps = PropsWithChildren<{
   title: string;
   source: string;
   details: string;
-  defaultValue: boolean;
+  defaultValue?: boolean;
 }>;
 
 function ConsentSwitch({title, source, defaultValue, details}: ConsentSwitchProps): JSX.Element {
@@ -185,13 +190,13 @@ function ImageSelection({image}: ImageSelectionProps): JSX.Element {
 
 function AppContent(): JSX.Element {
   const styles = React.useContext(StylesContext);
-  const [entries, setEntries] = React.useState([]);
+  const [entries, setEntries] = React.useState<string []>([]);
   const [showFeedbackPopup, setShowFeedbackPopup] = React.useState(false);
-  const [feedbackText, setFeedbackText] = React.useState(null);
+  const [feedbackText, setFeedbackText] = React.useState("");
   const [feedbackIsPositive, setFeedbackIsPositive] = React.useState(false);
   const scrollViewRef : React.RefObject<ScrollView> = React.createRef();
 
-  const context = {
+  const context : FeedbackType = {
     showFeedback: (positive: boolean) => {
       setFeedbackIsPositive(positive);
       setShowFeedbackPopup(true);
@@ -374,7 +379,7 @@ function App(): JSX.Element {
     Appearance.addChangeListener(onAppThemeChanged);
   });
 
-  const styles = StyleSheet.create({
+  const styles : StylesType = StyleSheet.create({
     appContent: {
       backgroundColor: isDarkMode ? 'black' : 'white',
     },
