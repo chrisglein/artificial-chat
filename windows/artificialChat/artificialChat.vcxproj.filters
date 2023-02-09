@@ -62,9 +62,6 @@
     <Image Include="Assets\Square150x150Logo.scale-150.png">
       <Filter>Assets</Filter>
     </Image>
-    <Image Include="Assets\Square150x150Logo.scale-400.png">
-      <Filter>Assets</Filter>
-    </Image>
     <Image Include="Assets\Wide310x150Logo.scale-100.png">
       <Filter>Assets</Filter>
     </Image>
@@ -74,22 +71,10 @@
     <Image Include="Assets\Wide310x150Logo.scale-150.png">
       <Filter>Assets</Filter>
     </Image>
-    <Image Include="Assets\Wide310x150Logo.scale-400.png">
-      <Filter>Assets</Filter>
-    </Image>
     <Image Include="Assets\LargeTile.scale-100.png">
       <Filter>Assets</Filter>
     </Image>
     <Image Include="Assets\LargeTile.scale-125.png">
-      <Filter>Assets</Filter>
-    </Image>
-    <Image Include="Assets\LargeTile.scale-150.png">
-      <Filter>Assets</Filter>
-    </Image>
-    <Image Include="Assets\LargeTile.scale-200.png">
-      <Filter>Assets</Filter>
-    </Image>
-    <Image Include="Assets\LargeTile.scale-400.png">
       <Filter>Assets</Filter>
     </Image>
     <Image Include="Assets\Square44x44Logo.scale-100.png">
@@ -171,6 +156,9 @@
       <Filter>Assets</Filter>
     </Image>
     <Image Include="Assets\StoreLogo.scale-400.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\LargeTile.png">
       <Filter>Assets</Filter>
     </Image>
   </ItemGroup>
