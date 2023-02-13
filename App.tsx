@@ -188,9 +188,13 @@ function ImageSelection({image}: ImageSelectionProps): JSX.Element {
   );
 }
 
-function AppContent(): JSX.Element {
+type AppContentProps = PropsWithChildren<{
+  entries: Element[];
+  setEntries: (entries: Element[]) => void;
+}>;
+
+function AppContent({entries, setEntries}: AppContentProps): JSX.Element {
   const styles = React.useContext(StylesContext);
-  const [entries, setEntries] = React.useState<string []>([]);
   const [showFeedbackPopup, setShowFeedbackPopup] = React.useState(false);
   const [feedbackText, setFeedbackText] = React.useState("");
   const [feedbackIsPositive, setFeedbackIsPositive] = React.useState(false);
@@ -295,12 +299,7 @@ function AppContent(): JSX.Element {
             </AISection>
             {entries.map((entry, entryIndex) => (
               <View key={entryIndex}>
-                <HumanSection>
-                  <Text>{entry}</Text>
-                </HumanSection> 
-                <AISection>
-                  <Text>I cannot help you with "{entry}".</Text>
-                </AISection>
+                {entry}
               </View>
             ))}
             <View style={{alignSelf: 'center', marginTop: 12}}>
@@ -309,7 +308,15 @@ function AppContent(): JSX.Element {
             <HumanSection disableEdit={true}>
               <ChatEntry
                 submit={(newEntry) => {
-                  setEntries([...entries, newEntry]);
+                  let humanPrompt = 
+                    <HumanSection>
+                      <Text>{newEntry}</Text>
+                    </HumanSection>
+                  let aiResponse = 
+                    <AISection>
+                      <Text>I cannot help you with "{newEntry}".</Text>
+                    </AISection>
+                  setEntries([...entries, humanPrompt, aiResponse]);
                   // Wait for the new entry to be rendered
                   setTimeout(() => {
                     scrollViewRef.current?.scrollToEnd();
@@ -368,6 +375,11 @@ function AppContent(): JSX.Element {
 }
 
 function App(): JSX.Element {
+  const [entries, setEntries] = React.useState<Element []>([
+    <HumanSection>
+      <Text>Hello world</Text>
+    </HumanSection>
+  ]);
   const [currentTheme, setCurrentTheme] = React.useState(Appearance.getColorScheme());
   const isDarkMode = currentTheme === 'dark';
 
@@ -438,7 +450,9 @@ function App(): JSX.Element {
   return (
     <StylesContext.Provider value={styles}>
       <View>
-        <AppContent/>
+        <AppContent
+          entries={entries}
+          setEntries={setEntries}/>
       </View>
     </StylesContext.Provider>
   );
