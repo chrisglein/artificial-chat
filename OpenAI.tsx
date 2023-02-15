@@ -35,13 +35,14 @@ const OpenAIUrl = () => {
 
 type CallOpenAIProps = {
   url: string,
-  apiKey: string,
+  apiKey?: string,
   prompt: string,
   onError: (error: string) => void,
   onResult: (result: string) => void,
   onComplete: () => void
 }
 const CallOpenAI = async ({url, apiKey, prompt, onError, onResult, onComplete}: CallOpenAIProps) => {
+  const DefaultApiKey = "REDACTED";
   try {
     console.log("start loading");
     let wrappedPrompt = `The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly.\nHuman: ${prompt}.\nAI:`;
@@ -50,7 +51,7 @@ const CallOpenAI = async ({url, apiKey, prompt, onError, onResult, onComplete}: 
       method: 'POST',
       headers: {
         Accept: 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
+        'Authorization': `Bearer ${apiKey ?? DefaultApiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({

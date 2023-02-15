@@ -1,6 +1,7 @@
 import React from 'react';
 import type {PropsWithChildren} from 'react';
 import {
+  ActivityIndicator,
   Appearance,
   Button,
   Image,
@@ -88,7 +89,10 @@ function HumanSection({children, disableEdit}: HumanSectionProps): JSX.Element {
   );
 }
 
-function AISection({children}: PropsWithChildren): JSX.Element {
+type AISectionProps = PropsWithChildren<{
+  isLoading?: boolean;
+}>;
+function AISection({children, isLoading}: AISectionProps): JSX.Element {
   const feedbackContext = React.useContext(FeedbackContext);
   const styles = React.useContext(StylesContext);
 
@@ -105,6 +109,9 @@ function AISection({children}: PropsWithChildren): JSX.Element {
         <FeedbackButton content="👍" onPress={() => { showFeedbackPopup(true); }}/>
         <FeedbackButton content="👎" onPress={() => { showFeedbackPopup(false); }}/>
       </View>
+      {isLoading && 
+        <ActivityIndicator/>
+      }
       {children}
     </View>
   );
@@ -488,14 +495,15 @@ function AutomatedChatSession({entries, appendEntry}: AutomatedChatSessionProps)
     } else {
       console.log(`Prompt: '${text}`);
       
-      appendEntry(
+      appendEntry([
         <HumanSection>
           <Text>{text}</Text>
-        </HumanSection>);
+        </HumanSection>,
+        <AISection isLoading={true}/>
+      ]);
 
       CallOpenAI({
         url: OpenAIUrl().completion("text-davinci-003-playground"),
-        apiKey: "REDACTED",
         prompt: text,
         onError: (error: string) => {
           appendEntry(
@@ -526,7 +534,6 @@ function AutomatedChatSession({entries, appendEntry}: AutomatedChatSessionProps)
       regenerateResponse={() => setChatScriptIndex(0)}/>
   );
 }
-
 
 function ChatSession(): JSX.Element {
   const [entries, setEntries] = React.useState<JSX.Element []>([]);
