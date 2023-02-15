@@ -15,6 +15,10 @@ import {
 import {
   Popup,
 } from 'react-native-windows';
+import {
+  OpenAIUrl,
+  CallOpenAI,
+} from './OpenAI';
 
 type FeedbackType = {
   showFeedback : (positive: boolean) => void;
@@ -448,36 +452,70 @@ function AutomatedChatSession({entries, appendEntry}: AutomatedChatSessionProps)
   }
   
   let onPrompt = (text: string, index: number) => {
-    console.log("Prompting with '" + text + "', index is " + index);
-    // If the human has a prompt, add it to the chat
-    const humanPrompt = !text ? undefined :
-      <HumanSection>
-        <Text>{text}</Text>
-      </HumanSection>
+    const followScript = humanText !== undefined;
 
-    // Get the AI's response to the prompt, and predict the human's response to that
-    let {aiResponse, humanResponse} = advanceChatScript(index, () => onPrompt(undefined, index + 1));
-    setChatScriptIndex(index + 1);
-    console.log(aiResponse);
-    console.log(humanResponse);
+    if (followScript) {
+      console.log(`Following script with prompt of '${text}', index is ${index}`);
 
-    // If there wasn't a response, we hit the end of the script
-    if (!aiResponse) {
-      aiResponse =
-        <AISection>
-          <Text>You have reached the end of the script, and I cannot comment on "{text}"</Text>    
-        </AISection>
-    }
+      // Get the AI's response to the prompt, and predict the human's response to that
+      let {aiResponse, humanResponse} = advanceChatScript(index, () => onPrompt(undefined, index + 1));
+      setChatScriptIndex(index + 1);
+      console.log(aiResponse);
+      console.log(humanResponse);
+  
+      // If there wasn't a response, we hit the end of the script
+      if (!aiResponse) {
+        aiResponse =
+          <AISection>
+            <Text>You have reached the end of the script, and I cannot comment on "{text}"</Text>    
+          </AISection>
+      }
 
-    // Append to the chat log
-    if (humanPrompt) {
-      appendEntry([humanPrompt, aiResponse]);
+      // Append to the chat log
+      // If the human has a prompt, add it to the chat
+      if (text) {
+        appendEntry([
+          <HumanSection>
+            <Text>{text}</Text>
+          </HumanSection>,
+          aiResponse]);
+      } else {
+        appendEntry(aiResponse);
+      }
+
+      // Prepopulate the human's next prompt
+      setHumanText(humanResponse);
     } else {
-      appendEntry(aiResponse);
-    }
+      console.log(`Prompt: '${text}`);
+      
+      appendEntry(
+        <HumanSection>
+          <Text>{text}</Text>
+        </HumanSection>);
 
-    // Prepopulate the human's next prompt
-    setHumanText(humanResponse);
+      CallOpenAI({
+        url: OpenAIUrl().completion("text-davinci-003-playground"),
+        apiKey: "REDACTED",
+        prompt: text,
+        onError: (error: string) => {
+          appendEntry(
+            <AISection>
+              <Text>{error}</Text>    
+            </AISection>
+          );
+        },
+        onResult: (result: string) => {
+          appendEntry(
+            <AISection>
+              <Text>{result}</Text>    
+            </AISection>
+          );
+        },
+        onComplete: () => {
+          setHumanText(undefined);
+        }
+      });
+    }
   }
 
   return (
