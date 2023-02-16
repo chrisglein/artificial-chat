@@ -6,19 +6,14 @@ import {
   Image,
   ScrollView,
   StyleSheet,
-  Switch,
   Text,
   TextInput,
   View,
 } from 'react-native';
 import {
-  Popup,
-} from 'react-native-windows';
-import {
   Attribution,
   ConsentSwitch,
   ImageSelection,
-  Hyperlink,
 } from './Controls';
 import {
   HumanSection,
@@ -30,9 +25,11 @@ import {
 } from './Styles';
 import {
   FeedbackContext,
+  FeedbackPopup,
 } from './Feedback';
 import {
   SettingsContext,
+  SettingsPopup,
 } from './Settings';
 
 type ChatEntryProps = PropsWithChildren<{
@@ -79,14 +76,12 @@ type ChatProps = PropsWithChildren<{
 
 function Chat({entries, humanText, onPrompt, regenerateResponse}: ChatProps): JSX.Element {
   const styles = React.useContext(StylesContext);
-  const settingsContext = React.useContext(SettingsContext);
   const [showFeedbackPopup, setShowFeedbackPopup] = React.useState(false);
   const [showSettingsPopup, setShowSettingsPopup] = React.useState(false);
-  const [feedbackText, setFeedbackText] = React.useState("");
   const [feedbackIsPositive, setFeedbackIsPositive] = React.useState(false);
   const scrollViewRef : React.RefObject<ScrollView> = React.createRef();
 
-  const context : FeedbackType = {
+  const feedbackContext : FeedbackType = {
     showFeedback: (positive: boolean) => {
       setFeedbackIsPositive(positive);
       setShowFeedbackPopup(true);
@@ -94,7 +89,7 @@ function Chat({entries, humanText, onPrompt, regenerateResponse}: ChatProps): JS
   }
 
   return (
-    <FeedbackContext.Provider value={context}>
+    <FeedbackContext.Provider value={feedbackContext}>
       <View style={styles.appContent}>
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
@@ -102,7 +97,7 @@ function Chat({entries, humanText, onPrompt, regenerateResponse}: ChatProps): JS
           <View
             style={{
               gap: 12,
-              opacity: showFeedbackPopup ? 0.3 : 1.0}}>
+              opacity: (showFeedbackPopup || showSettingsPopup) ? 0.3 : 1.0}}>
             {entries.map((entry, entryIndex) => (
               <View key={entryIndex}>
                 {entry}
@@ -126,77 +121,13 @@ function Chat({entries, humanText, onPrompt, regenerateResponse}: ChatProps): JS
             </HumanSection>
           </View>
         </ScrollView>
-        <Popup
-          isOpen={showFeedbackPopup}
-          isLightDismissEnabled={true}
-          onDismiss={() => setShowFeedbackPopup(false)}>
-          <View style={styles.feedbackDialog}>
-            <View style={{flexDirection: 'row', marginBottom: 4}}>
-              <View style={{backgroundColor: feedbackIsPositive ? 'green' : 'red', borderRadius: 4, marginRight: 4}}>
-                <Text>{feedbackIsPositive ? "👍" : "👎"}</Text>
-              </View>
-              <Text>Provide additional feedback</Text>
-            </View>
-            <TextInput
-              multiline={true}
-              placeholder="What would the ideal answer have been?"
-              style={{flexGrow: 1, minHeight: 32}}
-              onChangeText={value => setFeedbackText(value)}
-              value={feedbackText}/>
-              {!feedbackIsPositive && (
-                <View>
-                  <View style={styles.horizontalContainer}>
-                    <Switch/>
-                    <Text>This is harmful / unsafe</Text>
-                  </View>
-                  <View style={styles.horizontalContainer}>
-                    <Switch/>
-                    <Text>This isn't true</Text>
-                  </View>
-                  <View style={styles.horizontalContainer}>
-                    <Switch/>
-                    <Text>This isn't helpful</Text>
-                  </View>
-                </View>
-              )}
-            <View style={{marginTop: 12, alignSelf: 'flex-end'}}>
-              <Button
-                title="Submit feedback"
-                onPress={() => {
-                  console.log(feedbackIsPositive ? "like" : "dislike");
-                  console.log(feedbackText);
-                  setShowFeedbackPopup(false);
-                }}/>
-            </View>
-          </View>
-        </Popup>
-        <Popup
-          isOpen={showSettingsPopup}
-          isLightDismissEnabled={true}
-          onDismiss={() => setShowSettingsPopup(false)}>
-          <View style={styles.feedbackDialog}>
-            <View style={{flexDirection: 'row', marginBottom: 4}}>
-              <View style={{backgroundColor: 'gray', borderRadius: 4, marginRight: 4}}>
-                <Text>⚙️</Text>
-              </View>
-              <Text>OpenAI Settings</Text>
-            </View>
-            <TextInput
-              secureTextEntry={true}
-              placeholder="Your API key"
-              style={{flexGrow: 1, minHeight: 32}}
-              onChangeText={value => settingsContext.apiKey = value}
-              value={settingsContext.apiKey}/>
-            <Hyperlink url="https://platform.openai.com/account/api-keys"/>
-            <View style={{marginTop: 12, alignSelf: 'flex-end'}}>
-              <Button
-                title="OK"
-                onPress={() => {
-                  setShowSettingsPopup(false);
-                }}/>
-            </View>
-          </View>
-        </Popup>
+        <FeedbackPopup
+          show={showFeedbackPopup}
+          isPositive={feedbackIsPositive}
+          close={() => setShowFeedbackPopup(false)}/>
+        <SettingsPopup
+          show={showSettingsPopup}
+          close={() => setShowSettingsPopup(false)}/>
       </View>
     </FeedbackContext.Provider>
   );
