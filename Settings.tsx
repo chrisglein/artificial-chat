@@ -16,8 +16,9 @@ import {
 } from './Styles';
 
 type SettingsType = {
-  apiKey?: string;
-  scriptName?: string;
+  apiKey?: string,
+  scriptName?: string,
+  setScriptName: (value: string) => void,
 }
   
 const SettingsContext = React.createContext<SettingsType>({});
@@ -64,7 +65,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
           <Button
             title="OK"
             onPress={() => {
-              settings.scriptName = scriptName;
+              settings.setScriptName(scriptName);
               close();
             }}/>
         </View>
