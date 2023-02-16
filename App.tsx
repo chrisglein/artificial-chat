@@ -79,11 +79,6 @@ function AutomatedChatSession({entries, appendEntry}: AutomatedChatSessionProps)
 
   const [chatScriptIndex, setChatScriptIndex] = React.useState(0);
 
-  type AutomatedChatResult = {
-    prompt?: string;
-    aiResponse?: () => JSX.Element;
-  };
-
   const advanceChatScript = (index: number, goToNext: () => void) => {
     const handleAIResponse = (index: number) => {
       switch (index) {
@@ -191,12 +186,11 @@ function AutomatedChatSession({entries, appendEntry}: AutomatedChatSessionProps)
       }
     }
 
-    type AutomatedChatResult2 = {
+    type AutomatedChatResult = {
       aiResponse?: JSX.Element;
       humanResponse?: string;
     };
-    
-    let result : AutomatedChatResult2 = {
+    let result : AutomatedChatResult = {
       aiResponse: undefined,
       humanResponse: undefined,
     }
