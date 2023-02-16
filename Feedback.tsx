@@ -66,7 +66,7 @@ function FeedbackPopup({show, close, isPositive}: FeedbackPopupProps): JSX.Eleme
           <Button
             title="Submit feedback"
             onPress={() => {
-              console.log(feedbackIsPositive ? "like" : "dislike");
+              console.log(isPositive ? "like" : "dislike");
               console.log(feedbackText);
               close();
             }}/>

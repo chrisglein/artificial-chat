@@ -3,17 +3,9 @@ import type {PropsWithChildren} from 'react';
 import {
   Button,
   ScrollView,
-  Switch,
-  Text,
   TextInput,
   View,
 } from 'react-native';
-import {
-  Popup,
-} from 'react-native-windows';
-import {
-  Hyperlink,
-} from './Controls';
 import {
   HumanSection,
 } from './Sections';
@@ -25,7 +17,6 @@ import {
   FeedbackPopup,
 } from './Feedback';
 import {
-  SettingsContext,
   SettingsPopup,
 } from './Settings';
 

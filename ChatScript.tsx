@@ -13,9 +13,6 @@ import {
 import {
   AISection,
 } from './Sections';
-import {
-  StylesContext,
-} from './Styles';
 
 const handleAIResponse = (index: number, styles, goToNext) => {
   switch (index) {

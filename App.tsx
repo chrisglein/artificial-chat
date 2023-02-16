@@ -11,12 +11,7 @@ import {
   StylesContext,
 } from './Styles';
 import {
-  FeedbackContext,
-  FeedbackPopup,
-} from './Feedback';
-import {
   SettingsContext,
-  SettingsPopup,
 } from './Settings';
 
 function App(): JSX.Element {
