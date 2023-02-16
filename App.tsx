@@ -4,10 +4,8 @@ import {
   Appearance,
   Button,
   Image,
-  ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   View,
 } from 'react-native';
 import {
@@ -20,6 +18,9 @@ import {
   AISection,
   AISectionWithQuery,
 } from './Sections';
+import {
+  Chat,
+} from './Chat';
 import {
   StylesContext,
 } from './Styles';
@@ -64,72 +65,6 @@ function ChatEntry({submit, defaultText}: ChatEntryProps): JSX.Element {
         title="Submit"
         onPress={submitValue}/>
     </View>
-  );
-}
-
-type ChatProps = PropsWithChildren<{
-  entries: JSX.Element[];
-  humanText? : string;
-  onPrompt: (prompt: string) => void;
-  regenerateResponse: () => void;
-}>;
-
-function Chat({entries, humanText, onPrompt, regenerateResponse}: ChatProps): JSX.Element {
-  const styles = React.useContext(StylesContext);
-  const [showFeedbackPopup, setShowFeedbackPopup] = React.useState(false);
-  const [showSettingsPopup, setShowSettingsPopup] = React.useState(false);
-  const [feedbackIsPositive, setFeedbackIsPositive] = React.useState(false);
-  const scrollViewRef : React.RefObject<ScrollView> = React.createRef();
-
-  const feedbackContext : FeedbackType = {
-    showFeedback: (positive: boolean) => {
-      setFeedbackIsPositive(positive);
-      setShowFeedbackPopup(true);
-    }
-  }
-
-  return (
-    <FeedbackContext.Provider value={feedbackContext}>
-      <View style={styles.appContent}>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          ref={scrollViewRef}>
-          <View
-            style={{
-              gap: 12,
-              opacity: (showFeedbackPopup || showSettingsPopup) ? 0.3 : 1.0}}>
-            {entries.map((entry, entryIndex) => (
-              <View key={entryIndex}>
-                {entry}
-              </View>
-            ))}
-            <View style={{alignSelf: 'center'}}>
-              <Button title="🔁 Regenerate response" onPress={() => regenerateResponse()}/>
-            </View>
-            <HumanSection
-              hoverButtonText="⚙️"
-              hoverButtonOnPress={() => setShowSettingsPopup(true)}>
-              <ChatEntry
-                defaultText={humanText}
-                submit={(newEntry) => {
-                  onPrompt(newEntry);
-                  // Wait for the new entry to be rendered
-                  setTimeout(() => {
-                    scrollViewRef.current?.scrollToEnd();
-                  }, 200);
-                }}/>
-            </HumanSection>
-          </View>
-        </ScrollView>
-        <FeedbackPopup
-          show={showFeedbackPopup}
-          isPositive={feedbackIsPositive}
-          close={() => setShowFeedbackPopup(false)}/>
-        <SettingsPopup
-          show={showSettingsPopup}
-          close={() => setShowSettingsPopup(false)}/>
-      </View>
-    </FeedbackContext.Provider>
   );
 }
 
