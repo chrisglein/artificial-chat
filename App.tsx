@@ -73,10 +73,11 @@ function FeedbackButton({content, onPress}: FeedbackButtonProps): JSX.Element {
 }
 
 type HumanSectionProps = PropsWithChildren<{
-  disableEdit?: boolean;
+  hoverButtonText: string;
+  hoverButtonOnPress?: () => void;
 }>;
 
-function HumanSection({children, disableEdit}: HumanSectionProps): JSX.Element {
+function HumanSection({children, hoverButtonText, hoverButtonOnPress}: HumanSectionProps): JSX.Element {
   const [hovering, setHovering] = React.useState(false);
   const styles = React.useContext(StylesContext);
 
@@ -87,7 +88,7 @@ function HumanSection({children, disableEdit}: HumanSectionProps): JSX.Element {
       onHoverOut={() => setHovering(false)}>
       <View style={{flexDirection: 'row', minHeight: 26}}>
         <Text style={[styles.sectionTitle, {flexGrow: 1}]}>HUMAN</Text>
-        {!disableEdit && hovering && <FeedbackButton content="📝" onPress={() => console.log("edit")}/>}
+        {hoverButtonText !== "" && hovering && <FeedbackButton content={hoverButtonText ?? "📝"} onPress={() => hoverButtonOnPress ? hoverButtonOnPress() : {}}/>}
       </View>
       {children}
     </Pressable>
@@ -285,7 +286,9 @@ function Chat({entries, humanText, onPrompt, regenerateResponse}: ChatProps): JS
             <View style={{alignSelf: 'center', marginTop: 12}}>
               <Button title="🔁 Regenerate response" onPress={() => regenerateResponse()}/>
             </View>
-            <HumanSection disableEdit={true}>
+            <HumanSection
+              hoverButtonText="⚙️"
+              hoverButtonOnPress={() => setShowSettingsPopup(true)}>
               <ChatEntry
                 defaultText={humanText}
                 submit={(newEntry) => {
@@ -295,7 +298,6 @@ function Chat({entries, humanText, onPrompt, regenerateResponse}: ChatProps): JS
                     scrollViewRef.current?.scrollToEnd();
                   }, 200);
                 }}/>
-              <Button title="⚙️" onPress={() => setShowSettingsPopup(true)}/>
             </HumanSection>
           </View>
         </ScrollView>
