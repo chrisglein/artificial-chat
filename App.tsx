@@ -117,6 +117,35 @@ function AISection({children, isLoading}: AISectionProps): JSX.Element {
   );
 }
 
+type AISectionWithQueryProps = {
+  prompt: string;
+};
+function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [queryResult, setQueryResult] = React.useState<string | undefined>(undefined);
+
+  React.useEffect(() => {
+    CallOpenAI({
+      url: OpenAIUrl().completion("text-davinci-003-playground"),
+      prompt: prompt,
+      onError: (error) => {
+        setQueryResult(error);
+      },
+      onResult: (result) => {
+        setQueryResult(result);
+      },
+      onComplete: () => {
+        setIsLoading(false);
+      }});
+    }, [prompt]);
+
+  return (
+    <AISection isLoading={isLoading}>
+      <Text>{queryResult}</Text>
+    </AISection>
+  )
+}
+
 type AttributionProps = PropsWithChildren<{
   source: string;
 }>;
@@ -494,35 +523,17 @@ function AutomatedChatSession({entries, appendEntry}: AutomatedChatSessionProps)
       setHumanText(humanResponse);
     } else {
       console.log(`Prompt: '${text}`);
+
+      setHumanText(undefined);
       
       appendEntry([
         <HumanSection>
           <Text>{text}</Text>
         </HumanSection>,
-        <AISection isLoading={true}/>
+        <AISectionWithQuery prompt={text}/>
       ]);
 
-      CallOpenAI({
-        url: OpenAIUrl().completion("text-davinci-003-playground"),
-        prompt: text,
-        onError: (error: string) => {
-          appendEntry(
-            <AISection>
-              <Text>{error}</Text>    
-            </AISection>
-          );
-        },
-        onResult: (result: string) => {
-          appendEntry(
-            <AISection>
-              <Text>{result}</Text>    
-            </AISection>
-          );
-        },
-        onComplete: () => {
-          setHumanText(undefined);
-        }
-      });
+      
     }
   }
 
