@@ -31,7 +31,6 @@ type StylesType = {
   humanSection: any;
   aiSection: any;
   sectionTitle: any;
-  sectionDescription: any;
   highlight: any;
   horizontalContainer: any;
   dalleImage: any;
@@ -51,7 +50,6 @@ type FeedbackButtonProps = PropsWithChildren<{
   content: string;
   onPress: () => void;
 }>;
-
 function FeedbackButton({content, onPress}: FeedbackButtonProps): JSX.Element {
   const [hovering, setHovering] = React.useState(false);
 
@@ -76,7 +74,6 @@ type HumanSectionProps = PropsWithChildren<{
   hoverButtonText: string;
   hoverButtonOnPress?: () => void;
 }>;
-
 function HumanSection({children, hoverButtonText, hoverButtonOnPress}: HumanSectionProps): JSX.Element {
   const [hovering, setHovering] = React.useState(false);
   const styles = React.useContext(StylesContext);
@@ -157,7 +154,6 @@ function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
 type AttributionProps = PropsWithChildren<{
   source: string;
 }>;
-
 function Attribution({source}: AttributionProps): JSX.Element {
   return (
     <View style={{flexDirection: 'row'}}>
@@ -172,7 +168,6 @@ type ChatEntryProps = PropsWithChildren<{
   defaultText?: string;
   submit: (text : string) => void;
 }>;
-
 function ChatEntry({submit, defaultText}: ChatEntryProps): JSX.Element {
   const styles = React.useContext(StylesContext);
 
@@ -193,7 +188,7 @@ function ChatEntry({submit, defaultText}: ChatEntryProps): JSX.Element {
       <TextInput
         multiline={true}
         placeholder="Ask me anything"
-        style={{flexGrow: 1, flexShrink: 1, marginRight: 12}}
+        style={{flexGrow: 1, flexShrink: 1}}
         onChangeText={newValue => setValue(newValue)}
         value={defaultText ?? value}/>
       <Button
@@ -231,11 +226,10 @@ function ConsentSwitch({title, source, defaultValue, details}: ConsentSwitchProp
 type ImageSelectionProps = PropsWithChildren<{
   image: ImageSourcePropType;
 }>;
-
 function ImageSelection({image}: ImageSelectionProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   return (
-    <View style={{marginRight: 12}}>
+    <View>
       <Image style={styles.dalleImage} source={image}/>
       <View style={[styles.horizontalContainer, {marginTop: 4, justifyContent: 'space-between'}]}>
         <Button title="Variations"/>
@@ -276,14 +270,14 @@ function Chat({entries, humanText, onPrompt, regenerateResponse}: ChatProps): JS
           ref={scrollViewRef}>
           <View
             style={{
-              marginBottom: 12,
+              gap: 12,
               opacity: showFeedbackPopup ? 0.3 : 1.0}}>
             {entries.map((entry, entryIndex) => (
               <View key={entryIndex}>
                 {entry}
               </View>
             ))}
-            <View style={{alignSelf: 'center', marginTop: 12}}>
+            <View style={{alignSelf: 'center'}}>
               <Button title="🔁 Regenerate response" onPress={() => regenerateResponse()}/>
             </View>
             <HumanSection
@@ -612,9 +606,9 @@ function App(): JSX.Element {
   const styles : StylesType = StyleSheet.create({
     appContent: {
       backgroundColor: isDarkMode ? 'black' : 'white',
+      paddingVertical: 12,
     },
     sectionContainer: {
-      marginTop: 12,
       marginHorizontal: 12,
       paddingHorizontal: 24,
       paddingVertical: 12,
@@ -631,11 +625,6 @@ function App(): JSX.Element {
     sectionTitle: {
       fontSize: 12,
       fontWeight: '600',
-    },
-    sectionDescription: {
-      marginTop: 8,
-      fontSize: 18,
-      fontWeight: '400',
     },
     highlight: {
       fontWeight: '700',
@@ -655,7 +644,6 @@ function App(): JSX.Element {
       borderWidth: 2,
       borderRadius: 8,
       padding: 8,
-      marginRight: 12,
     },
     feedbackDialog: {
       backgroundColor: isDarkMode ? 'black' : 'white',

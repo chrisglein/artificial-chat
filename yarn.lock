@@ -1716,15 +1716,15 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/eslint-plugin/-/eslint-plugin-1.3.0.tgz#9e558170c106bbafaa1ef502bd8e6d4651012bf9"
   integrity sha512-+zDZ20NUnSWghj7Ku5aFphMzuM9JulqCW+aPXT6IfIXFbb8tzYTTOSeRFOtuekJ99ibW2fUCSsjuKNlwDIbHFg==
 
-"@react-native-windows/cli@0.71.0":
-  version "0.71.0"
-  resolved "https://registry.yarnpkg.com/@react-native-windows/cli/-/cli-0.71.0.tgz#2e18423eeef6048b206edf7f14e4efe4610d6ff2"
-  integrity sha512-NlkapPGJGC4Gg6xW5gDqFziNbUFFCU3bXBwKVBt9WZeSrmxKfW1Nc0nSWVxt8Tn0pfF2480px0N/HDY/rfwpYg==
+"@react-native-windows/cli@0.71.1":
+  version "0.71.1"
+  resolved "https://registry.yarnpkg.com/@react-native-windows/cli/-/cli-0.71.1.tgz#33826509f069d7f87a4ecefad41eeb9a90f02472"
+  integrity sha512-dmHNMFw+QVz9iqLngVpJr6NzvImg/wJ3qCX5IPfNKVJyuhQx+/hJx1444qJv32eMy6z3yj9X2Ws5SD2DYdcN3g==
   dependencies:
-    "@react-native-windows/codegen" "0.71.0"
-    "@react-native-windows/fs" "0.71.0"
-    "@react-native-windows/package-utils" "0.71.0"
-    "@react-native-windows/telemetry" "0.71.0"
+    "@react-native-windows/codegen" "0.71.1"
+    "@react-native-windows/fs" "0.71.1"
+    "@react-native-windows/package-utils" "0.71.1"
+    "@react-native-windows/telemetry" "0.71.1"
     "@typescript-eslint/eslint-plugin" "^5.30.5"
     "@typescript-eslint/parser" "^5.30.5"
     "@xmldom/xmldom" "^0.7.7"
@@ -1745,12 +1745,12 @@
     xml-parser "^1.2.1"
     xpath "^0.0.27"
 
-"@react-native-windows/codegen@0.71.0":
-  version "0.71.0"
-  resolved "https://registry.yarnpkg.com/@react-native-windows/codegen/-/codegen-0.71.0.tgz#f31aecc0c595642a073c2531ee3dab0469843ffd"
-  integrity sha512-sLheajiQwC3fXZDm9cZ6uZQQ3LrL2Mlm8t24FS6p7g3JqshyRvLeYr6EFaI7RzvWbvzAW1tBUTVVVMvhWrE2jQ==
+"@react-native-windows/codegen@0.71.1":
+  version "0.71.1"
+  resolved "https://registry.yarnpkg.com/@react-native-windows/codegen/-/codegen-0.71.1.tgz#373ec14a6498f10e2e6c3032055d507bcd07ab73"
+  integrity sha512-r9odC0pcRGZsAg8L9l+ufQngnPc9AGXrsbsDlWKAY4tjys10HE2O7x5ds6mLvNhv6u9z0mOvNwZMoOqf5VzvVg==
   dependencies:
-    "@react-native-windows/fs" "0.71.0"
+    "@react-native-windows/fs" "0.71.1"
     "@typescript-eslint/eslint-plugin" "^5.30.5"
     "@typescript-eslint/parser" "^5.30.5"
     chalk "^4.1.0"
@@ -1759,43 +1759,43 @@
     source-map-support "^0.5.19"
     yargs "^16.2.0"
 
-"@react-native-windows/find-repo-root@0.71.0":
-  version "0.71.0"
-  resolved "https://registry.yarnpkg.com/@react-native-windows/find-repo-root/-/find-repo-root-0.71.0.tgz#51faaa2406f180714433d6df71dedb7b3a98353a"
-  integrity sha512-znR9i2J7nA0C7OXOlDy8aHUL7eYHDZrn1CAv2VKyUC0aKxuA0MHT4sJaXLzUUknQu6XUjrK2eDLKaoaEfjE45Q==
+"@react-native-windows/find-repo-root@0.71.1":
+  version "0.71.1"
+  resolved "https://registry.yarnpkg.com/@react-native-windows/find-repo-root/-/find-repo-root-0.71.1.tgz#275586e533b2f1cded478c12b29dc22c0e991466"
+  integrity sha512-YbffddDyshIS1B3vFyTZQ6Z/fEvDg1dPP+LIhowBRFfdfjC9rONDfEEmGeYJRQY3s/1f6dw/8+ukc+P0qrfSOA==
   dependencies:
-    "@react-native-windows/fs" "0.71.0"
+    "@react-native-windows/fs" "0.71.1"
     "@typescript-eslint/eslint-plugin" "^5.30.5"
     "@typescript-eslint/parser" "^5.30.5"
     find-up "^4.1.0"
 
-"@react-native-windows/fs@0.71.0":
-  version "0.71.0"
-  resolved "https://registry.yarnpkg.com/@react-native-windows/fs/-/fs-0.71.0.tgz#7aaeb83c33a77dd032d987efdd0528e22430c2a1"
-  integrity sha512-hQkJ9nSUzBs+UUKJhhH4N+59lrcSws94x2kOu8EbjlK8ZNqQgwm6WPDmyKD10xdZnnuNs8xA47WZIUSn028nYw==
+"@react-native-windows/fs@0.71.1":
+  version "0.71.1"
+  resolved "https://registry.yarnpkg.com/@react-native-windows/fs/-/fs-0.71.1.tgz#a99eea4db22a1b7de7b4f44aa86ba08da597be69"
+  integrity sha512-RWYV7SVypNPBynhj7NV40Xhsp0SchXMXiMAkyWbRQrzH85e8Gkdd+J+jXarOgbLYG/oSOxtQlNmABxjh5mRHTQ==
   dependencies:
     "@typescript-eslint/eslint-plugin" "^5.30.5"
     "@typescript-eslint/parser" "^5.30.5"
     graceful-fs "^4.2.8"
 
-"@react-native-windows/package-utils@0.71.0":
-  version "0.71.0"
-  resolved "https://registry.yarnpkg.com/@react-native-windows/package-utils/-/package-utils-0.71.0.tgz#587900ddca58058633b7c990c15898ce4d1fbb0e"
-  integrity sha512-HBn8lTvCA6tf+yu3mrLvZzhsUtOPBrMSn9zSFL0f6LDI9C4CHaGIzEqRmAwfmG3CHB1xc2get9VGKRMKQqDmlQ==
+"@react-native-windows/package-utils@0.71.1":
+  version "0.71.1"
+  resolved "https://registry.yarnpkg.com/@react-native-windows/package-utils/-/package-utils-0.71.1.tgz#fbf5711ea56b201b4bc69402feb31e293b263adf"
+  integrity sha512-lohjJeQ1OYv/8Bs3RT8cXUYt57JtPwX+D5WtbI8HldnyPU1vs2+eMKtp/rdzTA2yESZJuaF1PpxX2YGwv9PocA==
   dependencies:
-    "@react-native-windows/find-repo-root" "0.71.0"
-    "@react-native-windows/fs" "0.71.0"
+    "@react-native-windows/find-repo-root" "0.71.1"
+    "@react-native-windows/fs" "0.71.1"
     "@typescript-eslint/eslint-plugin" "^5.30.5"
     "@typescript-eslint/parser" "^5.30.5"
     get-monorepo-packages "^1.2.0"
     lodash "^4.17.15"
 
-"@react-native-windows/telemetry@0.71.0":
-  version "0.71.0"
-  resolved "https://registry.yarnpkg.com/@react-native-windows/telemetry/-/telemetry-0.71.0.tgz#dd4997526d5fc08ad5de8e7db505d59b51a9d602"
-  integrity sha512-lVsAAhIz7CUX5yzONqIkl9zhgrIKSjfONWxVYoTUGTq/PPHqOfGNTw751DSWzlmvUZgxG1zzVfYPit1Blw07DA==
+"@react-native-windows/telemetry@0.71.1":
+  version "0.71.1"
+  resolved "https://registry.yarnpkg.com/@react-native-windows/telemetry/-/telemetry-0.71.1.tgz#2cd5740744d57c786c81f8144ad083e55ca0a9f0"
+  integrity sha512-n3tljwYBmqTk+1JbKyWzxsE2HHl0Tc4XrpkaKJmgL4BjExxM0ST8YSpIrk8T8xTFwPpSFsWMnZkYwb8uTTb+FQ==
   dependencies:
-    "@react-native-windows/fs" "0.71.0"
+    "@react-native-windows/fs" "0.71.1"
     "@typescript-eslint/eslint-plugin" "^5.30.5"
     "@typescript-eslint/parser" "^5.30.5"
     "@xmldom/xmldom" "^0.7.7"
@@ -6332,17 +6332,17 @@ react-native-gradle-plugin@^0.71.12:
   resolved "https://registry.yarnpkg.com/react-native-gradle-plugin/-/react-native-gradle-plugin-0.71.14.tgz#cc399662f04fbfcc0e352d03eae1d3efbd5f635a"
   integrity sha512-nnLawTZEPPRAKq92UqDkzoGgCBl9aa9zAihFHMwmwzn4WRVdK4O6Cd4XYiyoNOiQzx3Hh9k5WOckHE80C92ivQ==
 
-react-native-windows@0.71.0:
-  version "0.71.0"
-  resolved "https://registry.yarnpkg.com/react-native-windows/-/react-native-windows-0.71.0.tgz#d5514f2a85020985851c06f8fa482580c6a80a28"
-  integrity sha512-k56CKEJpIFA50LAT2JZJxz4EkTx1hkZLcQL/g3aMTAu9hwnKptQVaAMs8okhP1fgMoUbbZ1lQB+deYyHyJAr7Q==
+react-native-windows@0.71.1:
+  version "0.71.1"
+  resolved "https://registry.yarnpkg.com/react-native-windows/-/react-native-windows-0.71.1.tgz#d67ad3f45fe4d83648afec928c7226679e8d1c61"
+  integrity sha512-XqrnUA36NBvN27Zm0tMiM8ETC51FAW22rhyCBqf7cdFX4uf4LzgXXiGwAv2Gsrkd08AdczFU/9PXDlPvcRap/w==
   dependencies:
     "@babel/runtime" "^7.0.0"
     "@jest/create-cache-key-function" "^29.2.1"
     "@react-native-community/cli" "10.0.0"
     "@react-native-community/cli-platform-android" "10.0.0"
     "@react-native-community/cli-platform-ios" "10.0.0"
-    "@react-native-windows/cli" "0.71.0"
+    "@react-native-windows/cli" "0.71.1"
     "@react-native/assets" "1.0.0"
     "@react-native/normalize-color" "2.1.0"
     "@react-native/polyfills" "2.0.0"
