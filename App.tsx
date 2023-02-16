@@ -18,7 +18,6 @@ import {
   Attribution,
   ConsentSwitch,
   ImageSelection,
-  Hyperlink,
 } from './Controls';
 import {
   HumanSection,
@@ -33,6 +32,7 @@ import {
 } from './Feedback';
 import {
   SettingsContext,
+  SettingsPopup,
 } from './Settings';
 
 type ChatEntryProps = PropsWithChildren<{
@@ -170,33 +170,9 @@ function Chat({entries, humanText, onPrompt, regenerateResponse}: ChatProps): JS
             </View>
           </View>
         </Popup>
-        <Popup
-          isOpen={showSettingsPopup}
-          isLightDismissEnabled={true}
-          onDismiss={() => setShowSettingsPopup(false)}>
-          <View style={styles.feedbackDialog}>
-            <View style={{flexDirection: 'row', marginBottom: 4}}>
-              <View style={{backgroundColor: 'gray', borderRadius: 4, marginRight: 4}}>
-                <Text>⚙️</Text>
-              </View>
-              <Text>OpenAI Settings</Text>
-            </View>
-            <TextInput
-              secureTextEntry={true}
-              placeholder="Your API key"
-              style={{flexGrow: 1, minHeight: 32}}
-              onChangeText={value => settingsContext.apiKey = value}
-              value={settingsContext.apiKey}/>
-            <Hyperlink url="https://platform.openai.com/account/api-keys"/>
-            <View style={{marginTop: 12, alignSelf: 'flex-end'}}>
-              <Button
-                title="OK"
-                onPress={() => {
-                  setShowSettingsPopup(false);
-                }}/>
-            </View>
-          </View>
-        </Popup>
+        <SettingsPopup
+          show={showSettingsPopup}
+          close={() => setShowSettingsPopup(false)}/>
       </View>
     </FeedbackContext.Provider>
   );
