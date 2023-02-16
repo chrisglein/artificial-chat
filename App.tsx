@@ -388,10 +388,6 @@ function AutomatedChatSession({entries, appendEntry}: AutomatedChatSessionProps)
 
   const [chatScriptIndex, setChatScriptIndex] = React.useState(0);
 
-  console.log("AutomatedChatSession.render()");
-  console.log(entries);
-  console.log(chatScriptIndex);
-
   type AutomatedChatResult = {
     prompt?: string;
     aiResponse?: () => JSX.Element;
@@ -586,13 +582,7 @@ function AutomatedChatSession({entries, appendEntry}: AutomatedChatSessionProps)
 function ChatSession(): JSX.Element {
   const [entries, setEntries] = React.useState<JSX.Element []>([]);
 
-  console.log("ChatSession.render()");
-  console.log(entries);
-
   const appendEntry = React.useCallback((newEntry: JSX.Element | JSX.Element[]) => {
-    console.log("appending");
-    console.log(entries);
-    console.log(newEntry);
     if (Array.isArray(newEntry)) {
       setEntries([...entries, ...newEntry]);
     } else {
