@@ -3,6 +3,7 @@ import type {PropsWithChildren} from 'react'
 import {
   Button,
   Image,
+  Linking,
   Pressable,
   Text,
   Switch,
@@ -72,7 +73,6 @@ function ConsentSwitch({title, source, defaultValue, details}: ConsentSwitchProp
   );
 }
 
-
 type ImageSelectionProps = PropsWithChildren<{
   image: ImageSourcePropType;
 }>;
@@ -89,4 +89,22 @@ function ImageSelection({image}: ImageSelectionProps): JSX.Element {
   );
 }
 
-export { HoverButton, Attribution, ConsentSwitch, ImageSelection };
+function Hyperlink({url, children}: PropsWithChildren<{url: string}>): JSX.Element {
+  const [hovering, setHovering] = React.useState(false);
+  const [pressing, setPressing] = React.useState(false);
+  return (
+    <Pressable
+      onPress={() => Linking.openURL(url)}
+      onPressIn={() => setPressing(true)}
+      onPressOut={() => setPressing(false)}
+      onHoverIn={() => setHovering(true)}
+      onHoverOut={() => setHovering(false)}>
+      <Text style={{
+        color: pressing ? 'purple' : (hovering ? 'blue' : 'black'),
+        textDecorationLine: hovering ? 'underline' : 'none',
+      }}>{url}</Text>
+    </Pressable>
+  );
+}
+
+export { HoverButton, Attribution, ConsentSwitch, ImageSelection, Hyperlink };

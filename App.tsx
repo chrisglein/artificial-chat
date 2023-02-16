@@ -25,6 +25,7 @@ import {
   Attribution,
   ConsentSwitch,
   ImageSelection,
+  Hyperlink,
 } from './Controls';
 import {
   StylesContext,
@@ -275,7 +276,7 @@ function Chat({entries, humanText, onPrompt, regenerateResponse}: ChatProps): JS
               style={{flexGrow: 1, minHeight: 32}}
               onChangeText={value => settingsContext.apiKey = value}
               value={settingsContext.apiKey}/>
-            <Text>https://platform.openai.com/account/api-keys</Text>
+            <Hyperlink url="https://platform.openai.com/account/api-keys"/>
             <View style={{marginTop: 12, alignSelf: 'flex-end'}}>
               <Button
                 title="OK"
