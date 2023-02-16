@@ -78,7 +78,9 @@ function App(): JSX.Element {
 
   return (
     <StylesContext.Provider value={styles}>
-      <SettingsContext.Provider value={{}}>
+      <SettingsContext.Provider value={{
+          scriptName: "Dinosaurs"
+        }}>
         <View>
           <ChatSession/>
         </View>

@@ -15,6 +15,9 @@ import {
   StylesContext,
 } from './Styles';
 import {
+  SettingsContext,
+} from './Settings';
+import {
   handleAIResponse,
 } from './ChatScript';
 
@@ -24,6 +27,7 @@ type AutomatedChatSessionProps = PropsWithChildren<{
 }>;
 function AutomatedChatSession({entries, appendEntry}: AutomatedChatSessionProps): JSX.Element {
   const styles = React.useContext(StylesContext);
+  const settings = React.useContext(SettingsContext);
   // TODO: Figure out how to not duplicate this with array below
   const [humanText, setHumanText] = React.useState<string|undefined>("I want to design a board game about dinosaurs to play with my friends. Can you help?");
 
@@ -39,8 +43,18 @@ function AutomatedChatSession({entries, appendEntry}: AutomatedChatSessionProps)
       humanResponse: undefined,
     }
 
-    let response = handleAIResponse(index, styles, goToNext);
-    let nextResponse = handleAIResponse(index + 1, styles, goToNext);
+    let response = handleAIResponse({
+      scriptName: settings.scriptName,
+      index: index,
+      styles: styles,
+      goToNext: goToNext,
+    });
+    let nextResponse = handleAIResponse({
+      scriptName: settings.scriptName,
+      index: index + 1,
+      styles: styles,
+      goToNext: goToNext,
+    });
 
     // Give the AI's response
     result.aiResponse = response.aiResponse ? response.aiResponse() : undefined; 
@@ -52,7 +66,7 @@ function AutomatedChatSession({entries, appendEntry}: AutomatedChatSessionProps)
   }
   
   let onPrompt = (text: string, index: number) => {
-    const followScript = humanText !== undefined;
+    const followScript = humanText !== undefined && settings.scriptName;
 
     if (followScript) {
       console.log(`Following script with prompt of '${text}', index is ${index}`);

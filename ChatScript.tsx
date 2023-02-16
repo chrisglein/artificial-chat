@@ -14,7 +14,7 @@ import {
   AISection,
 } from './Sections';
 
-const handleAIResponse = (index: number, styles, goToNext) => {
+const runDinosaurScript = (index: number, styles, goToNext) => {
   switch (index) {
     case 0: return {
       prompt: "I want to design a board game about dinosaurs to play with my friends. Can you help?",
@@ -117,6 +117,24 @@ const handleAIResponse = (index: number, styles, goToNext) => {
       prompt: undefined,
       aiResponse: undefined,
     }
+  }
+}
+
+type HandleAIResponseType = {
+  index: number,
+  styles: any,
+  goToNext: () => void,
+  scriptName: string | undefined,
+}
+const handleAIResponse = ({index, styles, goToNext, scriptName} : HandleAIResponseType) => {
+  switch (scriptName) {
+    case "Dinosaurs":
+      return runDinosaurScript(index, styles, goToNext);
+    default:
+      return {
+        prompt: undefined,
+        aiResponse: undefined,
+      }
   }
 }
 

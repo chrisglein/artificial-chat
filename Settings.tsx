@@ -17,6 +17,7 @@ import {
 
 type SettingsType = {
   apiKey?: string;
+  scriptName?: string;
 }
   
 const SettingsContext = React.createContext<SettingsType>({});
@@ -28,30 +29,44 @@ type SettingsPopupProps = {
 function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const settings = React.useContext(SettingsContext);
+  const [scriptName, setScriptName] = React.useState<string | undefined>(settings.scriptName);
 
   return (
     <Popup
       isOpen={show}
       isLightDismissEnabled={true}
       onDismiss={() => close()}>
-      <View style={styles.feedbackDialog}>
+      <View style={[styles.feedbackDialog, {gap: 12}]}>
         <View style={{flexDirection: 'row', marginBottom: 4}}>
           <View style={{backgroundColor: 'gray', borderRadius: 4, marginRight: 4}}>
             <Text>⚙️</Text>
           </View>
-          <Text>OpenAI Settings</Text>
+          <Text style={{fontWeight: 'bold'}}>OpenAI Settings</Text>
         </View>
-        <TextInput
-          secureTextEntry={true}
-          placeholder="Your API key"
-          style={{flexGrow: 1, minHeight: 32}}
-          onChangeText={value => settings.apiKey = value}
-          value={settings.apiKey}/>
-        <Hyperlink url="https://platform.openai.com/account/api-keys"/>
+        <View>
+          <Text>OpenAI API key</Text>
+          <TextInput
+            secureTextEntry={true}
+            style={{flexGrow: 1, minHeight: 32}}
+            onChangeText={value => settings.apiKey = value}
+            value={settings.apiKey}/>
+          <Hyperlink url="https://platform.openai.com/account/api-keys"/>
+        </View>
+        <View>
+          <Text>Script</Text>
+          <TextInput
+            placeholder="Name of AI script"
+            style={{flexGrow: 1, minHeight: 32}}
+            onChangeText={value => setScriptName(value)}
+            value={scriptName}/>
+        </View>
         <View style={{marginTop: 12, alignSelf: 'flex-end'}}>
           <Button
             title="OK"
-            onPress={() => close()}/>
+            onPress={() => {
+              settings.scriptName = scriptName;
+              close();
+            }}/>
         </View>
       </View>
     </Popup>
