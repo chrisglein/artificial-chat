@@ -22,23 +22,16 @@ import {
 } from './OpenAI';
 import {
   FeedbackButton,
+  Attribution,
+  ConsentSwitch,
+  ImageSelection,
 } from './Controls';
+import {
+  StylesContext,
+} from './Styles';
 
 type FeedbackType = {
   showFeedback : (positive: boolean) => void;
-}
-
-type StylesType = {
-  appContent: any;
-  sectionContainer: any;
-  humanSection: any;
-  aiSection: any;
-  sectionTitle: any;
-  highlight: any;
-  horizontalContainer: any;
-  dalleImage: any;
-  inlineCard: any;
-  feedbackDialog: any;
 }
 
 type SettingsType = {
@@ -46,7 +39,6 @@ type SettingsType = {
 }
 
 const FeedbackContext = React.createContext<FeedbackType>({showFeedback: () => {}});
-const StylesContext = React.createContext<StylesType>({});
 const SettingsContext = React.createContext<SettingsType>({});
 
 type HumanSectionProps = PropsWithChildren<{
@@ -130,18 +122,6 @@ function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
   )
 }
 
-type AttributionProps = PropsWithChildren<{
-  source: string;
-}>;
-function Attribution({source}: AttributionProps): JSX.Element {
-  return (
-    <View style={{flexDirection: 'row'}}>
-      <Text style={{fontSize: 12, fontStyle: 'italic'}}>source:</Text>
-      <Text style={{fontSize: 12, marginHorizontal: 4}}>{source}</Text>
-      <Text style={{fontSize: 12}}>🔍</Text>
-    </View>
-  );
-}
 
 type ChatEntryProps = PropsWithChildren<{
   defaultText?: string;
@@ -174,46 +154,6 @@ function ChatEntry({submit, defaultText}: ChatEntryProps): JSX.Element {
         style={{flexShrink: 0}}
         title="Submit"
         onPress={submitValue}/>
-    </View>
-  );
-}
-
-type ConsentSwitchProps = PropsWithChildren<{
-  title: string;
-  source: string;
-  details: string;
-  defaultValue?: boolean;
-}>;
-
-function ConsentSwitch({title, source, defaultValue, details}: ConsentSwitchProps): JSX.Element {
-  const styles = React.useContext(StylesContext);
-  const [value, onValueChange] = React.useState(defaultValue);
-
-  return (
-    <View
-      style={[styles.horizontalContainer, {marginBottom: 8}]}
-      tooltip={details}>
-      <Switch value={value} onValueChange={onValueChange}/>
-      <View>
-        <Text>{title}</Text>
-        <Attribution source={source}/>
-      </View>
-    </View>
-  );
-}
-
-type ImageSelectionProps = PropsWithChildren<{
-  image: ImageSourcePropType;
-}>;
-function ImageSelection({image}: ImageSelectionProps): JSX.Element {
-  const styles = React.useContext(StylesContext);
-  return (
-    <View>
-      <Image style={styles.dalleImage} source={image}/>
-      <View style={[styles.horizontalContainer, {marginTop: 4, justifyContent: 'space-between'}]}>
-        <Button title="Variations"/>
-        <Button title="Select"/>
-      </View>
     </View>
   );
 }
