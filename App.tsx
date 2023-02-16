@@ -21,7 +21,7 @@ import {
   CallOpenAI,
 } from './OpenAI';
 import {
-  FeedbackButton,
+  HoverButton,
   Attribution,
   ConsentSwitch,
   ImageSelection,
@@ -56,7 +56,7 @@ function HumanSection({children, hoverButtonText, hoverButtonOnPress}: HumanSect
       onHoverOut={() => setHovering(false)}>
       <View style={{flexDirection: 'row', minHeight: 26}}>
         <Text style={[styles.sectionTitle, {flexGrow: 1}]}>HUMAN</Text>
-        {hoverButtonText !== "" && hovering && <FeedbackButton content={hoverButtonText ?? "📝"} onPress={() => hoverButtonOnPress ? hoverButtonOnPress() : {}}/>}
+        {hoverButtonText !== "" && hovering && <HoverButton content={hoverButtonText ?? "📝"} onPress={() => hoverButtonOnPress ? hoverButtonOnPress() : {}}/>}
       </View>
       {children}
     </Pressable>
@@ -80,8 +80,8 @@ function AISection({children, isLoading}: AISectionProps): JSX.Element {
     <View style={[styles.sectionContainer, styles.aiSection]}>
       <View style={{flexDirection: 'row'}}>
         <Text style={[styles.sectionTitle, {flexGrow: 1}]}>AI</Text>
-        <FeedbackButton content="👍" onPress={() => { showFeedbackPopup(true); }}/>
-        <FeedbackButton content="👎" onPress={() => { showFeedbackPopup(false); }}/>
+        <HoverButton content="👍" onPress={() => { showFeedbackPopup(true); }}/>
+        <HoverButton content="👎" onPress={() => { showFeedbackPopup(false); }}/>
       </View>
       {isLoading && 
         <ActivityIndicator/>

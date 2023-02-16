@@ -12,11 +12,11 @@ import {
   StylesContext,
 } from './Styles';
 
-type FeedbackButtonProps = PropsWithChildren<{
+type HoverButtonProps = PropsWithChildren<{
   content: string;
   onPress: () => void;
 }>;
-function FeedbackButton({content, onPress}: FeedbackButtonProps): JSX.Element {
+function HoverButton({content, onPress}: HoverButtonProps): JSX.Element {
   const [hovering, setHovering] = React.useState(false);
 
   const backgroundBaseStyle = {padding: 2, borderRadius: 8, borderWidth: 1, borderColor: 'transparent'};
@@ -89,4 +89,4 @@ function ImageSelection({image}: ImageSelectionProps): JSX.Element {
   );
 }
 
-export { FeedbackButton, Attribution, ConsentSwitch, ImageSelection };
+export { HoverButton, Attribution, ConsentSwitch, ImageSelection };
