@@ -20,23 +20,19 @@ import {
   OpenAIUrl,
   CallOpenAI,
 } from './OpenAI';
+import {
+  HoverButton,
+  Attribution,
+  ConsentSwitch,
+  ImageSelection,
+  Hyperlink,
+} from './Controls';
+import {
+  StylesContext,
+} from './Styles';
 
 type FeedbackType = {
   showFeedback : (positive: boolean) => void;
-}
-
-type StylesType = {
-  appContent: any;
-  sectionContainer: any;
-  humanSection: any;
-  aiSection: any;
-  sectionTitle: any;
-  sectionDescription: any;
-  highlight: any;
-  horizontalContainer: any;
-  dalleImage: any;
-  inlineCard: any;
-  feedbackDialog: any;
 }
 
 type SettingsType = {
@@ -44,39 +40,12 @@ type SettingsType = {
 }
 
 const FeedbackContext = React.createContext<FeedbackType>({showFeedback: () => {}});
-const StylesContext = React.createContext<StylesType>({});
 const SettingsContext = React.createContext<SettingsType>({});
-
-type FeedbackButtonProps = PropsWithChildren<{
-  content: string;
-  onPress: () => void;
-}>;
-
-function FeedbackButton({content, onPress}: FeedbackButtonProps): JSX.Element {
-  const [hovering, setHovering] = React.useState(false);
-
-  const backgroundBaseStyle = {padding: 2, borderRadius: 8, borderWidth: 1, borderColor: 'transparent'};
-  const backgroundPressedStyle = {borderColor: 'white', backgroundColor: 'black'};
-  const backgroundHoverStyle = {borderColor: 'white', backgroundColor: 'gray'};
-  return (
-    <Pressable
-      onPress={onPress}
-      onHoverIn={() => setHovering(true)}
-      onHoverOut={() => setHovering(false)}>
-      {({pressed}) => (
-        <View style={[backgroundBaseStyle, pressed ? backgroundPressedStyle : hovering ? backgroundHoverStyle : null]}>
-          <Text >{content}</Text>
-        </View>        
-      )}
-    </Pressable>
-  );
-}
 
 type HumanSectionProps = PropsWithChildren<{
   hoverButtonText: string;
   hoverButtonOnPress?: () => void;
 }>;
-
 function HumanSection({children, hoverButtonText, hoverButtonOnPress}: HumanSectionProps): JSX.Element {
   const [hovering, setHovering] = React.useState(false);
   const styles = React.useContext(StylesContext);
@@ -88,7 +57,7 @@ function HumanSection({children, hoverButtonText, hoverButtonOnPress}: HumanSect
       onHoverOut={() => setHovering(false)}>
       <View style={{flexDirection: 'row', minHeight: 26}}>
         <Text style={[styles.sectionTitle, {flexGrow: 1}]}>HUMAN</Text>
-        {hoverButtonText !== "" && hovering && <FeedbackButton content={hoverButtonText ?? "📝"} onPress={() => hoverButtonOnPress ? hoverButtonOnPress() : {}}/>}
+        {hoverButtonText !== "" && hovering && <HoverButton content={hoverButtonText ?? "📝"} onPress={() => hoverButtonOnPress ? hoverButtonOnPress() : {}}/>}
       </View>
       {children}
     </Pressable>
@@ -112,8 +81,8 @@ function AISection({children, isLoading}: AISectionProps): JSX.Element {
     <View style={[styles.sectionContainer, styles.aiSection]}>
       <View style={{flexDirection: 'row'}}>
         <Text style={[styles.sectionTitle, {flexGrow: 1}]}>AI</Text>
-        <FeedbackButton content="👍" onPress={() => { showFeedbackPopup(true); }}/>
-        <FeedbackButton content="👎" onPress={() => { showFeedbackPopup(false); }}/>
+        <HoverButton content="👍" onPress={() => { showFeedbackPopup(true); }}/>
+        <HoverButton content="👎" onPress={() => { showFeedbackPopup(false); }}/>
       </View>
       {isLoading && 
         <ActivityIndicator/>
@@ -154,25 +123,11 @@ function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
   )
 }
 
-type AttributionProps = PropsWithChildren<{
-  source: string;
-}>;
-
-function Attribution({source}: AttributionProps): JSX.Element {
-  return (
-    <View style={{flexDirection: 'row'}}>
-      <Text style={{fontSize: 12, fontStyle: 'italic'}}>source:</Text>
-      <Text style={{fontSize: 12, marginHorizontal: 4}}>{source}</Text>
-      <Text style={{fontSize: 12}}>🔍</Text>
-    </View>
-  );
-}
 
 type ChatEntryProps = PropsWithChildren<{
   defaultText?: string;
   submit: (text : string) => void;
 }>;
-
 function ChatEntry({submit, defaultText}: ChatEntryProps): JSX.Element {
   const styles = React.useContext(StylesContext);
 
@@ -193,54 +148,13 @@ function ChatEntry({submit, defaultText}: ChatEntryProps): JSX.Element {
       <TextInput
         multiline={true}
         placeholder="Ask me anything"
-        style={{flexGrow: 1, flexShrink: 1, marginRight: 12}}
+        style={{flexGrow: 1, flexShrink: 1}}
         onChangeText={newValue => setValue(newValue)}
         value={defaultText ?? value}/>
       <Button
         style={{flexShrink: 0}}
         title="Submit"
         onPress={submitValue}/>
-    </View>
-  );
-}
-
-type ConsentSwitchProps = PropsWithChildren<{
-  title: string;
-  source: string;
-  details: string;
-  defaultValue?: boolean;
-}>;
-
-function ConsentSwitch({title, source, defaultValue, details}: ConsentSwitchProps): JSX.Element {
-  const styles = React.useContext(StylesContext);
-  const [value, onValueChange] = React.useState(defaultValue);
-
-  return (
-    <View
-      style={[styles.horizontalContainer, {marginBottom: 8}]}
-      tooltip={details}>
-      <Switch value={value} onValueChange={onValueChange}/>
-      <View>
-        <Text>{title}</Text>
-        <Attribution source={source}/>
-      </View>
-    </View>
-  );
-}
-
-type ImageSelectionProps = PropsWithChildren<{
-  image: ImageSourcePropType;
-}>;
-
-function ImageSelection({image}: ImageSelectionProps): JSX.Element {
-  const styles = React.useContext(StylesContext);
-  return (
-    <View style={{marginRight: 12}}>
-      <Image style={styles.dalleImage} source={image}/>
-      <View style={[styles.horizontalContainer, {marginTop: 4, justifyContent: 'space-between'}]}>
-        <Button title="Variations"/>
-        <Button title="Select"/>
-      </View>
     </View>
   );
 }
@@ -276,14 +190,14 @@ function Chat({entries, humanText, onPrompt, regenerateResponse}: ChatProps): JS
           ref={scrollViewRef}>
           <View
             style={{
-              marginBottom: 12,
+              gap: 12,
               opacity: showFeedbackPopup ? 0.3 : 1.0}}>
             {entries.map((entry, entryIndex) => (
               <View key={entryIndex}>
                 {entry}
               </View>
             ))}
-            <View style={{alignSelf: 'center', marginTop: 12}}>
+            <View style={{alignSelf: 'center'}}>
               <Button title="🔁 Regenerate response" onPress={() => regenerateResponse()}/>
             </View>
             <HumanSection
@@ -362,7 +276,7 @@ function Chat({entries, humanText, onPrompt, regenerateResponse}: ChatProps): JS
               style={{flexGrow: 1, minHeight: 32}}
               onChangeText={value => settingsContext.apiKey = value}
               value={settingsContext.apiKey}/>
-            <Text>https://platform.openai.com/account/api-keys</Text>
+            <Hyperlink url="https://platform.openai.com/account/api-keys"/>
             <View style={{marginTop: 12, alignSelf: 'flex-end'}}>
               <Button
                 title="OK"
@@ -387,10 +301,6 @@ function AutomatedChatSession({entries, appendEntry}: AutomatedChatSessionProps)
   const [humanText, setHumanText] = React.useState<string|undefined>("I want to design a board game about dinosaurs to play with my friends. Can you help?");
 
   const [chatScriptIndex, setChatScriptIndex] = React.useState(0);
-
-  console.log("AutomatedChatSession.render()");
-  console.log(entries);
-  console.log(chatScriptIndex);
 
   type AutomatedChatResult = {
     prompt?: string;
@@ -586,13 +496,7 @@ function AutomatedChatSession({entries, appendEntry}: AutomatedChatSessionProps)
 function ChatSession(): JSX.Element {
   const [entries, setEntries] = React.useState<JSX.Element []>([]);
 
-  console.log("ChatSession.render()");
-  console.log(entries);
-
   const appendEntry = React.useCallback((newEntry: JSX.Element | JSX.Element[]) => {
-    console.log("appending");
-    console.log(entries);
-    console.log(newEntry);
     if (Array.isArray(newEntry)) {
       setEntries([...entries, ...newEntry]);
     } else {
@@ -622,9 +526,9 @@ function App(): JSX.Element {
   const styles : StylesType = StyleSheet.create({
     appContent: {
       backgroundColor: isDarkMode ? 'black' : 'white',
+      paddingVertical: 12,
     },
     sectionContainer: {
-      marginTop: 12,
       marginHorizontal: 12,
       paddingHorizontal: 24,
       paddingVertical: 12,
@@ -641,11 +545,6 @@ function App(): JSX.Element {
     sectionTitle: {
       fontSize: 12,
       fontWeight: '600',
-    },
-    sectionDescription: {
-      marginTop: 8,
-      fontSize: 18,
-      fontWeight: '400',
     },
     highlight: {
       fontWeight: '700',
@@ -665,7 +564,6 @@ function App(): JSX.Element {
       borderWidth: 2,
       borderRadius: 8,
       padding: 8,
-      marginRight: 12,
     },
     feedbackDialog: {
       backgroundColor: isDarkMode ? 'black' : 'white',
