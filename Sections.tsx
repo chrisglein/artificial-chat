@@ -24,7 +24,7 @@ import {
 } from './Settings';
 
 type HumanSectionProps = PropsWithChildren<{
-    hoverButtonText: string;
+    hoverButtonText?: string;
     hoverButtonOnPress?: () => void;
   }>;
 function HumanSection({children, hoverButtonText, hoverButtonOnPress}: HumanSectionProps): JSX.Element {
