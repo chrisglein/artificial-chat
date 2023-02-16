@@ -1,6 +1,7 @@
 import React from 'react';
 import type {PropsWithChildren} from 'react';
 import {
+  ActivityIndicator,
   Appearance,
   Button,
   Image,
@@ -15,6 +16,10 @@ import {
 import {
   Popup,
 } from 'react-native-windows';
+import {
+  OpenAIUrl,
+  CallOpenAI,
+} from './OpenAI';
 
 type FeedbackType = {
   showFeedback : (positive: boolean) => void;
@@ -34,8 +39,13 @@ type StylesType = {
   feedbackDialog: any;
 }
 
+type SettingsType = {
+  apiKey?: string;
+}
+
 const FeedbackContext = React.createContext<FeedbackType>({showFeedback: () => {}});
 const StylesContext = React.createContext<StylesType>({});
+const SettingsContext = React.createContext<SettingsType>({});
 
 type FeedbackButtonProps = PropsWithChildren<{
   content: string;
@@ -63,10 +73,11 @@ function FeedbackButton({content, onPress}: FeedbackButtonProps): JSX.Element {
 }
 
 type HumanSectionProps = PropsWithChildren<{
-  disableEdit?: boolean;
+  hoverButtonText: string;
+  hoverButtonOnPress?: () => void;
 }>;
 
-function HumanSection({children, disableEdit}: HumanSectionProps): JSX.Element {
+function HumanSection({children, hoverButtonText, hoverButtonOnPress}: HumanSectionProps): JSX.Element {
   const [hovering, setHovering] = React.useState(false);
   const styles = React.useContext(StylesContext);
 
@@ -77,14 +88,17 @@ function HumanSection({children, disableEdit}: HumanSectionProps): JSX.Element {
       onHoverOut={() => setHovering(false)}>
       <View style={{flexDirection: 'row', minHeight: 26}}>
         <Text style={[styles.sectionTitle, {flexGrow: 1}]}>HUMAN</Text>
-        {!disableEdit && hovering && <FeedbackButton content="📝" onPress={() => console.log("edit")}/>}
+        {hoverButtonText !== "" && hovering && <FeedbackButton content={hoverButtonText ?? "📝"} onPress={() => hoverButtonOnPress ? hoverButtonOnPress() : {}}/>}
       </View>
       {children}
     </Pressable>
   );
 }
 
-function AISection({children}: PropsWithChildren): JSX.Element {
+type AISectionProps = PropsWithChildren<{
+  isLoading?: boolean;
+}>;
+function AISection({children, isLoading}: AISectionProps): JSX.Element {
   const feedbackContext = React.useContext(FeedbackContext);
   const styles = React.useContext(StylesContext);
 
@@ -101,9 +115,43 @@ function AISection({children}: PropsWithChildren): JSX.Element {
         <FeedbackButton content="👍" onPress={() => { showFeedbackPopup(true); }}/>
         <FeedbackButton content="👎" onPress={() => { showFeedbackPopup(false); }}/>
       </View>
+      {isLoading && 
+        <ActivityIndicator/>
+      }
       {children}
     </View>
   );
+}
+
+type AISectionWithQueryProps = {
+  prompt: string;
+};
+function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
+  const settingsContext = React.useContext(SettingsContext);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [queryResult, setQueryResult] = React.useState<string | undefined>(undefined);
+
+  React.useEffect(() => {
+    CallOpenAI({
+      url: OpenAIUrl().completion("text-davinci-003-playground"),
+      apiKey: settingsContext.apiKey,
+      prompt: prompt,
+      onError: (error) => {
+        setQueryResult(error);
+      },
+      onResult: (result) => {
+        setQueryResult(result);
+      },
+      onComplete: () => {
+        setIsLoading(false);
+      }});
+    }, [prompt]);
+
+  return (
+    <AISection isLoading={isLoading}>
+      <Text>{queryResult}</Text>
+    </AISection>
+  )
 }
 
 type AttributionProps = PropsWithChildren<{
@@ -121,15 +169,23 @@ function Attribution({source}: AttributionProps): JSX.Element {
 }
 
 type ChatEntryProps = PropsWithChildren<{
+  defaultText?: string;
   submit: (text : string) => void;
 }>;
 
-function ChatEntry({submit}: ChatEntryProps): JSX.Element {
+function ChatEntry({submit, defaultText}: ChatEntryProps): JSX.Element {
   const styles = React.useContext(StylesContext);
-  const [value, setValue] = React.useState("");
+
+  // Allow a chat script to default populate the text box
+  const [value, setValue] = React.useState(defaultText ?? "");
 
   const submitValue = () => {
-    submit(value);
+    // If the user hits submit but the text is empty, don't carry that forward
+    if (value !== "") {
+      submit(value);
+      // Reset to a blank prompt
+      setValue("");
+    }
   };
 
   return (
@@ -137,10 +193,11 @@ function ChatEntry({submit}: ChatEntryProps): JSX.Element {
       <TextInput
         multiline={true}
         placeholder="Ask me anything"
-        style={{flexGrow: 1, marginRight: 12}}
+        style={{flexGrow: 1, flexShrink: 1, marginRight: 12}}
         onChangeText={newValue => setValue(newValue)}
-        value={value}/>
+        value={defaultText ?? value}/>
       <Button
+        style={{flexShrink: 0}}
         title="Submit"
         onPress={submitValue}/>
     </View>
@@ -189,13 +246,17 @@ function ImageSelection({image}: ImageSelectionProps): JSX.Element {
 }
 
 type ChatProps = PropsWithChildren<{
-  entries: Element[];
-  setEntries: (entries: Element[]) => void;
+  entries: JSX.Element[];
+  humanText? : string;
+  onPrompt: (prompt: string) => void;
+  regenerateResponse: () => void;
 }>;
 
-function Chat({entries, setEntries}: ChatProps): JSX.Element {
+function Chat({entries, humanText, onPrompt, regenerateResponse}: ChatProps): JSX.Element {
   const styles = React.useContext(StylesContext);
+  const settingsContext = React.useContext(SettingsContext);
   const [showFeedbackPopup, setShowFeedbackPopup] = React.useState(false);
+  const [showSettingsPopup, setShowSettingsPopup] = React.useState(false);
   const [feedbackText, setFeedbackText] = React.useState("");
   const [feedbackIsPositive, setFeedbackIsPositive] = React.useState(false);
   const scrollViewRef : React.RefObject<ScrollView> = React.createRef();
@@ -214,27 +275,24 @@ function Chat({entries, setEntries}: ChatProps): JSX.Element {
           contentInsetAdjustmentBehavior="automatic"
           ref={scrollViewRef}>
           <View
-            style={{marginBottom: 12, opacity: showFeedbackPopup ? 0.3 : 1.0}}>
+            style={{
+              marginBottom: 12,
+              opacity: showFeedbackPopup ? 0.3 : 1.0}}>
             {entries.map((entry, entryIndex) => (
               <View key={entryIndex}>
                 {entry}
               </View>
             ))}
             <View style={{alignSelf: 'center', marginTop: 12}}>
-              <Button title="🔁 Regenerate response" onPress={() => console.log("regenerate response")}/>
+              <Button title="🔁 Regenerate response" onPress={() => regenerateResponse()}/>
             </View>
-            <HumanSection disableEdit={true}>
+            <HumanSection
+              hoverButtonText="⚙️"
+              hoverButtonOnPress={() => setShowSettingsPopup(true)}>
               <ChatEntry
+                defaultText={humanText}
                 submit={(newEntry) => {
-                  let humanPrompt = 
-                    <HumanSection>
-                      <Text>{newEntry}</Text>
-                    </HumanSection>
-                  let aiResponse = 
-                    <AISection>
-                      <Text>I cannot help you with "{newEntry}".</Text>
-                    </AISection>
-                  setEntries([...entries, humanPrompt, aiResponse]);
+                  onPrompt(newEntry);
                   // Wait for the new entry to be rendered
                   setTimeout(() => {
                     scrollViewRef.current?.scrollToEnd();
@@ -287,103 +345,265 @@ function Chat({entries, setEntries}: ChatProps): JSX.Element {
             </View>
           </View>
         </Popup>
+        <Popup
+          isOpen={showSettingsPopup}
+          isLightDismissEnabled={true}
+          onDismiss={() => setShowSettingsPopup(false)}>
+          <View style={styles.feedbackDialog}>
+            <View style={{flexDirection: 'row', marginBottom: 4}}>
+              <View style={{backgroundColor: 'gray', borderRadius: 4, marginRight: 4}}>
+                <Text>⚙️</Text>
+              </View>
+              <Text>OpenAI Settings</Text>
+            </View>
+            <TextInput
+              secureTextEntry={true}
+              placeholder="Your API key"
+              style={{flexGrow: 1, minHeight: 32}}
+              onChangeText={value => settingsContext.apiKey = value}
+              value={settingsContext.apiKey}/>
+            <Text>https://platform.openai.com/account/api-keys</Text>
+            <View style={{marginTop: 12, alignSelf: 'flex-end'}}>
+              <Button
+                title="OK"
+                onPress={() => {
+                  setShowSettingsPopup(false);
+                }}/>
+            </View>
+          </View>
+        </Popup>
       </View>
     </FeedbackContext.Provider>
   );
 }
 
-function ChatSession(): JSX.Element {
+type AutomatedChatSessionProps = PropsWithChildren<{
+  entries: JSX.Element[];
+  appendEntry: (entry: JSX.Element | JSX.Element[]) => void;
+}>;
+function AutomatedChatSession({entries, appendEntry}: AutomatedChatSessionProps): JSX.Element {
   const styles = React.useContext(StylesContext);
+  // TODO: Figure out how to not duplicate this with array below
+  const [humanText, setHumanText] = React.useState<string|undefined>("I want to design a board game about dinosaurs to play with my friends. Can you help?");
+
+  const [chatScriptIndex, setChatScriptIndex] = React.useState(0);
+
+  console.log("AutomatedChatSession.render()");
+  console.log(entries);
+  console.log(chatScriptIndex);
+
+  type AutomatedChatResult = {
+    prompt?: string;
+    aiResponse?: () => JSX.Element;
+  };
+
+  const advanceChatScript = (index: number, goToNext: () => void) => {
+    const handleAIResponse = (index: number) => {
+      switch (index) {
+        case 0: return {
+          prompt: "I want to design a board game about dinosaurs to play with my friends. Can you help?",
+          aiResponse: () => {
+            console.log("running code now...");
+            return (
+            <AISection>
+              <Text>Sure! To do this best It would be helpful to add this information, do you consent?</Text>
+              <ConsentSwitch
+                title="Your BoardGameGeek.com play history"
+                details="This will help me understand what games you like to play and what you like about them."
+                source="BoardGameGeek.com"
+                defaultValue={true}/>
+              <ConsentSwitch
+                title="Your contact list of friends"
+                details="This will help me understand who you play games with and what games they like to play."
+                source="facebook"/>
+              <ConsentSwitch
+                title="Your schedule for the next week"
+                details="Knowing your availability and the deadline for completing the game will help me suggest an appropriate pace and scope for the project, and ensure that the game can be completed within the desired time frame."
+                source="Google calendar"
+                defaultValue={true}/>
+              <ConsentSwitch
+                title="Your bank account information for funding materials"
+                details="This will help me understand how much money you have available to spend on materials for the game."
+                source="Chase Bank"/>
+              <Button title="Agree and Continue" onPress={() => goToNext()}/>
+            </AISection>
+          )}
+        }
+        case 1: return {
+          prompt: "I agree",
+          aiResponse: () =>
+            <AISection>
+              <Text>Thank you! Here is what I was able to come up with the information you provided to me:</Text>
+              <Text>...</Text>
+            </AISection>,
+        }
+        case 2: return {
+          prompt: "I think we're ready for a box design. Can you provide one?",
+          aiResponse: () =>
+            <AISection>
+              <Text>Here are some box designs</Text>
+              <View style={styles.horizontalContainer}>
+                <ImageSelection image={require('./assets/dinobox1.png')}/>
+                <ImageSelection image={require('./assets/dinobox2.png')}/>
+                <ImageSelection image={require('./assets/dinobox3.png')}/>
+                <ImageSelection image={require('./assets/dinobox4.png')}/>
+              </View>
+              <Attribution source="DALL-E, 14 monthly credits remaining"/>
+            </AISection>
+        }
+        case 3: return {
+          prompt: "Variations of 3",
+          aiResponse: () =>
+            <AISection>
+              <Text>Here are variations on the image you selected</Text>
+              <View style={styles.horizontalContainer}>
+                <ImageSelection image={require('./assets/dinobox3_variation1.png')}/>
+                <ImageSelection image={require('./assets/dinobox3_variation2.png')}/>
+                <ImageSelection image={require('./assets/dinobox3_variation3.png')}/>
+                <ImageSelection image={require('./assets/dinobox3_variation4.png')}/>
+              </View>
+              <Attribution source="DALL-E, 13 monthly credits remaining"/>
+            </AISection>
+        }
+        case 4: return {
+          prompt: "I like the original best, let's stick with that. But I'd like my picture on the box, since I'm the designer, can we do that?",
+          aiResponse: () =>
+            <AISection>
+              <Text>Sure, here are some ways we can do that. Please choose one</Text>
+              <View style={styles.horizontalContainer}>
+                <View style={styles.inlineCard}>
+                  <Button title="Access profile photos" onPress={() => goToNext()}/>
+                  <Attribution source="OneDrive"/>
+                </View>
+                <View style={styles.inlineCard}>
+                  <Button title="Generate a placeholder image" onPress={() => goToNext()}/>
+                  <Attribution source="DALL-E"/>
+                </View>
+                <View style={styles.inlineCard}>
+                  <Button title="Take a picture now" onPress={() => goToNext()}/>
+                </View>
+                <View style={styles.inlineCard}>
+                  <Button title="Upload your own" onPress={() => goToNext()}/>
+                </View>
+              </View>
+            </AISection>
+        }
+        case 5: return {
+          prompt: "I have provided an image!",
+          aiResponse: () =>
+            <AISection>
+              <Text>Thanks! Here is the updated box design that incorporate your photo</Text>
+              <Image style={styles.dalleImage} source={require('./assets/compositebox.png')}/>
+              <Attribution source="Adobe Creative Cloud subscription"/>
+            </AISection>
+        }
+        default: return {
+          prompt: undefined,
+          aiResponse: undefined,
+        }
+      }
+    }
+
+    type AutomatedChatResult2 = {
+      aiResponse?: JSX.Element;
+      humanResponse?: string;
+    };
+    
+    let result : AutomatedChatResult2 = {
+      aiResponse: undefined,
+      humanResponse: undefined,
+    }
+
+    let response = handleAIResponse(index);
+    let nextResponse = handleAIResponse(index + 1);
+
+    // Give the AI's response
+    result.aiResponse = response.aiResponse ? response.aiResponse() : undefined; 
+
+    // Preopulate the text box with the human's next prompt
+    result.humanResponse = nextResponse.prompt; 
+
+    return result;
+  }
   
-  const [entries, setEntries] = React.useState<Element []>([
-    <HumanSection>
-      <Text>I want to design a board game about dinosaurs to play with my friends. Can you help?</Text>
-    </HumanSection>,
-    <AISection>
-      <Text>Sure! To do this best It would be helpful to add this information, do you consent?</Text>
-      <ConsentSwitch
-        title="Your BoardGameGeek.com play history"
-        details="This will help me understand what games you like to play and what you like about them."
-        source="BoardGameGeek.com"
-        defaultValue={true}/>
-      <ConsentSwitch
-        title="Your contact list of friends"
-        details="This will help me understand who you play games with and what games they like to play."
-        source="facebook"/>
-      <ConsentSwitch
-        title="Your schedule for the next week"
-        details="Knowing your availability and the deadline for completing the game will help me suggest an appropriate pace and scope for the project, and ensure that the game can be completed within the desired time frame."
-        source="Google calendar"
-        defaultValue={true}/>
-      <ConsentSwitch
-        title="Your bank account information for funding materials"
-        details="This will help me understand how much money you have available to spend on materials for the game."
-        source="Chase Bank"/>
-      <Button title="Agree and Continue" onPress={() => {}}/>
-    </AISection>,
-    <AISection>
-      <Text>Thank you! Here is what I was able to come up with the information you provided to me:</Text>
-      <Text>...</Text>
-    </AISection>,
-    <HumanSection>
-      <Text>I think we're ready for a box design. Can you provide one?</Text>
-    </HumanSection>,
-    <AISection>
-      <Text>Here are some box designs</Text>
-      <View style={styles.horizontalContainer}>
-        <ImageSelection image={require('./assets/dinobox1.png')}/>
-        <ImageSelection image={require('./assets/dinobox2.png')}/>
-        <ImageSelection image={require('./assets/dinobox3.png')}/>
-        <ImageSelection image={require('./assets/dinobox4.png')}/>
-      </View>
-      <Attribution source="DALL-E, 14 monthly credits remaining"/>
-    </AISection>,
-    <AISection>
-      <Text>Here are variations on the image you selected</Text>
-      <View style={styles.horizontalContainer}>
-        <ImageSelection image={require('./assets/dinobox3_variation1.png')}/>
-        <ImageSelection image={require('./assets/dinobox3_variation2.png')}/>
-        <ImageSelection image={require('./assets/dinobox3_variation3.png')}/>
-        <ImageSelection image={require('./assets/dinobox3_variation4.png')}/>
-      </View>
-      <Attribution source="DALL-E, 13 monthly credits remaining"/>
-    </AISection>,
-    <HumanSection>
-      <Text>I like the original best, let's stick with that. But I'd like my picture on the box, since I'm the designer, can we do that?</Text>
-    </HumanSection>,
-    <AISection>
-      <Text>Sure, here are some ways we can do that. Please choose one</Text>
-      <View style={styles.horizontalContainer}>
-        <View style={styles.inlineCard}>
-          <Button title="Access profile photos" onPress={() => {}}/>
-          <Attribution source="OneDrive"/>
-        </View>
-        <View style={styles.inlineCard}>
-          <Button title="Generate a placeholder image" onPress={() => {}}/>
-          <Attribution source="DALL-E"/>
-        </View>
-        <View style={styles.inlineCard}>
-          <Button title="Take a picture now" onPress={() => {}}/>
-        </View>
-        <View style={styles.inlineCard}>
-          <Button title="Upload your own" onPress={() => {}}/>
-        </View>
-      </View>
-    </AISection>,
-    <HumanSection>
-      <Image style={styles.dalleImage} source={require('./assets/designerphoto.png')}/>
-    </HumanSection>,
-    <AISection>
-      <Text>Thanks! Here is the updated box design that incorporate your photo</Text>
-      <Image style={styles.dalleImage} source={require('./assets/compositebox.png')}/>
-      <Attribution source="Adobe Creative Cloud subscription"/>
-    </AISection>
-  ]);
+  let onPrompt = (text: string, index: number) => {
+    const followScript = humanText !== undefined;
+
+    if (followScript) {
+      console.log(`Following script with prompt of '${text}', index is ${index}`);
+
+      // Get the AI's response to the prompt, and predict the human's response to that
+      let {aiResponse, humanResponse} = advanceChatScript(index, () => onPrompt(undefined, index + 1));
+      setChatScriptIndex(index + 1);
+      console.log(aiResponse);
+      console.log(humanResponse);
+  
+      // If there wasn't a response, we hit the end of the script
+      if (!aiResponse) {
+        aiResponse =
+          <AISection>
+            <Text>You have reached the end of the script, and I cannot comment on "{text}"</Text>    
+          </AISection>
+      }
+
+      // Append to the chat log
+      // If the human has a prompt, add it to the chat
+      if (text) {
+        appendEntry([
+          <HumanSection>
+            <Text>{text}</Text>
+          </HumanSection>,
+          aiResponse]);
+      } else {
+        appendEntry(aiResponse);
+      }
+
+      // Prepopulate the human's next prompt
+      setHumanText(humanResponse);
+    } else {
+      console.log(`Prompt: '${text}`);
+
+      setHumanText(undefined);
+      
+      appendEntry([
+        <HumanSection>
+          <Text>{text}</Text>
+        </HumanSection>,
+        <AISectionWithQuery prompt={text}/>
+      ]);
+    }
+  }
 
   return (
     <Chat
       entries={entries}
-      setEntries={setEntries}/>
+      humanText={humanText}
+      onPrompt={(text) => onPrompt(text, chatScriptIndex)}
+      regenerateResponse={() => setChatScriptIndex(0)}/>
+  );
+}
+
+function ChatSession(): JSX.Element {
+  const [entries, setEntries] = React.useState<JSX.Element []>([]);
+
+  console.log("ChatSession.render()");
+  console.log(entries);
+
+  const appendEntry = React.useCallback((newEntry: JSX.Element | JSX.Element[]) => {
+    console.log("appending");
+    console.log(entries);
+    console.log(newEntry);
+    if (Array.isArray(newEntry)) {
+      setEntries([...entries, ...newEntry]);
+    } else {
+      setEntries([...entries, newEntry]);
+    }
+  }, [entries]);
+  
+  return (
+    <AutomatedChatSession
+      entries={entries}
+      appendEntry={appendEntry}/>
   );
 }
 
@@ -457,9 +677,11 @@ function App(): JSX.Element {
 
   return (
     <StylesContext.Provider value={styles}>
-      <View>
-        <ChatSession/>
-      </View>
+      <SettingsContext.Provider value={{}}>
+        <View>
+          <ChatSession/>
+        </View>
+      </SettingsContext.Provider>
     </StylesContext.Provider>
   );
 }
