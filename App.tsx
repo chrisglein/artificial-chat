@@ -39,8 +39,13 @@ type StylesType = {
   feedbackDialog: any;
 }
 
+type SettingsType = {
+  apiKey?: string;
+}
+
 const FeedbackContext = React.createContext<FeedbackType>({showFeedback: () => {}});
 const StylesContext = React.createContext<StylesType>({});
+const SettingsContext = React.createContext<SettingsType>({});
 
 type FeedbackButtonProps = PropsWithChildren<{
   content: string;
@@ -121,12 +126,14 @@ type AISectionWithQueryProps = {
   prompt: string;
 };
 function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
+  const settingsContext = React.useContext(SettingsContext);
   const [isLoading, setIsLoading] = React.useState(true);
   const [queryResult, setQueryResult] = React.useState<string | undefined>(undefined);
 
   React.useEffect(() => {
     CallOpenAI({
       url: OpenAIUrl().completion("text-davinci-003-playground"),
+      apiKey: settingsContext.apiKey,
       prompt: prompt,
       onError: (error) => {
         setQueryResult(error);
@@ -246,7 +253,9 @@ type ChatProps = PropsWithChildren<{
 
 function Chat({entries, humanText, onPrompt, regenerateResponse}: ChatProps): JSX.Element {
   const styles = React.useContext(StylesContext);
+  const settingsContext = React.useContext(SettingsContext);
   const [showFeedbackPopup, setShowFeedbackPopup] = React.useState(false);
+  const [showSettingsPopup, setShowSettingsPopup] = React.useState(false);
   const [feedbackText, setFeedbackText] = React.useState("");
   const [feedbackIsPositive, setFeedbackIsPositive] = React.useState(false);
   const scrollViewRef : React.RefObject<ScrollView> = React.createRef();
@@ -286,6 +295,7 @@ function Chat({entries, humanText, onPrompt, regenerateResponse}: ChatProps): JS
                     scrollViewRef.current?.scrollToEnd();
                   }, 200);
                 }}/>
+              <Button title="⚙️" onPress={() => setShowSettingsPopup(true)}/>
             </HumanSection>
           </View>
         </ScrollView>
@@ -329,6 +339,33 @@ function Chat({entries, humanText, onPrompt, regenerateResponse}: ChatProps): JS
                   console.log(feedbackIsPositive ? "like" : "dislike");
                   console.log(feedbackText);
                   setShowFeedbackPopup(false);
+                }}/>
+            </View>
+          </View>
+        </Popup>
+        <Popup
+          isOpen={showSettingsPopup}
+          isLightDismissEnabled={true}
+          onDismiss={() => setShowSettingsPopup(false)}>
+          <View style={styles.feedbackDialog}>
+            <View style={{flexDirection: 'row', marginBottom: 4}}>
+              <View style={{backgroundColor: 'gray', borderRadius: 4, marginRight: 4}}>
+                <Text>⚙️</Text>
+              </View>
+              <Text>OpenAI Settings</Text>
+            </View>
+            <TextInput
+              secureTextEntry={true}
+              placeholder="Your API key"
+              style={{flexGrow: 1, minHeight: 32}}
+              onChangeText={value => settingsContext.apiKey = value}
+              value={settingsContext.apiKey}/>
+            <Text>https://platform.openai.com/account/api-keys</Text>
+            <View style={{marginTop: 12, alignSelf: 'flex-end'}}>
+              <Button
+                title="OK"
+                onPress={() => {
+                  setShowSettingsPopup(false);
                 }}/>
             </View>
           </View>
@@ -532,8 +569,6 @@ function AutomatedChatSession({entries, appendEntry}: AutomatedChatSessionProps)
         </HumanSection>,
         <AISectionWithQuery prompt={text}/>
       ]);
-
-      
     }
   }
 
@@ -640,9 +675,11 @@ function App(): JSX.Element {
 
   return (
     <StylesContext.Provider value={styles}>
-      <View>
-        <ChatSession/>
-      </View>
+      <SettingsContext.Provider value={{}}>
+        <View>
+          <ChatSession/>
+        </View>
+      </SettingsContext.Provider>
     </StylesContext.Provider>
   );
 }
