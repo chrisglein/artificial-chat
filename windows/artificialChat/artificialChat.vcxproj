@@ -83,8 +83,6 @@
     <PackageCertificateThumbprint>910162D19999963017448FD45AA25C7B5FC5467F</PackageCertificateThumbprint>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
-    <AppInstallerUri>\\redmond\osg\Teams\CORE\DEP\WinDev\cglein\apps\artificialChat</AppInstallerUri>
-    <AppxPackageDir>\\redmond\osg\Teams\CORE\DEP\WinDev\cglein\apps\artificialChat</AppxPackageDir>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
