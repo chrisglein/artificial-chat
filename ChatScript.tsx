@@ -14,6 +14,12 @@ import {
   AISection,
 } from './Sections';
 
+const ChatScriptNames = [
+  "Dinosaurs",
+  "Developer",
+  "AdaptiveCard"
+]
+
 const runDinosaurScript = (index: number, styles, goToNext) => {
   switch (index) {
     case 0: return {
@@ -144,6 +150,31 @@ const runDeveloperScript = (index: number, styles, goToNext) => {
   }
 }
 
+const runAdaptiveCardScript = (index: number, styles, goToNext) => {
+  switch (index) {
+    case 0: return {
+      prompt: "I am a developer!",
+      aiResponse: () => {
+        return (
+        <AISection>
+          <Text>Oh really?</Text>
+        </AISection>
+      )}
+    }
+    case 1: return {
+      prompt: "Yep, it's true.",
+      aiResponse: () =>
+        <AISection>
+          <Text>Thanks for sharing!</Text>
+        </AISection>,
+    }
+    default: return {
+      prompt: undefined,
+      aiResponse: undefined,
+    }
+  }
+}
+
 type HandleAIResponseType = {
   index: number,
   styles: any,
@@ -152,10 +183,12 @@ type HandleAIResponseType = {
 }
 const handleAIResponse = ({index, styles, goToNext, scriptName} : HandleAIResponseType) => {
   switch (scriptName) {
-    case "Dinosaurs":
+    case ChatScriptNames[0]:
       return runDinosaurScript(index, styles, goToNext);
-    case "Developer":
+    case ChatScriptNames[1]:
       return runDeveloperScript(index, styles, goToNext);
+    case ChatScriptNames[2]:
+      return runAdaptiveCardScript(index, styles, goToNext);
     default:
       return {
         prompt: undefined,
@@ -164,4 +197,4 @@ const handleAIResponse = ({index, styles, goToNext, scriptName} : HandleAIRespon
   }
 }
 
-export { handleAIResponse }
+export { handleAIResponse, ChatScriptNames }

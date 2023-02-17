@@ -9,6 +9,7 @@ import {Popup} from 'react-native-windows';
 import {Hyperlink} from './Controls';
 import {StylesContext} from './Styles';
 import {Picker} from '@react-native-picker/picker';
+import {ChatScriptNames} from './ChatScript';
 
 type SettingsType = {
   apiKey?: string,
@@ -56,8 +57,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             style={{height: 50, width: 200}}
             selectedValue={scriptName}
             onValueChange={(value) => setScriptName(value)}>
-            <Picker.Item label="Dinosaurs" value="Dinosaurs"/>
-            <Picker.Item label="Developer" value="Developer"/>
+            {ChatScriptNames.map(name => <Picker.Item label={name} value={name}/>)}
             <Picker.Item label="None" value=""/>
           </Picker>
         </View>
