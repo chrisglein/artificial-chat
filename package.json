@@ -11,7 +11,7 @@
     "windows": "react-native run-windows"
   },
   "dependencies": {
-    "@react-native-picker/picker": "^2.4.8",
+    "@react-native-picker/picker": "^2.2.1",
     "react": "18.2.0",
     "react-native": "0.71.0",
     "react-native-windows": "0.71.1"
