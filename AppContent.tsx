@@ -2,6 +2,7 @@ import React from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   Text,
+  Switch,
 } from 'react-native';
 import {
   HumanSection,
@@ -17,6 +18,9 @@ import {
 import {
   handleAIResponse,
 } from './ChatScript';
+import {
+  handleAIResponseAdaptiveCards,
+} from './ChatScript-AdaptiveCards';
 
 type AutomatedChatSessionProps = PropsWithChildren<{
   entries: JSX.Element[];
@@ -25,7 +29,7 @@ type AutomatedChatSessionProps = PropsWithChildren<{
 function AutomatedChatSession({entries, appendEntry}: AutomatedChatSessionProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   // TODO: Figure out how to not duplicate this with array below
-  const [humanText, setHumanText] = React.useState<string|undefined>("I want to design a board game about dinosaurs to play with my friends. Can you help?");
+  const [humanText, setHumanText] = React.useState<string|undefined>("I want to generate an Adaptive Card. Can you help?");
 
   const [chatScriptIndex, setChatScriptIndex] = React.useState(0);
 
@@ -39,8 +43,8 @@ function AutomatedChatSession({entries, appendEntry}: AutomatedChatSessionProps)
       humanResponse: undefined,
     }
 
-    let response = handleAIResponse(index, styles, goToNext);
-    let nextResponse = handleAIResponse(index + 1, styles, goToNext);
+    let response = handleAIResponseAdaptiveCards(index, styles, goToNext);
+    let nextResponse = handleAIResponseAdaptiveCards(index + 1, styles, goToNext);
 
     // Give the AI's response
     result.aiResponse = response.aiResponse ? response.aiResponse() : undefined; 

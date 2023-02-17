@@ -11,6 +11,8 @@
     "windows": "react-native run-windows"
   },
   "dependencies": {
+    "adaptivecards-reactnative": "^2.2.32",
+    "patch-package": "^6.5.1",
     "react": "18.2.0",
     "react-native": "0.71.0",
     "react-native-windows": "0.71.1"
