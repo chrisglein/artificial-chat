@@ -38,7 +38,7 @@ function FeedbackPopup({show, close, isPositive}: FeedbackPopupProps): JSX.Eleme
           <View style={{backgroundColor: isPositive ? 'green' : 'red', borderRadius: 4, marginRight: 4}}>
             <Text>{isPositive ? "👍" : "👎"}</Text>
           </View>
-          <Text>Provide additional feedback</Text>
+          <Text style={{fontWeight: 'bold'}}>Provide additional feedback</Text>
         </View>
         <TextInput
           multiline={true}
@@ -66,7 +66,7 @@ function FeedbackPopup({show, close, isPositive}: FeedbackPopupProps): JSX.Eleme
           <Button
             title="Submit feedback"
             onPress={() => {
-              console.log(feedbackIsPositive ? "like" : "dislike");
+              console.log(isPositive ? "like" : "dislike");
               console.log(feedbackText);
               close();
             }}/>
