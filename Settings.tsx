@@ -12,6 +12,7 @@ import {Picker} from '@react-native-picker/picker';
 
 type SettingsType = {
   apiKey?: string,
+  setApiKey: (value: string) => void,
   scriptName?: string,
   setScriptName: (value: string) => void,
 }
@@ -25,7 +26,8 @@ type SettingsPopupProps = {
 function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const settings = React.useContext(SettingsContext);
-  const [scriptName, setScriptName] = React.useState<string | undefined>(settings.scriptName);
+  const [apiKey, setApiKey] = React.useState<string>(settings.apiKey);
+  const [scriptName, setScriptName] = React.useState<string>(settings.scriptName);
 
   return (
     <Popup
@@ -44,18 +46,16 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
           <TextInput
             secureTextEntry={true}
             style={{flexGrow: 1, minHeight: 32}}
-            onChangeText={value => settings.apiKey = value}
-            value={settings.apiKey}/>
+            onChangeText={value => setApiKey(value)}
+            value={apiKey}/>
           <Hyperlink url="https://platform.openai.com/account/api-keys"/>
         </View>
         <View>
           <Text>Script</Text>
-          <TextInput
-            placeholder="Name of AI script"
-            style={{flexGrow: 1, minHeight: 32}}
-            onChangeText={value => setScriptName(value)}
-            value={scriptName}/>
-          <Picker style={{height: 50, width: 200}}>
+          <Picker
+            style={{height: 50, width: 200}}
+            selectedValue={scriptName}
+            onValueChange={(value) => setScriptName(value)}>
             <Picker.Item label="Dinosaurs" value="Dinosaurs"/>
             <Picker.Item label="Developer" value="Developer"/>
             <Picker.Item label="None" value=""/>
@@ -65,6 +65,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
           <Button
             title="OK"
             onPress={() => {
+              settings.setApiKey(apiKey);
               settings.setScriptName(scriptName);
               close();
             }}/>

@@ -16,6 +16,7 @@ import {
 
 function App(): JSX.Element {
   const [currentTheme, setCurrentTheme] = React.useState(Appearance.getColorScheme());
+  const [apiKey, setApiKey] = React.useState<string | undefined>(undefined);
   const [scriptName, setScriptName] = React.useState<string | undefined>("Dinosaurs");
   const isDarkMode = currentTheme === 'dark';
 
@@ -82,6 +83,8 @@ function App(): JSX.Element {
       <SettingsContext.Provider value={{
           scriptName: scriptName,
           setScriptName: setScriptName,
+          apiKey: apiKey,
+          setApiKey: setApiKey,
         }}>
         <View>
           <ChatSession/>
