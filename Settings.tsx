@@ -5,15 +5,10 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import {
-  Popup,
-} from 'react-native-windows';
-import {
-  Hyperlink,
-} from './Controls';
-import {
-  StylesContext,
-} from './Styles';
+import {Popup} from 'react-native-windows';
+import {Hyperlink} from './Controls';
+import {StylesContext} from './Styles';
+import {Picker} from '@react-native-picker/picker';
 
 type SettingsType = {
   apiKey?: string,
@@ -60,6 +55,11 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             style={{flexGrow: 1, minHeight: 32}}
             onChangeText={value => setScriptName(value)}
             value={scriptName}/>
+          <Picker style={{height: 50, width: 200}}>
+            <Picker.Item label="Dinosaurs" value="Dinosaurs"/>
+            <Picker.Item label="Developer" value="Developer"/>
+            <Picker.Item label="None" value=""/>
+          </Picker>
         </View>
         <View style={{marginTop: 12, alignSelf: 'flex-end'}}>
           <Button
