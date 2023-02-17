@@ -2,6 +2,7 @@ import React from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   Text,
+  Switch,
 } from 'react-native';
 import {
   HumanSection,
@@ -20,6 +21,9 @@ import {
 import {
   handleAIResponse,
 } from './ChatScript';
+import {
+  handleAIResponseAdaptiveCards,
+} from './ChatScript-AdaptiveCards';
 
 type AutomatedChatSessionProps = PropsWithChildren<{
   entries: JSX.Element[];

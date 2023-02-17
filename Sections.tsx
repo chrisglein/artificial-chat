@@ -1,33 +1,21 @@
 import React from 'react';
 import type {PropsWithChildren} from 'react';
-import {
-  ActivityIndicator,
-  Pressable,
-  Text,
-  View,
-} from 'react-native';
-import {
-  OpenAIUrl,
-  CallOpenAI,
-} from './OpenAI';
-import {
-  HoverButton,
-} from './Controls';
-import {
-  StylesContext,
-} from './Styles';
-import {
-  FeedbackContext,
-} from './Feedback';
-import {
-  SettingsContext,
-} from './Settings';
+import {ActivityIndicator, Pressable, Text, View} from 'react-native';
+import {OpenAIUrl, CallOpenAI} from './OpenAI';
+import {HoverButton} from './Controls';
+import {StylesContext} from './Styles';
+import {FeedbackContext} from './Feedback';
+import {SettingsContext} from './Settings';
 
 type HumanSectionProps = PropsWithChildren<{
-    hoverButtonText?: string;
-    hoverButtonOnPress?: () => void;
-  }>;
-function HumanSection({children, hoverButtonText, hoverButtonOnPress}: HumanSectionProps): JSX.Element {
+  hoverButtonText?: string;
+  hoverButtonOnPress?: () => void;
+}>;
+function HumanSection({
+  children,
+  hoverButtonText,
+  hoverButtonOnPress,
+}: HumanSectionProps): JSX.Element {
   const [hovering, setHovering] = React.useState(false);
   const styles = React.useContext(StylesContext);
 
@@ -38,13 +26,18 @@ function HumanSection({children, hoverButtonText, hoverButtonOnPress}: HumanSect
       onHoverOut={() => setHovering(false)}>
       <View style={{flexDirection: 'row', minHeight: 26}}>
         <Text style={[styles.sectionTitle, {flexGrow: 1}]}>HUMAN</Text>
-        {hoverButtonText !== "" && hovering && <HoverButton content={hoverButtonText ?? "📝"} onPress={() => hoverButtonOnPress ? hoverButtonOnPress() : {}}/>}
+        {hoverButtonText !== '' && hovering && (
+          <HoverButton
+            content={hoverButtonText ?? '📝'}
+            onPress={() => (hoverButtonOnPress ? hoverButtonOnPress() : {})}
+          />
+        )}
       </View>
       {children}
     </Pressable>
   );
 }
-  
+
 type AISectionProps = PropsWithChildren<{
   isLoading?: boolean;
 }>;
@@ -56,18 +49,26 @@ function AISection({children, isLoading}: AISectionProps): JSX.Element {
     if (feedbackContext) {
       feedbackContext.showFeedback(positive);
     }
-  }
+  };
 
   return (
     <View style={[styles.sectionContainer, styles.aiSection]}>
       <View style={{flexDirection: 'row'}}>
         <Text style={[styles.sectionTitle, {flexGrow: 1}]}>AI</Text>
-        <HoverButton content="👍" onPress={() => { showFeedbackPopup(true); }}/>
-        <HoverButton content="👎" onPress={() => { showFeedbackPopup(false); }}/>
+        <HoverButton
+          content="👍"
+          onPress={() => {
+            showFeedbackPopup(true);
+          }}
+        />
+        <HoverButton
+          content="👎"
+          onPress={() => {
+            showFeedbackPopup(false);
+          }}
+        />
       </View>
-      {isLoading && 
-        <ActivityIndicator/>
-      }
+      {isLoading && <ActivityIndicator />}
       {children}
     </View>
   );
@@ -79,29 +80,32 @@ type AISectionWithQueryProps = {
 function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
   const settingsContext = React.useContext(SettingsContext);
   const [isLoading, setIsLoading] = React.useState(true);
-  const [queryResult, setQueryResult] = React.useState<string | undefined>(undefined);
+  const [queryResult, setQueryResult] = React.useState<string | undefined>(
+    undefined,
+  );
 
   React.useEffect(() => {
     CallOpenAI({
-      url: OpenAIUrl().completion("text-davinci-003-playground"),
+      url: OpenAIUrl().completion('text-davinci-003-playground'),
       apiKey: settingsContext.apiKey,
       prompt: prompt,
-      onError: (error) => {
+      onError: error => {
         setQueryResult(error);
       },
-      onResult: (result) => {
+      onResult: result => {
         setQueryResult(result);
       },
       onComplete: () => {
         setIsLoading(false);
-      }});
-    }, [prompt]);
+      },
+    });
+  }, [prompt]);
 
   return (
     <AISection isLoading={isLoading}>
       <Text>{queryResult}</Text>
     </AISection>
-  )
+  );
 }
 
-export { HumanSection, AISection, AISectionWithQuery }
+export {HumanSection, AISection, AISectionWithQuery};
