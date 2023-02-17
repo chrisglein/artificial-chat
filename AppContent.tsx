@@ -15,6 +15,9 @@ import {
   StylesContext,
 } from './Styles';
 import {
+  SettingsContext,
+} from './Settings';
+import {
   handleAIResponse,
 } from './ChatScript';
 
@@ -24,8 +27,7 @@ type AutomatedChatSessionProps = PropsWithChildren<{
 }>;
 function AutomatedChatSession({entries, appendEntry}: AutomatedChatSessionProps): JSX.Element {
   const styles = React.useContext(StylesContext);
-  // TODO: Figure out how to not duplicate this with array below
-  const [humanText, setHumanText] = React.useState<string|undefined>("I want to design a board game about dinosaurs to play with my friends. Can you help?");
+  const settings = React.useContext(SettingsContext);
 
   const [chatScriptIndex, setChatScriptIndex] = React.useState(0);
 
@@ -39,8 +41,18 @@ function AutomatedChatSession({entries, appendEntry}: AutomatedChatSessionProps)
       humanResponse: undefined,
     }
 
-    let response = handleAIResponse(index, styles, goToNext);
-    let nextResponse = handleAIResponse(index + 1, styles, goToNext);
+    let response = handleAIResponse({
+      scriptName: settings.scriptName,
+      index: index,
+      styles: styles,
+      goToNext: goToNext,
+    });
+    let nextResponse = handleAIResponse({
+      scriptName: settings.scriptName,
+      index: index + 1,
+      styles: styles,
+      goToNext: goToNext,
+    });
 
     // Give the AI's response
     result.aiResponse = response.aiResponse ? response.aiResponse() : undefined; 
@@ -51,17 +63,16 @@ function AutomatedChatSession({entries, appendEntry}: AutomatedChatSessionProps)
     return result;
   }
   
-  let onPrompt = (text: string, index: number) => {
-    const followScript = humanText !== undefined;
+  const onPrompt = (text: string, index: number) => {
+    const followScript = settings.scriptName;
 
     if (followScript) {
       console.log(`Following script with prompt of '${text}', index is ${index}`);
 
-      // Get the AI's response to the prompt, and predict the human's response to that
-      let {aiResponse, humanResponse} = advanceChatScript(index, () => onPrompt(undefined, index + 1));
+      // Get the AI's response to the prompt
+      let {aiResponse} = advanceChatScript(index, () => onPrompt(undefined, index + 1));
       setChatScriptIndex(index + 1);
       console.log(aiResponse);
-      console.log(humanResponse);
   
       // If there wasn't a response, we hit the end of the script
       if (!aiResponse) {
@@ -82,13 +93,8 @@ function AutomatedChatSession({entries, appendEntry}: AutomatedChatSessionProps)
       } else {
         appendEntry(aiResponse);
       }
-
-      // Prepopulate the human's next prompt
-      setHumanText(humanResponse);
     } else {
       console.log(`Prompt: '${text}`);
-
-      setHumanText(undefined);
       
       appendEntry([
         <HumanSection>
@@ -98,6 +104,14 @@ function AutomatedChatSession({entries, appendEntry}: AutomatedChatSessionProps)
       ]);
     }
   }
+
+  // Anticipate the next human response
+  let humanText = handleAIResponse({
+    scriptName: settings.scriptName,
+    index: chatScriptIndex,
+    styles: styles,
+    goToNext: () => {},
+  }).prompt;
 
   return (
     <Chat

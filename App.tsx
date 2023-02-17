@@ -11,16 +11,12 @@ import {
   StylesContext,
 } from './Styles';
 import {
-  FeedbackContext,
-  FeedbackPopup,
-} from './Feedback';
-import {
   SettingsContext,
-  SettingsPopup,
 } from './Settings';
 
 function App(): JSX.Element {
   const [currentTheme, setCurrentTheme] = React.useState(Appearance.getColorScheme());
+  const [scriptName, setScriptName] = React.useState<string | undefined>("Dinosaurs");
   const isDarkMode = currentTheme === 'dark';
 
   const onAppThemeChanged = () => {
@@ -83,7 +79,10 @@ function App(): JSX.Element {
 
   return (
     <StylesContext.Provider value={styles}>
-      <SettingsContext.Provider value={{}}>
+      <SettingsContext.Provider value={{
+          scriptName: scriptName,
+          setScriptName: setScriptName,
+        }}>
         <View>
           <ChatSession/>
         </View>

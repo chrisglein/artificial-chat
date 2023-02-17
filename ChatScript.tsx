@@ -13,16 +13,12 @@ import {
 import {
   AISection,
 } from './Sections';
-import {
-  StylesContext,
-} from './Styles';
 
-const handleAIResponse = (index: number, styles, goToNext) => {
+const runDinosaurScript = (index: number, styles, goToNext) => {
   switch (index) {
     case 0: return {
       prompt: "I want to design a board game about dinosaurs to play with my friends. Can you help?",
       aiResponse: () => {
-        console.log("running code now...");
         return (
         <AISection>
           <Text>Sure! To do this best It would be helpful to add this information, do you consent?</Text>
@@ -120,6 +116,51 @@ const handleAIResponse = (index: number, styles, goToNext) => {
       prompt: undefined,
       aiResponse: undefined,
     }
+  }
+}
+
+const runDeveloperScript = (index: number, styles, goToNext) => {
+  switch (index) {
+    case 0: return {
+      prompt: "I am a developer!",
+      aiResponse: () => {
+        return (
+        <AISection>
+          <Text>Oh really?</Text>
+        </AISection>
+      )}
+    }
+    case 1: return {
+      prompt: "Yep, it's true.",
+      aiResponse: () =>
+        <AISection>
+          <Text>Thanks for sharing!</Text>
+        </AISection>,
+    }
+    default: return {
+      prompt: undefined,
+      aiResponse: undefined,
+    }
+  }
+}
+
+type HandleAIResponseType = {
+  index: number,
+  styles: any,
+  goToNext: () => void,
+  scriptName: string | undefined,
+}
+const handleAIResponse = ({index, styles, goToNext, scriptName} : HandleAIResponseType) => {
+  switch (scriptName) {
+    case "Dinosaurs":
+      return runDinosaurScript(index, styles, goToNext);
+    case "Developer":
+      return runDeveloperScript(index, styles, goToNext);
+    default:
+      return {
+        prompt: undefined,
+        aiResponse: undefined,
+      }
   }
 }
 
