@@ -26,8 +26,8 @@ type SettingsPopupProps = {
 function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const settings = React.useContext(SettingsContext);
-  const [apiKey, setApiKey] = React.useState<string>(settings.apiKey);
-  const [scriptName, setScriptName] = React.useState<string>(settings.scriptName);
+  const [apiKey, setApiKey] = React.useState<string>(settings.apiKey ?? "");
+  const [scriptName, setScriptName] = React.useState<string>(settings.scriptName ?? "");
 
   return (
     <Popup
