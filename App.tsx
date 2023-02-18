@@ -32,6 +32,8 @@ function App(): JSX.Element {
     appContent: {
       backgroundColor: isDarkMode ? 'black' : 'white',
       paddingVertical: 12,
+      justifyContent: 'space-between',
+      height: '100%',
     },
     sectionContainer: {
       marginHorizontal: 12,

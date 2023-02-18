@@ -78,36 +78,40 @@ function Chat({entries, humanText, onPrompt, regenerateResponse}: ChatProps): JS
   return (
     <FeedbackContext.Provider value={feedbackContext}>
       <View style={styles.appContent}>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          ref={scrollViewRef}>
-          <View
-            style={{
-              gap: 12,
-              opacity: showFeedbackPopup ? 0.3 : 1.0}}>
-            {entries.map((entry, entryIndex) => (
-              <View key={entryIndex}>
-                {entry}
+        <View style={{flexShrink: 1}}>
+          <ScrollView
+            contentInsetAdjustmentBehavior="automatic"
+            ref={scrollViewRef}>
+            <View
+              style={{
+                gap: 12,
+                opacity: showFeedbackPopup ? 0.3 : 1.0}}>
+              {entries.map((entry, entryIndex) => (
+                <View key={entryIndex}>
+                  {entry}
+                </View>
+              ))}
+              <View style={{alignSelf: 'center'}}>
+                <Button title="🔁 Regenerate response" onPress={() => regenerateResponse()}/>
               </View>
-            ))}
-            <View style={{alignSelf: 'center'}}>
-              <Button title="🔁 Regenerate response" onPress={() => regenerateResponse()}/>
             </View>
-            <HumanSection
-              hoverButtonText="⚙️"
-              hoverButtonOnPress={() => setShowSettingsPopup(true)}>
-              <ChatEntry
-                defaultText={humanText}
-                submit={(newEntry) => {
-                  onPrompt(newEntry);
-                  // Wait for the new entry to be rendered
-                  setTimeout(() => {
-                    scrollViewRef.current?.scrollToEnd();
-                  }, 200);
-                }}/>
-            </HumanSection>
-          </View>
-        </ScrollView>
+          </ScrollView>
+        </View>
+        <View style={{flexShrink: 0}}>
+          <HumanSection
+            hoverButtonText="⚙️"
+            hoverButtonOnPress={() => setShowSettingsPopup(true)}>
+            <ChatEntry
+              defaultText={humanText}
+              submit={(newEntry) => {
+                onPrompt(newEntry);
+                // Wait for the new entry to be rendered
+                setTimeout(() => {
+                  scrollViewRef.current?.scrollToEnd();
+                }, 200);
+              }}/>
+          </HumanSection>
+        </View>
         <FeedbackPopup
           show={showFeedbackPopup}
           isPositive={feedbackIsPositive}
