@@ -124,12 +124,12 @@ const runDinosaurScript = (index: number, styles, goToNext) => {
   }
 }
 
-function CodeBlock({content} : {content: string}) {
+function CodeBlock({content, language} : {content: string, language: string}) {
   const styles = React.useContext(StylesContext);
   return (
     <View>
       <View style={[styles.codeBlockTitle, {flexDirection: 'row', borderTopLeftRadius: 8, borderTopRightRadius: 8, paddingHorizontal: 12}]}>
-        <Text style={[styles.codeBlockTitleText, {flexGrow: 1, alignSelf: "center"}]}>jsx</Text>
+        <Text style={[styles.codeBlockTitleText, {flexGrow: 1, alignSelf: "center"}]}>{language}</Text>
         <Button title="📋 Copy Code"/>
       </View>
       <View style={[styles.codeBlockContent, {borderBottomLeftRadius: 8, borderBottomRightRadius: 8}]}>
@@ -197,7 +197,7 @@ const runDeveloperScript = (index: number, styles, goToNext) => {
         <AISection>
           <Text>Great! Here is an example of how you could create a React app to meet your requirements:</Text>
           <Text>First, you would need to set up your development environment and create a new React app using a tool like Create React App. Once you have your app set up, you could create a component to represent each gift:</Text>
-          <CodeBlock content={`import React, { useState } from 'react';
+          <CodeBlock language="jsx" content={`import React, { useState } from 'react';
 
 const Gift = ({ wrappedImage, unwrappedImage, label, owner, stolenCount, onSteal, onChangeOwner }) => {
   const [isWrapped, setIsWrapped] = useState(true);
@@ -230,7 +230,7 @@ const Gift = ({ wrappedImage, unwrappedImage, label, owner, stolenCount, onSteal
 `}/>
           <Text>This component takes in the necessary props for each gift: the wrapped and unwrapped images, a label, the current owner, and the number of times it has been stolen. It also includes functions for handling clicks on the gift and for changing the owner.</Text>
           <Text>Next, you could create a component to manage the queue and track whose turn it is:</Text>
-          <CodeBlock content={`import React, { useState } from 'react';
+          <CodeBlock language="jsx" content={`import React, { useState } from 'react';
 
 const GiftQueue = ({ participants, onGiftOpened }) => {
   const [currentParticipantIndex, setCurrentParticipantIndex] = useState(0);
@@ -255,7 +255,7 @@ const GiftQueue = ({ participants, onGiftOpened }) => {
 `}/>
           <Text>This component takes in an array of participant objects and a function to call when a gift is opened. It uses the currentParticipantIndex state variable to keep track of whose turn it is, and includes functions for advancing to the next participant and for opening a gift.</Text>
           <Text>Finally, you could create a component to represent the entire app and to manage the state of the gifts and the participants:</Text>
-          <CodeBlock content={`import React, { useState } from 'react';
+          <CodeBlock language="jsx" content={`import React, { useState } from 'react';
 import Gift from './Gift';
 import GiftQueue from './GiftQueue';
 
@@ -282,6 +282,97 @@ const gifts = [
    
 `}/>
         </AISection>,
+    }
+    case 4: return {
+      prompt: "I'd like help visualizing this app. Can you use an ASCII diagram to roughly show the visuals?",
+      aiResponse: () =>
+        <AISection>
+          <Text>Sure, here is an ASCII diagram to roughly show how the app could be laid out:</Text>
+          <CodeBlock language="jsx" content={`+-----------------------------------------------------------+
+|                  Virtual White Elephant                    |
++-----------------------------------------------------------+
+|          +---------------+         +---------------+      |
+|          |   Gift 1      |         |   Gift 2      |      |
+|          +---------------+         +---------------+      |
+|          |  Wrapped      |         |  Wrapped      |      |
+|          |  Image        |         |  Image        |      |
+|          |  (click to    |         |  (click to    |      |
+|          |  reveal)      |         |  reveal)      |      |
+|          |  +------+     |         |  +------+     |      |
+|          |  |      |     |         |  |      |     |      |
+|          |  |      |     |         |  |      |     |      |
+|          |  +------+     |         |  +------+     |      |
+|          |  Gift 1      |         |  Gift 2      |      |
+|          |  Label       |         |  Label       |      |
+|          |  Owner: Alice|         |  Owner: Bob  |      |
+|          +---------------+         +---------------+      |
+|          |   Gift 3      |         |   Gift 4      |      |
+|          +---------------+         +---------------+      |
+|          |  Wrapped      |         |  Wrapped      |      |
+|          |  Image        |         |  Image        |      |
+|          |  (click to    |         |  (click to    |      |
+|          |  reveal)      |         |  reveal)      |      |
+|          |  +------+     |         |  +------+     |      |
+|          |  |      |     |         |  |      |     |      |
+|          |  |      |     |         |  |      |     |      |
+|          |  +------+     |         |  +------+     |      |
+|          |  Gift 3      |         |  Gift 4      |      |
+|          |  Label       |         |  Label       |      |
+|          |  Owner:      |         |  Owner: Charlie|      |
+|          +---------------+         +---------------+      |
+|          |   Gift 5      |         |   Gift 6      |      |
+|          +---------------+         +---------------+      |
+|          |  Wrapped      |         |  Wrapped      |      |
+|          |  Image        |         |  Image        |      |
+|          |  (click to    |         |  (click to    |      |
+|          |  reveal)      |         |  reveal)      |      |
+|          |  +------+     |         |  +------+     |      |
+|          |  |      |     |         |  |      |     |      |
+|          |  |      |     |         |  |      |     |      |
+|          |  +------+     |         |  +------+     |      |
+|          |  Gift 5      |         |  Gift 6      |      |
+|          |  Label       |         |  Label       |      |
+|          |  Owner: Dave |         |  Owner:       |      |
+|          +---------------+         +---------------+      |
+|                                                           |
+|  Next up: Alice                                           |
+|  [Skip] [Open Gift]                                       |
+|                                                           |
++-----------------------------------------------------------+
+          `}/>
+        </AISection>,
+    }
+    case 5: return {
+      prompt: "I'd like to add a menu where I can browse he entire list of participants, with checkboxes next to them depending on whether they have a gift or not. Can you create the React component for that?",
+      aiResponse: () =>
+        <AISection>
+          <Text>Sure, here's a rough idea of what the component could look like:</Text>
+          <CodeBlock language="javascript" content={`import React from 'react';
+
+function ParticipantList(props) {
+  const participants = props.participants;
+  const gifts = props.gifts;
+
+  return (
+    <div>
+      <h2>Participant List</h2>
+      {participants.map((participant, index) => {
+        const hasGift = gifts.some(gift => gift.owner === participant.name);
+        return (
+          <div key={index}>
+            <input type="checkbox" checked={hasGift} readOnly />
+            {participant.name}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+export default ParticipantList;
+          `}/>
+          <Text>This assumes that you have an array of participants and an array of gifts that have an owner property corresponding to the name of the participant who owns the gift. The component renders a list of checkboxes for each participant, indicating whether they have a gift or not. The checkboxes are read-only so that they can't be changed by the user.</Text>
+        </AISection>
     }
     default: return {
       prompt: undefined,
