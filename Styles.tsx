@@ -11,6 +11,9 @@ type StylesType = {
   dalleImage: any;
   inlineCard: any;
   feedbackDialog: any;
+  codeBlockTitle: any;
+  codeBlockTitleText: any;
+  codeBlockContent: any;
 }
 const StylesContext = React.createContext<StylesType>({});
 
