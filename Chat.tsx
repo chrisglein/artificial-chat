@@ -66,7 +66,7 @@ function Chat({entries, humanText, onPrompt, regenerateResponse}: ChatProps): JS
   const [showFeedbackPopup, setShowFeedbackPopup] = React.useState(false);
   const [showSettingsPopup, setShowSettingsPopup] = React.useState(false);
   const [feedbackIsPositive, setFeedbackIsPositive] = React.useState(false);
-  const scrollViewRef : React.RefObject<ScrollView> = React.createRef();
+  const scrollViewRef : React.RefObject<ScrollView> = React.useRef(null);
 
   const feedbackContext = {
     showFeedback: (positive: boolean) => {
@@ -75,43 +75,46 @@ function Chat({entries, humanText, onPrompt, regenerateResponse}: ChatProps): JS
     }
   }
 
+  const scrollToEnd = () => {
+    // Wait for the new entry to be rendered
+    setTimeout(() => {
+      console.log(scrollViewRef);
+      scrollViewRef.current?.scrollToEnd({animated: true});
+    }, 100);
+  }
+
   return (
     <FeedbackContext.Provider value={feedbackContext}>
       <View style={styles.appContent}>
-        <View style={{flexShrink: 1}}>
-          <ScrollView
-            contentInsetAdjustmentBehavior="automatic"
-            ref={scrollViewRef}>
-            <View
-              style={{
-                gap: 12,
-                opacity: showFeedbackPopup ? 0.3 : 1.0}}>
-              {entries.map((entry, entryIndex) => (
-                <View key={entryIndex}>
-                  {entry}
-                </View>
-              ))}
-              <View style={{alignSelf: 'center'}}>
-                <Button title="🔁 Regenerate response" onPress={() => regenerateResponse()}/>
+        <ScrollView
+          contentInsetAdjustmentBehavior="automatic"
+          ref={scrollViewRef}
+          style={{flexShrink: 1}}>
+          <View
+            style={{
+              gap: 12,
+              opacity: showFeedbackPopup ? 0.3 : 1.0}}>
+            {entries.map((entry, entryIndex) => (
+              <View key={entryIndex}>
+                {entry}
               </View>
+            ))}
+            <View style={{alignSelf: 'center'}}>
+              <Button title="🔁 Regenerate response" onPress={() => regenerateResponse()}/>
             </View>
-          </ScrollView>
-        </View>
-        <View style={{flexShrink: 0}}>
-          <HumanSection
-            hoverButtonText="⚙️"
-            hoverButtonOnPress={() => setShowSettingsPopup(true)}>
-            <ChatEntry
-              defaultText={humanText}
-              submit={(newEntry) => {
-                onPrompt(newEntry);
-                // Wait for the new entry to be rendered
-                setTimeout(() => {
-                  scrollViewRef.current?.scrollToEnd();
-                }, 200);
-              }}/>
-          </HumanSection>
-        </View>
+          </View>
+        </ScrollView>
+        <HumanSection
+          hoverButtonText="⚙️"
+          hoverButtonOnPress={() => setShowSettingsPopup(true)}
+          style={{flexShrink: 0}}>
+          <ChatEntry
+            defaultText={humanText}
+            submit={(newEntry) => {
+              onPrompt(newEntry);
+              scrollToEnd();
+            }}/>
+        </HumanSection>
         <FeedbackPopup
           show={showFeedbackPopup}
           isPositive={feedbackIsPositive}
