@@ -57,7 +57,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             style={{height: 50, width: 200}}
             selectedValue={scriptName}
             onValueChange={(value) => setScriptName(value)}>
-            {ChatScriptNames.map(name => <Picker.Item label={name} value={name}/>)}
+            {ChatScriptNames.map(name => <Picker.Item label={name} value={name} key={name}/>)}
             <Picker.Item label="None" value=""/>
           </Picker>
         </View>

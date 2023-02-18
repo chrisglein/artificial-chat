@@ -32,6 +32,8 @@ function App(): JSX.Element {
     appContent: {
       backgroundColor: isDarkMode ? 'black' : 'white',
       paddingVertical: 12,
+      justifyContent: 'space-between',
+      height: '100%',
     },
     sectionContainer: {
       marginHorizontal: 12,
@@ -75,6 +77,15 @@ function App(): JSX.Element {
       padding: 12,
       borderRadius: 8,
       minWidth: 300
+    },
+    codeBlockTitle: {
+      backgroundColor: isDarkMode ? 'white' : 'black',
+    },
+    codeBlockTitleText: {
+      color: isDarkMode ? 'black' : 'white',
+    },
+    codeBlockContent: {
+      backgroundColor: isDarkMode ? '#111' : '#eee',
     }
   });
 
