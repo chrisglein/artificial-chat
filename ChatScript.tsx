@@ -374,6 +374,20 @@ export default ParticipantList;
           <Text>This assumes that you have an array of participants and an array of gifts that have an owner property corresponding to the name of the participant who owns the gift. The component renders a list of checkboxes for each participant, indicating whether they have a gift or not. The checkboxes are read-only so that they can't be changed by the user.</Text>
         </AISection>
     }
+    case 6: return {
+      prompt: "Create an application icon for this app",
+      aiResponse: () =>
+        <AISection>
+          <Text>Here are some options</Text>
+          <View style={styles.horizontalContainer}>
+            <ImageSelection image={require('./assets/whiteelephant1.png')}/>
+            <ImageSelection image={require('./assets/whiteelephant2.png')}/>
+            <ImageSelection image={require('./assets/whiteelephant3.png')}/>
+            <ImageSelection image={require('./assets/whiteelephant4.png')}/>
+          </View>
+          <Attribution source="DALL-E, 9 monthly credits remaining"/>
+        </AISection>
+    }
     default: return {
       prompt: undefined,
       aiResponse: undefined,
