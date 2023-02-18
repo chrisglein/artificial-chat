@@ -93,7 +93,7 @@ function Chat({entries, humanText, onPrompt, regenerateResponse}: ChatProps): JS
           <View
             style={{
               gap: 12,
-              opacity: showFeedbackPopup ? 0.3 : 1.0}}>
+              opacity: showFeedbackPopup || showSettingsPopup ? 0.3 : 1.0}}>
             {entries.map((entry, entryIndex) => (
               <View key={entryIndex}>
                 {entry}
