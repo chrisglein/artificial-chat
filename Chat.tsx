@@ -111,9 +111,11 @@ function Chat({entries, humanText, onPrompt, regenerateResponse, clearConversati
                   {entry}
                 </View>
               ))}
-              <View style={{alignSelf: 'center'}}>
-                <Button title="🔁 Regenerate response" onPress={() => regenerateResponse()}/>
-              </View>
+              {(entries.length > 0) &&
+                <View style={{alignSelf: 'center'}}>
+                  <Button title="🔁 Regenerate response" onPress={() => regenerateResponse()}/>
+                </View>
+              }
             </View>
           </ScrollView>
           <HumanSection
