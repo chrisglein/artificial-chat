@@ -103,9 +103,7 @@ function Chat({entries, humanText, onPrompt, regenerateResponse, clearConversati
             ref={scrollViewRef}
             style={{flexShrink: 1}}>
             <View
-              style={{
-                gap: 12,
-                opacity: showFeedbackPopup || showSettingsPopup ? 0.3 : 1.0}}>
+              style={{gap: 12}}>
               {entries.map((entry, entryIndex) => (
                 <View key={entryIndex}>
                   {entry}
@@ -118,18 +116,21 @@ function Chat({entries, humanText, onPrompt, regenerateResponse, clearConversati
               }
             </View>
           </ScrollView>
-          <HumanSection
-            hoverButtonText="⚙️"
-            hoverButtonOnPress={() => setShowSettingsPopup(true)}
-            style={{flexShrink: 0}}>
-            <ChatEntry
-              defaultText={humanText}
-              submit={(newEntry) => {
-                onPrompt(newEntry);
-                scrollToEnd();
-              }}
-              clearConversation={clearConversation}/>
-          </HumanSection>
+          <View
+            style={{flexShrink: 0, marginBottom: 12}}>
+            <HumanSection
+              hoverButtonText="⚙️"
+              hoverButtonOnPress={() => setShowSettingsPopup(true)}>
+              <ChatEntry
+                defaultText={humanText}
+                submit={(newEntry) => {
+                  onPrompt(newEntry);
+                  scrollToEnd();
+                }}
+                clearConversation={clearConversation}/>
+            </HumanSection>
+          </View>
+          { (showFeedbackPopup || showSettingsPopup) && <View style={styles.popupBackground}/> }
           <FeedbackPopup
             show={showFeedbackPopup}
             isPositive={feedbackIsPositive}

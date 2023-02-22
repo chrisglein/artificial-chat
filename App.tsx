@@ -32,9 +32,15 @@ function App(): JSX.Element {
   const styles : StylesType = StyleSheet.create({
     appContent: {
       backgroundColor: isDarkMode ? 'black' : 'white',
-      paddingVertical: 12,
       justifyContent: 'space-between',
       height: '100%',
+    },
+    popupBackground: {
+      backgroundColor: isDarkMode ? 'white' : 'black',
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+      opacity: 0.3,
     },
     sectionContainer: {
       marginHorizontal: 12,
