@@ -20,11 +20,17 @@ import {
   SettingsPopup,
 } from './Settings';
 
+type ChatScrollContextType = {
+  scrollToEnd : () => void;
+}
+const ChatScrollContext = React.createContext<ChatScrollContextType>({scrollToEnd: () => {}});
+
 type ChatEntryProps = PropsWithChildren<{
   defaultText?: string;
   submit: (text : string) => void;
+  clearConversation: () => void;
 }>;
-function ChatEntry({submit, defaultText}: ChatEntryProps): JSX.Element {
+function ChatEntry({submit, defaultText, clearConversation}: ChatEntryProps): JSX.Element {
   const styles = React.useContext(StylesContext);
 
   // Allow a chat script to default populate the text box
@@ -51,6 +57,10 @@ function ChatEntry({submit, defaultText}: ChatEntryProps): JSX.Element {
         style={{flexShrink: 0}}
         title="Submit"
         onPress={submitValue}/>
+      <Button
+        style={{flexShrink: 0}}
+        title="💣"
+        onPress={clearConversation}/>
     </View>
   );
 }
@@ -60,8 +70,9 @@ type ChatProps = PropsWithChildren<{
   humanText? : string;
   onPrompt: (prompt: string) => void;
   regenerateResponse: () => void;
+  clearConversation: () => void;
 }>;
-function Chat({entries, humanText, onPrompt, regenerateResponse}: ChatProps): JSX.Element {
+function Chat({entries, humanText, onPrompt, regenerateResponse, clearConversation}: ChatProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const [showFeedbackPopup, setShowFeedbackPopup] = React.useState(false);
   const [showSettingsPopup, setShowSettingsPopup] = React.useState(false);
@@ -85,46 +96,52 @@ function Chat({entries, humanText, onPrompt, regenerateResponse}: ChatProps): JS
 
   return (
     <FeedbackContext.Provider value={feedbackContext}>
-      <View style={styles.appContent}>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          ref={scrollViewRef}
-          style={{flexShrink: 1}}>
-          <View
-            style={{
-              gap: 12,
-              opacity: showFeedbackPopup || showSettingsPopup ? 0.3 : 1.0}}>
-            {entries.map((entry, entryIndex) => (
-              <View key={entryIndex}>
-                {entry}
-              </View>
-            ))}
-            <View style={{alignSelf: 'center'}}>
-              <Button title="🔁 Regenerate response" onPress={() => regenerateResponse()}/>
+      <ChatScrollContext.Provider value={{scrollToEnd: scrollToEnd}}>
+        <View style={styles.appContent}>
+          <ScrollView
+            contentInsetAdjustmentBehavior="automatic"
+            ref={scrollViewRef}
+            style={{flexShrink: 1}}>
+            <View
+              style={{gap: 12}}>
+              {entries.map((entry, entryIndex) => (
+                <View key={entryIndex}>
+                  {entry}
+                </View>
+              ))}
+              {(entries.length > 0) &&
+                <View style={{alignSelf: 'center'}}>
+                  <Button title="🔁 Regenerate response" onPress={() => regenerateResponse()}/>
+                </View>
+              }
             </View>
+          </ScrollView>
+          <View
+            style={{flexShrink: 0, marginBottom: 12}}>
+            <HumanSection
+              hoverButtonText="⚙️"
+              hoverButtonOnPress={() => setShowSettingsPopup(true)}>
+              <ChatEntry
+                defaultText={humanText}
+                submit={(newEntry) => {
+                  onPrompt(newEntry);
+                  scrollToEnd();
+                }}
+                clearConversation={clearConversation}/>
+            </HumanSection>
           </View>
-        </ScrollView>
-        <HumanSection
-          hoverButtonText="⚙️"
-          hoverButtonOnPress={() => setShowSettingsPopup(true)}
-          style={{flexShrink: 0}}>
-          <ChatEntry
-            defaultText={humanText}
-            submit={(newEntry) => {
-              onPrompt(newEntry);
-              scrollToEnd();
-            }}/>
-        </HumanSection>
-        <FeedbackPopup
-          show={showFeedbackPopup}
-          isPositive={feedbackIsPositive}
-          close={() => setShowFeedbackPopup(false)}/>
-        <SettingsPopup
-          show={showSettingsPopup}
-          close={() => setShowSettingsPopup(false)}/>
-      </View>
+          { (showFeedbackPopup || showSettingsPopup) && <View style={styles.popupBackground}/> }
+          <FeedbackPopup
+            show={showFeedbackPopup}
+            isPositive={feedbackIsPositive}
+            close={() => setShowFeedbackPopup(false)}/>
+          <SettingsPopup
+            show={showSettingsPopup}
+            close={() => setShowSettingsPopup(false)}/>
+        </View>
+      </ChatScrollContext.Provider>
     </FeedbackContext.Provider>
   );
 }
 
-export { Chat };
+export { Chat, ChatScrollContext };
