@@ -17,7 +17,7 @@ import {
 function App(): JSX.Element {
   const [currentTheme, setCurrentTheme] = React.useState(Appearance.getColorScheme());
   const [apiKey, setApiKey] = React.useState<string | undefined>(undefined);
-  const [scriptName, setScriptName] = React.useState<string | undefined>("Dinosaurs");
+  const [scriptName, setScriptName] = React.useState<string | undefined>("");
   const isDarkMode = currentTheme === 'dark';
 
   const onAppThemeChanged = () => {
