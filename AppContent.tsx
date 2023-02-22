@@ -24,8 +24,9 @@ import {
 type AutomatedChatSessionProps = PropsWithChildren<{
   entries: JSX.Element[];
   appendEntry: (entry: JSX.Element | JSX.Element[]) => void;
+  clearConversation: () => void;
 }>;
-function AutomatedChatSession({entries, appendEntry}: AutomatedChatSessionProps): JSX.Element {
+function AutomatedChatSession({entries, appendEntry, clearConversation}: AutomatedChatSessionProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const settings = React.useContext(SettingsContext);
 
@@ -118,7 +119,11 @@ function AutomatedChatSession({entries, appendEntry}: AutomatedChatSessionProps)
       entries={entries}
       humanText={humanText}
       onPrompt={(text) => onPrompt(text, chatScriptIndex)}
-      regenerateResponse={() => setChatScriptIndex(0)}/>
+      regenerateResponse={() => setChatScriptIndex(chatScriptIndex - 1)}
+      clearConversation={() => {
+        setChatScriptIndex(0);
+        clearConversation();
+      }}/>
   );
 }
 
@@ -132,11 +137,14 @@ function ChatSession(): JSX.Element {
       setEntries([...entries, newEntry]);
     }
   }, [entries]);
+
+  const clearConversation = () => setEntries([]);
   
   return (
     <AutomatedChatSession
       entries={entries}
-      appendEntry={appendEntry}/>
+      appendEntry={appendEntry}
+      clearConversation={clearConversation}/>
   );
 }
 

@@ -23,8 +23,9 @@ import {
 type ChatEntryProps = PropsWithChildren<{
   defaultText?: string;
   submit: (text : string) => void;
+  clearConversation: () => void;
 }>;
-function ChatEntry({submit, defaultText}: ChatEntryProps): JSX.Element {
+function ChatEntry({submit, defaultText, clearConversation}: ChatEntryProps): JSX.Element {
   const styles = React.useContext(StylesContext);
 
   // Allow a chat script to default populate the text box
@@ -51,6 +52,10 @@ function ChatEntry({submit, defaultText}: ChatEntryProps): JSX.Element {
         style={{flexShrink: 0}}
         title="Submit"
         onPress={submitValue}/>
+      <Button
+        style={{flexShrink: 0}}
+        title="💣"
+        onPress={clearConversation}/>
     </View>
   );
 }
@@ -60,8 +65,9 @@ type ChatProps = PropsWithChildren<{
   humanText? : string;
   onPrompt: (prompt: string) => void;
   regenerateResponse: () => void;
+  clearConversation: () => void;
 }>;
-function Chat({entries, humanText, onPrompt, regenerateResponse}: ChatProps): JSX.Element {
+function Chat({entries, humanText, onPrompt, regenerateResponse, clearConversation}: ChatProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const [showFeedbackPopup, setShowFeedbackPopup] = React.useState(false);
   const [showSettingsPopup, setShowSettingsPopup] = React.useState(false);
@@ -113,7 +119,8 @@ function Chat({entries, humanText, onPrompt, regenerateResponse}: ChatProps): JS
             submit={(newEntry) => {
               onPrompt(newEntry);
               scrollToEnd();
-            }}/>
+            }}
+            clearConversation={clearConversation}/>
         </HumanSection>
         <FeedbackPopup
           show={showFeedbackPopup}
