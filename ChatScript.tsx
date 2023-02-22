@@ -124,6 +124,14 @@ const runDinosaurScript = (index: number, styles, goToNext) => {
   }
 }
 
+const formatTextAsBullets = (styles : StylesContext, text: string[]) => {
+  return text.map((line, index) => 
+    <View key={index} style={{flexDirection: 'row', flexWrap: 'nowrap', gap: 8}}>
+      <Text style={{flexShrink: 0}}>{index + 1}.</Text>
+      <Text style={{flexShrink: 1}}>{line}</Text>
+    </View>);
+}
+
 const runDeveloperScript = (index: number, styles, goToNext) => {
   switch (index) {
     case 0: return {
@@ -132,13 +140,15 @@ const runDeveloperScript = (index: number, styles, goToNext) => {
         return (
         <AISection>
           <Text>Yes, I am familiar with the rules of a white elephant gift exchange! A white elephant gift exchange is a fun game typically played during holiday parties or other social gatherings. The basic rules of a white elephant gift exchange are as follows:</Text>
-          <Text>1. Each participant brings a wrapped gift of a certain value, usually set by the host or organizer of the game.</Text>
-          <Text>2. All the wrapped gifts are placed in a central location.</Text>
-          <Text>3. Participants draw numbers to determine the order in which they will choose a gift.</Text>
-          <Text>4. The first participant selects a wrapped gift from the central location and opens it.</Text>
-          <Text>5. The second participant can either choose to "steal" the gift that the first participant opened or choose a new wrapped gift from the central location.</Text>
-          <Text>6. If a gift is stolen, the person who had their gift stolen then gets to choose a new gift from the central location or steal another gift.</Text>
-          <Text>7. The game continues in this way until all participants have had a turn and all gifts have been opened.</Text>
+          {formatTextAsBullets(styles, [
+            "Each participant brings a wrapped gift of a certain value, usually set by the host or organizer of the game.",
+            "All the wrapped gifts are placed in a central location.",
+            "Participants draw numbers to determine the order in which they will choose a gift.",
+            "The first participant selects a wrapped gift from the central location and opens it.",
+            "The second participant can either choose to \"steal\" the gift that the first participant opened or choose a new wrapped gift from the central location.",
+            "If a gift is stolen, the person who had their gift stolen then gets to choose a new gift from the central location or steal another gift.",
+            "The game continues in this way until all participants have had a turn and all gifts have been opened.",
+          ])}
           <Text>There are many variations on these rules, and some hosts may choose to add their own twists or rules to the game. It's important to establish any variations or rules before the game begins to avoid confusion or disagreements among participants.</Text>
         </AISection>
       )}
@@ -148,10 +158,12 @@ const runDeveloperScript = (index: number, styles, goToNext) => {
       aiResponse: () =>
         <AISection>
           <Text>Running a white elephant gift exchange remotely over a video call can present some challenges. Here are a few that you may want to consider:</Text>
-          <Text>1. Gift delivery: In a traditional white elephant gift exchange, participants bring their gifts to the party and place them in a central location. With a remote party, participants will need to send their gifts to each other in advance. This can be a logistical challenge, especially if participants are located far apart or in different countries.</Text>
-          <Text>2. Timing: It may be difficult to coordinate the timing of the gift exchange so that everyone can participate in real-time. Time zones and scheduling conflicts can make it challenging to find a time that works for everyone.</Text>
-          <Text>3. Stealing gifts: The "stealing" aspect of a white elephant gift exchange can be tricky to manage remotely. It may be difficult to keep track of who has what gift and to ensure that everyone has an equal opportunity to steal or choose a new gift.</Text>
-          <Text>4. Limited visibility: With a remote party, participants may not be able to see all of the gifts at once, which can make it harder to decide which one to choose. Additionally, participants may not be able to see each other's reactions or engage in the same level of banter and camaraderie that they would during an in-person party.</Text>
+          {formatTextAsBullets(styles, [
+            "Gift delivery: In a traditional white elephant gift exchange, participants bring their gifts to the party and place them in a central location. With a remote party, participants will need to send their gifts to each other in advance. This can be a logistical challenge, especially if participants are located far apart or in different countries.",
+            "Timing: It may be difficult to coordinate the timing of the gift exchange so that everyone can participate in real-time. Time zones and scheduling conflicts can make it challenging to find a time that works for everyone.",
+            "Stealing gifts: The \"stealing\" aspect of a white elephant gift exchange can be tricky to manage remotely. It may be difficult to keep track of who has what gift and to ensure that everyone has an equal opportunity to steal or choose a new gift.",
+            "Limited visibility: With a remote party, participants may not be able to see all of the gifts at once, which can make it harder to decide which one to choose. Additionally, participants may not be able to see each other's reactions or engage in the same level of banter and camaraderie that they would during an in-person party.",
+          ])}
           <Text>To address these challenges, you may want to consider setting up a clear system for gift delivery, scheduling the party at a time that works for as many participants as possible, and using a virtual whiteboard or other tool to keep track of who has which gift. You may also want to establish clear rules for how stealing will work and consider using a random number generator or other tool to determine the order in which participants will choose their gifts. Finally, make sure to set the right expectations and encourage participants to have fun and be flexible, even if the party doesn't go exactly as planned.</Text>
         </AISection>,
     }
@@ -161,9 +173,11 @@ const runDeveloperScript = (index: number, styles, goToNext) => {
         <AISection>
           <Text>Sure, I can definitely help you with that! Depending on your level of programming experience and the complexity of the tool you want to create, there are several different options for creating an app to help manage your remote white elephant gift exchange.</Text>
           <Text>Here are a few suggestions for different levels of programming experience:</Text>
-          <Text>1. No programming experience: If you have no programming experience, one option could be to use a tool like Google Forms or Microsoft Forms to create a survey that participants can use to choose their gifts. You can set up the survey to randomly assign participants a number or a turn in the gift exchange, and then have them enter their gift choice as well as their address for gift delivery. You can then use the survey results to track who has chosen which gift and ensure that everyone receives their gift in a timely manner.</Text>
-          <Text>2. Some programming experience: If you have some programming experience, you could create a simple web application using a framework like Flask or Django. The application could allow participants to log in and choose their gift from a list of available options. You could also use the application to randomly assign turn order and track who has chosen which gift. To create a web application, you will need to know HTML, CSS, and either Python (for Flask) or Python and JavaScript (for Django).</Text>
-          <Text>3. Advanced programming experience: If you have advanced programming experience, you could create a more complex web application using a modern JavaScript framework like React or Angular. This would allow you to create a more interactive and dynamic user interface, with features like real-time updates, chat functionality, and more. To create a web application using React or Angular, you will need to be proficient in JavaScript and HTML/CSS.</Text>
+          {formatTextAsBullets(styles, [
+            "No programming experience: If you have no programming experience, one option could be to use a tool like Google Forms or Microsoft Forms to create a survey that participants can use to choose their gifts. You can set up the survey to randomly assign participants a number or a turn in the gift exchange, and then have them enter their gift choice as well as their address for gift delivery. You can then use the survey results to track who has chosen which gift and ensure that everyone receives their gift in a timely manner.",
+            "Some programming experience: If you have some programming experience, you could create a simple web application using a framework like Flask or Django. The application could allow participants to log in and choose their gift from a list of available options. You could also use the application to randomly assign turn order and track who has chosen which gift. To create a web application, you will need to know HTML, CSS, and either Python (for Flask) or Python and JavaScript (for Django).",
+            "Advanced programming experience: If you have advanced programming experience, you could create a more complex web application using a modern JavaScript framework like React or Angular. This would allow you to create a more interactive and dynamic user interface, with features like real-time updates, chat functionality, and more. To create a web application using React or Angular, you will need to be proficient in JavaScript and HTML/CSS.",
+          ])}
           <Text>For Windows PC, you can use a variety of code editors or integrated development environments (IDEs) to create your app. Some popular options include Visual Studio Code, PyCharm, and Sublime Text. You will also need to choose a database to store your application data; for a simple application, you could use a lightweight database like SQLite, while for a more complex application, you may want to consider a more robust database like MySQL or PostgreSQL.</Text>
           <Text>Regardless of which option you choose, I would recommend starting with a clear set of requirements for your app and sketching out some basic wireframes to help you visualize how the user interface will work. This will help you stay focused and ensure that you're creating a tool that will be both useful and enjoyable for your participants.</Text>
         </AISection>,
