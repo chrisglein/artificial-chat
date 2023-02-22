@@ -20,6 +20,11 @@ import {
   SettingsPopup,
 } from './Settings';
 
+type ChatScrollContextType = {
+  scrollToEnd : () => void;
+}
+const ChatScrollContext = React.createContext<ChatScrollContextType>({scrollToEnd: () => {}});
+
 type ChatEntryProps = PropsWithChildren<{
   defaultText?: string;
   submit: (text : string) => void;
@@ -91,47 +96,49 @@ function Chat({entries, humanText, onPrompt, regenerateResponse, clearConversati
 
   return (
     <FeedbackContext.Provider value={feedbackContext}>
-      <View style={styles.appContent}>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          ref={scrollViewRef}
-          style={{flexShrink: 1}}>
-          <View
-            style={{
-              gap: 12,
-              opacity: showFeedbackPopup || showSettingsPopup ? 0.3 : 1.0}}>
-            {entries.map((entry, entryIndex) => (
-              <View key={entryIndex}>
-                {entry}
+      <ChatScrollContext.Provider value={{scrollToEnd: scrollToEnd}}>
+        <View style={styles.appContent}>
+          <ScrollView
+            contentInsetAdjustmentBehavior="automatic"
+            ref={scrollViewRef}
+            style={{flexShrink: 1}}>
+            <View
+              style={{
+                gap: 12,
+                opacity: showFeedbackPopup || showSettingsPopup ? 0.3 : 1.0}}>
+              {entries.map((entry, entryIndex) => (
+                <View key={entryIndex}>
+                  {entry}
+                </View>
+              ))}
+              <View style={{alignSelf: 'center'}}>
+                <Button title="🔁 Regenerate response" onPress={() => regenerateResponse()}/>
               </View>
-            ))}
-            <View style={{alignSelf: 'center'}}>
-              <Button title="🔁 Regenerate response" onPress={() => regenerateResponse()}/>
             </View>
-          </View>
-        </ScrollView>
-        <HumanSection
-          hoverButtonText="⚙️"
-          hoverButtonOnPress={() => setShowSettingsPopup(true)}
-          style={{flexShrink: 0}}>
-          <ChatEntry
-            defaultText={humanText}
-            submit={(newEntry) => {
-              onPrompt(newEntry);
-              scrollToEnd();
-            }}
-            clearConversation={clearConversation}/>
-        </HumanSection>
-        <FeedbackPopup
-          show={showFeedbackPopup}
-          isPositive={feedbackIsPositive}
-          close={() => setShowFeedbackPopup(false)}/>
-        <SettingsPopup
-          show={showSettingsPopup}
-          close={() => setShowSettingsPopup(false)}/>
-      </View>
+          </ScrollView>
+          <HumanSection
+            hoverButtonText="⚙️"
+            hoverButtonOnPress={() => setShowSettingsPopup(true)}
+            style={{flexShrink: 0}}>
+            <ChatEntry
+              defaultText={humanText}
+              submit={(newEntry) => {
+                onPrompt(newEntry);
+                scrollToEnd();
+              }}
+              clearConversation={clearConversation}/>
+          </HumanSection>
+          <FeedbackPopup
+            show={showFeedbackPopup}
+            isPositive={feedbackIsPositive}
+            close={() => setShowFeedbackPopup(false)}/>
+          <SettingsPopup
+            show={showSettingsPopup}
+            close={() => setShowSettingsPopup(false)}/>
+        </View>
+      </ChatScrollContext.Provider>
     </FeedbackContext.Provider>
   );
 }
 
-export { Chat };
+export { Chat, ChatScrollContext };

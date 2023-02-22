@@ -10,18 +10,11 @@ import {
   OpenAIUrl,
   CallOpenAI,
 } from './OpenAI';
-import {
-  HoverButton,
-} from './Controls';
-import {
-  StylesContext,
-} from './Styles';
-import {
-  FeedbackContext,
-} from './Feedback';
-import {
-  SettingsContext,
-} from './Settings';
+import { HoverButton } from './Controls';
+import { ChatScrollContext } from './Chat';
+import { StylesContext } from './Styles';
+import { FeedbackContext } from './Feedback';
+import { SettingsContext } from './Settings';
 
 type HumanSectionProps = PropsWithChildren<{
     hoverButtonText?: string;
@@ -80,6 +73,7 @@ type AISectionWithQueryProps = {
 };
 function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
   const settingsContext = React.useContext(SettingsContext);
+  const chatScroll = React.useContext(ChatScrollContext);
   const [isLoading, setIsLoading] = React.useState(true);
   const [queryResult, setQueryResult] = React.useState<string | undefined>(undefined);
 
@@ -96,6 +90,7 @@ function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
       },
       onComplete: () => {
         setIsLoading(false);
+        chatScroll.scrollToEnd();
       }});
     }, [prompt]);
 
@@ -106,4 +101,22 @@ function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
   )
 }
 
-export { HumanSection, AISection, AISectionWithQuery }
+function AISectionWithFakeResponse({children}: PropsWithChildren): JSX.Element {
+  const [isLoading, setIsLoading] = React.useState(true);
+  const chatScroll = React.useContext(ChatScrollContext);
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+      chatScroll.scrollToEnd();
+    }, 1500);
+  });
+
+  return (
+    <AISection isLoading={isLoading}>
+      {!isLoading && children}
+    </AISection>
+  )
+}
+
+export { HumanSection, AISectionWithFakeResponse, AISectionWithQuery }
