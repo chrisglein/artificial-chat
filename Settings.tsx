@@ -16,6 +16,8 @@ type SettingsType = {
   setApiKey: (value: string) => void,
   scriptName?: string,
   setScriptName: (value: string) => void,
+  delayForArtificialResponse?: number,
+  setDelayForArtificialResponse: (value: number) => void,
 }
   
 const SettingsContext = React.createContext<SettingsType>({});
@@ -29,6 +31,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   const settings = React.useContext(SettingsContext);
   const [apiKey, setApiKey] = React.useState<string>(settings.apiKey ?? "");
   const [scriptName, setScriptName] = React.useState<string>(settings.scriptName ?? "");
+  const [delayForArtificialResponse, setDelayForArtificialResponse] = React.useState<number>(settings.delayForArtificialResponse ?? 0);
 
   return (
     <Popup
@@ -61,12 +64,21 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             <Picker.Item label="None" value=""/>
           </Picker>
         </View>
+        <View>
+          <Text>Artificial Delay in Script Response</Text>
+          <TextInput
+            keyboardType="numeric"
+            style={{flexGrow: 1, minHeight: 32}}
+            onChangeText={value => setDelayForArtificialResponse(parseInt(value))}
+            value={delayForArtificialResponse.toString()}/>
+        </View>
         <View style={{marginTop: 12, alignSelf: 'flex-end'}}>
           <Button
             title="OK"
             onPress={() => {
               settings.setApiKey(apiKey);
               settings.setScriptName(scriptName);
+              settings.setDelayForArtificialResponse(delayForArtificialResponse);
               close();
             }}/>
         </View>

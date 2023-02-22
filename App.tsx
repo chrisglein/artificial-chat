@@ -18,6 +18,7 @@ function App(): JSX.Element {
   const [currentTheme, setCurrentTheme] = React.useState(Appearance.getColorScheme());
   const [apiKey, setApiKey] = React.useState<string | undefined>(undefined);
   const [scriptName, setScriptName] = React.useState<string | undefined>("");
+  const [delayForArtificialResponse, setDelayForArtificialResponse] = React.useState<number>(1500);
   const isDarkMode = currentTheme === 'dark';
 
   const onAppThemeChanged = () => {
@@ -96,6 +97,8 @@ function App(): JSX.Element {
           setScriptName: setScriptName,
           apiKey: apiKey,
           setApiKey: setApiKey,
+          delayForArtificialResponse: delayForArtificialResponse,
+          setDelayForArtificialResponse: setDelayForArtificialResponse,
         }}>
         <View>
           <ChatSession/>

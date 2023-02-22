@@ -102,6 +102,7 @@ function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
 }
 
 function AISectionWithFakeResponse({children}: PropsWithChildren): JSX.Element {
+  const settingsContext = React.useContext(SettingsContext);
   const [isLoading, setIsLoading] = React.useState(true);
   const chatScroll = React.useContext(ChatScrollContext);
 
@@ -109,7 +110,7 @@ function AISectionWithFakeResponse({children}: PropsWithChildren): JSX.Element {
     setTimeout(() => {
       setIsLoading(false);
       chatScroll.scrollToEnd();
-    }, 1500);
+    }, settingsContext.delayForArtificialResponse ?? 0);
   });
 
   return (
