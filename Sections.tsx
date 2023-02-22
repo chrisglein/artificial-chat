@@ -68,7 +68,9 @@ function AISection({children, isLoading}: AISectionProps): JSX.Element {
       {isLoading && 
         <ActivityIndicator/>
       }
-      {children}
+      <View style={{gap: 4}}>
+        {children}
+      </View>
     </View>
   );
 }
