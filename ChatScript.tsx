@@ -7,11 +7,11 @@ import {
 } from 'react-native';
 import {
   Attribution,
+  CodeBlock,
   ConsentSwitch,
   ImageSelection,
 } from './Controls';
 import { AISection } from './Sections';
-import { StylesContext } from './Styles';
 
 const ChatScriptNames = [
   "Dinosaurs",
@@ -122,21 +122,6 @@ const runDinosaurScript = (index: number, styles, goToNext) => {
       aiResponse: undefined,
     }
   }
-}
-
-function CodeBlock({content, language} : {content: string, language: string}) {
-  const styles = React.useContext(StylesContext);
-  return (
-    <View>
-      <View style={[styles.codeBlockTitle, {flexDirection: 'row', borderTopLeftRadius: 8, borderTopRightRadius: 8, paddingHorizontal: 12}]}>
-        <Text style={[styles.codeBlockTitleText, {flexGrow: 1, alignSelf: "center"}]}>{language}</Text>
-        <Button title="📋 Copy Code" color={styles.codeBlockTitleText.color}/>
-      </View>
-      <View style={[styles.codeBlockContent, {borderBottomLeftRadius: 8, borderBottomRightRadius: 8}]}>
-        <Text style={{fontFamily: "Courier New", margin: 10}}>{content}</Text>
-      </View>
-    </View>
-  )
 }
 
 const runDeveloperScript = (index: number, styles, goToNext) => {
@@ -476,20 +461,21 @@ const runAdaptiveCardScript = (index: number, styles, goToNext) => {
         aiResponse: () => (
           <AISection>
             <Text>Certainly! Here is the JSON:</Text>
-            <Text>{`{
-                type: 'AdaptiveCard',
-                version: '1.0',
-                body: [
-                  {
-                    type: 'Image',
-                    url: 'http://adaptivecards.io/content/adaptive-card-50.png',
-                  },
-                  {
-                    type: 'TextBlock',
-                    text: 'This is an Adaptive Card',
-                  },
-                ],
-              }`}</Text>
+            <CodeBlock language="json" content={`{
+  type: 'AdaptiveCard',
+  version: '1.0',
+  body: [
+    {
+      type: 'Image',
+      url: 'http://adaptivecards.io/content/adaptive-card-50.png',
+    },
+    {
+      type: 'TextBlock',
+      text: 'This is an Adaptive Card',
+    },
+  ],
+}`
+            }/>
           </AISection>
         ),
       };
