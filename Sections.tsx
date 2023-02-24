@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import {
-  OpenAIUrl,
+  OpenAiApi,
   CallOpenAI,
 } from './OpenAI';
 import { HoverButton } from './Controls';
@@ -79,7 +79,7 @@ function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
 
   React.useEffect(() => {
     CallOpenAI({
-      url: OpenAIUrl().completion("text-davinci-003-playground"),
+      api: OpenAiApi.Completion,
       apiKey: settingsContext.apiKey,
       prompt: prompt,
       onError: (error) => {
