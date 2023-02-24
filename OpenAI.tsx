@@ -40,10 +40,15 @@ const OpenAIUrl = (api: OpenAiApi, engine?: string) => {
       return {
         url: `${OpenAIUrl}/images/generations`,
         body: (prompt: string) => {
-          return {};
+          return {
+            prompt: prompt,
+            n: 1,
+            size: "256x256",
+          };
         },
         response: (json: any) => {
-          return "";
+          console.log(`AI response: "${json.data[0].url}"`);
+          return json.data[0].url;
         },
       }
     default:

@@ -3,6 +3,7 @@ import type {PropsWithChildren} from 'react';
 import {
   ActivityIndicator,
   Pressable,
+  Image,
   Text,
   View,
 } from 'react-native';
@@ -74,16 +75,20 @@ type AISectionWithQueryProps = {
 function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
   const settingsContext = React.useContext(SettingsContext);
   const chatScroll = React.useContext(ChatScrollContext);
+  const styles = React.useContext(StylesContext);
   const [isLoading, setIsLoading] = React.useState(true);
   const [queryResult, setQueryResult] = React.useState<string | undefined>(undefined);
+  const [error, setError] = React.useState<string | undefined>(undefined);
 
+  let isImagePrompt = prompt.startsWith("Image:");
+    
   React.useEffect(() => {
     CallOpenAI({
-      api: OpenAiApi.Completion,
+      api: isImagePrompt ? OpenAiApi.Generations : OpenAiApi.Completion,
       apiKey: settingsContext.apiKey,
       prompt: prompt,
       onError: (error) => {
-        setQueryResult(error);
+        setError(error);
       },
       onResult: (result) => {
         setQueryResult(result);
@@ -96,7 +101,12 @@ function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
 
   return (
     <AISection isLoading={isLoading}>
-      <Text>{queryResult}</Text>
+      {error ?
+        <Text>{error}</Text> :
+        isImagePrompt ? 
+          <Image source={{uri: queryResult}} style={styles.dalleImage}/> :
+          <Text>{queryResult}</Text>
+      }
     </AISection>
   )
 }
