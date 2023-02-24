@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {
   OpenAiApi,
-  CallOpenAI,
+  CallOpenAi,
 } from './OpenAI';
 import { HoverButton } from './Controls';
 import { ChatScrollContext } from './Chat';
@@ -79,12 +79,47 @@ function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
   const [isLoading, setIsLoading] = React.useState(true);
   const [queryResult, setQueryResult] = React.useState<string | undefined>(undefined);
   const [error, setError] = React.useState<string | undefined>(undefined);
+  const [imagePrompt, setImagePrompt] = React.useState<string | undefined>(undefined);
+  
+  //let isImagePrompt = prompt.startsWith("Image:");
 
-  let isImagePrompt = prompt.startsWith("Image:");
+  React.useEffect(() => {
+    CallOpenAi({
+      api: OpenAiApi.Completion,
+      apiKey: settingsContext.apiKey,
+      instructions: `You are an assistant helping the user. To aid you, you can use DALL-E which can generate images from a description. Your job is to take the user's prompt and reply with an image prompt. The image prompt should be a comma-separated list of keywords describing the desired image, for example:
+      - photography
+      - fun
+      - scary
+      - comics
+      - high quality
+      - highres
+      - art
+      - dull colors
+      - [name of a photographer]
+      - [name of a design studio]
+      - [visual adjective]
+      - [style of the image]
+      
+      If the user's prompt does not not seem to include a request for an image, respond with "N/A" (and no other punctuation). Otherwise, respond with the image prompt string.`,
+      prompt: prompt,
+      onError: (error) => {
+        setImagePrompt("N/A");
+      },
+      onResult: (result) => {
+        setImagePrompt(result);
+      },
+      onComplete: () => {
+      }});
+    }, [prompt]);
     
   React.useEffect(() => {
-    CallOpenAI({
-      api: isImagePrompt ? OpenAiApi.Generations : OpenAiApi.Completion,
+    if (imagePrompt === undefined) {
+      return;
+    }
+    console.log(`Image prompt? "${imagePrompt}"`);
+    CallOpenAi({
+      api: imagePrompt !== "N/A" ? OpenAiApi.Generations : OpenAiApi.Completion,
       apiKey: settingsContext.apiKey,
       prompt: prompt,
       onError: (error) => {
@@ -97,14 +132,17 @@ function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
         setIsLoading(false);
         chatScroll.scrollToEnd();
       }});
-    }, [prompt]);
+    }, [prompt, imagePrompt]);
 
   return (
     <AISection isLoading={isLoading}>
-      {error ?
-        <Text>{error}</Text> :
-        isImagePrompt ? 
-          <Image source={{uri: queryResult}} style={styles.dalleImage}/> :
+      {isLoading || error ?
+        <Text style={{color: 'crimson'}}>{error}</Text> :
+        imagePrompt !== "N/A" ? 
+          <View>
+            <Text>{imagePrompt}</Text>
+            <Image source={{uri: queryResult}} style={styles.dalleImage}/>
+          </View> :
           <Text>{queryResult}</Text>
       }
     </AISection>

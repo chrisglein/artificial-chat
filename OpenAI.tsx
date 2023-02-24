@@ -3,18 +3,25 @@ enum OpenAiApi {
   Generations,
 }
 
-const OpenAIUrl = (api: OpenAiApi, engine?: string) => {
+type OpenAiHandlerType = {
+  api: OpenAiApi,
+  engine?: string,
+  instructions?: string,
+}
+const OpenAiHandler = ({api, engine, instructions}: OpenAiHandlerType) => {
   const DefaultEngine = 'text-davinci-003-playground';
   const BaseApiUrl = 'https://api.openai.com';
   const APIVersion = 'v1';
   const OpenAIUrl = `${BaseApiUrl}/${APIVersion}`;
+
+  let actualInstructions = instructions ?? 'The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly.';
 
   switch (api) {
     case OpenAiApi.Completion: 
       return {
         url: `${OpenAIUrl}/engines/${engine ?? DefaultEngine}/completions`,
         body: (prompt: string) => {
-          let wrappedPrompt = `The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly.\nHuman: ${prompt}.\nAI:`;
+          let wrappedPrompt = `${actualInstructions}\nHuman: ${prompt}.\nAI:`;
           return {
             best_of: 1,
             echo: true,
@@ -31,7 +38,7 @@ const OpenAIUrl = (api: OpenAiApi, engine?: string) => {
         },
         response: (json: any) => {
           let fullTextResult = json.choices[0].text;
-          let trimmedTextResult = fullTextResult.match("AI:\w*(.+)")[1];
+          let trimmedTextResult = fullTextResult.match("AI:\w*(.+)")[1].trim();
           console.log(`AI response: "${trimmedTextResult}"`);
           return trimmedTextResult;
         }
@@ -56,15 +63,16 @@ const OpenAIUrl = (api: OpenAiApi, engine?: string) => {
   }
 }
 
-type CallOpenAIProps = {
+type CallOpenAiProps = {
   api: OpenAiApi,
   apiKey?: string,
+  instructions?: string,
   prompt: string,
   onError: (error: string) => void,
   onResult: (result: string) => void,
   onComplete: () => void
 }
-const CallOpenAI = async ({api, apiKey, prompt, onError, onResult, onComplete}: CallOpenAIProps) => {
+const CallOpenAi = async ({api, apiKey, instructions, prompt, onError, onResult, onComplete}: CallOpenAiProps) => {
   const DefaultApiKey = undefined; // During development you can paste your API key here, but DO NOT CHECK IN
   let effectiveApiKey = apiKey ?? DefaultApiKey;
 
@@ -77,7 +85,7 @@ const CallOpenAI = async ({api, apiKey, prompt, onError, onResult, onComplete}: 
   try {
     console.log("start loading");
 
-    let apiHandler = OpenAIUrl(api);
+    let apiHandler = OpenAiHandler({api: api, instructions: instructions});
 
     let response = await fetch(
       apiHandler.url, {
@@ -110,4 +118,4 @@ const CallOpenAI = async ({api, apiKey, prompt, onError, onResult, onComplete}: 
   }
 }
 
-export { OpenAIUrl, CallOpenAI, OpenAiApi };
+export { CallOpenAi, OpenAiApi };
