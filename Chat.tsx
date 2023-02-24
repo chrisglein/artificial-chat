@@ -52,6 +52,8 @@ function ChatEntry({submit, defaultText, clearConversation}: ChatEntryProps): JS
         placeholder="Ask me anything"
         style={{flexGrow: 1, flexShrink: 1}}
         onChangeText={newValue => setValue(newValue)}
+        submitKeyEvents={[{code: 'Enter', shiftKey: false}]}
+        onSubmitEditing={submitValue}
         value={defaultText ?? value}/>
       <Button
         style={{flexShrink: 0}}
