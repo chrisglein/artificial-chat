@@ -83,7 +83,7 @@ const CallOpenAi = async ({api, apiKey, instructions, prompt, onError, onResult,
   }
 
   try {
-    console.log("start loading");
+    console.log(`Start "${prompt}"`);
 
     let apiHandler = OpenAiHandler({api: api, instructions: instructions});
 
@@ -102,6 +102,7 @@ const CallOpenAi = async ({api, apiKey, instructions, prompt, onError, onResult,
       const json = await response.json();
 
       try {
+        console.log(`Have result for "${prompt}"`);
         onResult(apiHandler.response(json));
       } catch (error) {
         onError(`Error parsing AI response text "${json}"`);
@@ -113,7 +114,7 @@ const CallOpenAi = async ({api, apiKey, instructions, prompt, onError, onResult,
     onError("Error in http POST");
     onError(error.stack);
   } finally {
-    console.log("done loading");
+    console.log(`End "${prompt}"`);
     onComplete();
   }
 }

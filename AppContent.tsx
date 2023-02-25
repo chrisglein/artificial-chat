@@ -95,7 +95,7 @@ function AutomatedChatSession({entries, appendEntry, clearConversation}: Automat
         appendEntry(aiResponse);
       }
     } else {
-      console.log(`Prompt: '${text}`);
+      console.log(`Prompt: "${text}"`);
       
       appendEntry([
         <HumanSection>

@@ -2,6 +2,7 @@ import React from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   ActivityIndicator,
+  Button,
   Pressable,
   Image,
   Text,
@@ -80,10 +81,11 @@ function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
   const [queryResult, setQueryResult] = React.useState<string | undefined>(undefined);
   const [error, setError] = React.useState<string | undefined>(undefined);
   const [imagePrompt, setImagePrompt] = React.useState<string | undefined>(undefined);
-  
-  //let isImagePrompt = prompt.startsWith("Image:");
 
+  const notAnImageSentinel = "N/A";
   React.useEffect(() => {
+    setIsLoading(true);
+    setImagePrompt(undefined);
     CallOpenAi({
       api: OpenAiApi.Completion,
       apiKey: settingsContext.apiKey,
@@ -100,11 +102,12 @@ function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
       - [name of a design studio]
       - [visual adjective]
       - [style of the image]
-      
-      If the user's prompt does not not seem to include a request for an image, respond with "N/A" (and no other punctuation). Otherwise, respond with the image prompt string.`,
+      Where items enclosed in brackets would be replaced with an appropriate suggestion.
+
+      If the user's prompt does not PRIMARILY seem to include a request for an image, respond with "${notAnImageSentinel}" (and no other punctuation). Otherwise, respond with the image prompt string.`,
       prompt: prompt,
       onError: (error) => {
-        setImagePrompt("N/A");
+        setImagePrompt(notAnImageSentinel);
       },
       onResult: (result) => {
         setImagePrompt(result);
@@ -115,11 +118,12 @@ function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
     
   React.useEffect(() => {
     if (imagePrompt === undefined) {
+      console.log("Image prompt is undefined, not querying OpenAI");
       return;
     }
-    console.log(`Image prompt? "${imagePrompt}"`);
+    console.log(`Image prompt? ${imagePrompt !== notAnImageSentinel}`);
     CallOpenAi({
-      api: imagePrompt !== "N/A" ? OpenAiApi.Generations : OpenAiApi.Completion,
+      api: imagePrompt !== notAnImageSentinel ? OpenAiApi.Generations : OpenAiApi.Completion,
       apiKey: settingsContext.apiKey,
       prompt: prompt,
       onError: (error) => {
@@ -138,10 +142,27 @@ function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
     <AISection isLoading={isLoading}>
       {isLoading || error ?
         <Text style={{color: 'crimson'}}>{error}</Text> :
-        imagePrompt !== "N/A" ? 
-          <View>
-            <Text>{imagePrompt}</Text>
-            <Image source={{uri: queryResult}} style={styles.dalleImage}/>
+        imagePrompt !== notAnImageSentinel ? 
+          <View style={[styles.horizontalContainer, {flexWrap: 'nowrap', alignItems: 'flex-start'}]}>
+            <Image
+              source={{uri: queryResult}}
+              alt={imagePrompt}
+              style={[{flexGrow: 0}, styles.dalleImage]}/>
+            <View
+              style={{flexShrink: 1, gap: 8}}>
+              <Text>Here is an image created using the following requirements "{imagePrompt}"</Text>
+              <View style={{alignSelf: 'flex-end', alignItems: 'flex-end'}}>
+                <Button
+                  title="I didn't want to see an image"
+                  onPress={() => {
+                    setImagePrompt(notAnImageSentinel);
+                    setQueryResult(undefined);
+                  }}/>
+                <Button
+                  title="Show me more"
+                  onPress={() => console.log("Not yet implemented")}/>
+              </View>
+            </View>
           </View> :
           <Text>{queryResult}</Text>
       }
