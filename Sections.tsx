@@ -2,13 +2,15 @@ import React from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   ActivityIndicator,
+  Button,
   Pressable,
+  Image,
   Text,
   View,
 } from 'react-native';
 import {
-  OpenAIUrl,
-  CallOpenAI,
+  OpenAiApi,
+  CallOpenAi,
 } from './OpenAI';
 import { HoverButton } from './Controls';
 import { ChatScrollContext } from './Chat';
@@ -74,16 +76,58 @@ type AISectionWithQueryProps = {
 function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
   const settingsContext = React.useContext(SettingsContext);
   const chatScroll = React.useContext(ChatScrollContext);
+  const styles = React.useContext(StylesContext);
   const [isLoading, setIsLoading] = React.useState(true);
   const [queryResult, setQueryResult] = React.useState<string | undefined>(undefined);
+  const [error, setError] = React.useState<string | undefined>(undefined);
+  const [imagePrompt, setImagePrompt] = React.useState<string | undefined>(undefined);
 
+  const notAnImageSentinel = "N/A";
   React.useEffect(() => {
-    CallOpenAI({
-      url: OpenAIUrl().completion("text-davinci-003-playground"),
+    setIsLoading(true);
+    setImagePrompt(undefined);
+    CallOpenAi({
+      api: OpenAiApi.Completion,
+      apiKey: settingsContext.apiKey,
+      instructions: `You are an assistant helping the user. To aid you, you can use DALL-E which can generate images from a description. Your job is to take the user's prompt and reply with an image prompt. The image prompt should be a comma-separated list of keywords describing the desired image, for example:
+      - photography
+      - fun
+      - scary
+      - comics
+      - high quality
+      - highres
+      - art
+      - dull colors
+      - [name of a photographer]
+      - [name of a design studio]
+      - [visual adjective]
+      - [style of the image]
+      Where items enclosed in brackets would be replaced with an appropriate suggestion.
+
+      If the user's prompt does not PRIMARILY seem to include a request for an image, respond with "${notAnImageSentinel}" (and no other punctuation). Otherwise, respond with the image prompt string.`,
+      prompt: prompt,
+      onError: (error) => {
+        setImagePrompt(notAnImageSentinel);
+      },
+      onResult: (result) => {
+        setImagePrompt(result);
+      },
+      onComplete: () => {
+      }});
+    }, [prompt]);
+    
+  React.useEffect(() => {
+    if (imagePrompt === undefined) {
+      console.log("Image prompt is undefined, not querying OpenAI");
+      return;
+    }
+    console.log(`Image prompt? ${imagePrompt !== notAnImageSentinel}`);
+    CallOpenAi({
+      api: imagePrompt !== notAnImageSentinel ? OpenAiApi.Generations : OpenAiApi.Completion,
       apiKey: settingsContext.apiKey,
       prompt: prompt,
       onError: (error) => {
-        setQueryResult(error);
+        setError(error);
       },
       onResult: (result) => {
         setQueryResult(result);
@@ -92,11 +136,36 @@ function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
         setIsLoading(false);
         chatScroll.scrollToEnd();
       }});
-    }, [prompt]);
+    }, [prompt, imagePrompt]);
 
   return (
     <AISection isLoading={isLoading}>
-      <Text>{queryResult}</Text>
+      {isLoading || error ?
+        <Text style={{color: 'crimson'}}>{error}</Text> :
+        imagePrompt !== notAnImageSentinel ? 
+          <View style={[styles.horizontalContainer, {flexWrap: 'nowrap', alignItems: 'flex-start'}]}>
+            <Image
+              source={{uri: queryResult}}
+              alt={imagePrompt}
+              style={[{flexGrow: 0}, styles.dalleImage]}/>
+            <View
+              style={{flexShrink: 1, gap: 8}}>
+              <Text>Here is an image created using the following requirements "{imagePrompt}"</Text>
+              <View style={{alignSelf: 'flex-end', alignItems: 'flex-end'}}>
+                <Button
+                  title="I didn't want to see an image"
+                  onPress={() => {
+                    setImagePrompt(notAnImageSentinel);
+                    setQueryResult(undefined);
+                  }}/>
+                <Button
+                  title="Show me more"
+                  onPress={() => console.log("Not yet implemented")}/>
+              </View>
+            </View>
+          </View> :
+          <Text>{queryResult}</Text>
+      }
     </AISection>
   )
 }
