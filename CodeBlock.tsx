@@ -19,7 +19,7 @@ function CodeBlock({content, language} : {content: string, language: string}) {
         <Text style={[styles.codeBlockTitleText, {flexGrow: 1, alignSelf: "center"}]}>{language}</Text>
         <Button title="📋 Copy Code" color={styles.codeBlockTitleText.color}/>
       </View>
-      <View style={[styles.codeBlockContent, {borderBottomLeftRadius: 8, borderBottomRightRadius: 8}]}>
+      <View style={{borderBottomLeftRadius: 8, borderBottomRightRadius: 8}}>
         <SyntaxHighlighter
           style={isDarkTheme ? agate : light}
           customStyle={{margin: 10}}
