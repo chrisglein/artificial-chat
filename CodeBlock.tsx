@@ -22,7 +22,7 @@ function CodeBlock({content, language} : {content: string, language: string}) {
       <View style={[styles.codeBlockContent, {borderBottomLeftRadius: 8, borderBottomRightRadius: 8}]}>
         <SyntaxHighlighter
           style={isDarkTheme ? agate : light}
-          customStyle={{padding: 10}}
+          customStyle={{margin: 10}}
           fontSize={14}
           fontFamily="Courier New"
           language={language}>
