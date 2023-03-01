@@ -20,9 +20,10 @@ import { SettingsContext } from './Settings';
 
 type HumanSectionProps = PropsWithChildren<{
   disableEdit?: boolean;
+  disableCopy?: boolean;
   contentShownOnHover?: JSX.Element;
 }>;
-function HumanSection({children, disableEdit, contentShownOnHover}: HumanSectionProps): JSX.Element {
+function HumanSection({children, disableEdit, disableCopy, contentShownOnHover}: HumanSectionProps): JSX.Element {
   const [hovering, setHovering] = React.useState(false);
   const styles = React.useContext(StylesContext);
 
@@ -33,7 +34,8 @@ function HumanSection({children, disableEdit, contentShownOnHover}: HumanSection
       onHoverOut={() => setHovering(false)}>
       <View style={{flexDirection: 'row', minHeight: 26}}>
         <Text style={[styles.sectionTitle, {flexGrow: 1}]}>HUMAN</Text>
-        {hovering && !disableEdit && <HoverButton content="📝" onPress={() => {console.log("Not yet implemented")}}/>}
+        {hovering && !disableCopy && <HoverButton content="📋" onPress={() => console.log("Copy: Not yet implemented")}/>}
+        {hovering && !disableEdit && <HoverButton content="📝" onPress={() => {console.log("Edit: Not yet implemented")}}/>}
         {hovering && contentShownOnHover}
       </View>
       {children}
@@ -81,10 +83,12 @@ function AITextResponse({text}: AITextResponseType): JSX.Element {
   
 type AISectionProps = PropsWithChildren<{
   isLoading?: boolean;
+  contentShownOnHover?: JSX.Element;
 }>;
-function AISection({children, isLoading}: AISectionProps): JSX.Element {
+function AISection({children, isLoading, contentShownOnHover}: AISectionProps): JSX.Element {
   const feedbackContext = React.useContext(FeedbackContext);
   const styles = React.useContext(StylesContext);
+  const [hovering, setHovering] = React.useState(false);
 
   const showFeedbackPopup = (positive: boolean) => {
     if (feedbackContext) {
@@ -93,9 +97,14 @@ function AISection({children, isLoading}: AISectionProps): JSX.Element {
   }
 
   return (
-    <View style={[styles.sectionContainer, styles.aiSection]}>
+    <Pressable
+      style={[styles.sectionContainer, styles.aiSection]}
+      onHoverIn={() => setHovering(true)}
+      onHoverOut={() => setHovering(false)}>
       <View style={{flexDirection: 'row'}}>
         <Text style={[styles.sectionTitle, {flexGrow: 1}]}>AI</Text>
+        {hovering && contentShownOnHover}
+        {hovering && <HoverButton content="📋" onPress={() => console.log("Copy: Not yet implemented")}/>}
         <HoverButton content="👍" onPress={() => { showFeedbackPopup(true); }}/>
         <HoverButton content="👎" onPress={() => { showFeedbackPopup(false); }}/>
       </View>
@@ -105,7 +114,7 @@ function AISection({children, isLoading}: AISectionProps): JSX.Element {
       <View style={{gap: 8}}>
         {children}
       </View>
-    </View>
+    </Pressable>
   );
 }
 

@@ -117,6 +117,7 @@ function Chat({entries, humanText, onPrompt, regenerateResponse, clearConversati
             style={{flexShrink: 0, marginBottom: 12}}>
             <HumanSection
               disableEdit={true}
+              disableCopy={true}
               contentShownOnHover={
                 <HoverButton content="⚙️" onPress={() => setShowSettingsPopup(true)}/>
               }>
