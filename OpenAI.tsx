@@ -38,7 +38,9 @@ const OpenAiHandler = ({api, engine, instructions}: OpenAiHandlerType) => {
         },
         response: (json: any) => {
           let fullTextResult = json.choices[0].text;
-          let trimmedTextResult = fullTextResult.match("AI:\w*(.+)")[1].trim();
+          let regex = /^Human:\s([\s\S]+)^AI:\s([\s\S]+)/gm;
+          let match = fullTextResult.matchAll(regex).next().value;
+          let trimmedTextResult = match[2].trim();
           console.log(`AI response: "${trimmedTextResult}"`);
           return trimmedTextResult;
         }
