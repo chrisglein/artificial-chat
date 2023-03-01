@@ -12,7 +12,10 @@ import {
   OpenAiApi,
   CallOpenAi,
 } from './OpenAI';
-import { HoverButton } from './Controls';
+import {
+  HoverButton,
+  CodeBlock
+} from './Controls';
 import { ChatScrollContext } from './Chat';
 import { StylesContext } from './Styles';
 import { FeedbackContext } from './Feedback';
@@ -76,8 +79,49 @@ type AITextResponseType = PropsWithChildren<{
   text?: string;
 }>;
 function AITextResponse({text}: AITextResponseType): JSX.Element {
+  let elements: JSX.Element[] = [];
+
+  // Break up the text into code blocks and regular text
+  if (text !== undefined) {
+    // Look for the ``` separator (with option language)
+    const regex = /^```(.*)$/gm;
+    let matches = [...text.matchAll(regex)];
+
+    // Keep track of where we are in the open/close code blocks
+    let index = 0;
+    let inCodeBlock = false;
+    let currentLanguage = "";
+    
+    const appendToElements = (key: number, value: string) => {
+      if (!inCodeBlock) {
+        elements = [...elements, <Text key={key}>{value}</Text>];
+      } else {
+        elements = [...elements, <CodeBlock key={key} language={currentLanguage ?? "unknown"} content={value}/>];
+      }
+    }
+
+    for (let i = 0; i < matches.length; i++) {
+      // Grab the text since the last match, but strip out the separator/language
+      let match = matches[i];
+      let textSinceLast = text.substring(index, match.index).trim();
+      index = match.index + match[0].length;
+
+      appendToElements(i, textSinceLast);
+
+      currentLanguage = match[1];
+      inCodeBlock = !inCodeBlock;
+    }
+
+    // Add the remaining text after the last ``` separator
+    if (index < text.length) {
+      appendToElements(matches.length, text.substring(index, text.length).trim());
+    }
+  }
+
   return (
-    <Text>{text}</Text>
+    <View style={{gap: 8}}>
+      {elements}
+    </View>
   );
 }
   
@@ -165,14 +209,13 @@ function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
     
   React.useEffect(() => {
     if (imagePrompt === undefined) {
-      console.log("Image prompt is undefined, not querying OpenAI");
       return;
     }
     setIsLoading(true);
-    console.log(`Image prompt? ${imagePrompt !== notAnImageSentinel}`);
     CallOpenAi({
       api: imagePrompt !== notAnImageSentinel ? OpenAiApi.Generations : OpenAiApi.Completion,
       apiKey: settingsContext.apiKey,
+      instructions: `The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly. If the response involves code, use markdown format for that with \`\`\`(language) blocks.`,
       prompt: prompt,
       onError: (error) => {
         setError(error);
