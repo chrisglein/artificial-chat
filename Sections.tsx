@@ -39,6 +39,35 @@ function HumanSection({children, hoverButtonText, hoverButtonOnPress}: HumanSect
     </Pressable>
   );
 }
+
+type AIImageResponseType = PropsWithChildren<{
+  imageUrl?: string;
+  prompt?: string;
+  rejectImage: () => void;
+}>;
+function AIImageResponse({imageUrl, prompt, rejectImage}: AIImageResponseType): JSX.Element {
+  const styles = React.useContext(StylesContext);
+  return (
+    <View style={[styles.horizontalContainer, {flexWrap: 'nowrap', alignItems: 'flex-start'}]}>
+      <Image
+        source={{uri: imageUrl}}
+        alt={prompt}
+        style={[{flexGrow: 0}, styles.dalleImage]}/>
+      <View
+        style={{flexShrink: 1, gap: 8}}>
+        <Text>Here is an image created using the following requirements "{prompt}"</Text>
+        <View style={{alignSelf: 'flex-end', alignItems: 'flex-end'}}>
+          <Button
+            title="I didn't want to see an image"
+            onPress={() => {rejectImage()}}/>
+          <Button
+            title="Show me more"
+            onPress={() => console.log("Not yet implemented")}/>
+        </View>
+      </View>
+    </View>
+  );
+}
   
 type AISectionProps = PropsWithChildren<{
   isLoading?: boolean;
@@ -143,27 +172,13 @@ function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
       {isLoading || error ?
         <Text style={{color: 'crimson'}}>{error}</Text> :
         imagePrompt !== notAnImageSentinel ? 
-          <View style={[styles.horizontalContainer, {flexWrap: 'nowrap', alignItems: 'flex-start'}]}>
-            <Image
-              source={{uri: queryResult}}
-              alt={imagePrompt}
-              style={[{flexGrow: 0}, styles.dalleImage]}/>
-            <View
-              style={{flexShrink: 1, gap: 8}}>
-              <Text>Here is an image created using the following requirements "{imagePrompt}"</Text>
-              <View style={{alignSelf: 'flex-end', alignItems: 'flex-end'}}>
-                <Button
-                  title="I didn't want to see an image"
-                  onPress={() => {
-                    setImagePrompt(notAnImageSentinel);
-                    setQueryResult(undefined);
-                  }}/>
-                <Button
-                  title="Show me more"
-                  onPress={() => console.log("Not yet implemented")}/>
-              </View>
-            </View>
-          </View> :
+          <AIImageResponse
+            imageUrl={queryResult}
+            prompt={imagePrompt}
+            rejectImage={() => {
+              setImagePrompt(notAnImageSentinel);
+              setQueryResult(undefined);
+          }}/> :
           <Text>{queryResult}</Text>
       }
     </AISection>
