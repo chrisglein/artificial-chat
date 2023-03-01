@@ -13,7 +13,6 @@ type StylesType = {
   feedbackDialog: any;
   codeBlockTitle: any;
   codeBlockTitleText: any;
-  codeBlockContent: any;
 }
 const StylesContext = React.createContext<StylesType>({});
 

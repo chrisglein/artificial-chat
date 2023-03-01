@@ -19,10 +19,11 @@ import { FeedbackContext } from './Feedback';
 import { SettingsContext } from './Settings';
 
 type HumanSectionProps = PropsWithChildren<{
-    hoverButtonText?: string;
-    hoverButtonOnPress?: () => void;
-  }>;
-function HumanSection({children, hoverButtonText, hoverButtonOnPress}: HumanSectionProps): JSX.Element {
+  disableEdit?: boolean;
+  disableCopy?: boolean;
+  contentShownOnHover?: JSX.Element;
+}>;
+function HumanSection({children, disableEdit, disableCopy, contentShownOnHover}: HumanSectionProps): JSX.Element {
   const [hovering, setHovering] = React.useState(false);
   const styles = React.useContext(StylesContext);
 
@@ -33,19 +34,61 @@ function HumanSection({children, hoverButtonText, hoverButtonOnPress}: HumanSect
       onHoverOut={() => setHovering(false)}>
       <View style={{flexDirection: 'row', minHeight: 26}}>
         <Text style={[styles.sectionTitle, {flexGrow: 1}]}>HUMAN</Text>
-        {hoverButtonText !== "" && hovering && <HoverButton content={hoverButtonText ?? "📝"} onPress={() => hoverButtonOnPress ? hoverButtonOnPress() : {}}/>}
+        {hovering && !disableCopy && <HoverButton content="📋" onPress={() => console.log("Copy: Not yet implemented")}/>}
+        {hovering && !disableEdit && <HoverButton content="📝" onPress={() => {console.log("Edit: Not yet implemented")}}/>}
+        {hovering && contentShownOnHover}
       </View>
       {children}
     </Pressable>
   );
 }
+
+type AIImageResponseType = PropsWithChildren<{
+  imageUrl?: string;
+  prompt?: string;
+  rejectImage: () => void;
+}>;
+function AIImageResponse({imageUrl, prompt, rejectImage}: AIImageResponseType): JSX.Element {
+  const styles = React.useContext(StylesContext);
+  return (
+    <View style={[styles.horizontalContainer, {flexWrap: 'nowrap', alignItems: 'flex-start'}]}>
+      <Image
+        source={{uri: imageUrl}}
+        alt={prompt}
+        style={[{flexGrow: 0}, styles.dalleImage]}/>
+      <View
+        style={{flexShrink: 1, gap: 8}}>
+        <Text>Here is an image created using the following requirements "{prompt}"</Text>
+        <View style={{alignSelf: 'flex-end', alignItems: 'flex-end'}}>
+          <Button
+            title="I didn't want to see an image"
+            onPress={() => {rejectImage()}}/>
+          <Button
+            title="Show me more"
+            onPress={() => console.log("Not yet implemented")}/>
+        </View>
+      </View>
+    </View>
+  );
+}
+
+type AITextResponseType = PropsWithChildren<{
+  text?: string;
+}>;
+function AITextResponse({text}: AITextResponseType): JSX.Element {
+  return (
+    <Text>{text}</Text>
+  );
+}
   
 type AISectionProps = PropsWithChildren<{
   isLoading?: boolean;
+  contentShownOnHover?: JSX.Element;
 }>;
-function AISection({children, isLoading}: AISectionProps): JSX.Element {
+function AISection({children, isLoading, contentShownOnHover}: AISectionProps): JSX.Element {
   const feedbackContext = React.useContext(FeedbackContext);
   const styles = React.useContext(StylesContext);
+  const [hovering, setHovering] = React.useState(false);
 
   const showFeedbackPopup = (positive: boolean) => {
     if (feedbackContext) {
@@ -54,9 +97,14 @@ function AISection({children, isLoading}: AISectionProps): JSX.Element {
   }
 
   return (
-    <View style={[styles.sectionContainer, styles.aiSection]}>
+    <Pressable
+      style={[styles.sectionContainer, styles.aiSection]}
+      onHoverIn={() => setHovering(true)}
+      onHoverOut={() => setHovering(false)}>
       <View style={{flexDirection: 'row'}}>
         <Text style={[styles.sectionTitle, {flexGrow: 1}]}>AI</Text>
+        {hovering && contentShownOnHover}
+        {hovering && <HoverButton content="📋" onPress={() => console.log("Copy: Not yet implemented")}/>}
         <HoverButton content="👍" onPress={() => { showFeedbackPopup(true); }}/>
         <HoverButton content="👎" onPress={() => { showFeedbackPopup(false); }}/>
       </View>
@@ -66,7 +114,7 @@ function AISection({children, isLoading}: AISectionProps): JSX.Element {
       <View style={{gap: 8}}>
         {children}
       </View>
-    </View>
+    </Pressable>
   );
 }
 
@@ -76,7 +124,6 @@ type AISectionWithQueryProps = {
 function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
   const settingsContext = React.useContext(SettingsContext);
   const chatScroll = React.useContext(ChatScrollContext);
-  const styles = React.useContext(StylesContext);
   const [isLoading, setIsLoading] = React.useState(true);
   const [queryResult, setQueryResult] = React.useState<string | undefined>(undefined);
   const [error, setError] = React.useState<string | undefined>(undefined);
@@ -121,6 +168,7 @@ function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
       console.log("Image prompt is undefined, not querying OpenAI");
       return;
     }
+    setIsLoading(true);
     console.log(`Image prompt? ${imagePrompt !== notAnImageSentinel}`);
     CallOpenAi({
       api: imagePrompt !== notAnImageSentinel ? OpenAiApi.Generations : OpenAiApi.Completion,
@@ -140,31 +188,20 @@ function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
 
   return (
     <AISection isLoading={isLoading}>
-      {isLoading || error ?
-        <Text style={{color: 'crimson'}}>{error}</Text> :
-        imagePrompt !== notAnImageSentinel ? 
-          <View style={[styles.horizontalContainer, {flexWrap: 'nowrap', alignItems: 'flex-start'}]}>
-            <Image
-              source={{uri: queryResult}}
-              alt={imagePrompt}
-              style={[{flexGrow: 0}, styles.dalleImage]}/>
-            <View
-              style={{flexShrink: 1, gap: 8}}>
-              <Text>Here is an image created using the following requirements "{imagePrompt}"</Text>
-              <View style={{alignSelf: 'flex-end', alignItems: 'flex-end'}}>
-                <Button
-                  title="I didn't want to see an image"
-                  onPress={() => {
-                    setImagePrompt(notAnImageSentinel);
-                    setQueryResult(undefined);
-                  }}/>
-                <Button
-                  title="Show me more"
-                  onPress={() => console.log("Not yet implemented")}/>
-              </View>
-            </View>
-          </View> :
-          <Text>{queryResult}</Text>
+      {
+        (isLoading || error) ?
+          <Text style={{color: 'crimson'}}>{error}</Text>
+        : (imagePrompt !== notAnImageSentinel) ? 
+          <AIImageResponse
+            imageUrl={queryResult}
+            prompt={imagePrompt}
+            rejectImage={() => {
+              setImagePrompt(notAnImageSentinel);
+              setQueryResult(undefined);
+          }}/>
+        : // Not an error, not an image
+          <AITextResponse
+            text={queryResult}/>
       }
     </AISection>
   )

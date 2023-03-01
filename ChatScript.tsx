@@ -134,7 +134,7 @@ const formatTextAsBullets = (styles : StylesContext, text: string[]) => {
 
 const runDeveloperScript = (index: number, styles, goToNext) => {
   switch (index) {
-    case 0: return {
+    case -3: return {
       prompt: "I'd like to run a white elephant gift exchange. Are you familiar with the rules?",
       aiResponse: () => {
         return (
@@ -153,7 +153,7 @@ const runDeveloperScript = (index: number, styles, goToNext) => {
         </AISectionWithFakeResponse>
       )}
     }
-    case 1: return {
+    case -2: return {
       prompt: "I need to run this white elephant party remotely over a video call (e.g. Teams or Zoom). What are the challenges you foresee in the participants aren't able to be physically located together?",
       aiResponse: () =>
         <AISectionWithFakeResponse>
@@ -167,7 +167,7 @@ const runDeveloperScript = (index: number, styles, goToNext) => {
           <Text>To address these challenges, you may want to consider setting up a clear system for gift delivery, scheduling the party at a time that works for as many participants as possible, and using a virtual whiteboard or other tool to keep track of who has which gift. You may also want to establish clear rules for how stealing will work and consider using a random number generator or other tool to determine the order in which participants will choose their gifts. Finally, make sure to set the right expectations and encourage participants to have fun and be flexible, even if the party doesn't go exactly as planned.</Text>
         </AISectionWithFakeResponse>,
     }
-    case 2: return {
+    case -1: return {
       prompt: "Instead of using a virtual whiteboard, I'd like to create a tool to help manage the gift exchange. Can you help me with that and what are my best options for authoring this app? I have a Windows PC.",
       aiResponse: () =>
         <AISectionWithFakeResponse>
@@ -182,8 +182,8 @@ const runDeveloperScript = (index: number, styles, goToNext) => {
           <Text>Regardless of which option you choose, I would recommend starting with a clear set of requirements for your app and sketching out some basic wireframes to help you visualize how the user interface will work. This will help you stay focused and ensure that you're creating a tool that will be both useful and enjoyable for your participants.</Text>
         </AISectionWithFakeResponse>,
     }
-    case 3: return {
-      prompt: `Here are my requirements:
+    case 0: return {
+      prompt: `I want to develop an app to run a white elephant gift exchange. Here are my requirements:
       - There is one organizer for the gift exchange that runs the app. In advance of the meeting, all participants provide an image to represent their gift in its wrapped state, and an image to represent their gift in its unwrapped state (usually a photo of the gift).
       - The app manages a queue of whose turn it is to open/steal the next gift
       - The app shows a grid of images for all the wrapped and unwrapped gifts, with an indication on the unwrapped gifts of who currently has possession of it as well as the number of times it has been stolen
@@ -282,7 +282,7 @@ const gifts = [
 `}/>
         </AISectionWithFakeResponse>,
     }
-    case 4: return {
+    case 1: return {
       prompt: "I'd like help visualizing this app. Can you use an ASCII diagram to roughly show the visuals?",
       aiResponse: () =>
         <AISectionWithFakeResponse>
@@ -341,7 +341,7 @@ const gifts = [
           `}/>
         </AISectionWithFakeResponse>,
     }
-    case 5: return {
+    case 2: return {
       prompt: "I'd like to add a menu where I can browse he entire list of participants, with checkboxes next to them depending on whether they have a gift or not. Can you create the React component for that?",
       aiResponse: () =>
         <AISectionWithFakeResponse>
@@ -373,7 +373,7 @@ export default ParticipantList;
           <Text>This assumes that you have an array of participants and an array of gifts that have an owner property corresponding to the name of the participant who owns the gift. The component renders a list of checkboxes for each participant, indicating whether they have a gift or not. The checkboxes are read-only so that they can't be changed by the user.</Text>
         </AISectionWithFakeResponse>
     }
-    case 6: return {
+    case 3: return {
       prompt: "Create an application icon for this app",
       aiResponse: () =>
         <AISectionWithFakeResponse>

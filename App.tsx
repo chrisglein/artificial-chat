@@ -86,14 +86,11 @@ function App(): JSX.Element {
       minWidth: 300
     },
     codeBlockTitle: {
-      backgroundColor: isDarkMode ? 'white' : 'black',
+      backgroundColor: isDarkMode ? 'white' : '#444',
     },
     codeBlockTitleText: {
       color: isDarkMode ? 'black' : 'white',
     },
-    codeBlockContent: {
-      backgroundColor: isDarkMode ? '#111' : '#eee',
-    }
   });
 
   return (
