@@ -6,19 +6,14 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import {
-  HumanSection,
-} from './Sections';
-import {
-  StylesContext,
-} from './Styles';
+import { HumanSection } from './Sections';
+import { StylesContext } from './Styles';
 import {
   FeedbackContext,
   FeedbackPopup,
 } from './Feedback';
-import {
-  SettingsPopup,
-} from './Settings';
+import { SettingsPopup } from './Settings';
+import { HoverButton } from './Controls';
 
 type ChatScrollContextType = {
   scrollToEnd : () => void;
@@ -121,8 +116,10 @@ function Chat({entries, humanText, onPrompt, regenerateResponse, clearConversati
           <View
             style={{flexShrink: 0, marginBottom: 12}}>
             <HumanSection
-              hoverButtonText="⚙️"
-              hoverButtonOnPress={() => setShowSettingsPopup(true)}>
+              disableEdit={true}
+              contentShownOnHover={
+                <HoverButton content="⚙️" onPress={() => setShowSettingsPopup(true)}/>
+              }>
               <ChatEntry
                 defaultText={humanText}
                 submit={(newEntry) => {

@@ -19,10 +19,10 @@ import { FeedbackContext } from './Feedback';
 import { SettingsContext } from './Settings';
 
 type HumanSectionProps = PropsWithChildren<{
-    hoverButtonText?: string;
-    hoverButtonOnPress?: () => void;
-  }>;
-function HumanSection({children, hoverButtonText, hoverButtonOnPress}: HumanSectionProps): JSX.Element {
+  disableEdit?: boolean;
+  contentShownOnHover?: JSX.Element;
+}>;
+function HumanSection({children, disableEdit, contentShownOnHover}: HumanSectionProps): JSX.Element {
   const [hovering, setHovering] = React.useState(false);
   const styles = React.useContext(StylesContext);
 
@@ -33,7 +33,8 @@ function HumanSection({children, hoverButtonText, hoverButtonOnPress}: HumanSect
       onHoverOut={() => setHovering(false)}>
       <View style={{flexDirection: 'row', minHeight: 26}}>
         <Text style={[styles.sectionTitle, {flexGrow: 1}]}>HUMAN</Text>
-        {hoverButtonText !== "" && hovering && <HoverButton content={hoverButtonText ?? "📝"} onPress={() => hoverButtonOnPress ? hoverButtonOnPress() : {}}/>}
+        {hovering && !disableEdit && <HoverButton content="📝" onPress={() => {console.log("Not yet implemented")}}/>}
+        {hovering && contentShownOnHover}
       </View>
       {children}
     </Pressable>
@@ -66,6 +67,15 @@ function AIImageResponse({imageUrl, prompt, rejectImage}: AIImageResponseType): 
         </View>
       </View>
     </View>
+  );
+}
+
+type AITextResponseType = PropsWithChildren<{
+  text?: string;
+}>;
+function AITextResponse({text}: AITextResponseType): JSX.Element {
+  return (
+    <Text>{text}</Text>
   );
 }
   
@@ -105,7 +115,6 @@ type AISectionWithQueryProps = {
 function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
   const settingsContext = React.useContext(SettingsContext);
   const chatScroll = React.useContext(ChatScrollContext);
-  const styles = React.useContext(StylesContext);
   const [isLoading, setIsLoading] = React.useState(true);
   const [queryResult, setQueryResult] = React.useState<string | undefined>(undefined);
   const [error, setError] = React.useState<string | undefined>(undefined);
@@ -182,7 +191,8 @@ function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
               setQueryResult(undefined);
           }}/>
         : // Not an error, not an image
-          <Text>{queryResult}</Text>
+          <AITextResponse
+            text={queryResult}/>
       }
     </AISection>
   )
