@@ -150,6 +150,7 @@ function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
       console.log("Image prompt is undefined, not querying OpenAI");
       return;
     }
+    setIsLoading(true);
     console.log(`Image prompt? ${imagePrompt !== notAnImageSentinel}`);
     CallOpenAi({
       api: imagePrompt !== notAnImageSentinel ? OpenAiApi.Generations : OpenAiApi.Completion,
@@ -169,16 +170,18 @@ function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
 
   return (
     <AISection isLoading={isLoading}>
-      {isLoading || error ?
-        <Text style={{color: 'crimson'}}>{error}</Text> :
-        imagePrompt !== notAnImageSentinel ? 
+      {
+        (isLoading || error) ?
+          <Text style={{color: 'crimson'}}>{error}</Text>
+        : (imagePrompt !== notAnImageSentinel) ? 
           <AIImageResponse
             imageUrl={queryResult}
             prompt={imagePrompt}
             rejectImage={() => {
               setImagePrompt(notAnImageSentinel);
               setQueryResult(undefined);
-          }}/> :
+          }}/>
+        : // Not an error, not an image
           <Text>{queryResult}</Text>
       }
     </AISection>
