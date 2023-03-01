@@ -176,9 +176,10 @@ function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
   const notAnImageSentinel = "N/A";
   React.useEffect(() => {
     setIsLoading(true);
+    setError(undefined);
     setImagePrompt(undefined);
     CallOpenAi({
-      api: OpenAiApi.Completion,
+      api: OpenAiApi.ChatCompletion,
       apiKey: settingsContext.apiKey,
       instructions: `You are an assistant helping the user. To aid you, you can use DALL-E which can generate images from a description. Your job is to take the user's prompt and reply with an image prompt. The image prompt should be a comma-separated list of keywords describing the desired image, for example:
       - photography
@@ -213,7 +214,7 @@ function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
     }
     setIsLoading(true);
     CallOpenAi({
-      api: imagePrompt !== notAnImageSentinel ? OpenAiApi.Generations : OpenAiApi.Completion,
+      api: imagePrompt !== notAnImageSentinel ? OpenAiApi.Generations : OpenAiApi.ChatCompletion,
       apiKey: settingsContext.apiKey,
       instructions: `The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly. If the response involves code, use markdown format for that with \`\`\`(language) blocks.`,
       prompt: prompt,

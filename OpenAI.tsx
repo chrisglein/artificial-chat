@@ -1,5 +1,6 @@
 enum OpenAiApi {
   Completion,
+  ChatCompletion,
   Generations,
 }
 
@@ -37,12 +38,32 @@ const OpenAiHandler = ({api, engine, instructions}: OpenAiHandlerType) => {
           };
         },
         response: (json: any) => {
+          console.log(json);
           let fullTextResult = json.choices[0].text;
           let regex = /^Human:\s([\s\S]+)^AI:\s([\s\S]+)/gm;
           let match = fullTextResult.matchAll(regex).next().value;
           let trimmedTextResult = match[2].trim();
           console.log(`AI response: "${trimmedTextResult}"`);
           return trimmedTextResult;
+        }
+      }
+    case OpenAiApi.ChatCompletion: 
+      return {
+        url: `${OpenAIUrl}/chat/completions`,
+        body: (prompt: string) => {
+          return {
+            model: "gpt-3.5-turbo",
+            messages: [
+              {"role": "system", "content": actualInstructions},
+              {"role": "user", "content": prompt},
+            ]
+          };
+        },
+        response: (json: any) => {
+          console.log(json);
+          let result = json.choices[0].message.content;
+          console.log(`AI response: "${result}"`);
+          return result;
         }
       }
     case OpenAiApi.Generations: 
