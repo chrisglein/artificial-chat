@@ -38,7 +38,6 @@ const OpenAiHandler = ({api, engine, instructions}: OpenAiHandlerType) => {
           };
         },
         response: (json: any) => {
-          console.log(json);
           let fullTextResult = json.choices[0].text;
           let regex = /^Human:\s([\s\S]+)^AI:\s([\s\S]+)/gm;
           let match = fullTextResult.matchAll(regex).next().value;
@@ -60,7 +59,6 @@ const OpenAiHandler = ({api, engine, instructions}: OpenAiHandlerType) => {
           };
         },
         response: (json: any) => {
-          console.log(json);
           let result = json.choices[0].message.content;
           console.log(`AI response: "${result}"`);
           return result;
@@ -90,12 +88,13 @@ type CallOpenAiProps = {
   api: OpenAiApi,
   apiKey?: string,
   instructions?: string,
+  identifier?: string,
   prompt: string,
   onError: (error: string) => void,
   onResult: (result: string) => void,
   onComplete: () => void
 }
-const CallOpenAi = async ({api, apiKey, instructions, prompt, onError, onResult, onComplete}: CallOpenAiProps) => {
+const CallOpenAi = async ({api, apiKey, instructions, identifier, prompt, onError, onResult, onComplete}: CallOpenAiProps) => {
   const DefaultApiKey = undefined; // During development you can paste your API key here, but DO NOT CHECK IN
   let effectiveApiKey = apiKey ?? DefaultApiKey;
 
@@ -106,26 +105,30 @@ const CallOpenAi = async ({api, apiKey, instructions, prompt, onError, onResult,
   }
 
   try {
-    console.log(`Start "${prompt}"`);
+    console.log(`Start ${identifier}"${prompt}"`);
 
     let apiHandler = OpenAiHandler({api: api, instructions: instructions});
 
+    let url = apiHandler.url;
+    let body = apiHandler.body(prompt);
+
     let response = await fetch(
-      apiHandler.url, {
+      url, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
           'Authorization': `Bearer ${effectiveApiKey}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(apiHandler.body(prompt)),
+        body: JSON.stringify(body),
       });
     
     try {
       const json = await response.json();
 
       try {
-        console.log(`Have result for "${prompt}"`);
+        console.log(`Have result for ${identifier}"${prompt}"`);
+        console.log(json);
         onResult(apiHandler.response(json));
       } catch (error) {
         onError(`Error parsing AI response text "${json}"`);
@@ -137,7 +140,7 @@ const CallOpenAi = async ({api, apiKey, instructions, prompt, onError, onResult,
     onError("Error in http POST");
     onError(error.stack);
   } finally {
-    console.log(`End "${prompt}"`);
+    console.log(`End ${identifier}"${prompt}"`);
     onComplete();
   }
 }

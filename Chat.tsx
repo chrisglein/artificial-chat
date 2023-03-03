@@ -3,10 +3,11 @@ import type {PropsWithChildren} from 'react';
 import {
   Button,
   ScrollView,
+  Text,
   TextInput,
   View,
 } from 'react-native';
-import { HumanSection } from './Sections';
+import { HumanSection, AISectionWithFakeResponse } from './Sections';
 import { StylesContext } from './Styles';
 import {
   FeedbackContext,
@@ -14,6 +15,12 @@ import {
 } from './Feedback';
 import { SettingsPopup } from './Settings';
 import { HoverButton } from './Controls';
+
+type ChatElementType = {
+  type: 'human' | 'ai';
+  text: string;
+  content?: JSX.Element;
+}
 
 type ChatScrollContextType = {
   scrollToEnd : () => void;
@@ -63,7 +70,7 @@ function ChatEntry({submit, defaultText, clearConversation}: ChatEntryProps): JS
 }
 
 type ChatProps = PropsWithChildren<{
-  entries: JSX.Element[];
+  entries: ChatElementType[];
   humanText? : string;
   onPrompt: (prompt: string) => void;
   regenerateResponse: () => void;
@@ -103,7 +110,12 @@ function Chat({entries, humanText, onPrompt, regenerateResponse, clearConversati
               style={{gap: 12}}>
               {entries.map((entry, entryIndex) => (
                 <View key={entryIndex}>
-                  {entry}
+                  {
+                    entry.content ? entry.content :
+                    entry.type === 'human' ? 
+                      <HumanSection><Text>{entry.text}</Text></HumanSection> :
+                      <AISectionWithFakeResponse>{entry.text}</AISectionWithFakeResponse>
+                  }
                 </View>
               ))}
               {(entries.length > 0) &&
@@ -144,4 +156,5 @@ function Chat({entries, humanText, onPrompt, regenerateResponse, clearConversati
   );
 }
 
+export type { ChatElementType }
 export { Chat, ChatScrollContext };

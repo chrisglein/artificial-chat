@@ -5,25 +5,17 @@ import {
 } from 'react-native';
 import {
   HumanSection,
-  AISection,
   AISectionWithQuery,
 } from './Sections';
-import {
-  Chat,
-} from './Chat';
-import {
-  StylesContext,
-} from './Styles';
-import {
-  SettingsContext,
-} from './Settings';
-import {
-  handleAIResponse,
-} from './ChatScript';
+import { Chat } from './Chat';
+import type { ChatElementType } from './Chat';
+import { StylesContext } from './Styles';
+import { SettingsContext } from './Settings';
+import { handleAIResponse } from './ChatScript';
 
 type AutomatedChatSessionProps = PropsWithChildren<{
-  entries: JSX.Element[];
-  appendEntry: (entry: JSX.Element | JSX.Element[]) => void;
+  entries: ChatElementType[];
+  appendEntry: (entry: ChatElementType | ChatElementType[]) => void;
   clearConversation: () => void;
 }>;
 function AutomatedChatSession({entries, appendEntry, clearConversation}: AutomatedChatSessionProps): JSX.Element {
@@ -74,34 +66,46 @@ function AutomatedChatSession({entries, appendEntry, clearConversation}: Automat
       let {aiResponse} = advanceChatScript(index, () => onPrompt(undefined, index + 1));
       setChatScriptIndex(index + 1);
       console.log(aiResponse);
-  
-      // If there wasn't a response, we hit the end of the script
-      if (!aiResponse) {
-        aiResponse =
-          <AISection>
-            <Text>You have reached the end of the script, and I cannot comment on "{text}"</Text>    
-          </AISection>
-      }
 
       // Append to the chat log
       // If the human has a prompt, add it to the chat
       if (text) {
         appendEntry([
-          <HumanSection>
-            <Text>{text}</Text>
-          </HumanSection>,
-          aiResponse]);
+          {
+            type: 'human',
+            text: text,
+          },
+          {
+            type: 'ai',
+            text: text,
+            content: aiResponse,
+          }]);
       } else {
-        appendEntry(aiResponse);
+        appendEntry(
+          {
+            type: 'ai',
+            text: text,
+            content: aiResponse,
+          });
       }
     } else {
       console.log(`Prompt: "${text}"`);
       
       appendEntry([
-        <HumanSection>
-          <Text>{text}</Text>
-        </HumanSection>,
-        <AISectionWithQuery prompt={text}/>
+        {
+          type: 'human',
+          text: text,
+          content:
+            <HumanSection>
+              <Text>{text}</Text>
+            </HumanSection>
+        },
+        {
+          type: 'ai',
+          text: text, // TODO: This should be populated with the AI response, once we resolve it
+          content: 
+            <AISectionWithQuery prompt={text}/>
+        }
       ]);
     }
   }
@@ -128,9 +132,9 @@ function AutomatedChatSession({entries, appendEntry, clearConversation}: Automat
 }
 
 function ChatSession(): JSX.Element {
-  const [entries, setEntries] = React.useState<JSX.Element []>([]);
+  const [entries, setEntries] = React.useState<ChatElementType []>([]);
 
-  const appendEntry = React.useCallback((newEntry: JSX.Element | JSX.Element[]) => {
+  const appendEntry = React.useCallback((newEntry: ChatElementType | ChatElementType[]) => {
     if (Array.isArray(newEntry)) {
       setEntries([...entries, ...newEntry]);
     } else {
