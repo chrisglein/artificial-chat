@@ -164,8 +164,9 @@ function AISection({children, isLoading, contentShownOnHover}: AISectionProps): 
 
 type AISectionWithQueryProps = {
   prompt: string;
+  onResponse: (response: string) => void;
 };
-function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
+function AISectionWithQuery({prompt, onResponse}: AISectionWithQueryProps): JSX.Element {
   const settingsContext = React.useContext(SettingsContext);
   const chatScroll = React.useContext(ChatScrollContext);
   const [isLoading, setIsLoading] = React.useState(true);
@@ -252,6 +253,7 @@ If the user's primary intent is to request to see or create an image, respond wi
         },
         onResult: (result) => {
           setQueryResult(result);
+          onResponse(result ?? "");
         },
         onComplete: () => {
           setIsLoading(false);
@@ -270,6 +272,7 @@ If the user's primary intent is to request to see or create an image, respond wi
           },
           onResult: (result) => {
             setQueryResult(result);
+            onResponse(result ?? "");
           },
           onComplete: () => {
             setIsLoading(false);

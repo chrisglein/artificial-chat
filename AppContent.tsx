@@ -84,7 +84,7 @@ function AutomatedChatSession({entries, appendEntry, clearConversation}: Automat
         appendEntry(
           {
             type: 'ai',
-            text: text,
+            text: '',
             content: aiResponse,
           });
       }
@@ -104,7 +104,11 @@ function AutomatedChatSession({entries, appendEntry, clearConversation}: Automat
           type: 'ai',
           text: text, // TODO: This should be populated with the AI response, once we resolve it
           content: 
-            <AISectionWithQuery prompt={text}/>
+            <AISectionWithQuery
+              prompt={text}
+              onResponse={(response) => {
+                console.log(`Response: "${response}"`);
+              }}/>
         }
       ]);
     }
