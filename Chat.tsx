@@ -126,11 +126,13 @@ function Chat({entries, humanText, onPrompt, onResponse, regenerateResponse, cle
                   {
                     entry.type === ChatSourceType.Human ? 
                       <HumanSection><Text>{entry.text}</Text></HumanSection> :
-                      entry.text ?
-                        <AiSectionContent content={entry}/> : 
-                        <AISectionWithQuery
-                          prompt={entry.prompt ?? ""}
-                          onResponse={(response, contentType) => onResponse(response, contentType, entry.id)}/>
+                      entry.content ?
+                        entry.content :
+                        entry.text ?
+                          <AiSectionContent content={entry}/> : 
+                          <AISectionWithQuery
+                            prompt={entry.prompt ?? ""}
+                            onResponse={(response, contentType) => onResponse(response, contentType, entry.id)}/>
                   }
                 </View>
               ))}
