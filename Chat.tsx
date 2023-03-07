@@ -7,7 +7,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { HumanSection, AISectionWithFakeResponse } from './Sections';
+import { HumanSection, AISectionWithQuery, AiSectionContent } from './Sections';
 import { StylesContext } from './Styles';
 import {
   FeedbackContext,
@@ -16,9 +16,21 @@ import {
 import { SettingsPopup } from './Settings';
 import { HoverButton } from './Controls';
 
+enum ChatSourceType {
+  Human,
+  Ai,
+}
+enum ChatContentType {
+  Error,
+  Text,
+  Image,
+}
 type ChatElementType = {
-  type: 'human' | 'ai';
-  text: string;
+  id: number;
+  type: ChatSourceType;
+  contentType: ChatContentType;
+  prompt?: string;
+  text?: string;
   content?: JSX.Element;
 }
 
@@ -73,10 +85,11 @@ type ChatProps = PropsWithChildren<{
   entries: ChatElementType[];
   humanText? : string;
   onPrompt: (prompt: string) => void;
+  onResponse: (response: string, contentType: ChatContentType, entryId: number) => void;
   regenerateResponse: () => void;
   clearConversation: () => void;
 }>;
-function Chat({entries, humanText, onPrompt, regenerateResponse, clearConversation}: ChatProps): JSX.Element {
+function Chat({entries, humanText, onPrompt, onResponse, regenerateResponse, clearConversation}: ChatProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const [showFeedbackPopup, setShowFeedbackPopup] = React.useState(false);
   const [showSettingsPopup, setShowSettingsPopup] = React.useState(false);
@@ -108,13 +121,16 @@ function Chat({entries, humanText, onPrompt, regenerateResponse, clearConversati
             style={{flexShrink: 1}}>
             <View
               style={{gap: 12}}>
-              {entries.map((entry, entryIndex) => (
-                <View key={entryIndex}>
+              {entries.map((entry) => (
+                <View key={entry.id}>
                   {
-                    entry.content ? entry.content :
-                    entry.type === 'human' ? 
+                    entry.type === ChatSourceType.Human ? 
                       <HumanSection><Text>{entry.text}</Text></HumanSection> :
-                      <AISectionWithFakeResponse>{entry.text}</AISectionWithFakeResponse>
+                      entry.text ?
+                        <AiSectionContent content={entry}/> : 
+                        <AISectionWithQuery
+                          prompt={entry.prompt ?? ""}
+                          onResponse={(response, contentType) => onResponse(response, contentType, entry.id)}/>
                   }
                 </View>
               ))}
@@ -157,4 +173,4 @@ function Chat({entries, humanText, onPrompt, regenerateResponse, clearConversati
 }
 
 export type { ChatElementType }
-export { Chat, ChatScrollContext };
+export { Chat, ChatScrollContext, ChatSourceType, ChatContentType };

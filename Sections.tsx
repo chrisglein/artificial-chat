@@ -16,7 +16,7 @@ import {
   HoverButton,
   CodeBlock
 } from './Controls';
-import { ChatScrollContext } from './Chat';
+import { ChatElementType, ChatContentType, ChatScrollContext } from './Chat';
 import { StylesContext } from './Styles';
 import { FeedbackContext } from './Feedback';
 import { SettingsContext } from './Settings';
@@ -162,9 +162,24 @@ function AISection({children, isLoading, contentShownOnHover}: AISectionProps): 
   );
 }
 
+type AiSectionContentType = {
+  content: ChatElementType;
+}
+function AiSectionContent({content}: AiSectionContentType): JSX.Element {
+  return (
+    <AISection>
+      {
+        content.contentType == ChatContentType.Error ? 
+        <Text style={{color: 'red'}}>{content.text}</Text> :
+        <AITextResponse text={content.text}/>
+      }
+    </AISection>
+  )
+}
+
 type AISectionWithQueryProps = {
   prompt: string;
-  onResponse: (response: string) => void;
+  onResponse: (response: string, contentType: ChatContentType) => void;
 };
 function AISectionWithQuery({prompt, onResponse}: AISectionWithQueryProps): JSX.Element {
   const settingsContext = React.useContext(SettingsContext);
@@ -176,7 +191,6 @@ function AISectionWithQuery({prompt, onResponse}: AISectionWithQueryProps): JSX.
   const [imagePrompt, setImagePrompt] = React.useState<string | undefined>(undefined);
 
   // First determine the intent of the prompt
-  const notAnImageSentinel = "N/A";
   const imageIntentSentinel = "[IMAGE]";
   React.useEffect(() => {
     setIsLoading(true);
@@ -196,7 +210,9 @@ If the user's primary intent is to request to see or create an image, respond wi
       onResult: (result) => {
         console.log(result);
         const isImage = result == imageIntentSentinel;
-        setIsRequestForImage(isImage);
+        // Disabling until ChatCompletion gives more reliable results for intent
+        //setIsRequestForImage(isImage);
+        setIsRequestForImage(false);
       },
       onComplete: () => {
     }});
@@ -238,7 +254,6 @@ If the user's primary intent is to request to see or create an image, respond wi
     }
   }, [isRequestForImage]);
 
-  // 
   React.useEffect(() => {
     if (isRequestForImage === false) {
       setIsLoading(true);
@@ -250,10 +265,11 @@ If the user's primary intent is to request to see or create an image, respond wi
         prompt: prompt,
         onError: (error) => {
           setError(error);
+          onResponse(error ?? "", ChatContentType.Error);
         },
         onResult: (result) => {
           setQueryResult(result);
-          onResponse(result ?? "");
+          onResponse(result ?? "", ChatContentType.Text);
         },
         onComplete: () => {
           setIsLoading(false);
@@ -269,10 +285,11 @@ If the user's primary intent is to request to see or create an image, respond wi
           prompt: prompt,
           onError: (error) => {
             setError(error);
+            onResponse(error ?? "", ChatContentType.Error);
           },
           onResult: (result) => {
             setQueryResult(result);
-            onResponse(result ?? "");
+            onResponse(result ?? "", ChatContentType.Image);
           },
           onComplete: () => {
             setIsLoading(false);
@@ -322,4 +339,4 @@ function AISectionWithFakeResponse({children}: PropsWithChildren): JSX.Element {
   )
 }
 
-export { HumanSection, AISectionWithFakeResponse, AISectionWithQuery }
+export { HumanSection, AISectionWithFakeResponse, AISectionWithQuery, AiSectionContent }
