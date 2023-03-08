@@ -1,5 +1,4 @@
 import React from 'react';
-import type {PropsWithChildren} from 'react';
 import {
   Button,
   ScrollView,
@@ -16,39 +15,40 @@ import {
 import { SettingsPopup } from './Settings';
 import { HoverButton } from './Controls';
 
-enum ChatSourceType {
+enum ChatSource {
   Human,
   Ai,
 }
-enum ChatContentType {
+enum ChatContent {
   Error,
   Text,
   Image,
 }
-type ChatElementType = {
+type ChatElement = {
   id: number;
-  type: ChatSourceType;
-  contentType: ChatContentType;
+  type: ChatSource;
+  contentType: ChatContent;
   prompt?: string;
   text?: string;
   content?: JSX.Element;
 }
-type ChatHistoryContextType = {
-  entries: ChatElementType[];
-}
-const ChatHistoryContext = React.createContext<ChatHistoryContextType>({entries: []});
 
+// Context for read-only access to the chat log
+const ChatHistoryContext = React.createContext<{
+  entries: ChatElement[];
+}>({entries: []});
 
-type ChatScrollContextType = {
+// Context for being able to drive the chat scroller
+const ChatScrollContext = React.createContext<{
   scrollToEnd : () => void;
-}
-const ChatScrollContext = React.createContext<ChatScrollContextType>({scrollToEnd: () => {}});
+}>({scrollToEnd: () => {}});
 
-type ChatEntryProps = PropsWithChildren<{
+// Component for taking user input to drive the chat
+type ChatEntryProps = {
   defaultText?: string;
   submit: (text : string) => void;
   clearConversation: () => void;
-}>;
+};
 function ChatEntry({submit, defaultText, clearConversation}: ChatEntryProps): JSX.Element {
   const styles = React.useContext(StylesContext);
 
@@ -86,14 +86,15 @@ function ChatEntry({submit, defaultText, clearConversation}: ChatEntryProps): JS
   );
 }
 
-type ChatProps = PropsWithChildren<{
-  entries: ChatElementType[];
+// A scrolling list of ChatElements
+type ChatProps = {
+  entries: ChatElement[];
   humanText? : string;
   onPrompt: (prompt: string) => void;
-  onResponse: ({prompt, response, contentType, entryId} : { prompt: string, response: string, contentType: ChatContentType, entryId: number} ) => void;
+  onResponse: ({prompt, response, contentType, entryId} : { prompt: string, response: string, contentType: ChatContent, entryId: number} ) => void;
   regenerateResponse: () => void;
   clearConversation: () => void;
-}>;
+};
 function Chat({entries, humanText, onPrompt, onResponse, regenerateResponse, clearConversation}: ChatProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const [showFeedbackPopup, setShowFeedbackPopup] = React.useState(false);
@@ -109,7 +110,7 @@ function Chat({entries, humanText, onPrompt, onResponse, regenerateResponse, cle
   }
 
   const scrollToEnd = () => {
-    // Wait for the new entry to be rendered
+    // Wait for the new entry to be rendered, then scroll it into view
     setTimeout(() => {
       scrollViewRef.current?.scrollToEnd({animated: true});
     }, 100);
@@ -126,13 +127,17 @@ function Chat({entries, humanText, onPrompt, onResponse, regenerateResponse, cle
               style={{flexShrink: 1}}>
               <View
                 style={{gap: 12}}>
-                {entries.map((entry) => (
+                {// For each item in the chat log, render the appropriate component
+                entries.map((entry) => (
                   <View key={entry.id}>
                     {
-                      entry.type === ChatSourceType.Human ? 
+                      entry.type === ChatSource.Human ? 
+                        // Human inputs are always plain text
                         <HumanSection><Text>{entry.text}</Text></HumanSection> :
                         entry.content ?
+                          // The element may have provided its own UI
                           entry.content :
+                          // Otherwise, either render the completed query or start a query to get the resolved text
                           entry.text ?
                             <AiSectionContent content={entry}/> : 
                             <AISectionWithQuery
@@ -181,5 +186,5 @@ function Chat({entries, humanText, onPrompt, onResponse, regenerateResponse, cle
   );
 }
 
-export type { ChatElementType }
-export { Chat, ChatScrollContext, ChatSourceType, ChatContentType, ChatHistoryContext };
+export type { ChatElement }
+export { Chat, ChatScrollContext, ChatSource, ChatContent, ChatHistoryContext };

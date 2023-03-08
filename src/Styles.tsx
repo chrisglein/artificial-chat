@@ -1,8 +1,9 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 
-type StylesType = {
+const StylesContext = React.createContext<{
   appContent: any;
+  popupBackground: any;
   sectionContainer: any;
   humanSection: any;
   aiSection: any;
@@ -14,8 +15,7 @@ type StylesType = {
   feedbackDialog: any;
   codeBlockTitle: any;
   codeBlockTitleText: any;
-}
-const StylesContext = React.createContext<StylesType>({});
+}>({});
 
 const CreateStyles = (isDarkMode: boolean) => {
   return StyleSheet.create({

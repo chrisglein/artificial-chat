@@ -1,18 +1,11 @@
 import React from 'react';
-import {
-  Appearance,
-  View,
-} from 'react-native';
-import {
-  ChatSession,
-} from './AppContent';
+import { Appearance } from 'react-native';
+import { ChatSession } from './AppContent';
 import {
   StylesContext,
   CreateStyles,
 } from './Styles';
-import {
-  SettingsContext,
-} from './Settings';
+import { SettingsContext } from './Settings';
 
 function App(): JSX.Element {
   const [currentTheme, setCurrentTheme] = React.useState(Appearance.getColorScheme());
@@ -40,9 +33,7 @@ function App(): JSX.Element {
           delayForArtificialResponse: delayForArtificialResponse,
           setDelayForArtificialResponse: setDelayForArtificialResponse,
         }}>
-        <View>
-          <ChatSession/>
-        </View>
+        <ChatSession/>
       </SettingsContext.Provider>
     </StylesContext.Provider>
   );

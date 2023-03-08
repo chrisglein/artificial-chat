@@ -1,17 +1,19 @@
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import { Chat, ChatSourceType, ChatContentType } from './Chat';
-import type { ChatElementType } from './Chat';
+import { Chat, ChatSource, ChatContent } from './Chat';
+import type { ChatElement } from './Chat';
 import { StylesContext } from './Styles';
 import { SettingsContext } from './Settings';
 import { handleAIResponse } from './ChatScript';
 
-type AutomatedChatSessionProps = PropsWithChildren<{
-  entries: ChatElementType[];
-  appendEntry: (entry: ChatElementType | ChatElementType[]) => void;
-  modifyEntryText: (index: number, text: string, contentType: ChatContentType, prompt: string) => void;
+// Automated ChatSession drives a ChatSession in one of two ways:
+// 1. If a script is specified, the user's inputs are fake responses are driven by that script.
+// 2. If no script is specified, the user's inputs are used to drive the chat session by calling OpenAi for responses.
+type AutomatedChatSessionProps = {
+  entries: ChatElement[];
+  appendEntry: (entry: ChatElement | ChatElement[]) => void;
+  modifyEntryText: (index: number, text: string, contentType: ChatContent, prompt: string) => void;
   clearConversation: () => void;
-}>;
+};
 function AutomatedChatSession({entries, appendEntry, modifyEntryText, clearConversation}: AutomatedChatSessionProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const settings = React.useContext(SettingsContext);
@@ -19,11 +21,10 @@ function AutomatedChatSession({entries, appendEntry, modifyEntryText, clearConve
   const [chatScriptIndex, setChatScriptIndex] = React.useState(0);
 
   const advanceChatScript = (index: number, goToNext: () => void) => {
-    type AutomatedChatResult = {
+    let result : {
       aiResponse?: JSX.Element;
       humanResponse?: string;
-    };
-    let result : AutomatedChatResult = {
+    } = {
       aiResponse: undefined,
       humanResponse: undefined,
     }
@@ -66,15 +67,15 @@ function AutomatedChatSession({entries, appendEntry, modifyEntryText, clearConve
       if (text) {
         appendEntry([
           {
-            type: ChatSourceType.Human,
+            type: ChatSource.Human,
             id: entries.length,
-            contentType: ChatContentType.Text,
+            contentType: ChatContent.Text,
             text: text,
           },
           {
             id: entries.length + 1,
-            type: ChatSourceType.Ai,
-            contentType: ChatContentType.Text,
+            type: ChatSource.Ai,
+            contentType: ChatContent.Text,
             text: text,
             content: aiResponse,
           }]);
@@ -82,8 +83,8 @@ function AutomatedChatSession({entries, appendEntry, modifyEntryText, clearConve
         appendEntry(
           {
             id: entries.length,
-            type: ChatSourceType.Ai,
-            contentType: ChatContentType.Error,
+            type: ChatSource.Ai,
+            contentType: ChatContent.Error,
             text: '',
             content: aiResponse,
           });
@@ -94,14 +95,14 @@ function AutomatedChatSession({entries, appendEntry, modifyEntryText, clearConve
       appendEntry([
         {
           id: entries.length,
-          type: ChatSourceType.Human,
-          contentType: ChatContentType.Text,
+          type: ChatSource.Human,
+          contentType: ChatContent.Text,
           text: text,
         },
         {
           id: entries.length + 1,
-          contentType: ChatContentType.Error,
-          type: ChatSourceType.Ai,
+          contentType: ChatContent.Error,
+          type: ChatSource.Ai,
           prompt: text,
         }
       ]);
@@ -130,10 +131,11 @@ function AutomatedChatSession({entries, appendEntry, modifyEntryText, clearConve
   );
 }
 
+// Owns the list of chat entries
 function ChatSession(): JSX.Element {
-  const [entries, setEntries] = React.useState<ChatElementType []>([]);
+  const [entries, setEntries] = React.useState<ChatElement []>([]);
 
-  const appendEntry = React.useCallback((newEntry: ChatElementType | ChatElementType[]) => {
+  const appendEntry = React.useCallback((newEntry: ChatElement | ChatElement[]) => {
     let modifiedEntries;
     if (Array.isArray(newEntry)) {
       modifiedEntries = [...entries, ...newEntry];
@@ -143,7 +145,7 @@ function ChatSession(): JSX.Element {
     setEntries(modifiedEntries);
   }, [entries]);
 
-  const modifyEntryText = React.useCallback((index: number, text: string, contentType: ChatContentType, prompt: string) => {
+  const modifyEntryText = React.useCallback((index: number, text: string, contentType: ChatContent, prompt: string) => {
     let modifiedEntries = [...entries];
     if (index >= entries.length) {
       console.error(`Index ${index} is out of bounds`);

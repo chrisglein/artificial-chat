@@ -16,7 +16,7 @@ import {
   HoverButton,
   CodeBlock
 } from './Controls';
-import { ChatElementType, ChatSourceType, ChatContentType, ChatScrollContext, ChatHistoryContext } from './Chat';
+import { ChatElement, ChatSource, ChatContent, ChatScrollContext, ChatHistoryContext } from './Chat';
 import { StylesContext } from './Styles';
 import { FeedbackContext } from './Feedback';
 import { SettingsContext } from './Settings';
@@ -163,22 +163,22 @@ function AISection({children, isLoading, contentShownOnHover}: AISectionProps): 
 }
 
 type AiSectionContentType = {
-  content: ChatElementType;
+  content: ChatElement;
 }
 function AiSectionContent({content}: AiSectionContentType): JSX.Element {
   return (
     <AISection>
       {(() => {
         switch (content.contentType) {
-          case ChatContentType.Error:
+          case ChatContent.Error:
             return <Text style={{color: 'red'}}>{content.text}</Text>
-          case ChatContentType.Image:
+          case ChatContent.Image:
             return <AIImageResponse
               imageUrl={content.text}
               prompt={content.prompt}
               rejectImage={() => console.log("Not yet implemented")}/>; // TODO: This would need to reset back to the text prompt
           default:
-          case ChatContentType.Text:
+          case ChatContent.Text:
             return <AITextResponse text={content.text}/>
         }
       })()}
@@ -189,7 +189,7 @@ function AiSectionContent({content}: AiSectionContentType): JSX.Element {
 type AISectionWithQueryProps = {
   prompt: string;
   id: number;
-  onResponse: ({prompt, response, contentType} : { prompt: string, response: string, contentType: ChatContentType} ) => void;
+  onResponse: ({prompt, response, contentType} : { prompt: string, response: string, contentType: ChatContent} ) => void;
 };
 function AISectionWithQuery({prompt, id, onResponse}: AISectionWithQueryProps): JSX.Element {
   const settingsContext = React.useContext(SettingsContext);
@@ -273,20 +273,20 @@ Respond with the image prompt string in the required format. Do not respond conv
         prompt: prompt,
         promptHistory: chatHistory.entries.
           filter((entry) => { return entry.text !== undefined && entry.id < id; }).
-          map((entry) => { return {role: entry.type == ChatSourceType.Human ? "user" : "assistant", "content": entry.text ?? ""} }),
+          map((entry) => { return {role: entry.type == ChatSource.Human ? "user" : "assistant", "content": entry.text ?? ""} }),
         onError: (error) => {
           setError(error);
           onResponse({
             prompt: prompt,
             response: error ?? "",
-            contentType: ChatContentType.Error});
+            contentType: ChatContent.Error});
         },
         onResult: (result) => {
           setQueryResult(result);
           onResponse({
             prompt: prompt,
             response: result ?? "", 
-            contentType: ChatContentType.Text});
+            contentType: ChatContent.Text});
         },
         onComplete: () => {
           setIsLoading(false);
@@ -305,14 +305,14 @@ Respond with the image prompt string in the required format. Do not respond conv
             onResponse({
               prompt: imagePrompt,
               response: error ?? "",
-              contentType: ChatContentType.Error});
+              contentType: ChatContent.Error});
           },
           onResult: (result) => {
             setQueryResult(result);
             onResponse({
               prompt: imagePrompt,
               response: result ?? "",
-              contentType: ChatContentType.Image});
+              contentType: ChatContent.Image});
           },
           onComplete: () => {
             setIsLoading(false);

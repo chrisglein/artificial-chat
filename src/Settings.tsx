@@ -11,16 +11,14 @@ import {StylesContext} from './Styles';
 import {Picker} from '@react-native-picker/picker';
 import {ChatScriptNames} from './ChatScript';
 
-type SettingsType = {
+const SettingsContext = React.createContext<{
   apiKey?: string,
   setApiKey: (value: string) => void,
   scriptName?: string,
   setScriptName: (value: string) => void,
   delayForArtificialResponse?: number,
   setDelayForArtificialResponse: (value: number) => void,
-}
-  
-const SettingsContext = React.createContext<SettingsType>({});
+}>({});
 
 type SettingsPopupProps = {
   show: boolean;
