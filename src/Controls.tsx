@@ -1,5 +1,4 @@
 import React from 'react';
-import type {PropsWithChildren} from 'react'
 import {
   Button,
   Image,
@@ -12,10 +11,10 @@ import {
 import { StylesContext } from './Styles';
 import { CodeBlock } from './CodeBlock';
 
-type HoverButtonProps = PropsWithChildren<{
+type HoverButtonProps = {
   content: string;
   onPress: () => void;
-}>;
+};
 function HoverButton({content, onPress}: HoverButtonProps): JSX.Element {
   const [hovering, setHovering] = React.useState(false);
 
@@ -36,9 +35,9 @@ function HoverButton({content, onPress}: HoverButtonProps): JSX.Element {
   );
 }
 
-type AttributionProps = PropsWithChildren<{
+type AttributionProps = {
   source: string;
-}>;
+};
 function Attribution({source}: AttributionProps): JSX.Element {
   return (
     <View style={{flexDirection: 'row'}}>
@@ -49,12 +48,12 @@ function Attribution({source}: AttributionProps): JSX.Element {
   );
 }
 
-type ConsentSwitchProps = PropsWithChildren<{
+type ConsentSwitchProps = {
   title: string;
   source: string;
   details: string;
   defaultValue?: boolean;
-}>;
+};
 function ConsentSwitch({title, source, defaultValue, details}: ConsentSwitchProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const [value, onValueChange] = React.useState(defaultValue);
@@ -72,9 +71,9 @@ function ConsentSwitch({title, source, defaultValue, details}: ConsentSwitchProp
   );
 }
 
-type ImageSelectionProps = PropsWithChildren<{
+type ImageSelectionProps = {
   image: ImageSourcePropType;
-}>;
+};
 function ImageSelection({image}: ImageSelectionProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   return (
@@ -88,7 +87,10 @@ function ImageSelection({image}: ImageSelectionProps): JSX.Element {
   );
 }
 
-function Hyperlink({url, children}: PropsWithChildren<{url: string}>): JSX.Element {
+type HyperlinkProps = {
+  url: string
+};
+function Hyperlink({url}: HyperlinkProps): JSX.Element {
   const [hovering, setHovering] = React.useState(false);
   const [pressing, setPressing] = React.useState(false);
   return (

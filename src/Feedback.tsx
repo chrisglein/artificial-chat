@@ -6,18 +6,12 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import {
-  Popup,
-} from 'react-native-windows';
-import {
-  StylesContext,
-} from './Styles';
+import { Popup } from 'react-native-windows';
+import { StylesContext } from './Styles';
 
-type FeedbackType = {
+const FeedbackContext = React.createContext<{
   showFeedback : (positive: boolean) => void;
-}
-
-const FeedbackContext = React.createContext<FeedbackType>({showFeedback: () => {}});
+}>({showFeedback: () => {}});
 
 type FeedbackPopupProps = {
   show: boolean;
