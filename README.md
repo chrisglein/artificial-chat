@@ -5,6 +5,38 @@
 # Build & Run
 1. `yarn windows`
 
+# User Interface
+
+### Chat entry
+Type in natural language prompts to this field. Press Enter or the "Submit" button to get a response. The 💣 button clears the chat history.
+![image](https://user-images.githubusercontent.com/26607885/223858100-82da9d59-3934-4497-81ff-8c3e0aaa6f82.png)
+
+### Settings dialog
+To get responses from OpenAI, you will need to provide an API Key in this dialog. It's available by pressing the ⚙️ button on the chat entry pane.
+<img width="401" alt="image" src="https://user-images.githubusercontent.com/26607885/223858390-0bd5a4bd-2358-4d24-8d6d-ab8039b2f70f.png">
+
+### Text Response
+Your prompts will be responded to via [chat completion](https://platform.openai.com/docs/guides/chat).
+<img width="720" alt="image" src="https://user-images.githubusercontent.com/26607885/223862976-ba9113e8-558a-49d1-9d28-cc4547154123.png">
+
+### Image Response
+If your prompt is determined to have primary intent to see an image, instead you will get a response from [image generation](https://platform.openai.com/docs/guides/images).
+<img width="714" alt="image" src="https://user-images.githubusercontent.com/26607885/223865313-538544bf-ce76-4d38-a404-4aa456cec34b.png">
+
+### Rich Code Blocks
+In your text response, if there are markdown code blocks, those will get syntax highlighting and other code niceties.
+<img width="716" alt="image" src="https://user-images.githubusercontent.com/26607885/223868129-d8aa12a9-c5b6-47a1-a5ae-7498a0860aef.png">
+
+### Feedback dialog
+There is a feedback dialog on each AI response. This is not yet implemented.
+
+<img width="255" alt="image" src="https://user-images.githubusercontent.com/26607885/223870036-e8100f80-3360-4114-abb7-52e284039063.png">
+
+As is the "Regenerate response" button.
+
+<img width="138" alt="image" src="https://user-images.githubusercontent.com/26607885/223875964-0a46490d-7d9a-4fe3-b57b-46ad7042e57d.png">
+
+
 # Design
 The chat is driven by a list of `ChatElement` objects called `entries`. Each element contains the source `type` (`Human` or `Ai`), the `prompt` string that will drive the eventual content, a content type (`Text`, `Error`, or `Image`), the `text` that describes that content, and `id` for later lookup. Optionally there's also a JSX element `content` for use by chat scripts that may have custom controls. When the OpenAi query completes it updates the `ChatElement` with the resolved `text` and `contentType` values. This readonly list of entries is available in a `ChatHistoryContext`. This enables the OpenAi query to pull in all older `ChatElement` entries (determined by `id`) to pass to the chat completion call.
 
