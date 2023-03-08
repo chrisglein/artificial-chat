@@ -90,7 +90,7 @@ type ChatProps = PropsWithChildren<{
   entries: ChatElementType[];
   humanText? : string;
   onPrompt: (prompt: string) => void;
-  onResponse: (response: string, contentType: ChatContentType, entryId: number) => void;
+  onResponse: ({prompt, response, contentType, entryId} : { prompt: string, response: string, contentType: ChatContentType, entryId: number} ) => void;
   regenerateResponse: () => void;
   clearConversation: () => void;
 }>;
@@ -111,7 +111,6 @@ function Chat({entries, humanText, onPrompt, onResponse, regenerateResponse, cle
   const scrollToEnd = () => {
     // Wait for the new entry to be rendered
     setTimeout(() => {
-      console.log(scrollViewRef);
       scrollViewRef.current?.scrollToEnd({animated: true});
     }, 100);
   }
@@ -139,7 +138,7 @@ function Chat({entries, humanText, onPrompt, onResponse, regenerateResponse, cle
                             <AISectionWithQuery
                               id={entry.id}
                               prompt={entry.prompt ?? ""}
-                              onResponse={(response, contentType) => onResponse(response, contentType, entry.id)}/>
+                              onResponse={({prompt, response, contentType}) => onResponse({prompt: prompt, response: response, contentType: contentType, entryId: entry.id})}/>
                     }
                   </View>
                 ))}

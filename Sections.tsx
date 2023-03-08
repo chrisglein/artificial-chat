@@ -168,11 +168,20 @@ type AiSectionContentType = {
 function AiSectionContent({content}: AiSectionContentType): JSX.Element {
   return (
     <AISection>
-      {
-        content.contentType == ChatContentType.Error ? 
-        <Text style={{color: 'red'}}>{content.text}</Text> :
-        <AITextResponse text={content.text}/>
-      }
+      {(() => {
+        switch (content.contentType) {
+          case ChatContentType.Error:
+            return <Text style={{color: 'red'}}>{content.text}</Text>
+          case ChatContentType.Image:
+            return <AIImageResponse
+              imageUrl={content.text}
+              prompt={content.prompt}
+              rejectImage={() => console.log("Not yet implemented")}/>; // TODO: This would need to reset back to the text prompt
+          default:
+          case ChatContentType.Text:
+            return <AITextResponse text={content.text}/>
+        }
+      })()}
     </AISection>
   )
 }
@@ -180,7 +189,7 @@ function AiSectionContent({content}: AiSectionContentType): JSX.Element {
 type AISectionWithQueryProps = {
   prompt: string;
   id: number;
-  onResponse: (response: string, contentType: ChatContentType) => void;
+  onResponse: ({prompt, response, contentType} : { prompt: string, response: string, contentType: ChatContentType} ) => void;
 };
 function AISectionWithQuery({prompt, id, onResponse}: AISectionWithQueryProps): JSX.Element {
   const settingsContext = React.useContext(SettingsContext);
@@ -202,7 +211,7 @@ function AISectionWithQuery({prompt, id, onResponse}: AISectionWithQueryProps): 
     CallOpenAi({
       api: OpenAiApi.Completion,
       apiKey: settingsContext.apiKey,
-      instructions: `You are an intuitive assistant helping the user with a project. You need to determine the primary intent of the user's current prompt.
+      instructions: `You are an intuitive assistant helping the user with a project. Your only job is need to determine the primary intent of the user's last prompt.
 If the user's primary intent is to request to see or create an image, respond with exactly the string "${imageIntentSentinel}". Otherwise, respond with a description of their intent.`,
       identifier: "INTENT:",
       prompt: prompt,
@@ -210,11 +219,8 @@ If the user's primary intent is to request to see or create an image, respond wi
         setIsRequestForImage(false);
       },
       onResult: (result) => {
-        console.log(result);
         const isImage = result == imageIntentSentinel;
-        // Disabling until ChatCompletion gives more reliable results for intent
-        //setIsRequestForImage(isImage);
-        setIsRequestForImage(false);
+        setIsRequestForImage(isImage);
       },
       onComplete: () => {
     }});
@@ -228,21 +234,21 @@ If the user's primary intent is to request to see or create an image, respond wi
       CallOpenAi({
         api: OpenAiApi.ChatCompletion,
         apiKey: settingsContext.apiKey,
-        instructions: `You are an assistant helping the user. To aid you, you can use DALL-E which can generate images from a description. Your job is to take the user's prompt and reply with an image prompt. The image prompt should be a comma-separated list of keywords describing the desired image, for example:
-  - photography
-  - fun
-  - scary
-  - comics
-  - high quality
-  - highres
-  - art
-  - dull colors
-  - [name of a photographer]
-  - [name of a design studio]
-  - [visual adjective]
-  - [style of the image]
-  Where items enclosed in brackets ([]) would be replaced with an appropriate suggestion.
-  Respond with the image prompt string.`,
+        instructions: `You are an assistant helping the user generate an image from a description. Take the user's prompt and reply with a valid image prompt, which is be a comma-separated list of keywords describing the desired image. An example list of keywords:
+- photography
+- fun
+- scary
+- comics
+- high quality
+- highres
+- art
+- dull colors
+- [name of a photographer]
+- [name of a design studio]
+- [visual adjective]
+- [style of the image]
+Where items enclosed in brackets ([]) would be replaced with an appropriate suggestion.
+Respond with the image prompt string in the required format. Do not respond conversationally.`,
         identifier: "KEYWORDS:",
         prompt: prompt,
         onError: (error) => {
@@ -266,15 +272,21 @@ If the user's primary intent is to request to see or create an image, respond wi
         identifier: "TEXT-ANSWER:",
         prompt: prompt,
         promptHistory: chatHistory.entries.
-          filter((entry) => { console.log(entry); return entry.text !== undefined && entry.id < id; }).
-          map((entry) => { return {role: entry.type == ChatSourceType.Human ? "user" : "assistant", "content": entry.text} }),
+          filter((entry) => { return entry.text !== undefined && entry.id < id; }).
+          map((entry) => { return {role: entry.type == ChatSourceType.Human ? "user" : "assistant", "content": entry.text ?? ""} }),
         onError: (error) => {
           setError(error);
-          onResponse(error ?? "", ChatContentType.Error);
+          onResponse({
+            prompt: prompt,
+            response: error ?? "",
+            contentType: ChatContentType.Error});
         },
         onResult: (result) => {
           setQueryResult(result);
-          onResponse(result ?? "", ChatContentType.Text);
+          onResponse({
+            prompt: prompt,
+            response: result ?? "", 
+            contentType: ChatContentType.Text});
         },
         onComplete: () => {
           setIsLoading(false);
@@ -287,14 +299,20 @@ If the user's primary intent is to request to see or create an image, respond wi
           api: OpenAiApi.Generations,
           apiKey: settingsContext.apiKey,
           identifier: "IMAGE-ANSWER:",
-          prompt: prompt,
+          prompt: imagePrompt,
           onError: (error) => {
             setError(error);
-            onResponse(error ?? "", ChatContentType.Error);
+            onResponse({
+              prompt: imagePrompt,
+              response: error ?? "",
+              contentType: ChatContentType.Error});
           },
           onResult: (result) => {
             setQueryResult(result);
-            onResponse(result ?? "", ChatContentType.Image);
+            onResponse({
+              prompt: imagePrompt,
+              response: result ?? "",
+              contentType: ChatContentType.Image});
           },
           onComplete: () => {
             setIsLoading(false);

@@ -9,7 +9,7 @@ import { handleAIResponse } from './ChatScript';
 type AutomatedChatSessionProps = PropsWithChildren<{
   entries: ChatElementType[];
   appendEntry: (entry: ChatElementType | ChatElementType[]) => void;
-  modifyEntryText: (index: number, text: string, contentType: ChatContentType) => void;
+  modifyEntryText: (index: number, text: string, contentType: ChatContentType, prompt: string) => void;
   clearConversation: () => void;
 }>;
 function AutomatedChatSession({entries, appendEntry, modifyEntryText, clearConversation}: AutomatedChatSessionProps): JSX.Element {
@@ -121,7 +121,7 @@ function AutomatedChatSession({entries, appendEntry, modifyEntryText, clearConve
       entries={entries}
       humanText={humanText}
       onPrompt={(text) => onPrompt(text, chatScriptIndex)}
-      onResponse={(response, contentType, entryId) => modifyEntryText(entryId, response, contentType)}
+      onResponse={({prompt, response, contentType, entryId}) => modifyEntryText(entryId, response, contentType, prompt)}
       regenerateResponse={() => setChatScriptIndex(chatScriptIndex - 1)}
       clearConversation={() => {
         setChatScriptIndex(0);
@@ -143,11 +143,12 @@ function ChatSession(): JSX.Element {
     setEntries(modifiedEntries);
   }, [entries]);
 
-  const modifyEntryText = React.useCallback((index: number, text: string, contentType: ChatContentType) => {
+  const modifyEntryText = React.useCallback((index: number, text: string, contentType: ChatContentType, prompt: string) => {
     let modifiedEntries = [...entries];
     if (index >= entries.length) {
       console.error(`Index ${index} is out of bounds`);
     } else {
+      modifiedEntries[index].prompt = prompt;
       modifiedEntries[index].text = text;
       modifiedEntries[index].contentType = contentType;
       setEntries(modifiedEntries);

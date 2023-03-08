@@ -137,7 +137,12 @@ const CallOpenAi = async ({api, apiKey, instructions, identifier, prompt, prompt
       try {
         console.debug(`Have result for ${identifier}"${prompt}"`);
         console.debug(json);
-        onResult(apiHandler.response(json));
+
+        if (json.error) {
+          onError(json.error.message);
+        } else {
+          onResult(apiHandler.response(json));
+        }
       } catch (error) {
         onError(`Error parsing AI response text "${json}"`);
       }
