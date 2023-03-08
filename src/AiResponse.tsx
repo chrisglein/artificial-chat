@@ -48,7 +48,7 @@ function AiImageResponse({imageUrl, prompt, rejectImage}: AiImageResponseProps):
   );
 }
 
-type AiTextResponseProps {
+type AiTextResponseProps = {
   text?: string;
 };
 function AiTextResponse({text}: AiTextResponseProps): JSX.Element {
