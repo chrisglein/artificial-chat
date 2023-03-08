@@ -1,6 +1,8 @@
-# Build & Run
+# Setup
 1. Install all dependencies per [RNW Dependencies](https://microsoft.github.io/react-native-windows/docs/rnw-dependencies)
 1. `yarn`
+
+# Build & Run
 1. `yarn windows`
 
 # Design
@@ -55,7 +57,7 @@ The app's settings are handled by a `SettingsContext` object, which has dialog U
 | CodeBlock.tsx | `CodeBlock` | Displays code with syntax highlighting and copy support |
 
 # Dependencies
-- Picker via "@react-native-clipboard/clipboard"
-- Clipboard via "@react-native-picker/picker"
-- Syntax Highlighting via "react-native-syntax-highlighter"
-- Dependency patching via "patch-package"
+- Picker via [@react-native-clipboard/clipboard](https://github.com/react-native-clipboard/clipboard)
+- Clipboard via [@react-native-picker/picker](https://github.com/react-native-picker/picker)
+- Syntax Highlighting via [react-native-syntax-highlighter](https://github.com/conorhastings/react-native-syntax-highlighter)
+- Dependency patching via [patch-package](https://github.com/ds300/patch-package)
