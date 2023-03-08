@@ -1,12 +1,5 @@
 import React from 'react';
 import type {PropsWithChildren} from 'react';
-import {
-  Text,
-} from 'react-native';
-import {
-  HumanSection,
-  AISectionWithQuery,
-} from './Sections';
 import { Chat, ChatSourceType, ChatContentType } from './Chat';
 import type { ChatElementType } from './Chat';
 import { StylesContext } from './Styles';
@@ -24,8 +17,6 @@ function AutomatedChatSession({entries, appendEntry, modifyEntryText, clearConve
   const settings = React.useContext(SettingsContext);
 
   const [chatScriptIndex, setChatScriptIndex] = React.useState(0);
-
-  console.log("AutomatedChatSession rendered");
 
   const advanceChatScript = (index: number, goToNext: () => void) => {
     type AutomatedChatResult = {
@@ -99,7 +90,6 @@ function AutomatedChatSession({entries, appendEntry, modifyEntryText, clearConve
       }
     } else {
       console.log(`Prompt: "${text}"`);
-      console.log(entries);
       
       appendEntry([
         {
@@ -154,8 +144,6 @@ function ChatSession(): JSX.Element {
   }, [entries]);
 
   const modifyEntryText = React.useCallback((index: number, text: string, contentType: ChatContentType) => {
-    console.log(`Setting entry text @${index} to "${text}" of type ${contentType}`);
-    console.log(entries);
     let modifiedEntries = [...entries];
     if (index >= entries.length) {
       console.error(`Index ${index} is out of bounds`);

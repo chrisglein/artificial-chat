@@ -4,6 +4,11 @@ enum OpenAiApi {
   Generations,
 }
 
+type ConversationEntryType = {
+  role: "user" | "system" | "assistant",
+  content: string,
+}
+
 type OpenAiHandlerType = {
   api: OpenAiApi,
   engine?: string,
@@ -21,7 +26,7 @@ const OpenAiHandler = ({api, engine, instructions}: OpenAiHandlerType) => {
     case OpenAiApi.Completion: 
       return {
         url: `${OpenAIUrl}/engines/${engine ?? DefaultEngine}/completions`,
-        body: (prompt: string) => {
+        body: (prompt: string, promptHistory?: ConversationEntryType[]) => {
           let wrappedPrompt = `${actualInstructions}\nHuman: ${prompt}.\nAI:`;
           return {
             best_of: 1,
@@ -49,11 +54,12 @@ const OpenAiHandler = ({api, engine, instructions}: OpenAiHandlerType) => {
     case OpenAiApi.ChatCompletion: 
       return {
         url: `${OpenAIUrl}/chat/completions`,
-        body: (prompt: string) => {
+        body: (prompt: string, promptHistory?: ConversationEntryType[]) => {
           return {
             model: "gpt-3.5-turbo",
             messages: [
               {"role": "system", "content": actualInstructions},
+              ...promptHistory ?? [],
               {"role": "user", "content": prompt},
             ]
           };
@@ -67,7 +73,7 @@ const OpenAiHandler = ({api, engine, instructions}: OpenAiHandlerType) => {
     case OpenAiApi.Generations: 
       return {
         url: `${OpenAIUrl}/images/generations`,
-        body: (prompt: string) => {
+        body: (prompt: string, promptHistory?: ConversationEntryType[]) => {
           return {
             prompt: prompt,
             n: 1,
@@ -90,11 +96,12 @@ type CallOpenAiProps = {
   instructions?: string,
   identifier?: string,
   prompt: string,
+  promptHistory?: ConversationEntryType[],
   onError: (error: string) => void,
   onResult: (result: string) => void,
   onComplete: () => void
 }
-const CallOpenAi = async ({api, apiKey, instructions, identifier, prompt, onError, onResult, onComplete}: CallOpenAiProps) => {
+const CallOpenAi = async ({api, apiKey, instructions, identifier, prompt, promptHistory, onError, onResult, onComplete}: CallOpenAiProps) => {
   const DefaultApiKey = undefined; // During development you can paste your API key here, but DO NOT CHECK IN
   let effectiveApiKey = apiKey ?? DefaultApiKey;
 
@@ -105,12 +112,13 @@ const CallOpenAi = async ({api, apiKey, instructions, identifier, prompt, onErro
   }
 
   try {
-    console.log(`Start ${identifier}"${prompt}"`);
+    console.debug(`Start ${identifier}"${prompt}"`);
 
     let apiHandler = OpenAiHandler({api: api, instructions: instructions});
 
     let url = apiHandler.url;
-    let body = apiHandler.body(prompt);
+    let body = apiHandler.body(prompt, promptHistory);
+    console.debug(body);
 
     let response = await fetch(
       url, {
@@ -127,8 +135,8 @@ const CallOpenAi = async ({api, apiKey, instructions, identifier, prompt, onErro
       const json = await response.json();
 
       try {
-        console.log(`Have result for ${identifier}"${prompt}"`);
-        console.log(json);
+        console.debug(`Have result for ${identifier}"${prompt}"`);
+        console.debug(json);
         onResult(apiHandler.response(json));
       } catch (error) {
         onError(`Error parsing AI response text "${json}"`);
@@ -138,9 +146,8 @@ const CallOpenAi = async ({api, apiKey, instructions, identifier, prompt, onErro
     }
   } catch (error) {
     onError("Error in http POST");
-    onError(error.stack);
   } finally {
-    console.log(`End ${identifier}"${prompt}"`);
+    console.debug(`End ${identifier}"${prompt}"`);
     onComplete();
   }
 }

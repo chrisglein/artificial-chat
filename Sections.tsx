@@ -16,7 +16,7 @@ import {
   HoverButton,
   CodeBlock
 } from './Controls';
-import { ChatElementType, ChatContentType, ChatScrollContext } from './Chat';
+import { ChatElementType, ChatSourceType, ChatContentType, ChatScrollContext, ChatHistoryContext } from './Chat';
 import { StylesContext } from './Styles';
 import { FeedbackContext } from './Feedback';
 import { SettingsContext } from './Settings';
@@ -179,11 +179,13 @@ function AiSectionContent({content}: AiSectionContentType): JSX.Element {
 
 type AISectionWithQueryProps = {
   prompt: string;
+  id: number;
   onResponse: (response: string, contentType: ChatContentType) => void;
 };
-function AISectionWithQuery({prompt, onResponse}: AISectionWithQueryProps): JSX.Element {
+function AISectionWithQuery({prompt, id, onResponse}: AISectionWithQueryProps): JSX.Element {
   const settingsContext = React.useContext(SettingsContext);
   const chatScroll = React.useContext(ChatScrollContext);
+  const chatHistory = React.useContext(ChatHistoryContext);
   const [isLoading, setIsLoading] = React.useState(true);
   const [queryResult, setQueryResult] = React.useState<string | undefined>(undefined);
   const [error, setError] = React.useState<string | undefined>(undefined);
@@ -263,6 +265,9 @@ If the user's primary intent is to request to see or create an image, respond wi
         instructions: `The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly. If the response involves code, use markdown format for that with \`\`\`(language) blocks.`,
         identifier: "TEXT-ANSWER:",
         prompt: prompt,
+        promptHistory: chatHistory.entries.
+          filter((entry) => { console.log(entry); return entry.text !== undefined && entry.id < id; }).
+          map((entry) => { return {role: entry.type == ChatSourceType.Human ? "user" : "assistant", "content": entry.text} }),
         onError: (error) => {
           setError(error);
           onResponse(error ?? "", ChatContentType.Error);
@@ -302,6 +307,7 @@ If the user's primary intent is to request to see or create an image, respond wi
   return (
     <AISection isLoading={isLoading}>
       {
+        // TODO: All of this can go away now, once images are working in new model
         (isLoading || error) ?
           <Text style={{color: 'crimson'}}>{error}</Text>
         : isRequestForImage ? 
