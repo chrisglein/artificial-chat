@@ -1,32 +1,18 @@
 import React from 'react';
 import type {PropsWithChildren} from 'react';
-import {
-  Text,
-} from 'react-native';
-import {
-  HumanSection,
-  AISection,
-  AISectionWithQuery,
-} from './Sections';
-import {
-  Chat,
-} from './Chat';
-import {
-  StylesContext,
-} from './Styles';
-import {
-  SettingsContext,
-} from './Settings';
-import {
-  handleAIResponse,
-} from './ChatScript';
+import { Chat, ChatSourceType, ChatContentType } from './Chat';
+import type { ChatElementType } from './Chat';
+import { StylesContext } from './Styles';
+import { SettingsContext } from './Settings';
+import { handleAIResponse } from './ChatScript';
 
 type AutomatedChatSessionProps = PropsWithChildren<{
-  entries: JSX.Element[];
-  appendEntry: (entry: JSX.Element | JSX.Element[]) => void;
+  entries: ChatElementType[];
+  appendEntry: (entry: ChatElementType | ChatElementType[]) => void;
+  modifyEntryText: (index: number, text: string, contentType: ChatContentType, prompt: string) => void;
   clearConversation: () => void;
 }>;
-function AutomatedChatSession({entries, appendEntry, clearConversation}: AutomatedChatSessionProps): JSX.Element {
+function AutomatedChatSession({entries, appendEntry, modifyEntryText, clearConversation}: AutomatedChatSessionProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const settings = React.useContext(SettingsContext);
 
@@ -71,37 +57,53 @@ function AutomatedChatSession({entries, appendEntry, clearConversation}: Automat
       console.log(`Following script with prompt of '${text}', index is ${index}`);
 
       // Get the AI's response to the prompt
-      let {aiResponse} = advanceChatScript(index, () => onPrompt(undefined, index + 1));
+      let {aiResponse} = advanceChatScript(index, () => onPrompt("", index + 1));
       setChatScriptIndex(index + 1);
       console.log(aiResponse);
-  
-      // If there wasn't a response, we hit the end of the script
-      if (!aiResponse) {
-        aiResponse =
-          <AISection>
-            <Text>You have reached the end of the script, and I cannot comment on "{text}"</Text>    
-          </AISection>
-      }
 
       // Append to the chat log
       // If the human has a prompt, add it to the chat
       if (text) {
         appendEntry([
-          <HumanSection>
-            <Text>{text}</Text>
-          </HumanSection>,
-          aiResponse]);
+          {
+            type: ChatSourceType.Human,
+            id: entries.length,
+            contentType: ChatContentType.Text,
+            text: text,
+          },
+          {
+            id: entries.length + 1,
+            type: ChatSourceType.Ai,
+            contentType: ChatContentType.Text,
+            text: text,
+            content: aiResponse,
+          }]);
       } else {
-        appendEntry(aiResponse);
+        appendEntry(
+          {
+            id: entries.length,
+            type: ChatSourceType.Ai,
+            contentType: ChatContentType.Error,
+            text: '',
+            content: aiResponse,
+          });
       }
     } else {
       console.log(`Prompt: "${text}"`);
       
       appendEntry([
-        <HumanSection>
-          <Text>{text}</Text>
-        </HumanSection>,
-        <AISectionWithQuery prompt={text}/>
+        {
+          id: entries.length,
+          type: ChatSourceType.Human,
+          contentType: ChatContentType.Text,
+          text: text,
+        },
+        {
+          id: entries.length + 1,
+          contentType: ChatContentType.Error,
+          type: ChatSourceType.Ai,
+          prompt: text,
+        }
       ]);
     }
   }
@@ -119,6 +121,7 @@ function AutomatedChatSession({entries, appendEntry, clearConversation}: Automat
       entries={entries}
       humanText={humanText}
       onPrompt={(text) => onPrompt(text, chatScriptIndex)}
+      onResponse={({prompt, response, contentType, entryId}) => modifyEntryText(entryId, response, contentType, prompt)}
       regenerateResponse={() => setChatScriptIndex(chatScriptIndex - 1)}
       clearConversation={() => {
         setChatScriptIndex(0);
@@ -128,13 +131,27 @@ function AutomatedChatSession({entries, appendEntry, clearConversation}: Automat
 }
 
 function ChatSession(): JSX.Element {
-  const [entries, setEntries] = React.useState<JSX.Element []>([]);
+  const [entries, setEntries] = React.useState<ChatElementType []>([]);
 
-  const appendEntry = React.useCallback((newEntry: JSX.Element | JSX.Element[]) => {
+  const appendEntry = React.useCallback((newEntry: ChatElementType | ChatElementType[]) => {
+    let modifiedEntries;
     if (Array.isArray(newEntry)) {
-      setEntries([...entries, ...newEntry]);
+      modifiedEntries = [...entries, ...newEntry];
     } else {
-      setEntries([...entries, newEntry]);
+      modifiedEntries = [...entries, newEntry];
+    }
+    setEntries(modifiedEntries);
+  }, [entries]);
+
+  const modifyEntryText = React.useCallback((index: number, text: string, contentType: ChatContentType, prompt: string) => {
+    let modifiedEntries = [...entries];
+    if (index >= entries.length) {
+      console.error(`Index ${index} is out of bounds`);
+    } else {
+      modifiedEntries[index].prompt = prompt;
+      modifiedEntries[index].text = text;
+      modifiedEntries[index].contentType = contentType;
+      setEntries(modifiedEntries);
     }
   }, [entries]);
 
@@ -144,6 +161,7 @@ function ChatSession(): JSX.Element {
     <AutomatedChatSession
       entries={entries}
       appendEntry={appendEntry}
+      modifyEntryText={modifyEntryText}
       clearConversation={clearConversation}/>
   );
 }

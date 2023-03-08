@@ -1,6 +1,12 @@
 enum OpenAiApi {
   Completion,
+  ChatCompletion,
   Generations,
+}
+
+type ConversationEntryType = {
+  role: "user" | "system" | "assistant",
+  content: string,
 }
 
 type OpenAiHandlerType = {
@@ -20,7 +26,7 @@ const OpenAiHandler = ({api, engine, instructions}: OpenAiHandlerType) => {
     case OpenAiApi.Completion: 
       return {
         url: `${OpenAIUrl}/engines/${engine ?? DefaultEngine}/completions`,
-        body: (prompt: string) => {
+        body: (prompt: string, promptHistory?: ConversationEntryType[]) => {
           let wrappedPrompt = `${actualInstructions}\nHuman: ${prompt}.\nAI:`;
           return {
             best_of: 1,
@@ -45,10 +51,29 @@ const OpenAiHandler = ({api, engine, instructions}: OpenAiHandlerType) => {
           return trimmedTextResult;
         }
       }
+    case OpenAiApi.ChatCompletion: 
+      return {
+        url: `${OpenAIUrl}/chat/completions`,
+        body: (prompt: string, promptHistory?: ConversationEntryType[]) => {
+          return {
+            model: "gpt-3.5-turbo",
+            messages: [
+              {"role": "system", "content": actualInstructions},
+              ...promptHistory ?? [],
+              {"role": "user", "content": prompt},
+            ]
+          };
+        },
+        response: (json: any) => {
+          let result = json.choices[0].message.content;
+          console.log(`AI response: "${result}"`);
+          return result;
+        }
+      }
     case OpenAiApi.Generations: 
       return {
         url: `${OpenAIUrl}/images/generations`,
-        body: (prompt: string) => {
+        body: (prompt: string, promptHistory?: ConversationEntryType[]) => {
           return {
             prompt: prompt,
             n: 1,
@@ -69,12 +94,14 @@ type CallOpenAiProps = {
   api: OpenAiApi,
   apiKey?: string,
   instructions?: string,
+  identifier?: string,
   prompt: string,
+  promptHistory?: ConversationEntryType[],
   onError: (error: string) => void,
   onResult: (result: string) => void,
   onComplete: () => void
 }
-const CallOpenAi = async ({api, apiKey, instructions, prompt, onError, onResult, onComplete}: CallOpenAiProps) => {
+const CallOpenAi = async ({api, apiKey, instructions, identifier, prompt, promptHistory, onError, onResult, onComplete}: CallOpenAiProps) => {
   const DefaultApiKey = undefined; // During development you can paste your API key here, but DO NOT CHECK IN
   let effectiveApiKey = apiKey ?? DefaultApiKey;
 
@@ -85,27 +112,37 @@ const CallOpenAi = async ({api, apiKey, instructions, prompt, onError, onResult,
   }
 
   try {
-    console.log(`Start "${prompt}"`);
+    console.debug(`Start ${identifier}"${prompt}"`);
 
     let apiHandler = OpenAiHandler({api: api, instructions: instructions});
 
+    let url = apiHandler.url;
+    let body = apiHandler.body(prompt, promptHistory);
+    console.debug(body);
+
     let response = await fetch(
-      apiHandler.url, {
+      url, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
           'Authorization': `Bearer ${effectiveApiKey}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(apiHandler.body(prompt)),
+        body: JSON.stringify(body),
       });
     
     try {
       const json = await response.json();
 
       try {
-        console.log(`Have result for "${prompt}"`);
-        onResult(apiHandler.response(json));
+        console.debug(`Have result for ${identifier}"${prompt}"`);
+        console.debug(json);
+
+        if (json.error) {
+          onError(json.error.message);
+        } else {
+          onResult(apiHandler.response(json));
+        }
       } catch (error) {
         onError(`Error parsing AI response text "${json}"`);
       }
@@ -114,9 +151,8 @@ const CallOpenAi = async ({api, apiKey, instructions, prompt, onError, onResult,
     }
   } catch (error) {
     onError("Error in http POST");
-    onError(error.stack);
   } finally {
-    console.log(`End "${prompt}"`);
+    console.debug(`End ${identifier}"${prompt}"`);
     onComplete();
   }
 }

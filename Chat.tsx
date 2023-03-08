@@ -3,10 +3,11 @@ import type {PropsWithChildren} from 'react';
 import {
   Button,
   ScrollView,
+  Text,
   TextInput,
   View,
 } from 'react-native';
-import { HumanSection } from './Sections';
+import { HumanSection, AISectionWithQuery, AiSectionContent } from './Sections';
 import { StylesContext } from './Styles';
 import {
   FeedbackContext,
@@ -14,6 +15,29 @@ import {
 } from './Feedback';
 import { SettingsPopup } from './Settings';
 import { HoverButton } from './Controls';
+
+enum ChatSourceType {
+  Human,
+  Ai,
+}
+enum ChatContentType {
+  Error,
+  Text,
+  Image,
+}
+type ChatElementType = {
+  id: number;
+  type: ChatSourceType;
+  contentType: ChatContentType;
+  prompt?: string;
+  text?: string;
+  content?: JSX.Element;
+}
+type ChatHistoryContextType = {
+  entries: ChatElementType[];
+}
+const ChatHistoryContext = React.createContext<ChatHistoryContextType>({entries: []});
+
 
 type ChatScrollContextType = {
   scrollToEnd : () => void;
@@ -63,13 +87,14 @@ function ChatEntry({submit, defaultText, clearConversation}: ChatEntryProps): JS
 }
 
 type ChatProps = PropsWithChildren<{
-  entries: JSX.Element[];
+  entries: ChatElementType[];
   humanText? : string;
   onPrompt: (prompt: string) => void;
+  onResponse: ({prompt, response, contentType, entryId} : { prompt: string, response: string, contentType: ChatContentType, entryId: number} ) => void;
   regenerateResponse: () => void;
   clearConversation: () => void;
 }>;
-function Chat({entries, humanText, onPrompt, regenerateResponse, clearConversation}: ChatProps): JSX.Element {
+function Chat({entries, humanText, onPrompt, onResponse, regenerateResponse, clearConversation}: ChatProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const [showFeedbackPopup, setShowFeedbackPopup] = React.useState(false);
   const [showSettingsPopup, setShowSettingsPopup] = React.useState(false);
@@ -86,62 +111,75 @@ function Chat({entries, humanText, onPrompt, regenerateResponse, clearConversati
   const scrollToEnd = () => {
     // Wait for the new entry to be rendered
     setTimeout(() => {
-      console.log(scrollViewRef);
       scrollViewRef.current?.scrollToEnd({animated: true});
     }, 100);
   }
 
   return (
     <FeedbackContext.Provider value={feedbackContext}>
-      <ChatScrollContext.Provider value={{scrollToEnd: scrollToEnd}}>
-        <View style={styles.appContent}>
-          <ScrollView
-            contentInsetAdjustmentBehavior="automatic"
-            ref={scrollViewRef}
-            style={{flexShrink: 1}}>
+      <ChatHistoryContext.Provider value={{entries: entries}}>
+        <ChatScrollContext.Provider value={{scrollToEnd: scrollToEnd}}>
+          <View style={styles.appContent}>
+            <ScrollView
+              contentInsetAdjustmentBehavior="automatic"
+              ref={scrollViewRef}
+              style={{flexShrink: 1}}>
+              <View
+                style={{gap: 12}}>
+                {entries.map((entry) => (
+                  <View key={entry.id}>
+                    {
+                      entry.type === ChatSourceType.Human ? 
+                        <HumanSection><Text>{entry.text}</Text></HumanSection> :
+                        entry.content ?
+                          entry.content :
+                          entry.text ?
+                            <AiSectionContent content={entry}/> : 
+                            <AISectionWithQuery
+                              id={entry.id}
+                              prompt={entry.prompt ?? ""}
+                              onResponse={({prompt, response, contentType}) => onResponse({prompt: prompt, response: response, contentType: contentType, entryId: entry.id})}/>
+                    }
+                  </View>
+                ))}
+                {(entries.length > 0) &&
+                  <View style={{alignSelf: 'center'}}>
+                    <Button title="🔁 Regenerate response" onPress={() => regenerateResponse()}/>
+                  </View>
+                }
+              </View>
+            </ScrollView>
             <View
-              style={{gap: 12}}>
-              {entries.map((entry, entryIndex) => (
-                <View key={entryIndex}>
-                  {entry}
-                </View>
-              ))}
-              {(entries.length > 0) &&
-                <View style={{alignSelf: 'center'}}>
-                  <Button title="🔁 Regenerate response" onPress={() => regenerateResponse()}/>
-                </View>
-              }
+              style={{flexShrink: 0, marginBottom: 12}}>
+              <HumanSection
+                disableEdit={true}
+                disableCopy={true}
+                contentShownOnHover={
+                  <HoverButton content="⚙️" onPress={() => setShowSettingsPopup(true)}/>
+                }>
+                <ChatEntry
+                  defaultText={humanText}
+                  submit={(newEntry) => {
+                    onPrompt(newEntry);
+                    scrollToEnd();
+                  }}
+                  clearConversation={clearConversation}/>
+              </HumanSection>
             </View>
-          </ScrollView>
-          <View
-            style={{flexShrink: 0, marginBottom: 12}}>
-            <HumanSection
-              disableEdit={true}
-              disableCopy={true}
-              contentShownOnHover={
-                <HoverButton content="⚙️" onPress={() => setShowSettingsPopup(true)}/>
-              }>
-              <ChatEntry
-                defaultText={humanText}
-                submit={(newEntry) => {
-                  onPrompt(newEntry);
-                  scrollToEnd();
-                }}
-                clearConversation={clearConversation}/>
-            </HumanSection>
+            { (showFeedbackPopup || showSettingsPopup) && <View style={styles.popupBackground}/> }
+            <FeedbackPopup
+              show={showFeedbackPopup}
+              isPositive={feedbackIsPositive}
+              close={() => setShowFeedbackPopup(false)}/>
+            <SettingsPopup
+              show={showSettingsPopup}
+              close={() => setShowSettingsPopup(false)}/>
           </View>
-          { (showFeedbackPopup || showSettingsPopup) && <View style={styles.popupBackground}/> }
-          <FeedbackPopup
-            show={showFeedbackPopup}
-            isPositive={feedbackIsPositive}
-            close={() => setShowFeedbackPopup(false)}/>
-          <SettingsPopup
-            show={showSettingsPopup}
-            close={() => setShowSettingsPopup(false)}/>
-        </View>
-      </ChatScrollContext.Provider>
+        </ChatScrollContext.Provider>
+      </ChatHistoryContext.Provider>
     </FeedbackContext.Provider>
   );
 }
 
-export { Chat, ChatScrollContext };
+export type { ChatElementType }
+export { Chat, ChatScrollContext, ChatSourceType, ChatContentType, ChatHistoryContext };

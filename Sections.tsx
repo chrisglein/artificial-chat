@@ -16,7 +16,7 @@ import {
   HoverButton,
   CodeBlock
 } from './Controls';
-import { ChatScrollContext } from './Chat';
+import { ChatElementType, ChatSourceType, ChatContentType, ChatScrollContext, ChatHistoryContext } from './Chat';
 import { StylesContext } from './Styles';
 import { FeedbackContext } from './Feedback';
 import { SettingsContext } from './Settings';
@@ -162,84 +162,178 @@ function AISection({children, isLoading, contentShownOnHover}: AISectionProps): 
   );
 }
 
+type AiSectionContentType = {
+  content: ChatElementType;
+}
+function AiSectionContent({content}: AiSectionContentType): JSX.Element {
+  return (
+    <AISection>
+      {(() => {
+        switch (content.contentType) {
+          case ChatContentType.Error:
+            return <Text style={{color: 'red'}}>{content.text}</Text>
+          case ChatContentType.Image:
+            return <AIImageResponse
+              imageUrl={content.text}
+              prompt={content.prompt}
+              rejectImage={() => console.log("Not yet implemented")}/>; // TODO: This would need to reset back to the text prompt
+          default:
+          case ChatContentType.Text:
+            return <AITextResponse text={content.text}/>
+        }
+      })()}
+    </AISection>
+  )
+}
+
 type AISectionWithQueryProps = {
   prompt: string;
+  id: number;
+  onResponse: ({prompt, response, contentType} : { prompt: string, response: string, contentType: ChatContentType} ) => void;
 };
-function AISectionWithQuery({prompt}: AISectionWithQueryProps): JSX.Element {
+function AISectionWithQuery({prompt, id, onResponse}: AISectionWithQueryProps): JSX.Element {
   const settingsContext = React.useContext(SettingsContext);
   const chatScroll = React.useContext(ChatScrollContext);
+  const chatHistory = React.useContext(ChatHistoryContext);
   const [isLoading, setIsLoading] = React.useState(true);
   const [queryResult, setQueryResult] = React.useState<string | undefined>(undefined);
   const [error, setError] = React.useState<string | undefined>(undefined);
+  const [isRequestForImage, setIsRequestForImage] = React.useState<boolean | undefined>(undefined);
   const [imagePrompt, setImagePrompt] = React.useState<string | undefined>(undefined);
 
-  const notAnImageSentinel = "N/A";
+  // First determine the intent of the prompt
+  const imageIntentSentinel = "[IMAGE]";
   React.useEffect(() => {
     setIsLoading(true);
+    setError(undefined);
+    setIsRequestForImage(undefined);
     setImagePrompt(undefined);
     CallOpenAi({
       api: OpenAiApi.Completion,
       apiKey: settingsContext.apiKey,
-      instructions: `You are an assistant helping the user. To aid you, you can use DALL-E which can generate images from a description. Your job is to take the user's prompt and reply with an image prompt. The image prompt should be a comma-separated list of keywords describing the desired image, for example:
-      - photography
-      - fun
-      - scary
-      - comics
-      - high quality
-      - highres
-      - art
-      - dull colors
-      - [name of a photographer]
-      - [name of a design studio]
-      - [visual adjective]
-      - [style of the image]
-      Where items enclosed in brackets would be replaced with an appropriate suggestion.
-
-      If the user's prompt does not PRIMARILY seem to include a request for an image, respond with "${notAnImageSentinel}" (and no other punctuation). Otherwise, respond with the image prompt string.`,
+      instructions: `You are an intuitive assistant helping the user with a project. Your only job is need to determine the primary intent of the user's last prompt.
+If the user's primary intent is to request to see or create an image, respond with exactly the string "${imageIntentSentinel}". Otherwise, respond with a description of their intent.`,
+      identifier: "INTENT:",
       prompt: prompt,
       onError: (error) => {
-        setImagePrompt(notAnImageSentinel);
+        setIsRequestForImage(false);
       },
       onResult: (result) => {
-        setImagePrompt(result);
+        const isImage = result == imageIntentSentinel;
+        setIsRequestForImage(isImage);
       },
       onComplete: () => {
-      }});
-    }, [prompt]);
+    }});
+  }, [prompt]);
     
+
+  // If the intent is to request an image, then we need to create keywords for the image prompt
   React.useEffect(() => {
-    if (imagePrompt === undefined) {
-      return;
-    }
-    setIsLoading(true);
-    CallOpenAi({
-      api: imagePrompt !== notAnImageSentinel ? OpenAiApi.Generations : OpenAiApi.Completion,
-      apiKey: settingsContext.apiKey,
-      instructions: `The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly. If the response involves code, use markdown format for that with \`\`\`(language) blocks.`,
-      prompt: prompt,
-      onError: (error) => {
-        setError(error);
-      },
-      onResult: (result) => {
-        setQueryResult(result);
-      },
-      onComplete: () => {
-        setIsLoading(false);
-        chatScroll.scrollToEnd();
+    if (isRequestForImage) {
+      setIsLoading(true);
+      CallOpenAi({
+        api: OpenAiApi.ChatCompletion,
+        apiKey: settingsContext.apiKey,
+        instructions: `You are an assistant helping the user generate an image from a description. Take the user's prompt and reply with a valid image prompt, which is be a comma-separated list of keywords describing the desired image. An example list of keywords:
+- photography
+- fun
+- scary
+- comics
+- high quality
+- highres
+- art
+- dull colors
+- [name of a photographer]
+- [name of a design studio]
+- [visual adjective]
+- [style of the image]
+Where items enclosed in brackets ([]) would be replaced with an appropriate suggestion.
+Respond with the image prompt string in the required format. Do not respond conversationally.`,
+        identifier: "KEYWORDS:",
+        prompt: prompt,
+        onError: (error) => {
+          setIsRequestForImage(false);
+        },
+        onResult: (result) => {
+          setImagePrompt(result);
+        },
+        onComplete: () => {
       }});
-    }, [prompt, imagePrompt]);
+    }
+  }, [isRequestForImage]);
+
+  React.useEffect(() => {
+    if (isRequestForImage === false) {
+      setIsLoading(true);
+      CallOpenAi({
+        api: OpenAiApi.ChatCompletion,
+        apiKey: settingsContext.apiKey,
+        instructions: `The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly. If the response involves code, use markdown format for that with \`\`\`(language) blocks.`,
+        identifier: "TEXT-ANSWER:",
+        prompt: prompt,
+        promptHistory: chatHistory.entries.
+          filter((entry) => { return entry.text !== undefined && entry.id < id; }).
+          map((entry) => { return {role: entry.type == ChatSourceType.Human ? "user" : "assistant", "content": entry.text ?? ""} }),
+        onError: (error) => {
+          setError(error);
+          onResponse({
+            prompt: prompt,
+            response: error ?? "",
+            contentType: ChatContentType.Error});
+        },
+        onResult: (result) => {
+          setQueryResult(result);
+          onResponse({
+            prompt: prompt,
+            response: result ?? "", 
+            contentType: ChatContentType.Text});
+        },
+        onComplete: () => {
+          setIsLoading(false);
+          chatScroll.scrollToEnd();
+      }});
+    } else {
+      if (isRequestForImage == true && imagePrompt !== undefined) {
+        setIsLoading(true);
+        CallOpenAi({
+          api: OpenAiApi.Generations,
+          apiKey: settingsContext.apiKey,
+          identifier: "IMAGE-ANSWER:",
+          prompt: imagePrompt,
+          onError: (error) => {
+            setError(error);
+            onResponse({
+              prompt: imagePrompt,
+              response: error ?? "",
+              contentType: ChatContentType.Error});
+          },
+          onResult: (result) => {
+            setQueryResult(result);
+            onResponse({
+              prompt: imagePrompt,
+              response: result ?? "",
+              contentType: ChatContentType.Image});
+          },
+          onComplete: () => {
+            setIsLoading(false);
+            chatScroll.scrollToEnd();
+        }});
+      }
+    }
+  }, [imagePrompt, isRequestForImage]);
 
   return (
     <AISection isLoading={isLoading}>
       {
+        // TODO: All of this can go away now, once images are working in new model
         (isLoading || error) ?
           <Text style={{color: 'crimson'}}>{error}</Text>
-        : (imagePrompt !== notAnImageSentinel) ? 
+        : isRequestForImage ? 
           <AIImageResponse
             imageUrl={queryResult}
             prompt={imagePrompt}
             rejectImage={() => {
-              setImagePrompt(notAnImageSentinel);
+              setIsRequestForImage(false);
               setQueryResult(undefined);
           }}/>
         : // Not an error, not an image
@@ -269,4 +363,4 @@ function AISectionWithFakeResponse({children}: PropsWithChildren): JSX.Element {
   )
 }
 
-export { HumanSection, AISectionWithFakeResponse, AISectionWithQuery }
+export { HumanSection, AISectionWithFakeResponse, AISectionWithQuery, AiSectionContent }

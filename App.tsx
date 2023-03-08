@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Appearance,
-  StyleSheet,
   View,
 } from 'react-native';
 import {
@@ -9,6 +8,7 @@ import {
 } from './AppContent';
 import {
   StylesContext,
+  CreateStyles,
 } from './Styles';
 import {
   SettingsContext,
@@ -19,6 +19,7 @@ function App(): JSX.Element {
   const [apiKey, setApiKey] = React.useState<string | undefined>(undefined);
   const [scriptName, setScriptName] = React.useState<string | undefined>("");
   const [delayForArtificialResponse, setDelayForArtificialResponse] = React.useState<number>(1500);
+  
   const isDarkMode = currentTheme === 'dark';
 
   const onAppThemeChanged = () => {
@@ -29,72 +30,8 @@ function App(): JSX.Element {
     Appearance.addChangeListener(onAppThemeChanged);
   });
 
-  const styles : StylesType = StyleSheet.create({
-    appContent: {
-      backgroundColor: isDarkMode ? 'black' : 'white',
-      justifyContent: 'space-between',
-      height: '100%',
-    },
-    popupBackground: {
-      backgroundColor: isDarkMode ? 'white' : 'black',
-      position: 'absolute',
-      width: '100%',
-      height: '100%',
-      opacity: 0.3,
-    },
-    sectionContainer: {
-      marginHorizontal: 12,
-      paddingHorizontal: 24,
-      paddingVertical: 12,
-      borderRadius: 8,
-    },
-    humanSection: {
-      backgroundColor: isDarkMode ? '#333355' : 'lightblue',
-      marginRight: 64,
-    },
-    aiSection: {
-      backgroundColor: isDarkMode ? '#444444' : 'lightgray',
-      marginLeft: 64,
-    },
-    sectionTitle: {
-      fontSize: 12,
-      fontWeight: '600',
-    },
-    highlight: {
-      fontWeight: '700',
-    },
-    horizontalContainer: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      alignItems: 'center',
-      gap: 12,
-    },
-    dalleImage: {
-      width: 150,
-      height: 150,
-    },
-    inlineCard: {
-      borderColor: 'gray',
-      borderWidth: 2,
-      borderRadius: 8,
-      padding: 8,
-    },
-    feedbackDialog: {
-      backgroundColor: isDarkMode ? 'black' : 'white',
-      padding: 12,
-      borderRadius: 8,
-      minWidth: 300
-    },
-    codeBlockTitle: {
-      backgroundColor: isDarkMode ? 'white' : '#444',
-    },
-    codeBlockTitleText: {
-      color: isDarkMode ? 'black' : 'white',
-    },
-  });
-
   return (
-    <StylesContext.Provider value={styles}>
+    <StylesContext.Provider value={CreateStyles(isDarkMode)}>
       <SettingsContext.Provider value={{
           scriptName: scriptName,
           setScriptName: setScriptName,
