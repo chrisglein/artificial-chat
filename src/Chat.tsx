@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { HumanSection } from './HumanQuery';
 import { AiSectionContent } from './AiResponse';
-import { AISectionWithQuery } from './AiQuery';
+import { AiSectionWithQuery } from './AiQuery';
 import { StylesContext } from './Styles';
 import {
   FeedbackContext,
@@ -142,7 +142,7 @@ function Chat({entries, humanText, onPrompt, onResponse, regenerateResponse, cle
                           // Otherwise, either render the completed query or start a query to get the resolved text
                           entry.text ?
                             <AiSectionContent content={entry}/> : 
-                            <AISectionWithQuery
+                            <AiSectionWithQuery
                               id={entry.id}
                               prompt={entry.prompt ?? ""}
                               onResponse={({prompt, response, contentType}) => onResponse({prompt: prompt, response: response, contentType: contentType, entryId: entry.id})}/>

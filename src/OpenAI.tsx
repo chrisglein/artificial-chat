@@ -4,7 +4,7 @@ enum OpenAiApi {
   Generations,
 }
 
-type ConversationEntryType = {
+type ConversationEntry = {
   role: "user" | "system" | "assistant",
   content: string,
 }
@@ -26,7 +26,7 @@ const OpenAiHandler = ({api, engine, instructions}: OpenAiHandlerType) => {
     case OpenAiApi.Completion: 
       return {
         url: `${OpenAIUrl}/engines/${engine ?? DefaultEngine}/completions`,
-        body: (prompt: string, promptHistory?: ConversationEntryType[]) => {
+        body: (prompt: string, promptHistory?: ConversationEntry[]) => {
           let wrappedPrompt = `${actualInstructions}\nHuman: ${prompt}.\nAI:`;
           return {
             best_of: 1,
@@ -54,7 +54,7 @@ const OpenAiHandler = ({api, engine, instructions}: OpenAiHandlerType) => {
     case OpenAiApi.ChatCompletion: 
       return {
         url: `${OpenAIUrl}/chat/completions`,
-        body: (prompt: string, promptHistory?: ConversationEntryType[]) => {
+        body: (prompt: string, promptHistory?: ConversationEntry[]) => {
           return {
             model: "gpt-3.5-turbo",
             messages: [
@@ -73,7 +73,7 @@ const OpenAiHandler = ({api, engine, instructions}: OpenAiHandlerType) => {
     case OpenAiApi.Generations: 
       return {
         url: `${OpenAIUrl}/images/generations`,
-        body: (prompt: string, promptHistory?: ConversationEntryType[]) => {
+        body: (prompt: string, promptHistory?: ConversationEntry[]) => {
           return {
             prompt: prompt,
             n: 1,
@@ -90,18 +90,18 @@ const OpenAiHandler = ({api, engine, instructions}: OpenAiHandlerType) => {
   }
 }
 
-type CallOpenAiProps = {
+type CallOpenAiType = {
   api: OpenAiApi,
   apiKey?: string,
   instructions?: string,
   identifier?: string,
   prompt: string,
-  promptHistory?: ConversationEntryType[],
+  promptHistory?: ConversationEntry[],
   onError: (error: string) => void,
   onResult: (result: string) => void,
   onComplete: () => void
 }
-const CallOpenAi = async ({api, apiKey, instructions, identifier, prompt, promptHistory, onError, onResult, onComplete}: CallOpenAiProps) => {
+const CallOpenAi = async ({api, apiKey, instructions, identifier, prompt, promptHistory, onError, onResult, onComplete}: CallOpenAiType) => {
   const DefaultApiKey = undefined; // During development you can paste your API key here, but DO NOT CHECK IN
   let effectiveApiKey = apiKey ?? DefaultApiKey;
 

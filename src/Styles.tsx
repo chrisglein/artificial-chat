@@ -6,7 +6,7 @@ const StylesContext = React.createContext<{
   popupBackground: any;
   sectionContainer: any;
   humanSection: any;
-  aiSection: any;
+  AiSection: any;
   sectionTitle: any;
   highlight: any;
   horizontalContainer: any;
@@ -41,7 +41,7 @@ const CreateStyles = (isDarkMode: boolean) => {
       backgroundColor: isDarkMode ? '#333355' : 'lightblue',
       marginRight: 64,
     },
-    aiSection: {
+    AiSection: {
       backgroundColor: isDarkMode ? '#444444' : 'lightgray',
       marginLeft: 64,
     },

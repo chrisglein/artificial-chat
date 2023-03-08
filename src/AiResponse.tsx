@@ -12,16 +12,19 @@ import {
   HoverButton,
   CodeBlock
 } from './Controls';
-import { ChatElement, ChatContent } from './Chat';
+import {
+  ChatElement,
+  ChatContent
+} from './Chat';
 import { StylesContext } from './Styles';
 import { FeedbackContext } from './Feedback';
 
-type AIImageResponseType = PropsWithChildren<{
+type AiImageResponseProps = {
   imageUrl?: string;
   prompt?: string;
   rejectImage: () => void;
-}>;
-function AIImageResponse({imageUrl, prompt, rejectImage}: AIImageResponseType): JSX.Element {
+};
+function AiImageResponse({imageUrl, prompt, rejectImage}: AiImageResponseProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   return (
     <View style={[styles.horizontalContainer, {flexWrap: 'nowrap', alignItems: 'flex-start'}]}>
@@ -45,10 +48,10 @@ function AIImageResponse({imageUrl, prompt, rejectImage}: AIImageResponseType): 
   );
 }
 
-type AITextResponseType = PropsWithChildren<{
+type AiTextResponseProps {
   text?: string;
-}>;
-function AITextResponse({text}: AITextResponseType): JSX.Element {
+};
+function AiTextResponse({text}: AiTextResponseProps): JSX.Element {
   let elements: JSX.Element[] = [];
 
   // Break up the text into code blocks and regular text
@@ -95,11 +98,11 @@ function AITextResponse({text}: AITextResponseType): JSX.Element {
   );
 }
 
-type AISectionProps = PropsWithChildren<{
+type AiSectionProps = PropsWithChildren<{
   isLoading?: boolean;
   contentShownOnHover?: JSX.Element;
 }>;
-function AISection({children, isLoading, contentShownOnHover}: AISectionProps): JSX.Element {
+function AiSection({children, isLoading, contentShownOnHover}: AiSectionProps): JSX.Element {
   const feedbackContext = React.useContext(FeedbackContext);
   const styles = React.useContext(StylesContext);
   const [hovering, setHovering] = React.useState(false);
@@ -112,7 +115,7 @@ function AISection({children, isLoading, contentShownOnHover}: AISectionProps): 
 
   return (
     <Pressable
-      style={[styles.sectionContainer, styles.aiSection]}
+      style={[styles.sectionContainer, styles.AiSection]}
       onHoverIn={() => setHovering(true)}
       onHoverOut={() => setHovering(false)}>
       <View style={{flexDirection: 'row'}}>
@@ -132,28 +135,28 @@ function AISection({children, isLoading, contentShownOnHover}: AISectionProps): 
   );
 }
 
-type AiSectionContentType = {
+type AiSectionContentProps = {
   content: ChatElement;
 }
-function AiSectionContent({content}: AiSectionContentType): JSX.Element {
+function AiSectionContent({content}: AiSectionContentProps): JSX.Element {
   return (
-    <AISection>
+    <AiSection>
       {(() => {
         switch (content.contentType) {
           case ChatContent.Error:
             return <Text style={{color: 'red'}}>{content.text}</Text>
           case ChatContent.Image:
-            return <AIImageResponse
+            return <AiImageResponse
               imageUrl={content.text}
               prompt={content.prompt}
               rejectImage={() => console.log("Not yet implemented")}/>; // TODO: This would need to reset back to the text prompt
           default:
           case ChatContent.Text:
-            return <AITextResponse text={content.text}/>
+            return <AiTextResponse text={content.text}/>
         }
       })()}
-    </AISection>
+    </AiSection>
   )
 }
 
-export { AiSectionContent, AISection, AIImageResponse, AITextResponse }
+export { AiSectionContent, AiSection, AiImageResponse, AiTextResponse }

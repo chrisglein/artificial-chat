@@ -1,25 +1,29 @@
 import React from 'react';
-import {
-  Text,
-} from 'react-native';
+import { Text } from 'react-native';
 import {
   OpenAiApi,
   CallOpenAi,
 } from './OpenAI';
 import {
-  AISection,
-  AIImageResponse,
-  AITextResponse,
+  AiSection,
+  AiImageResponse,
+  AiTextResponse,
 } from './AiResponse';
-import { ChatSource, ChatContent, ChatScrollContext, ChatHistoryContext } from './Chat';
+import { 
+  ChatSource,
+  ChatContent,
+  ChatScrollContext,
+  ChatHistoryContext
+} from './Chat';
 import { SettingsContext } from './Settings';
 
-type AISectionWithQueryProps = {
+// Component that drives the queries to OpenAi to respond to a prompt
+type AiSectionWithQueryProps = {
   prompt: string;
   id: number;
   onResponse: ({prompt, response, contentType} : { prompt: string, response: string, contentType: ChatContent} ) => void;
 };
-function AISectionWithQuery({prompt, id, onResponse}: AISectionWithQueryProps): JSX.Element {
+function AiSectionWithQuery({prompt, id, onResponse}: AiSectionWithQueryProps): JSX.Element {
   const settingsContext = React.useContext(SettingsContext);
   const chatScroll = React.useContext(ChatScrollContext);
   const chatHistory = React.useContext(ChatHistoryContext);
@@ -151,13 +155,13 @@ Respond with the image prompt string in the required format. Do not respond conv
   }, [imagePrompt, isRequestForImage]);
 
   return (
-    <AISection isLoading={isLoading}>
+    <AiSection isLoading={isLoading}>
       {
         // TODO: All of this can go away now, once images are working in new model
         (isLoading || error) ?
           <Text style={{color: 'crimson'}}>{error}</Text>
         : isRequestForImage ? 
-          <AIImageResponse
+          <AiImageResponse
             imageUrl={queryResult}
             prompt={imagePrompt}
             rejectImage={() => {
@@ -165,11 +169,11 @@ Respond with the image prompt string in the required format. Do not respond conv
               setQueryResult(undefined);
           }}/>
         : // Not an error, not an image
-          <AITextResponse
+          <AiTextResponse
             text={queryResult}/>
       }
-    </AISection>
+    </AiSection>
   )
 }
 
-export { AISectionWithQuery }
+export { AiSectionWithQuery }

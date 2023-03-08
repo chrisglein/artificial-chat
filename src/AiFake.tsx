@@ -1,11 +1,11 @@
 import React from 'react';
 import type {PropsWithChildren} from 'react';
-import { AISection } from './AiResponse';
+import { AiSection } from './AiResponse';
 
 import { ChatScrollContext } from './Chat';
 import { SettingsContext } from './Settings';
 
-function AISectionWithFakeResponse({children}: PropsWithChildren): JSX.Element {
+function AiSectionWithFakeResponse({children}: PropsWithChildren): JSX.Element {
   const settingsContext = React.useContext(SettingsContext);
   const [isLoading, setIsLoading] = React.useState(true);
   const chatScroll = React.useContext(ChatScrollContext);
@@ -18,10 +18,10 @@ function AISectionWithFakeResponse({children}: PropsWithChildren): JSX.Element {
   });
 
   return (
-    <AISection isLoading={isLoading}>
+    <AiSection isLoading={isLoading}>
       {!isLoading && children}
-    </AISection>
+    </AiSection>
   )
 }
 
-export { AISectionWithFakeResponse }
+export { AiSectionWithFakeResponse }
