@@ -11,7 +11,7 @@ import {
   ConsentSwitch,
   ImageSelection,
 } from './Controls';
-import { AISectionWithFakeResponse } from './Sections';
+import { AISectionWithFakeResponse } from './AiFake';
 
 const ChatScriptNames = [
   "Dinosaurs",

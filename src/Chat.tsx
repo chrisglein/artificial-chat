@@ -6,7 +6,9 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { HumanSection, AISectionWithQuery, AiSectionContent } from './Sections';
+import { HumanSection } from './HumanQuery';
+import { AiSectionContent } from './AiResponse';
+import { AISectionWithQuery } from './AiQuery';
 import { StylesContext } from './Styles';
 import {
   FeedbackContext,
