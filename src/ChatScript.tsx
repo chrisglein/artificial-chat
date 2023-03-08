@@ -63,10 +63,10 @@ const runDinosaurScript = (index: number, styles, goToNext) => {
         <AISectionWithFakeResponse>
           <Text>Here are some box designs</Text>
           <View style={styles.horizontalContainer}>
-            <ImageSelection image={require('./assets/dinobox1.png')}/>
-            <ImageSelection image={require('./assets/dinobox2.png')}/>
-            <ImageSelection image={require('./assets/dinobox3.png')}/>
-            <ImageSelection image={require('./assets/dinobox4.png')}/>
+            <ImageSelection image={require('../assets/dinobox1.png')}/>
+            <ImageSelection image={require('../assets/dinobox2.png')}/>
+            <ImageSelection image={require('../assets/dinobox3.png')}/>
+            <ImageSelection image={require('../assets/dinobox4.png')}/>
           </View>
           <Attribution source="DALL-E, 14 monthly credits remaining"/>
         </AISectionWithFakeResponse>
@@ -77,10 +77,10 @@ const runDinosaurScript = (index: number, styles, goToNext) => {
         <AISectionWithFakeResponse>
           <Text>Here are variations on the image you selected</Text>
           <View style={styles.horizontalContainer}>
-            <ImageSelection image={require('./assets/dinobox3_variation1.png')}/>
-            <ImageSelection image={require('./assets/dinobox3_variation2.png')}/>
-            <ImageSelection image={require('./assets/dinobox3_variation3.png')}/>
-            <ImageSelection image={require('./assets/dinobox3_variation4.png')}/>
+            <ImageSelection image={require('../assets/dinobox3_variation1.png')}/>
+            <ImageSelection image={require('../assets/dinobox3_variation2.png')}/>
+            <ImageSelection image={require('../assets/dinobox3_variation3.png')}/>
+            <ImageSelection image={require('../assets/dinobox3_variation4.png')}/>
           </View>
           <Attribution source="DALL-E, 13 monthly credits remaining"/>
         </AISectionWithFakeResponse>
@@ -113,7 +113,7 @@ const runDinosaurScript = (index: number, styles, goToNext) => {
       aiResponse: () =>
         <AISectionWithFakeResponse>
           <Text>Thanks! Here is the updated box design that incorporate your photo</Text>
-          <Image style={styles.dalleImage} source={require('./assets/compositebox.png')}/>
+          <Image style={styles.dalleImage} source={require('../assets/compositebox.png')}/>
           <Attribution source="Adobe Creative Cloud subscription"/>
         </AISectionWithFakeResponse>
     }
@@ -379,10 +379,10 @@ export default ParticipantList;
         <AISectionWithFakeResponse>
           <Text>Here are some options</Text>
           <View style={styles.horizontalContainer}>
-            <ImageSelection image={require('./assets/whiteelephant1.png')}/>
-            <ImageSelection image={require('./assets/whiteelephant2.png')}/>
-            <ImageSelection image={require('./assets/whiteelephant3.png')}/>
-            <ImageSelection image={require('./assets/whiteelephant4.png')}/>
+            <ImageSelection image={require('../assets/whiteelephant1.png')}/>
+            <ImageSelection image={require('../assets/whiteelephant2.png')}/>
+            <ImageSelection image={require('../assets/whiteelephant3.png')}/>
+            <ImageSelection image={require('../assets/whiteelephant4.png')}/>
           </View>
           <Attribution source="DALL-E, 9 monthly credits remaining"/>
         </AISectionWithFakeResponse>
