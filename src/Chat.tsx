@@ -97,10 +97,9 @@ type ChatProps = {
   entries: ChatElement[];
   humanText? : string;
   onPrompt: (prompt: string) => void;
-  onResponse: ({prompt, response, contentType, entryId} : { prompt: string, response: string, contentType: ChatContent, entryId: number} ) => void;
   clearConversation: () => void;
 };
-function Chat({entries, humanText, onPrompt, onResponse, clearConversation}: ChatProps): JSX.Element {
+function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const chatHistory = React.useContext(ChatHistoryContext);
   const [showFeedbackPopup, setShowFeedbackPopup] = React.useState(false);
@@ -151,7 +150,8 @@ function Chat({entries, humanText, onPrompt, onResponse, clearConversation}: Cha
                             id={entry.id}
                             prompt={entry.prompt ?? ""}
                             intent={entry.intent}
-                            onResponse={({prompt, response, contentType}) => onResponse({prompt: prompt, response: response, contentType: contentType, entryId: entry.id})}/>
+                            onResponse={({prompt, response, contentType}) => 
+                              chatHistory.modifyResponse(entry.id, {prompt: prompt, text: response, contentType: contentType})}/>
                   }
                 </View>
               ))}

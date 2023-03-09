@@ -127,7 +127,6 @@ function AutomatedChatSession({entries, appendEntry, clearConversation}: Automat
       entries={entries}
       humanText={humanText}
       onPrompt={(text) => onPrompt(text, chatScriptIndex)}
-      onResponse={({prompt, response, contentType, entryId}) => chatHistory.modifyResponse(entryId, {text: response, contentType: contentType, prompt: prompt})}
       clearConversation={() => {
         setChatScriptIndex(0);
         clearConversation();
