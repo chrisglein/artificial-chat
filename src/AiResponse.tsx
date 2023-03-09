@@ -54,11 +54,18 @@ type AiTextResponseProps = {
 function AiTextResponse({text}: AiTextResponseProps): JSX.Element {
   let elements: JSX.Element[] = [];
 
+  function* matchAll(text: string, regexp: RegExp) {
+    let match;
+    while ((match = regexp.exec(text)) !== null) {
+      yield {value: match, start: match.index, end: regexp.lastIndex};
+    }
+  }
+
   // Break up the text into code blocks and regular text
   if (text !== undefined) {
     // Look for the ``` separator (with option language)
     const regex = /^```(.*)$/gm;
-    let matches = [...text.matchAll(regex)];
+    let matches = [...matchAll(text, regex)];
 
     // Keep track of where we are in the open/close code blocks
     let index = 0;
@@ -76,12 +83,12 @@ function AiTextResponse({text}: AiTextResponseProps): JSX.Element {
     for (let i = 0; i < matches.length; i++) {
       // Grab the text since the last match, but strip out the separator/language
       let match = matches[i];
-      let textSinceLast = text.substring(index, match.index).trim();
-      index = match.index + match[0].length;
+      let textSinceLast = text.substring(index, match.start).trim();
+      index = match.start + match.value[0].length;
 
       appendToElements(i, textSinceLast);
 
-      currentLanguage = match[1];
+      currentLanguage = match.value[1];
       inCodeBlock = !inCodeBlock;
     }
 
