@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Button,
   ScrollView,
-  Text,
   TextInput,
   View,
 } from 'react-native';
@@ -30,6 +29,7 @@ type ChatElement = {
   id: number;
   type: ChatSource;
   contentType: ChatContent;
+  intent?: string;
   prompt?: string;
   text?: string;
   content?: JSX.Element;
@@ -38,7 +38,11 @@ type ChatElement = {
 // Context for read-only access to the chat log
 const ChatHistoryContext = React.createContext<{
   entries: ChatElement[];
-}>({entries: []});
+  modifyResponse: (id: number, delta?: any) => void;
+}>({
+  entries: [],
+  modifyResponse: () => {},
+});
 
 // Context for being able to drive the chat scroller
 const ChatScrollContext = React.createContext<{
@@ -94,10 +98,10 @@ type ChatProps = {
   humanText? : string;
   onPrompt: (prompt: string) => void;
   onResponse: ({prompt, response, contentType, entryId} : { prompt: string, response: string, contentType: ChatContent, entryId: number} ) => void;
-  regenerateResponse: () => void;
+  modifyResponse: (id: number, delta?: any) => void;
   clearConversation: () => void;
 };
-function Chat({entries, humanText, onPrompt, onResponse, regenerateResponse, clearConversation}: ChatProps): JSX.Element {
+function Chat({entries, humanText, onPrompt, onResponse, modifyResponse, clearConversation}: ChatProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const [showFeedbackPopup, setShowFeedbackPopup] = React.useState(false);
   const [showSettingsPopup, setShowSettingsPopup] = React.useState(false);
@@ -120,7 +124,7 @@ function Chat({entries, humanText, onPrompt, onResponse, regenerateResponse, cle
 
   return (
     <FeedbackContext.Provider value={feedbackContext}>
-      <ChatHistoryContext.Provider value={{entries: entries}}>
+      <ChatHistoryContext.Provider value={{entries: entries, modifyResponse: modifyResponse}}>
         <ChatScrollContext.Provider value={{scrollToEnd: scrollToEnd}}>
           <View style={styles.appContent}>
             <ScrollView
@@ -141,17 +145,25 @@ function Chat({entries, humanText, onPrompt, onResponse, regenerateResponse, cle
                           entry.content :
                           // Otherwise, either render the completed query or start a query to get the resolved text
                           entry.text ?
-                            <AiSectionContent content={entry}/> : 
+                            <AiSectionContent
+                              id={entry.id}
+                              content={entry}/> : 
                             <AiSectionWithQuery
                               id={entry.id}
                               prompt={entry.prompt ?? ""}
+                              intent={entry.intent}
                               onResponse={({prompt, response, contentType}) => onResponse({prompt: prompt, response: response, contentType: contentType, entryId: entry.id})}/>
                     }
                   </View>
                 ))}
                 {(entries.length > 0) &&
                   <View style={{alignSelf: 'center'}}>
-                    <Button title="🔁 Regenerate response" onPress={() => regenerateResponse()}/>
+                    <Button
+                      title="🔁 Regenerate response"
+                      onPress={() => {
+                        // Clear the response for the last entry
+                        modifyResponse(entries.length - 1, {text: undefined});
+                      }}/>
                   </View>
                 }
               </View>

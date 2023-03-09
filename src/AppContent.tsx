@@ -11,10 +11,10 @@ import { handleAIResponse } from './ChatScript';
 type AutomatedChatSessionProps = {
   entries: ChatElement[];
   appendEntry: (entry: ChatElement | ChatElement[]) => void;
-  modifyEntryText: (index: number, text: string, contentType: ChatContent, prompt: string) => void;
+  modifyEntry: (id: number, delta: any) => void;
   clearConversation: () => void;
 };
-function AutomatedChatSession({entries, appendEntry, modifyEntryText, clearConversation}: AutomatedChatSessionProps): JSX.Element {
+function AutomatedChatSession({entries, appendEntry, modifyEntry, clearConversation}: AutomatedChatSessionProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const settings = React.useContext(SettingsContext);
 
@@ -122,8 +122,8 @@ function AutomatedChatSession({entries, appendEntry, modifyEntryText, clearConve
       entries={entries}
       humanText={humanText}
       onPrompt={(text) => onPrompt(text, chatScriptIndex)}
-      onResponse={({prompt, response, contentType, entryId}) => modifyEntryText(entryId, response, contentType, prompt)}
-      regenerateResponse={() => setChatScriptIndex(chatScriptIndex - 1)}
+      onResponse={({prompt, response, contentType, entryId}) => modifyEntry(entryId, {text: response, contentType: contentType, prompt: prompt})}
+      modifyResponse={(entryId, delta) => modifyEntry(entryId, delta)}
       clearConversation={() => {
         setChatScriptIndex(0);
         clearConversation();
@@ -145,14 +145,19 @@ function ChatSession(): JSX.Element {
     setEntries(modifiedEntries);
   }, [entries]);
 
-  const modifyEntryText = React.useCallback((index: number, text: string, contentType: ChatContent, prompt: string) => {
+  const modifyEntry = React.useCallback((index: number, delta: any) => {
     let modifiedEntries = [...entries];
     if (index >= entries.length) {
       console.error(`Index ${index} is out of bounds`);
     } else {
-      modifiedEntries[index].prompt = prompt;
-      modifiedEntries[index].text = text;
-      modifiedEntries[index].contentType = contentType;
+      let entry = modifiedEntries[index];
+
+      if (delta.hasOwnProperty('text')) entry.text = delta.text;
+      if (delta.hasOwnProperty('contentType')) entry.contentType = delta.contentType;
+      if (delta.hasOwnProperty('prompt')) entry.prompt = delta.prompt;
+      if (delta.hasOwnProperty('intent')) entry.intent = delta.intent;
+
+      modifiedEntries[index] = entry;
       setEntries(modifiedEntries);
     }
   }, [entries]);
@@ -163,7 +168,7 @@ function ChatSession(): JSX.Element {
     <AutomatedChatSession
       entries={entries}
       appendEntry={appendEntry}
-      modifyEntryText={modifyEntryText}
+      modifyEntry={modifyEntry}
       clearConversation={clearConversation}/>
   );
 }
