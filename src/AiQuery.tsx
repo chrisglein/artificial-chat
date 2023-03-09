@@ -4,11 +4,7 @@ import {
   OpenAiApi,
   CallOpenAi,
 } from './OpenAI';
-import {
-  AiSection,
-  AiImageResponse,
-  AiTextResponse,
-} from './AiResponse';
+import { AiSection } from './AiResponse';
 import { 
   ChatSource,
   ChatContent,
@@ -157,20 +153,16 @@ Respond with the image prompt string in the required format. Do not respond conv
   return (
     <AiSection isLoading={isLoading}>
       {
-        // TODO: All of this can go away now, once images are working in new model
-        (isLoading || error) ?
-          <Text style={{color: 'crimson'}}>{error}</Text>
-        : isRequestForImage ? 
-          <AiImageResponse
-            imageUrl={queryResult}
-            prompt={imagePrompt}
-            rejectImage={() => {
-              setIsRequestForImage(false);
-              setQueryResult(undefined);
-          }}/>
-        : // Not an error, not an image
-          <AiTextResponse
-            text={queryResult}/>
+        (isLoading ?
+          isRequestForImage === undefined ?
+            <Text>Identifying intent...</Text> :
+            isRequestForImage === true ?
+              imagePrompt === undefined ?
+                <Text>Generating keywords for an image...</Text> :
+                <Text>Generating image...</Text> :
+              <Text>Generating text...</Text>
+            :
+          <Text>Done loading</Text>)
       }
     </AiSection>
   )
