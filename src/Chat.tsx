@@ -135,7 +135,7 @@ function Chat({entries, humanText, onPrompt, onResponse, regenerateResponse, cle
                     {
                       entry.type === ChatSource.Human ? 
                         // Human inputs are always plain text
-                        <HumanSection><Text>{entry.text}</Text></HumanSection> :
+                        <HumanSection content={entry.text}/> :
                         entry.content ?
                           // The element may have provided its own UI
                           entry.content :

@@ -1,20 +1,29 @@
 import React from 'react';
+import type {
+  StyleProp,
+  ImageStyle,
+  TextStyle,
+  ViewStyle
+} from 'react-native';
 import { StyleSheet } from 'react-native';
 
 const StylesContext = React.createContext<{
-  appContent: any;
-  popupBackground: any;
-  sectionContainer: any;
-  humanSection: any;
-  AiSection: any;
-  sectionTitle: any;
-  highlight: any;
-  horizontalContainer: any;
-  dalleImage: any;
-  inlineCard: any;
-  feedbackDialog: any;
-  codeBlockTitle: any;
-  codeBlockTitleText: any;
+  appContent: StyleProp<ViewStyle>;
+  popupBackground: StyleProp<ViewStyle>;
+  sectionContainer: StyleProp<ViewStyle>;
+  humanSection: StyleProp<ViewStyle>;
+  AiSection: StyleProp<ViewStyle>;
+  sectionTitle: StyleProp<TextStyle>;
+  highlight: StyleProp<ViewStyle>;
+  horizontalContainer: StyleProp<ViewStyle>;
+  dalleImage: StyleProp<ImageStyle>;
+  inlineCard: StyleProp<ViewStyle>;
+  feedbackDialog: StyleProp<ViewStyle>;
+  codeBlockTitle: StyleProp<TextStyle>;
+  codeBlockTitleText: StyleProp<TextStyle>;
+  hyperlinkIdle: StyleProp<TextStyle>;
+  hyperlinkPressing: StyleProp<TextStyle>;
+  hyperlinkHovering: StyleProp<TextStyle>;
 }>({});
 
 const CreateStyles = (isDarkMode: boolean) => {
@@ -79,6 +88,16 @@ const CreateStyles = (isDarkMode: boolean) => {
     },
     codeBlockTitleText: {
       color: isDarkMode ? 'black' : 'white',
+    },
+    hyperlinkIdle: {
+      color: isDarkMode ? 'black' : 'white',
+    },
+    hyperlinkPressing: {
+      color: 'purple',
+    },
+    hyperlinkHovering: {
+      color: 'blue',
+      textDecorationLine: 'underline',
     },
   });
 }

@@ -91,6 +91,7 @@ type HyperlinkProps = {
   url: string
 };
 function Hyperlink({url}: HyperlinkProps): JSX.Element {
+  const styles = React.useContext(StylesContext);
   const [hovering, setHovering] = React.useState(false);
   const [pressing, setPressing] = React.useState(false);
   return (
@@ -100,10 +101,13 @@ function Hyperlink({url}: HyperlinkProps): JSX.Element {
       onPressOut={() => setPressing(false)}
       onHoverIn={() => setHovering(true)}
       onHoverOut={() => setHovering(false)}>
-      <Text style={{
-        color: pressing ? 'purple' : (hovering ? 'blue' : 'black'),
-        textDecorationLine: hovering ? 'underline' : 'none',
-      }}>{url}</Text>
+      <Text
+        style={
+          pressing ? styles.hyperlinkPressing : 
+          hovering ? styles.hyperlinkHovering : 
+          styles.hyperlinkIdle}>
+        {url}
+      </Text>
     </Pressable>
   );
 }

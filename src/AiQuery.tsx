@@ -44,7 +44,7 @@ function AiSectionWithQuery({prompt, id, onResponse}: AiSectionWithQueryProps): 
       api: OpenAiApi.Completion,
       apiKey: settingsContext.apiKey,
       instructions: `You are an intuitive assistant helping the user with a project. Your only job is need to determine the primary intent of the user's last prompt.
-If the user's primary intent is to request to see or create an image, respond with exactly the string "${imageIntentSentinel}". Otherwise, respond with a description of their intent.`,
+If and only if you are absolutely certain the user's primary intent is to see an image, respond with exactly the string "${imageIntentSentinel}". Otherwise, respond with your description of their intent.`,
       identifier: "INTENT:",
       prompt: prompt,
       onError: (error) => {
