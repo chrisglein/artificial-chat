@@ -31,7 +31,11 @@ function AiImageResponse({imageUrl, prompt, rejectImage}: AiImageResponseProps):
   return (
     <View style={[styles.horizontalContainer, {flexWrap: 'nowrap', alignItems: 'flex-start'}]}>
       <Pressable
-        onPress={() => Linking.openURL(imageUrl)}>
+        onPress={() => {
+          if (imageUrl) {
+            Linking.openURL(imageUrl);
+          }
+        }}>
         <Image
           source={{uri: imageUrl}}
           alt={prompt}
@@ -133,9 +137,9 @@ function AiSection({children, isLoading, contentShownOnHover}: AiSectionProps): 
       <View style={{flexDirection: 'row'}}>
         <Text style={[styles.sectionTitle, {flexGrow: 1}]}>AI</Text>
         {hovering && contentShownOnHover}
-        {hovering && <HoverButton content="📋" onPress={() => console.log("Copy: Not yet implemented")}/>}
-        <HoverButton content="👍" onPress={() => { showFeedbackPopup(true); }}/>
-        <HoverButton content="👎" onPress={() => { showFeedbackPopup(false); }}/>
+        {hovering && <HoverButton content="📋" tooltip="Copy to clipboard" onPress={() => console.log("Copy: Not yet implemented")}/>}
+        <HoverButton content="👍" tooltip="Give positive feedback" onPress={() => { showFeedbackPopup(true); }}/>
+        <HoverButton content="👎" tooltip="Give negative feedback" onPress={() => { showFeedbackPopup(false); }}/>
       </View>
       {isLoading && 
         <ActivityIndicator/>

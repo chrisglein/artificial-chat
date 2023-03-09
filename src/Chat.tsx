@@ -173,7 +173,10 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
               disableEdit={true}
               disableCopy={true}
               contentShownOnHover={
-                <HoverButton content="⚙️" onPress={() => setShowSettingsPopup(true)}/>
+                <>
+                  <HoverButton content="❔" tooltip="About" onPress={() => console.log("About dialog: Not yet implemented")}/>
+                  <HoverButton content="⚙️" tooltip="Settings" onPress={() => setShowSettingsPopup(true)}/>
+                </>
               }>
               <ChatEntry
                 defaultText={humanText}

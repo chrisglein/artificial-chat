@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Button,
   Image,
+  ImageSourcePropType,
   Linking,
   Pressable,
   Text,
@@ -13,9 +14,10 @@ import { CodeBlock } from './CodeBlock';
 
 type HoverButtonProps = {
   content: string;
+  tooltip: string,
   onPress: () => void;
 };
-function HoverButton({content, onPress}: HoverButtonProps): JSX.Element {
+function HoverButton({content, tooltip, onPress}: HoverButtonProps): JSX.Element {
   const [hovering, setHovering] = React.useState(false);
 
   const backgroundBaseStyle = {padding: 2, borderRadius: 8, borderWidth: 1, borderColor: 'transparent'};
@@ -23,12 +25,13 @@ function HoverButton({content, onPress}: HoverButtonProps): JSX.Element {
   const backgroundHoverStyle = {borderColor: 'white', backgroundColor: 'gray'};
   return (
     <Pressable
+      tooltip={tooltip}
       onPress={onPress}
       onHoverIn={() => setHovering(true)}
       onHoverOut={() => setHovering(false)}>
       {({pressed}) => (
         <View style={[backgroundBaseStyle, pressed ? backgroundPressedStyle : hovering ? backgroundHoverStyle : null]}>
-          <Text >{content}</Text>
+          <Text>{content}</Text>
         </View>        
       )}
     </Pressable>
