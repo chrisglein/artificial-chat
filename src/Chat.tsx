@@ -98,11 +98,11 @@ type ChatProps = {
   humanText? : string;
   onPrompt: (prompt: string) => void;
   onResponse: ({prompt, response, contentType, entryId} : { prompt: string, response: string, contentType: ChatContent, entryId: number} ) => void;
-  modifyResponse: (id: number, delta?: any) => void;
   clearConversation: () => void;
 };
-function Chat({entries, humanText, onPrompt, onResponse, modifyResponse, clearConversation}: ChatProps): JSX.Element {
+function Chat({entries, humanText, onPrompt, onResponse, clearConversation}: ChatProps): JSX.Element {
   const styles = React.useContext(StylesContext);
+  const chatHistory = React.useContext(ChatHistoryContext);
   const [showFeedbackPopup, setShowFeedbackPopup] = React.useState(false);
   const [showSettingsPopup, setShowSettingsPopup] = React.useState(false);
   const [feedbackIsPositive, setFeedbackIsPositive] = React.useState(false);
@@ -124,78 +124,76 @@ function Chat({entries, humanText, onPrompt, onResponse, modifyResponse, clearCo
 
   return (
     <FeedbackContext.Provider value={feedbackContext}>
-      <ChatHistoryContext.Provider value={{entries: entries, modifyResponse: modifyResponse}}>
-        <ChatScrollContext.Provider value={{scrollToEnd: scrollToEnd}}>
-          <View style={styles.appContent}>
-            <ScrollView
-              contentInsetAdjustmentBehavior="automatic"
-              ref={scrollViewRef}
-              style={{flexShrink: 1}}>
-              <View
-                style={{gap: 12}}>
-                {// For each item in the chat log, render the appropriate component
-                entries.map((entry) => (
-                  <View key={entry.id}>
-                    {
-                      entry.type === ChatSource.Human ? 
-                        // Human inputs are always plain text
-                        <HumanSection content={entry.text}/> :
-                        entry.content ?
-                          // The element may have provided its own UI
-                          entry.content :
-                          // Otherwise, either render the completed query or start a query to get the resolved text
-                          entry.text ?
-                            <AiSectionContent
-                              id={entry.id}
-                              content={entry}/> : 
-                            <AiSectionWithQuery
-                              id={entry.id}
-                              prompt={entry.prompt ?? ""}
-                              intent={entry.intent}
-                              onResponse={({prompt, response, contentType}) => onResponse({prompt: prompt, response: response, contentType: contentType, entryId: entry.id})}/>
-                    }
-                  </View>
-                ))}
-                {(entries.length > 0) &&
-                  <View style={{alignSelf: 'center'}}>
-                    <Button
-                      title="🔁 Regenerate response"
-                      onPress={() => {
-                        // Clear the response for the last entry
-                        modifyResponse(entries.length - 1, {text: undefined});
-                      }}/>
-                  </View>
-                }
-              </View>
-            </ScrollView>
+      <ChatScrollContext.Provider value={{scrollToEnd: scrollToEnd}}>
+        <View style={styles.appContent}>
+          <ScrollView
+            contentInsetAdjustmentBehavior="automatic"
+            ref={scrollViewRef}
+            style={{flexShrink: 1}}>
             <View
-              style={{flexShrink: 0, marginBottom: 12}}>
-              <HumanSection
-                disableEdit={true}
-                disableCopy={true}
-                contentShownOnHover={
-                  <HoverButton content="⚙️" onPress={() => setShowSettingsPopup(true)}/>
-                }>
-                <ChatEntry
-                  defaultText={humanText}
-                  submit={(newEntry) => {
-                    onPrompt(newEntry);
-                    scrollToEnd();
-                  }}
-                  clearConversation={clearConversation}/>
-              </HumanSection>
+              style={{gap: 12}}>
+              {// For each item in the chat log, render the appropriate component
+              entries.map((entry) => (
+                <View key={entry.id}>
+                  {
+                    entry.type === ChatSource.Human ? 
+                      // Human inputs are always plain text
+                      <HumanSection content={entry.text}/> :
+                      entry.content ?
+                        // The element may have provided its own UI
+                        entry.content :
+                        // Otherwise, either render the completed query or start a query to get the resolved text
+                        entry.text ?
+                          <AiSectionContent
+                            id={entry.id}
+                            content={entry}/> : 
+                          <AiSectionWithQuery
+                            id={entry.id}
+                            prompt={entry.prompt ?? ""}
+                            intent={entry.intent}
+                            onResponse={({prompt, response, contentType}) => onResponse({prompt: prompt, response: response, contentType: contentType, entryId: entry.id})}/>
+                  }
+                </View>
+              ))}
+              {(entries.length > 0) &&
+                <View style={{alignSelf: 'center'}}>
+                  <Button
+                    title="🔁 Regenerate response"
+                    onPress={() => {
+                      // Clear the response for the last entry
+                      chatHistory.modifyResponse(entries.length - 1, {text: undefined});
+                    }}/>
+                </View>
+              }
             </View>
-            { (showFeedbackPopup || showSettingsPopup) && <View style={styles.popupBackground}/> }
-            <FeedbackPopup
-              show={showFeedbackPopup}
-              isPositive={feedbackIsPositive}
-              close={() => setShowFeedbackPopup(false)}/>
-            <SettingsPopup
-              show={showSettingsPopup}
-              close={() => setShowSettingsPopup(false)}/>
+          </ScrollView>
+          <View
+            style={{flexShrink: 0, marginBottom: 12}}>
+            <HumanSection
+              disableEdit={true}
+              disableCopy={true}
+              contentShownOnHover={
+                <HoverButton content="⚙️" onPress={() => setShowSettingsPopup(true)}/>
+              }>
+              <ChatEntry
+                defaultText={humanText}
+                submit={(newEntry) => {
+                  onPrompt(newEntry);
+                  scrollToEnd();
+                }}
+                clearConversation={clearConversation}/>
+            </HumanSection>
           </View>
-        </ChatScrollContext.Provider>
-      </ChatHistoryContext.Provider>
+          { (showFeedbackPopup || showSettingsPopup) && <View style={styles.popupBackground}/> }
+          <FeedbackPopup
+            show={showFeedbackPopup}
+            isPositive={feedbackIsPositive}
+            close={() => setShowFeedbackPopup(false)}/>
+          <SettingsPopup
+            show={showSettingsPopup}
+            close={() => setShowSettingsPopup(false)}/>
+        </View>
+      </ChatScrollContext.Provider>
     </FeedbackContext.Provider>
   );
 }

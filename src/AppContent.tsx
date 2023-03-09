@@ -1,5 +1,10 @@
 import React from 'react';
-import { Chat, ChatSource, ChatContent } from './Chat';
+import {
+  Chat,
+  ChatContent,
+  ChatHistoryContext,
+  ChatSource,
+} from './Chat';
 import type { ChatElement } from './Chat';
 import { StylesContext } from './Styles';
 import { SettingsContext } from './Settings';
@@ -11,12 +16,12 @@ import { handleAIResponse } from './ChatScript';
 type AutomatedChatSessionProps = {
   entries: ChatElement[];
   appendEntry: (entry: ChatElement | ChatElement[]) => void;
-  modifyEntry: (id: number, delta: any) => void;
   clearConversation: () => void;
 };
-function AutomatedChatSession({entries, appendEntry, modifyEntry, clearConversation}: AutomatedChatSessionProps): JSX.Element {
+function AutomatedChatSession({entries, appendEntry, clearConversation}: AutomatedChatSessionProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const settings = React.useContext(SettingsContext);
+  const chatHistory = React.useContext(ChatHistoryContext);
 
   const [chatScriptIndex, setChatScriptIndex] = React.useState(0);
 
@@ -122,8 +127,7 @@ function AutomatedChatSession({entries, appendEntry, modifyEntry, clearConversat
       entries={entries}
       humanText={humanText}
       onPrompt={(text) => onPrompt(text, chatScriptIndex)}
-      onResponse={({prompt, response, contentType, entryId}) => modifyEntry(entryId, {text: response, contentType: contentType, prompt: prompt})}
-      modifyResponse={(entryId, delta) => modifyEntry(entryId, delta)}
+      onResponse={({prompt, response, contentType, entryId}) => chatHistory.modifyResponse(entryId, {text: response, contentType: contentType, prompt: prompt})}
       clearConversation={() => {
         setChatScriptIndex(0);
         clearConversation();
@@ -165,11 +169,12 @@ function ChatSession(): JSX.Element {
   const clearConversation = () => setEntries([]);
   
   return (
-    <AutomatedChatSession
-      entries={entries}
-      appendEntry={appendEntry}
-      modifyEntry={modifyEntry}
-      clearConversation={clearConversation}/>
+    <ChatHistoryContext.Provider value={{entries: entries, modifyResponse: modifyEntry}}>
+      <AutomatedChatSession
+        entries={entries}
+        appendEntry={appendEntry}
+        clearConversation={clearConversation}/>
+    </ChatHistoryContext.Provider>
   );
 }
 
