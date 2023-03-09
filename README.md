@@ -32,7 +32,8 @@ There is a feedback dialog on each AI response. This is not yet implemented.
 
 <img width="255" alt="image" src="https://user-images.githubusercontent.com/26607885/223870036-e8100f80-3360-4114-abb7-52e284039063.png">
 
-As is the "Regenerate response" button.
+### Regenerate
+Pressing this button will result in a new OpenAI query for the previous response.
 
 <img width="138" alt="image" src="https://user-images.githubusercontent.com/26607885/223875964-0a46490d-7d9a-4fe3-b57b-46ad7042e57d.png">
 
