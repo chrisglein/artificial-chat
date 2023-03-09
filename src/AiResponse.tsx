@@ -3,8 +3,9 @@ import type {PropsWithChildren} from 'react';
 import {
   ActivityIndicator,
   Button,
-  Pressable,
   Image,
+  Linking,
+  Pressable,
   Text,
   View,
 } from 'react-native';
@@ -29,10 +30,13 @@ function AiImageResponse({imageUrl, prompt, rejectImage}: AiImageResponseProps):
   const styles = React.useContext(StylesContext);
   return (
     <View style={[styles.horizontalContainer, {flexWrap: 'nowrap', alignItems: 'flex-start'}]}>
-      <Image
-        source={{uri: imageUrl}}
-        alt={prompt}
-        style={[{flexGrow: 0}, styles.dalleImage]}/>
+      <Pressable
+        onPress={() => Linking.openURL(imageUrl)}>
+        <Image
+          source={{uri: imageUrl}}
+          alt={prompt}
+          style={styles.dalleImage}/>
+      </Pressable>
       <View
         style={{flexShrink: 1, gap: 8}}>
         <Text>Here is an image created using the following requirements "{prompt}"</Text>
