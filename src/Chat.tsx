@@ -14,6 +14,7 @@ import {
   FeedbackPopup,
 } from './Feedback';
 import { SettingsPopup } from './Settings';
+import { AboutPopup } from './About';
 import { HoverButton } from './Controls';
 
 enum ChatSource {
@@ -104,8 +105,11 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
   const chatHistory = React.useContext(ChatHistoryContext);
   const [showFeedbackPopup, setShowFeedbackPopup] = React.useState(false);
   const [showSettingsPopup, setShowSettingsPopup] = React.useState(false);
+  const [showAboutPopup, setShowAboutPopup] = React.useState(false);
   const [feedbackIsPositive, setFeedbackIsPositive] = React.useState(false);
   const scrollViewRef : React.RefObject<ScrollView> = React.useRef(null);
+
+  let showingAnyPopups = (showFeedbackPopup || showSettingsPopup || showAboutPopup);
 
   const feedbackContext = {
     showFeedback: (positive: boolean) => {
@@ -174,7 +178,7 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
               disableCopy={true}
               contentShownOnHover={
                 <>
-                  <HoverButton content="❔" tooltip="About" onPress={() => console.log("About dialog: Not yet implemented")}/>
+                  <HoverButton content="❔" tooltip="About" onPress={() => setShowAboutPopup(true)}/>
                   <HoverButton content="⚙️" tooltip="Settings" onPress={() => setShowSettingsPopup(true)}/>
                 </>
               }>
@@ -187,7 +191,7 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
                 clearConversation={clearConversation}/>
             </HumanSection>
           </View>
-          { (showFeedbackPopup || showSettingsPopup) && <View style={styles.popupBackground}/> }
+          { showingAnyPopups && <View style={styles.popupBackground}/> }
           <FeedbackPopup
             show={showFeedbackPopup}
             isPositive={feedbackIsPositive}
@@ -195,6 +199,9 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
           <SettingsPopup
             show={showSettingsPopup}
             close={() => setShowSettingsPopup(false)}/>
+          <AboutPopup
+            show={showAboutPopup}
+            close={() => setShowAboutPopup(false)}/>
         </View>
       </ChatScrollContext.Provider>
     </FeedbackContext.Provider>
