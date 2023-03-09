@@ -13,18 +13,22 @@ Type in natural language prompts to this field. Press Enter or the "Submit" butt
 
 ### Settings dialog
 To get responses from OpenAI, you will need to provide an API Key in this dialog. It's available by pressing the ⚙️ button on the chat entry pane.
+
 <img width="401" alt="image" src="https://user-images.githubusercontent.com/26607885/223858390-0bd5a4bd-2358-4d24-8d6d-ab8039b2f70f.png">
 
 ### Text Response
 Your prompts will be responded to via [chat completion](https://platform.openai.com/docs/guides/chat).
+
 <img width="720" alt="image" src="https://user-images.githubusercontent.com/26607885/223862976-ba9113e8-558a-49d1-9d28-cc4547154123.png">
 
 ### Image Response
 If your prompt is determined to have primary intent to see an image, instead you will get a response from [image generation](https://platform.openai.com/docs/guides/images).
+
 <img width="714" alt="image" src="https://user-images.githubusercontent.com/26607885/223865313-538544bf-ce76-4d38-a404-4aa456cec34b.png">
 
 ### Rich Code Blocks
 In your text response, if there are markdown code blocks, those will get syntax highlighting and other code niceties.
+
 <img width="716" alt="image" src="https://user-images.githubusercontent.com/26607885/223868129-d8aa12a9-c5b6-47a1-a5ae-7498a0860aef.png">
 
 ### Feedback dialog
