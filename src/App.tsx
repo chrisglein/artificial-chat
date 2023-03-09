@@ -1,6 +1,6 @@
 import React from 'react';
 import { Appearance } from 'react-native';
-import { ChatSession } from './AppContent';
+import { ChatSession } from './ChatSession';
 import {
   StylesContext,
   CreateStyles,

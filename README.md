@@ -57,8 +57,8 @@ The app's settings are handled by a `SettingsContext` object, which has dialog U
 | File | Type | Information |
 | --- | --- | --- |
 | App.tsx | `App` | Root of the app, publishes the `StylesContext` and `SettingsContext` |
-| AppContent.tsx | `ChatSession` | Owns the `ChatElement` list, and handles any writes to that list |
-| AppContent.tsx | `AutomatedChatSession` | Populates the `ChatSession` with either scripted responses or by creating components that query OpenAi |
+| ChatSession.tsx | `ChatSession` | Owns the `ChatElement` list, and handles any writes to that list |
+| ChatSession.tsx | `AutomatedChatSession` | Populates the `ChatSession` with either scripted responses or by creating components that query OpenAi |
 | Chat.tsx | `Chat` | The scrolling list of chat entries. Publishes the `FeedbackContext`, `ChatHistoryContext`, and `ChatScrollContext` services. Hosts a `ChatEntry` for the user input. Hosts the dialogs of the app (`FeedbackPopup` and `SettingsPopups`).
 | Chat.tsx | `ChatEntry` | Takes in the user's text input | 
 | Feedback.tsx | `FeedbackPopup` | Popup for giving feedback on AI responses | 
