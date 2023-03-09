@@ -14,7 +14,8 @@ import {
 } from './Controls';
 import {
   ChatElement,
-  ChatContent
+  ChatContent,
+  ChatHistoryContext
 } from './Chat';
 import { StylesContext } from './Styles';
 import { FeedbackContext } from './Feedback';
@@ -38,7 +39,7 @@ function AiImageResponse({imageUrl, prompt, rejectImage}: AiImageResponseProps):
         <View style={{alignSelf: 'flex-end', alignItems: 'flex-end'}}>
           <Button
             title="I didn't want to see an image"
-            onPress={() => {rejectImage()}}/>
+            onPress={() => rejectImage()}/>
           <Button
             title="Show me more"
             onPress={() => console.log("Not yet implemented")}/>
@@ -143,9 +144,11 @@ function AiSection({children, isLoading, contentShownOnHover}: AiSectionProps): 
 }
 
 type AiSectionContentProps = {
+  id: number,
   content: ChatElement;
 }
-function AiSectionContent({content}: AiSectionContentProps): JSX.Element {
+function AiSectionContent({id, content}: AiSectionContentProps): JSX.Element {
+  const chatHistory = React.useContext(ChatHistoryContext);
   return (
     <AiSection>
       {(() => {
@@ -156,7 +159,7 @@ function AiSectionContent({content}: AiSectionContentProps): JSX.Element {
             return <AiImageResponse
               imageUrl={content.text}
               prompt={content.prompt}
-              rejectImage={() => console.log("Not yet implemented")}/>; // TODO: This would need to reset back to the text prompt
+              rejectImage={() => chatHistory.modifyResponse(id, {intent: 'text', text: undefined})}/>;
           default:
           case ChatContent.Text:
             return <AiTextResponse text={content.text}/>

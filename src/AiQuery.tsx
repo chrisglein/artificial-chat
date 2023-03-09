@@ -4,11 +4,7 @@ import {
   OpenAiApi,
   CallOpenAi,
 } from './OpenAI';
-import {
-  AiSection,
-  AiImageResponse,
-  AiTextResponse,
-} from './AiResponse';
+import { AiSection } from './AiResponse';
 import { 
   ChatSource,
   ChatContent,
@@ -20,16 +16,15 @@ import { SettingsContext } from './Settings';
 // Component that drives the queries to OpenAi to respond to a prompt
 type AiSectionWithQueryProps = {
   prompt: string;
+  intent?: string;
   id: number;
-  onResponse: ({prompt, response, contentType} : { prompt: string, response: string, contentType: ChatContent} ) => void;
+  onResponse: ({prompt, intent, response, contentType} : { prompt: string, intent?: string, response: string, contentType: ChatContent} ) => void;
 };
-function AiSectionWithQuery({prompt, id, onResponse}: AiSectionWithQueryProps): JSX.Element {
+function AiSectionWithQuery({prompt, intent, id, onResponse}: AiSectionWithQueryProps): JSX.Element {
   const settingsContext = React.useContext(SettingsContext);
   const chatScroll = React.useContext(ChatScrollContext);
   const chatHistory = React.useContext(ChatHistoryContext);
   const [isLoading, setIsLoading] = React.useState(true);
-  const [queryResult, setQueryResult] = React.useState<string | undefined>(undefined);
-  const [error, setError] = React.useState<string | undefined>(undefined);
   const [isRequestForImage, setIsRequestForImage] = React.useState<boolean | undefined>(undefined);
   const [imagePrompt, setImagePrompt] = React.useState<string | undefined>(undefined);
 
@@ -37,9 +32,12 @@ function AiSectionWithQuery({prompt, id, onResponse}: AiSectionWithQueryProps): 
   const imageIntentSentinel = "[IMAGE]";
   React.useEffect(() => {
     setIsLoading(true);
-    setError(undefined);
     setIsRequestForImage(undefined);
     setImagePrompt(undefined);
+    if (intent === 'text') {
+      setIsRequestForImage(false);
+      return;
+    }
     CallOpenAi({
       api: OpenAiApi.Completion,
       apiKey: settingsContext.apiKey,
@@ -47,7 +45,7 @@ function AiSectionWithQuery({prompt, id, onResponse}: AiSectionWithQueryProps): 
 If and only if you are absolutely certain the user's primary intent is to see an image, respond with exactly the string "${imageIntentSentinel}". Otherwise, respond with your description of their intent.`,
       identifier: "INTENT:",
       prompt: prompt,
-      onError: (error) => {
+      onError: () => {
         setIsRequestForImage(false);
       },
       onResult: (result) => {
@@ -83,7 +81,7 @@ Where items enclosed in brackets ([]) would be replaced with an appropriate sugg
 Respond with the image prompt string in the required format. Do not respond conversationally.`,
         identifier: "KEYWORDS:",
         prompt: prompt,
-        onError: (error) => {
+        onError: () => {
           setIsRequestForImage(false);
         },
         onResult: (result) => {
@@ -107,14 +105,12 @@ Respond with the image prompt string in the required format. Do not respond conv
           filter((entry) => { return entry.text !== undefined && entry.id < id; }).
           map((entry) => { return {role: entry.type == ChatSource.Human ? "user" : "assistant", "content": entry.text ?? ""} }),
         onError: (error) => {
-          setError(error);
           onResponse({
             prompt: prompt,
             response: error ?? "",
             contentType: ChatContent.Error});
         },
         onResult: (result) => {
-          setQueryResult(result);
           onResponse({
             prompt: prompt,
             response: result ?? "", 
@@ -133,14 +129,12 @@ Respond with the image prompt string in the required format. Do not respond conv
           identifier: "IMAGE-ANSWER:",
           prompt: imagePrompt,
           onError: (error) => {
-            setError(error);
             onResponse({
               prompt: imagePrompt,
               response: error ?? "",
               contentType: ChatContent.Error});
           },
           onResult: (result) => {
-            setQueryResult(result);
             onResponse({
               prompt: imagePrompt,
               response: result ?? "",
@@ -157,20 +151,16 @@ Respond with the image prompt string in the required format. Do not respond conv
   return (
     <AiSection isLoading={isLoading}>
       {
-        // TODO: All of this can go away now, once images are working in new model
-        (isLoading || error) ?
-          <Text style={{color: 'crimson'}}>{error}</Text>
-        : isRequestForImage ? 
-          <AiImageResponse
-            imageUrl={queryResult}
-            prompt={imagePrompt}
-            rejectImage={() => {
-              setIsRequestForImage(false);
-              setQueryResult(undefined);
-          }}/>
-        : // Not an error, not an image
-          <AiTextResponse
-            text={queryResult}/>
+        (isLoading ?
+          isRequestForImage === undefined ?
+            <Text>Identifying intent...</Text> :
+            isRequestForImage === true ?
+              imagePrompt === undefined ?
+                <Text>Generating keywords for an image...</Text> :
+                <Text>Generating image...</Text> :
+              <Text>Generating text...</Text>
+            :
+          <Text>Done loading</Text>)
       }
     </AiSection>
   )

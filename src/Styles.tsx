@@ -90,7 +90,7 @@ const CreateStyles = (isDarkMode: boolean) => {
       color: isDarkMode ? 'black' : 'white',
     },
     hyperlinkIdle: {
-      color: isDarkMode ? 'black' : 'white',
+      color: isDarkMode ? 'white' : 'black',
     },
     hyperlinkPressing: {
       color: 'purple',

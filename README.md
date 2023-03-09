@@ -36,7 +36,8 @@ There is a feedback dialog on each AI response. This is not yet implemented.
 
 <img width="255" alt="image" src="https://user-images.githubusercontent.com/26607885/223870036-e8100f80-3360-4114-abb7-52e284039063.png">
 
-As is the "Regenerate response" button.
+### Regenerate
+Pressing this button will result in a new OpenAI query for the previous response.
 
 <img width="138" alt="image" src="https://user-images.githubusercontent.com/26607885/223875964-0a46490d-7d9a-4fe3-b57b-46ad7042e57d.png">
 
@@ -61,9 +62,9 @@ The app's settings are handled by a `SettingsContext` object, which has dialog U
 | File | Type | Information |
 | --- | --- | --- |
 | App.tsx | `App` | Root of the app, publishes the `StylesContext` and `SettingsContext` |
-| AppContent.tsx | `ChatSession` | Owns the `ChatElement` list, and handles any writes to that list |
-| AppContent.tsx | `AutomatedChatSession` | Populates the `ChatSession` with either scripted responses or by creating components that query OpenAi |
-| Chat.tsx | `Chat` | The scrolling list of chat entries. Publishes the `FeedbackContext`, `ChatHistoryContext`, and `ChatScrollContext` services. Hosts a `ChatEntry` for the user input. Hosts the dialogs of the app (`FeedbackPopup` and `SettingsPopups`).
+| ChatSession.tsx | `ChatSession` | Owns the `ChatElement` list, publishes the `ChatHistoryContext`, and handles any writes to that list |
+| ChatSession.tsx | `AutomatedChatSession` | Populates the `ChatSession` with either scripted responses or by creating components that query OpenAi |
+| Chat.tsx | `Chat` | The scrolling list of chat entries. Publishes the `FeedbackContext`, and `ChatScrollContext` services. Hosts a `ChatEntry` for the user input. Hosts the dialogs of the app (`FeedbackPopup` and `SettingsPopups`).
 | Chat.tsx | `ChatEntry` | Takes in the user's text input | 
 | Feedback.tsx | `FeedbackPopup` | Popup for giving feedback on AI responses | 
 | Settings.tsx | `SettingsPopup` | Popup that shows controls for modifying the `SettingsContext` | 
