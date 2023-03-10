@@ -14,7 +14,7 @@ type HumanSectionProps = PropsWithChildren<{
   content?: string;
   disableEdit?: boolean;
   disableCopy?: boolean;
-  contentShownOnHover?: JSX.Element;
+  contentShownOnHover?: React.ReactNode;
 }>;
 function HumanSection({children, content, disableEdit, disableCopy, contentShownOnHover}: HumanSectionProps): JSX.Element {
   const [hovering, setHovering] = React.useState(false);
@@ -27,8 +27,8 @@ function HumanSection({children, content, disableEdit, disableCopy, contentShown
       onHoverOut={() => setHovering(false)}>
       <View style={{flexDirection: 'row', minHeight: 26}}>
         <Text style={[styles.sectionTitle, {flexGrow: 1}]}>HUMAN</Text>
-        {hovering && !disableCopy && <HoverButton content="📋" onPress={() => Clipboard.setString(content ?? "")}/>}
-        {hovering && !disableEdit && <HoverButton content="📝" onPress={() => {console.log("Edit: Not yet implemented")}}/>}
+        {hovering && !disableCopy && <HoverButton content="📋" tooltip="Copy to clipboard" onPress={() => Clipboard.setString(content ?? "")}/>}
+        {hovering && !disableEdit && <HoverButton content="📝" tooltip="Edit" onPress={() => {console.log("Edit: Not yet implemented")}}/>}
         {hovering && contentShownOnHover}
       </View>
       {content ? <Text>{content}</Text> : null}

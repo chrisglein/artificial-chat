@@ -14,6 +14,7 @@ import {
   FeedbackPopup,
 } from './Feedback';
 import { SettingsPopup } from './Settings';
+import { AboutPopup } from './About';
 import { HoverButton } from './Controls';
 
 enum ChatSource {
@@ -81,11 +82,9 @@ function ChatEntry({submit, defaultText, clearConversation}: ChatEntryProps): JS
         onSubmitEditing={submitValue}
         value={defaultText ?? value}/>
       <Button
-        style={{flexShrink: 0}}
         title="Submit"
         onPress={submitValue}/>
       <Button
-        style={{flexShrink: 0}}
         title="💣"
         onPress={clearConversation}/>
     </View>
@@ -103,14 +102,19 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
   const styles = React.useContext(StylesContext);
   const chatHistory = React.useContext(ChatHistoryContext);
   const [showFeedbackPopup, setShowFeedbackPopup] = React.useState(false);
+  const [feedbackTargetResponse, setFeedbackTargetResponse] = React.useState<string | undefined>(undefined);
   const [showSettingsPopup, setShowSettingsPopup] = React.useState(false);
+  const [showAboutPopup, setShowAboutPopup] = React.useState(false);
   const [feedbackIsPositive, setFeedbackIsPositive] = React.useState(false);
   const scrollViewRef : React.RefObject<ScrollView> = React.useRef(null);
 
+  let showingAnyPopups = (showFeedbackPopup || showSettingsPopup || showAboutPopup);
+
   const feedbackContext = {
-    showFeedback: (positive: boolean) => {
+    showFeedback: (positive: boolean, response?: string) => {
       setFeedbackIsPositive(positive);
       setShowFeedbackPopup(true);
+      setFeedbackTargetResponse(response);
     }
   }
 
@@ -173,7 +177,10 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
               disableEdit={true}
               disableCopy={true}
               contentShownOnHover={
-                <HoverButton content="⚙️" onPress={() => setShowSettingsPopup(true)}/>
+                <>
+                  <HoverButton content="❔" tooltip="About" onPress={() => setShowAboutPopup(true)}/>
+                  <HoverButton content="⚙️" tooltip="Settings" onPress={() => setShowSettingsPopup(true)}/>
+                </>
               }>
               <ChatEntry
                 defaultText={humanText}
@@ -184,14 +191,18 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
                 clearConversation={clearConversation}/>
             </HumanSection>
           </View>
-          { (showFeedbackPopup || showSettingsPopup) && <View style={styles.popupBackground}/> }
+          { showingAnyPopups && <View style={styles.popupBackground}/> }
           <FeedbackPopup
             show={showFeedbackPopup}
             isPositive={feedbackIsPositive}
+            response={feedbackTargetResponse}
             close={() => setShowFeedbackPopup(false)}/>
           <SettingsPopup
             show={showSettingsPopup}
             close={() => setShowSettingsPopup(false)}/>
+          <AboutPopup
+            show={showAboutPopup}
+            close={() => setShowAboutPopup(false)}/>
         </View>
       </ChatScrollContext.Provider>
     </FeedbackContext.Provider>

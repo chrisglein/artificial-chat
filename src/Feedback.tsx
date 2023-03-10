@@ -10,15 +10,16 @@ import { Popup } from 'react-native-windows';
 import { StylesContext } from './Styles';
 
 const FeedbackContext = React.createContext<{
-  showFeedback : (positive: boolean) => void;
+  showFeedback : (positive: boolean, response?: string) => void;
 }>({showFeedback: () => {}});
 
 type FeedbackPopupProps = {
   show: boolean;
   close: () => void;
   isPositive: boolean;
+  response?: string;
 }
-function FeedbackPopup({show, close, isPositive}: FeedbackPopupProps): JSX.Element {
+function FeedbackPopup({show, close, isPositive, response}: FeedbackPopupProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const [feedbackText, setFeedbackText] = React.useState("");
 
@@ -61,6 +62,7 @@ function FeedbackPopup({show, close, isPositive}: FeedbackPopupProps): JSX.Eleme
             title="Submit feedback"
             onPress={() => {
               console.log(isPositive ? "like" : "dislike");
+              console.log(response);
               console.log(feedbackText);
               close();
             }}/>

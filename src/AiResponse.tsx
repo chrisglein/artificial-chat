@@ -3,8 +3,9 @@ import type {PropsWithChildren} from 'react';
 import {
   ActivityIndicator,
   Button,
-  Pressable,
   Image,
+  Linking,
+  Pressable,
   Text,
   View,
 } from 'react-native';
@@ -19,6 +20,7 @@ import {
 } from './Chat';
 import { StylesContext } from './Styles';
 import { FeedbackContext } from './Feedback';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 type AiImageResponseProps = {
   imageUrl?: string;
@@ -29,10 +31,17 @@ function AiImageResponse({imageUrl, prompt, rejectImage}: AiImageResponseProps):
   const styles = React.useContext(StylesContext);
   return (
     <View style={[styles.horizontalContainer, {flexWrap: 'nowrap', alignItems: 'flex-start'}]}>
-      <Image
-        source={{uri: imageUrl}}
-        alt={prompt}
-        style={[{flexGrow: 0}, styles.dalleImage]}/>
+      <Pressable
+        onPress={() => {
+          if (imageUrl) {
+            Linking.openURL(imageUrl);
+          }
+        }}>
+        <Image
+          source={{uri: imageUrl}}
+          alt={prompt}
+          style={styles.dalleImage}/>
+      </Pressable>
       <View
         style={{flexShrink: 1, gap: 8}}>
         <Text>Here is an image created using the following requirements "{prompt}"</Text>
@@ -108,16 +117,17 @@ function AiTextResponse({text}: AiTextResponseProps): JSX.Element {
 
 type AiSectionProps = PropsWithChildren<{
   isLoading?: boolean;
+  copyValue?: string;
   contentShownOnHover?: JSX.Element;
 }>;
-function AiSection({children, isLoading, contentShownOnHover}: AiSectionProps): JSX.Element {
+function AiSection({children, isLoading, copyValue, contentShownOnHover}: AiSectionProps): JSX.Element {
   const feedbackContext = React.useContext(FeedbackContext);
   const styles = React.useContext(StylesContext);
   const [hovering, setHovering] = React.useState(false);
 
   const showFeedbackPopup = (positive: boolean) => {
     if (feedbackContext) {
-      feedbackContext.showFeedback(positive);
+      feedbackContext.showFeedback(positive, copyValue);
     }
   }
 
@@ -129,9 +139,9 @@ function AiSection({children, isLoading, contentShownOnHover}: AiSectionProps): 
       <View style={{flexDirection: 'row'}}>
         <Text style={[styles.sectionTitle, {flexGrow: 1}]}>AI</Text>
         {hovering && contentShownOnHover}
-        {hovering && <HoverButton content="📋" onPress={() => console.log("Copy: Not yet implemented")}/>}
-        <HoverButton content="👍" onPress={() => { showFeedbackPopup(true); }}/>
-        <HoverButton content="👎" onPress={() => { showFeedbackPopup(false); }}/>
+        {hovering && copyValue && <HoverButton content="📋" tooltip="Copy to clipboard" onPress={() => Clipboard.setString(copyValue)}/>}
+        <HoverButton content="👍" tooltip="Give positive feedback" onPress={() => { showFeedbackPopup(true); }}/>
+        <HoverButton content="👎" tooltip="Give negative feedback" onPress={() => { showFeedbackPopup(false); }}/>
       </View>
       {isLoading && 
         <ActivityIndicator/>
@@ -150,7 +160,7 @@ type AiSectionContentProps = {
 function AiSectionContent({id, content}: AiSectionContentProps): JSX.Element {
   const chatHistory = React.useContext(ChatHistoryContext);
   return (
-    <AiSection>
+    <AiSection copyValue={content.text}>
       {(() => {
         switch (content.contentType) {
           case ChatContent.Error:
