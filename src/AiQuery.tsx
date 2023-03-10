@@ -39,7 +39,7 @@ function AiSectionWithQuery({prompt, intent, id, onResponse}: AiSectionWithQuery
       return;
     }
     CallOpenAi({
-      api: OpenAiApi.Completion,
+      api: OpenAiApi.ChatCompletion,
       apiKey: settingsContext.apiKey,
       instructions: `You are an intuitive assistant helping the user with a project. Your only job is need to determine the primary intent of the user's last prompt.
 If and only if you are absolutely certain the user's primary intent is to see an image, respond with exactly the string "${imageIntentSentinel}". Otherwise, respond with your description of their intent.`,
