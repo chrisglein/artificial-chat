@@ -20,6 +20,7 @@ import {
 } from './Chat';
 import { StylesContext } from './Styles';
 import { FeedbackContext } from './Feedback';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 type AiImageResponseProps = {
   imageUrl?: string;
@@ -116,16 +117,17 @@ function AiTextResponse({text}: AiTextResponseProps): JSX.Element {
 
 type AiSectionProps = PropsWithChildren<{
   isLoading?: boolean;
+  copyValue?: string;
   contentShownOnHover?: JSX.Element;
 }>;
-function AiSection({children, isLoading, contentShownOnHover}: AiSectionProps): JSX.Element {
+function AiSection({children, isLoading, copyValue, contentShownOnHover}: AiSectionProps): JSX.Element {
   const feedbackContext = React.useContext(FeedbackContext);
   const styles = React.useContext(StylesContext);
   const [hovering, setHovering] = React.useState(false);
 
   const showFeedbackPopup = (positive: boolean) => {
     if (feedbackContext) {
-      feedbackContext.showFeedback(positive);
+      feedbackContext.showFeedback(positive, copyValue);
     }
   }
 
@@ -137,7 +139,7 @@ function AiSection({children, isLoading, contentShownOnHover}: AiSectionProps): 
       <View style={{flexDirection: 'row'}}>
         <Text style={[styles.sectionTitle, {flexGrow: 1}]}>AI</Text>
         {hovering && contentShownOnHover}
-        {hovering && <HoverButton content="📋" tooltip="Copy to clipboard" onPress={() => console.log("Copy: Not yet implemented")}/>}
+        {hovering && copyValue && <HoverButton content="📋" tooltip="Copy to clipboard" onPress={() => Clipboard.setString(copyValue)}/>}
         <HoverButton content="👍" tooltip="Give positive feedback" onPress={() => { showFeedbackPopup(true); }}/>
         <HoverButton content="👎" tooltip="Give negative feedback" onPress={() => { showFeedbackPopup(false); }}/>
       </View>
@@ -158,7 +160,7 @@ type AiSectionContentProps = {
 function AiSectionContent({id, content}: AiSectionContentProps): JSX.Element {
   const chatHistory = React.useContext(ChatHistoryContext);
   return (
-    <AiSection>
+    <AiSection copyValue={content.text}>
       {(() => {
         switch (content.contentType) {
           case ChatContent.Error:

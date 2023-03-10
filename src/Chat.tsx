@@ -82,11 +82,9 @@ function ChatEntry({submit, defaultText, clearConversation}: ChatEntryProps): JS
         onSubmitEditing={submitValue}
         value={defaultText ?? value}/>
       <Button
-        style={{flexShrink: 0}}
         title="Submit"
         onPress={submitValue}/>
       <Button
-        style={{flexShrink: 0}}
         title="💣"
         onPress={clearConversation}/>
     </View>
@@ -104,6 +102,7 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
   const styles = React.useContext(StylesContext);
   const chatHistory = React.useContext(ChatHistoryContext);
   const [showFeedbackPopup, setShowFeedbackPopup] = React.useState(false);
+  const [feedbackTargetResponse, setFeedbackTargetResponse] = React.useState<string | undefined>(undefined);
   const [showSettingsPopup, setShowSettingsPopup] = React.useState(false);
   const [showAboutPopup, setShowAboutPopup] = React.useState(false);
   const [feedbackIsPositive, setFeedbackIsPositive] = React.useState(false);
@@ -112,9 +111,10 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
   let showingAnyPopups = (showFeedbackPopup || showSettingsPopup || showAboutPopup);
 
   const feedbackContext = {
-    showFeedback: (positive: boolean) => {
+    showFeedback: (positive: boolean, response?: string) => {
       setFeedbackIsPositive(positive);
       setShowFeedbackPopup(true);
+      setFeedbackTargetResponse(response);
     }
   }
 
@@ -195,6 +195,7 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
           <FeedbackPopup
             show={showFeedbackPopup}
             isPositive={feedbackIsPositive}
+            response={feedbackTargetResponse}
             close={() => setShowFeedbackPopup(false)}/>
           <SettingsPopup
             show={showSettingsPopup}
