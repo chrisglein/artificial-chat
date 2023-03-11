@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Button,
+  Switch,
   Text,
   TextInput,
   View,
@@ -10,15 +11,63 @@ import {Hyperlink} from './Controls';
 import {StylesContext} from './Styles';
 import {Picker} from '@react-native-picker/picker';
 import {ChatScriptNames} from './ChatScript';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const SettingsContext = React.createContext<{
+const settingsKey = 'settings';
+
+// App-wide settings that can be modified from a menu, some of which are saved between app sessions
+type SettingsContextType = {
   apiKey?: string,
-  setApiKey: (value: string) => void,
+  setApiKey: (value?: string) => void,
   scriptName?: string,
   setScriptName: (value: string) => void,
   delayForArtificialResponse?: number,
   setDelayForArtificialResponse: (value: number) => void,
-}>({});
+  showPopup: boolean,
+  setShowPopup: (value: boolean) => void,
+}
+const SettingsContext = React.createContext<SettingsContextType>({
+  setApiKey: () => {},
+  setScriptName: () => {},
+  setDelayForArtificialResponse: () => {},
+  showPopup: false,
+  setShowPopup: () => {},
+});
+
+// Settings that are saved between app sessions
+type SettingsData = {
+  apiKey?: string,
+}
+
+// Read settings from app storage
+const SaveSettingsData = async (value: SettingsData) => {
+  console.debug('Saving settings data...');
+  try {
+    const jsonValue = JSON.stringify(value);
+    await AsyncStorage.setItem(settingsKey, jsonValue)
+    console.debug('Done saving settings data');
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+// Write settings to ap storage
+const LoadSettingsData = async () => {
+  console.debug('Loading settings data...');
+  let value : SettingsData = {};
+  try {
+    const jsonValue = await AsyncStorage.getItem(settingsKey);
+    if (jsonValue != null) {
+      console.debug(jsonValue);
+      const data = JSON.parse(jsonValue);
+      
+      if (data.hasOwnProperty('apiKey')) { value.apiKey = data.apiKey; }
+    }
+  } catch(e) {
+    console.error(e);
+  }
+  return value;
+}
 
 type SettingsPopupProps = {
   show: boolean;
@@ -27,9 +76,38 @@ type SettingsPopupProps = {
 function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const settings = React.useContext(SettingsContext);
-  const [apiKey, setApiKey] = React.useState<string>(settings.apiKey ?? "");
+  const [apiKey, setApiKey] = React.useState<string | undefined>(settings.apiKey);
+  const [saveApiKey, setSaveApiKey] = React.useState<boolean>(false);
   const [scriptName, setScriptName] = React.useState<string>(settings.scriptName ?? "");
   const [delayForArtificialResponse, setDelayForArtificialResponse] = React.useState<number>(settings.delayForArtificialResponse ?? 0);
+
+  // It may seem weird to do this when the UI loads, not the app, but it's okay
+  // because this component is loaded when the app starts but isn't shown. And
+  // this popup needs to directly know when the settings change (which won't 
+  // happen directly if you just consume settings.apiKey inside the component.
+  React.useEffect(() => {
+    const load = async () => {
+      let value = await LoadSettingsData();
+      setApiKey(value.apiKey);
+      settings.setApiKey(value.apiKey);
+
+      // If an API key was set, continue to remember it
+      setSaveApiKey(value.apiKey !== undefined);
+    }
+    load();
+  }, []);
+
+  const save = () => {
+    settings.setApiKey(apiKey);
+    settings.setScriptName(scriptName);
+    settings.setDelayForArtificialResponse(delayForArtificialResponse);
+
+    close();
+
+    SaveSettingsData({
+      apiKey: saveApiKey ? apiKey : undefined
+    });
+  }
 
   return (
     <Popup
@@ -50,7 +128,14 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             style={{flexGrow: 1, minHeight: 32}}
             onChangeText={value => setApiKey(value)}
             value={apiKey}/>
-          <Hyperlink url="https://platform.openai.com/account/api-keys"/>
+            <View style={styles.horizontalContainer}>
+              <Switch
+                value={saveApiKey}
+                onValueChange={(value) => setSaveApiKey(value)}/>
+              <Text>Remember this </Text>
+            </View>
+          <Hyperlink
+            url="https://platform.openai.com/account/api-keys"/>
         </View>
         <View>
           <Text>Script</Text>
@@ -74,10 +159,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
           <Button
             title="OK"
             onPress={() => {
-              settings.setApiKey(apiKey);
-              settings.setScriptName(scriptName);
-              settings.setDelayForArtificialResponse(delayForArtificialResponse);
-              close();
+              save();
             }}/>
         </View>
       </View>

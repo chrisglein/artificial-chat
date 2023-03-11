@@ -91,9 +91,10 @@ function ImageSelection({image}: ImageSelectionProps): JSX.Element {
 }
 
 type HyperlinkProps = {
-  url: string
+  url: string,
+  text?: string,
 };
-function Hyperlink({url}: HyperlinkProps): JSX.Element {
+function Hyperlink({url, text}: HyperlinkProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const [hovering, setHovering] = React.useState(false);
   const [pressing, setPressing] = React.useState(false);
@@ -109,7 +110,7 @@ function Hyperlink({url}: HyperlinkProps): JSX.Element {
           pressing ? styles.hyperlinkPressing : 
           hovering ? styles.hyperlinkHovering : 
           styles.hyperlinkIdle}>
-        {url}
+        {text ?? url}
       </Text>
     </Pressable>
   );

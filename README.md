@@ -61,13 +61,14 @@ The app's settings are handled by a `SettingsContext` object, which has dialog U
 ## App Fundamentals
 | File | Type | Information |
 | --- | --- | --- |
-| App.tsx | `App` | Root of the app, publishes the `StylesContext` and `SettingsContext` |
+| About.tsx | `AboutPopup` | Popup for basic app information |
+| App.tsx | `App` | Root of the app, publishes the `StylesContext` and `SettingsContext`. Hosts the `SettingsPopup` |
 | ChatSession.tsx | `ChatSession` | Owns the `ChatElement` list, publishes the `ChatHistoryContext`, and handles any writes to that list |
 | ChatSession.tsx | `AutomatedChatSession` | Populates the `ChatSession` with either scripted responses or by creating components that query OpenAi |
-| Chat.tsx | `Chat` | The scrolling list of chat entries. Publishes the `FeedbackContext`, and `ChatScrollContext` services. Hosts a `ChatEntry` for the user input. Hosts the dialogs of the app (`FeedbackPopup` and `SettingsPopups`).
+| Chat.tsx | `Chat` | The scrolling list of chat entries. Publishes the `FeedbackContext`, and `ChatScrollContext` services. Hosts a `ChatEntry` for the user input. Hosts the dialogs of the app (`FeedbackPopup` and `AboutPopup`).
 | Chat.tsx | `ChatEntry` | Takes in the user's text input | 
 | Feedback.tsx | `FeedbackPopup` | Popup for giving feedback on AI responses | 
-| Settings.tsx | `SettingsPopup` | Popup that shows controls for modifying the `SettingsContext` | 
+| Settings.tsx | `SettingsPopup` | Popup that shows controls for modifying the `SettingsContext` and loads persistant values from app storage | 
 | Styles.tsx | `StylesContext` | StyleSheet that is light/dark mode aware | 
 
 ## AI Query & Response
@@ -98,3 +99,4 @@ The app's settings are handled by a `SettingsContext` object, which has dialog U
 - Clipboard via [@react-native-picker/picker](https://github.com/react-native-picker/picker)
 - Syntax Highlighting via [react-native-syntax-highlighter](https://github.com/conorhastings/react-native-syntax-highlighter)
 - Dependency patching via [patch-package](https://github.com/ds300/patch-package)
+- Storage via [react-native-async-storage](https://github.com/react-native-async-storage/async-storage)
