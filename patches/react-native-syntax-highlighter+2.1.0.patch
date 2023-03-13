@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-syntax-highlighter/dist/index.js b/node_modules/react-native-syntax-highlighter/dist/index.js
-index 9040688..4d73f24 100644
+index 9040688..6e801cb 100644
 --- a/node_modules/react-native-syntax-highlighter/dist/index.js
 +++ b/node_modules/react-native-syntax-highlighter/dist/index.js
 @@ -14,6 +14,8 @@ var _react2 = _interopRequireDefault(_react);
@@ -11,6 +11,18 @@ index 9040688..4d73f24 100644
  var _reactSyntaxHighlighter = require('react-syntax-highlighter');
  
  var _reactSyntaxHighlighter2 = _interopRequireDefault(_reactSyntaxHighlighter);
+@@ -151,9 +153,10 @@ function createNativeElement(_ref7) {
+     var childrenCreator = createChildren({ stylesheet: stylesheet, fontSize: fontSize, fontFamily: fontFamily });
+     var style = (0, _createElement.createStyleObject)(properties.className, Object.assign({ color: defaultColor }, properties.style, startingStyle), stylesheet);
+     var children = childrenCreator(node.children, style.color || defaultColor);
++    // ellipsizeMode='none' is a workaround for bug #68 (newlines at the end are showing ellipses)
+     return _react2.default.createElement(
+       _reactNative.Text,
+-      { key: key, style: style },
++      { key: key, style: style, ellipsizeMode: 'none' },
+       children
+     );
+   }
 diff --git a/node_modules/react-native-syntax-highlighter/dist/prism-config.js b/node_modules/react-native-syntax-highlighter/dist/prism-config.js
 new file mode 100644
 index 0000000..00d2059
@@ -22,7 +34,7 @@ index 0000000..00d2059
 +global.Prism = { disableWorkerMessageHandler: true };
 \ No newline at end of file
 diff --git a/node_modules/react-native-syntax-highlighter/src/index.js b/node_modules/react-native-syntax-highlighter/src/index.js
-index 11e5c5b..e95254b 100644
+index 11e5c5b..5709f40 100644
 --- a/node_modules/react-native-syntax-highlighter/src/index.js
 +++ b/node_modules/react-native-syntax-highlighter/src/index.js
 @@ -1,5 +1,6 @@
@@ -32,6 +44,16 @@ index 11e5c5b..e95254b 100644
  import SyntaxHighlighter from 'react-syntax-highlighter';
  import SyntaxHighlighterPrism from 'react-syntax-highlighter/prism';
  import { createStyleObject } from 'react-syntax-highlighter/create-element';
+@@ -123,7 +124,8 @@ function createNativeElement({ node, stylesheet, key, defaultColor, fontFamily,
+       stylesheet
+     );
+     const children = childrenCreator(node.children, style.color || defaultColor);
+-    return <Text key={key} style={style}>{children}</Text>;
++    // ellipsizeMode='none' is a workaround for bug #68 (newlines at the end are showing ellipses)
++    return <Text key={key} style={style} ellipsizeMode='none'>{children}</Text>;
+   }
+ }
+ 
 diff --git a/node_modules/react-native-syntax-highlighter/src/prism-config.js b/node_modules/react-native-syntax-highlighter/src/prism-config.js
 new file mode 100644
 index 0000000..27186cf
