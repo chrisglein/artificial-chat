@@ -19,6 +19,7 @@
     "postinstall-postinstall": "^2.1.0",
     "react": "18.2.0",
     "react-native": "0.71.0",
+    "react-native-markdown-renderer": "^3.2.8",
     "react-native-syntax-highlighter": "^2.1.0",
     "react-native-windows": "0.71.1"
   },
