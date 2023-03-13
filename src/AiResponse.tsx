@@ -6,7 +6,6 @@ import {
   Image,
   Linking,
   Pressable,
-  StyleSheet,
   Text,
   View,
 } from 'react-native';
