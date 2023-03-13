@@ -22,7 +22,7 @@ import {
 import { StylesContext } from './Styles';
 import { FeedbackContext } from './Feedback';
 import Clipboard from '@react-native-clipboard/clipboard';
-import Markdown from 'react-native-markdown-renderer';
+import Markdown from 'react-native-markdown-display';
 
 type AiImageResponseProps = {
   imageUrl?: string;
@@ -64,8 +64,6 @@ type AiTextResponseProps = {
   text?: string;
 };
 function AiTextResponse({text}: AiTextResponseProps): JSX.Element {
-  let elements: JSX.Element[] = [];
-
   const rules = {
     fence: (node, children, parent, styles) => {
       return (
@@ -77,35 +75,8 @@ function AiTextResponse({text}: AiTextResponseProps): JSX.Element {
       },
   }
 
-  const styles = StyleSheet.create({
-    listItem: {
-      // Removing these because they break the rendering of list items
-      // flex: 1,
-      // flexWrap: 'wrap',
-    },
-    paragraph: {
-      marginTop: 0, // Removing the 10px here because they are being applied to list items too
-      marginBottom: 0, // Removing the 10px here because they are being applied to list items too
-      flexWrap: 'wrap',
-      flexDirection: 'row',
-      alignItems: 'flex-start',
-      justifyContent: 'flex-start',
-    },
-    listUnorderedItemIcon: {
-      marginLeft: 10,
-      marginRight: 10,
-      lineHeight: 20, // This is Platform.selected only on IOS/Android in https://github.com/mientjan/react-native-markdown-renderer/blob/master/src/lib/styles.js
-    },
-    listOrderedItemIcon: {
-      marginLeft: 10,
-      marginRight: 10,
-      lineHeight: 30, // This is Platform.selected only on IOS/Android in https://github.com/mientjan/react-native-markdown-renderer/blob/master/src/lib/styles.js
-    },
-
-  });
-
   return (
-    <Markdown rules={rules} style={styles}>{text}</Markdown>
+    <Markdown rules={rules}>{text}</Markdown>
   );
 }
 
