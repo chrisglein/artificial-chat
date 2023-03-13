@@ -1,19 +1,39 @@
 import React from 'react';
-import { Appearance } from 'react-native';
+import {
+  Appearance,
+  View
+} from 'react-native';
 import { ChatSession } from './ChatSession';
 import {
   StylesContext,
   CreateStyles,
 } from './Styles';
-import { SettingsContext } from './Settings';
+import {
+  LoadSettingsData,
+  SettingsContext,
+  SettingsPopup,
+} from './Settings';
 
 function App(): JSX.Element {
   const [currentTheme, setCurrentTheme] = React.useState(Appearance.getColorScheme());
   const [apiKey, setApiKey] = React.useState<string | undefined>(undefined);
   const [scriptName, setScriptName] = React.useState<string | undefined>("");
   const [delayForArtificialResponse, setDelayForArtificialResponse] = React.useState<number>(1500);
-  
+  const [showSettingsPopup, setShowSettingsPopup] = React.useState(false);
+    
   const isDarkMode = currentTheme === 'dark';
+  const styles = CreateStyles(isDarkMode);
+
+  const settings = {
+    scriptName: scriptName,
+    setScriptName: setScriptName,
+    apiKey: apiKey,
+    setApiKey: setApiKey,
+    delayForArtificialResponse: delayForArtificialResponse,
+    setDelayForArtificialResponse: setDelayForArtificialResponse,
+    showPopup: showSettingsPopup,
+    setShowPopup: setShowSettingsPopup,
+  };
 
   const onAppThemeChanged = () => {
     setCurrentTheme(Appearance.getColorScheme());
@@ -24,16 +44,14 @@ function App(): JSX.Element {
   });
 
   return (
-    <StylesContext.Provider value={CreateStyles(isDarkMode)}>
-      <SettingsContext.Provider value={{
-          scriptName: scriptName,
-          setScriptName: setScriptName,
-          apiKey: apiKey,
-          setApiKey: setApiKey,
-          delayForArtificialResponse: delayForArtificialResponse,
-          setDelayForArtificialResponse: setDelayForArtificialResponse,
-        }}>
-        <ChatSession/>
+    <StylesContext.Provider value={styles}>
+      <SettingsContext.Provider value={settings}>
+        <View>
+          <ChatSession/>
+          <SettingsPopup
+            show={showSettingsPopup}
+            close={() => settings.setShowPopup(false)}/>
+        </View>
       </SettingsContext.Provider>
     </StylesContext.Provider>
   );
