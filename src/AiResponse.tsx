@@ -21,6 +21,7 @@ import {
 import { StylesContext } from './Styles';
 import { FeedbackContext } from './Feedback';
 import Clipboard from '@react-native-clipboard/clipboard';
+import Markdown from 'react-native-markdown-display';
 
 type AiImageResponseProps = {
   imageUrl?: string;
@@ -62,56 +63,19 @@ type AiTextResponseProps = {
   text?: string;
 };
 function AiTextResponse({text}: AiTextResponseProps): JSX.Element {
-  let elements: JSX.Element[] = [];
-
-  function* matchAll(text: string, regexp: RegExp) {
-    let match;
-    while ((match = regexp.exec(text)) !== null) {
-      yield {value: match, start: match.index, end: regexp.lastIndex};
-    }
-  }
-
-  // Break up the text into code blocks and regular text
-  if (text !== undefined) {
-    // Look for the ``` separator (with option language)
-    const regex = /^```(.*)$/gm;
-    let matches = [...matchAll(text, regex)];
-
-    // Keep track of where we are in the open/close code blocks
-    let index = 0;
-    let inCodeBlock = false;
-    let currentLanguage = "";
-    
-    const appendToElements = (key: number, value: string) => {
-      if (!inCodeBlock) {
-        elements = [...elements, <Text key={key}>{value}</Text>];
-      } else {
-        elements = [...elements, <CodeBlock key={key} language={currentLanguage ?? "unknown"} content={value}/>];
-      }
-    }
-
-    for (let i = 0; i < matches.length; i++) {
-      // Grab the text since the last match, but strip out the separator/language
-      let match = matches[i];
-      let textSinceLast = text.substring(index, match.start).trim();
-      index = match.start + match.value[0].length;
-
-      appendToElements(i, textSinceLast);
-
-      currentLanguage = match.value[1];
-      inCodeBlock = !inCodeBlock;
-    }
-
-    // Add the remaining text after the last ``` separator
-    if (index < text.length) {
-      appendToElements(matches.length, text.substring(index, text.length).trim());
-    }
+  const rules = {
+    fence: (node, children, parent, styles) => {
+      return (
+        <CodeBlock
+          key={node.key}
+          language={node.sourceInfo}
+          content={node.content}/>
+        )
+      },
   }
 
   return (
-    <View style={{gap: 8}}>
-      {elements}
-    </View>
+    <Markdown rules={rules}>{text}</Markdown>
   );
 }
 
