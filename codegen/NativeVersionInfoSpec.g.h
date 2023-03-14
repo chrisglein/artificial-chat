@@ -15,10 +15,10 @@ namespace ArtificialChatModules {
 
 REACT_STRUCT(VersionInfoSpec_Constants)
 struct VersionInfoSpec_Constants {
-    REACT_FIELD(E)
-    double E;
-    REACT_FIELD(Pi)
-    double Pi;
+    REACT_FIELD(appVersion)
+    std::string appVersion;
+    REACT_FIELD(buildVersion)
+    std::string buildVersion;
 };
 
 struct VersionInfoSpec : winrt::Microsoft::ReactNative::TurboModuleSpec {
@@ -26,7 +26,7 @@ struct VersionInfoSpec : winrt::Microsoft::ReactNative::TurboModuleSpec {
       TypedConstant<VersionInfoSpec_Constants>{0},
   };
   static constexpr auto methods = std::tuple{
-      Method<void(double, double, Callback<double>) noexcept>{0, L"add"},
+
   };
 
   template <class TModule>
@@ -40,11 +40,7 @@ struct VersionInfoSpec : winrt::Microsoft::ReactNative::TurboModuleSpec {
           "    REACT_GET_CONSTANTS(GetConstants) VersionInfoSpec_Constants GetConstants() noexcept {/*implementation*/}\n"
           "    REACT_GET_CONSTANTS(GetConstants) static VersionInfoSpec_Constants GetConstants() noexcept {/*implementation*/}\n");
 
-    REACT_SHOW_METHOD_SPEC_ERRORS(
-          0,
-          "add",
-          "    REACT_METHOD(add) void add(double a, double b, std::function<void(double)> const & callback) noexcept { /* implementation */ }\n"
-          "    REACT_METHOD(add) static void add(double a, double b, std::function<void(double)> const & callback) noexcept { /* implementation */ }\n");
+
   }
 };
 

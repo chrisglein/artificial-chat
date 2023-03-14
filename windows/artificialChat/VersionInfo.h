@@ -5,12 +5,11 @@
 
 #include "pch.h"
 
-#include <functional>
-#define _USE_MATH_DEFINES
-#include <math.h>
-
 #include "NativeModules.h"
 #include "../../codegen/NativeVersionInfoSpec.g.h"
+
+#include <winrt/Windows.ApplicationModel.h>
+#include <strsafe.h>
 
 namespace ArtificialChatModules
 {
@@ -22,21 +21,14 @@ namespace ArtificialChatModules
         REACT_GET_CONSTANTS(GetConstants)
         VersionInfoSpec_Constants GetConstants() noexcept
         {
+            winrt::Windows::ApplicationModel::PackageVersion version = winrt::Windows::ApplicationModel::Package::Current().Id().Version();
+
             VersionInfoSpec_Constants constants;
-            constants.E = M_E;
-            constants.Pi = M_PI;
+            char buffer[256];
+            StringCchPrintfA(buffer, _countof(buffer), "%d.%d.%d", version.Major, version.Minor, version.Build);
+            constants.appVersion = std::string(buffer);
+            constants.buildVersion = std::to_string(version.Revision);
             return constants;
         }
-
-        REACT_METHOD(Add, L"add");
-        double Add(double a, double b) noexcept
-        {
-            double result = a + b;
-            AddEvent(result);
-            return result;
-        }
-
-        REACT_EVENT(AddEvent);
-        std::function<void(double)> AddEvent;
     };
 }

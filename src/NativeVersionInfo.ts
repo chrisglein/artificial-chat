@@ -4,11 +4,9 @@ import { TurboModuleRegistry } from 'react-native';
 export interface Spec extends TurboModule {
 
   getConstants: () => {
-    E: number,
-    Pi: number,
+    appVersion: string,
+    buildVersion: string,
   };
-
-  add(a: number, b: number, callback: (value: number) => void): void;
 }
 
 export default TurboModuleRegistry.get<Spec>(
