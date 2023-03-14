@@ -119,7 +119,11 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
           <View style={{backgroundColor: 'gray', borderRadius: 4, marginRight: 4}}>
             <Text>⚙️</Text>
           </View>
-          <Text style={{fontWeight: 'bold'}}>OpenAI Settings</Text>
+          <Text
+            accessibilityRole="header"
+            style={{fontWeight: 'bold'}}>
+              OpenAI Settings
+          </Text>
         </View>
         <View>
           <Text>OpenAI API key</Text>

@@ -16,8 +16,13 @@ function CodeBlock({content, language} : {content: string, language: string}) {
   return (
     <View>
       <View style={[styles.codeBlockTitle, {flexDirection: 'row', borderTopLeftRadius: 8, borderTopRightRadius: 8, paddingHorizontal: 12}]}>
-        <Text style={[styles.codeBlockTitleText, {flexGrow: 1, alignSelf: "center"}]}>{language}</Text>
+        <Text
+          accessibilityLabel="Language"
+          style={[styles.codeBlockTitleText, {flexGrow: 1, alignSelf: "center"}]}>
+          {language}
+        </Text>
         <Button
+          accessibilityLabel="📋 Copy Code"
           title="📋 Copy Code"
           color={styles.codeBlockTitleText.color}
           onPress={() => {

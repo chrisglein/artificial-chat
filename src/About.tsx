@@ -26,7 +26,11 @@ function AboutPopup({show, close}: AboutPopupProps): JSX.Element {
           <View style={{backgroundColor: 'gray', borderRadius: 4, marginRight: 4}}>
             <Text>❔</Text>
           </View>
-          <Text style={{fontWeight: 'bold'}}>About</Text>
+          <Text
+            accessibilityRole="header"
+            style={{fontWeight: 'bold'}}>
+              About
+          </Text>
         </View>
         <Text>{VersionInfo.appVersion}</Text>
         <Hyperlink url='https://github.com/chrisglein/artificial-chat/'/>
