@@ -77,6 +77,7 @@ function ChatEntry({submit, defaultText, clearConversation}: ChatEntryProps): JS
   return (
     <View style={styles.horizontalContainer}>
       <TextInput
+        accessibilityLabel="Prompt input"
         multiline={true}
         placeholder="Ask me anything"
         style={{flexGrow: 1, flexShrink: 1}}
@@ -85,9 +86,11 @@ function ChatEntry({submit, defaultText, clearConversation}: ChatEntryProps): JS
         onSubmitEditing={submitValue}
         value={defaultText ?? value}/>
       <Button
+        accessibilityLabel='Submit prompt'
         title="Submit"
         onPress={submitValue}/>
       <Button
+        accessibilityLabel='Clear conversation'
         title="💣"
         onPress={clearConversation}/>
     </View>

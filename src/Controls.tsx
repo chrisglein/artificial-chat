@@ -25,6 +25,8 @@ function HoverButton({content, tooltip, onPress}: HoverButtonProps): JSX.Element
   const backgroundHoverStyle = {borderColor: 'white', backgroundColor: 'gray'};
   return (
     <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={tooltip}
       tooltip={tooltip}
       onPress={onPress}
       onHoverIn={() => setHovering(true)}
@@ -98,8 +100,13 @@ function Hyperlink({url, text}: HyperlinkProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const [hovering, setHovering] = React.useState(false);
   const [pressing, setPressing] = React.useState(false);
+
+  let displayText = text ?? url;
+
   return (
     <Pressable
+      accessibilityRole="link"
+      accessibilityLabel={displayText}
       onPress={() => Linking.openURL(url)}
       onPressIn={() => setPressing(true)}
       onPressOut={() => setPressing(false)}
@@ -110,7 +117,7 @@ function Hyperlink({url, text}: HyperlinkProps): JSX.Element {
           pressing ? styles.hyperlinkPressing : 
           hovering ? styles.hyperlinkHovering : 
           styles.hyperlinkIdle}>
-        {text ?? url}
+        {displayText}
       </Text>
     </Pressable>
   );

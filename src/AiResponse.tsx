@@ -31,7 +31,9 @@ type AiImageResponseProps = {
 function AiImageResponse({imageUrl, prompt, rejectImage}: AiImageResponseProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   return (
-    <View style={[styles.horizontalContainer, {flexWrap: 'nowrap', alignItems: 'flex-start'}]}>
+    <View
+      accessibilityRole="imagebutton"
+      style={[styles.horizontalContainer, {flexWrap: 'nowrap', alignItems: 'flex-start'}]}>
       <Pressable
         onPress={() => {
           if (imageUrl) {
@@ -101,7 +103,11 @@ function AiSection({children, isLoading, copyValue, contentShownOnHover}: AiSect
       onHoverIn={() => setHovering(true)}
       onHoverOut={() => setHovering(false)}>
       <View style={{flexDirection: 'row'}}>
-        <Text style={[styles.sectionTitle, {flexGrow: 1}]}>AI</Text>
+        <Text
+          accessibilityRole="header"
+          style={[styles.sectionTitle, {flexGrow: 1}]}>
+            AI
+        </Text>
         {hovering && contentShownOnHover}
         {hovering && copyValue && <HoverButton content="📋" tooltip="Copy to clipboard" onPress={() => Clipboard.setString(copyValue)}/>}
         <HoverButton content="👍" tooltip="Give positive feedback" onPress={() => { showFeedbackPopup(true); }}/>

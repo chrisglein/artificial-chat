@@ -35,7 +35,11 @@ function FeedbackPopup({show, close, isPositive, response}: FeedbackPopupProps):
           <View style={{backgroundColor: isPositive ? 'green' : 'red', borderRadius: 4, marginRight: 4}}>
             <Text>{isPositive ? "👍" : "👎"}</Text>
           </View>
-          <Text style={{fontWeight: 'bold'}}>Provide additional feedback</Text>
+          <Text
+            accessibilityRole="header"
+            style={{fontWeight: 'bold'}}>
+              Provide additional feedback
+          </Text>
         </View>
         <TextInput
           multiline={true}
