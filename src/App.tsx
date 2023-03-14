@@ -9,7 +9,6 @@ import {
   CreateStyles,
 } from './Styles';
 import {
-  LoadSettingsData,
   SettingsContext,
   SettingsPopup,
 } from './Settings';
