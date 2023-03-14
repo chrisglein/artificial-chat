@@ -1,6 +1,5 @@
 name: Positive feedback
 description: File a feedback report
-title: Describe what went well
 labels: [feedback]
 body:
   - type: textarea
