@@ -43,5 +43,13 @@
   },
   "jest": {
     "preset": "react-native"
+  },
+  "codegenConfig": {
+    "name": "artificialChat",
+    "type": "modules",
+    "jsSrcsDir": "src",
+    "windows": {
+      "namespace": "ArtificialChatModules"
+    }
   }
 }
