@@ -32,7 +32,6 @@ function AiImageResponse({imageUrl, prompt, rejectImage}: AiImageResponseProps):
   const styles = React.useContext(StylesContext);
   return (
     <View
-      accessibilityRole="imagebutton"
       style={[styles.horizontalContainer, {flexWrap: 'nowrap', alignItems: 'flex-start'}]}>
       <Pressable
         onPress={() => {
@@ -41,6 +40,8 @@ function AiImageResponse({imageUrl, prompt, rejectImage}: AiImageResponseProps):
           }
         }}>
         <Image
+          accessibilityRole="imagebutton"
+          accessibilityLabel={prompt}
           source={{uri: imageUrl}}
           alt={prompt}
           style={styles.dalleImage}/>
@@ -50,9 +51,11 @@ function AiImageResponse({imageUrl, prompt, rejectImage}: AiImageResponseProps):
         <Text>Here is an image created using the following requirements "{prompt}"</Text>
         <View style={{alignSelf: 'flex-end', alignItems: 'flex-end'}}>
           <Button
+            accessibilityLabel="I didn't want to see an image"
             title="I didn't want to see an image"
             onPress={() => rejectImage()}/>
           <Button
+            accessibilityLabel="Show me more"
             title="Show me more"
             onPress={() => console.log("Not yet implemented")}/>
         </View>

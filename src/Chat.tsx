@@ -168,6 +168,7 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
               {(entries.length > 0) &&
                 <View style={{alignSelf: 'center'}}>
                   <Button
+                    accessibilityLabel="Regenerate response"
                     title="🔁 Regenerate response"
                     onPress={() => {
                       // Clear the response for the last entry

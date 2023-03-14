@@ -117,7 +117,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
       <View style={[styles.feedbackDialog, {gap: 12}]}>
         <View style={{flexDirection: 'row', marginBottom: 4}}>
           <View style={{backgroundColor: 'gray', borderRadius: 4, marginRight: 4}}>
-            <Text>⚙️</Text>
+            <Text accessible={false}>⚙️</Text>
           </View>
           <Text
             accessibilityRole="header"
@@ -128,12 +128,14 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
         <View>
           <Text>OpenAI API key</Text>
           <TextInput
+            accessibilityLabel='OpenAI API key'
             secureTextEntry={true}
             style={{flexGrow: 1, minHeight: 32}}
             onChangeText={value => setApiKey(value)}
             value={apiKey}/>
             <View style={styles.horizontalContainer}>
               <Switch
+                accessibilityLabel="Remember this"
                 value={saveApiKey}
                 onValueChange={(value) => setSaveApiKey(value)}/>
               <Text>Remember this </Text>
@@ -144,6 +146,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
         <View>
           <Text>Script</Text>
           <Picker
+            accessibilityLabel="Script"
             style={{height: 50, width: 200}}
             selectedValue={scriptName}
             onValueChange={(value) => setScriptName(value)}>
@@ -154,6 +157,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
         <View>
           <Text>Artificial Delay in Script Response</Text>
           <TextInput
+            accessibilityLabel="Artificial Delay in Script Response"
             keyboardType="numeric"
             style={{flexGrow: 1, minHeight: 32}}
             onChangeText={value => setDelayForArtificialResponse(parseInt(value))}
@@ -161,6 +165,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
         </View>
         <View style={{marginTop: 12, alignSelf: 'flex-end'}}>
           <Button
+            accessibilityLabel="OK"
             title="OK"
             onPress={() => {
               save();
