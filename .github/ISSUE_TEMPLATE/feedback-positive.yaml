@@ -7,23 +7,22 @@ body:
     validations:
       required: true
     attributes:
-      label: Problem Description
-      description: Please enter a description of the issue.
-    id: description
+      label: Prompt
+      description: What did you ask?
+    id: prompt
   - type: textarea
     validations:
       required: true
     attributes:
-      label: Steps To Reproduce
-      description: Provide a detailed list of steps that reproduce the issue.
-      placeholder: |
-        1.
-        2.
-    id: steps
+      label: Response
+      description: What was the response?
+    id: response
   - type: textarea
+    validations:
+      required: true
     attributes:
-      label: Expected Results
-      description: Describe what you expected to happen.
+      label: Expected
+      description: What would the ideal answer have been?
     id: expected
   - type: input
     validations:
