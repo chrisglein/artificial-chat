@@ -1,6 +1,5 @@
 name: Negative feedback
 description: File a feedback report
-title: Describe what went poorly
 labels: [feedback]
 body:
   - type: textarea
