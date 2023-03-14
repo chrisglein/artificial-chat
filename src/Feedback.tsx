@@ -24,6 +24,9 @@ type FeedbackPopupProps = {
 function FeedbackPopup({show, close, isPositive, response}: FeedbackPopupProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const [feedbackText, setFeedbackText] = React.useState("");
+  const [thisIsHarmful, setThisIsHarmful] = React.useState(false);
+  const [thisIsNotTrue, setThisIsNotTrue] = React.useState(false);
+  const [thisIsNotHelpful, setThisIsNotHelpful] = React.useState(false);
 
   return (
     <Popup
@@ -33,7 +36,7 @@ function FeedbackPopup({show, close, isPositive, response}: FeedbackPopupProps):
       <View style={styles.feedbackDialog}>
         <View style={{flexDirection: 'row', marginBottom: 4}}>
           <View style={{backgroundColor: isPositive ? 'green' : 'red', borderRadius: 4, marginRight: 4}}>
-            <Text>{isPositive ? "👍" : "👎"}</Text>
+            <Text accessible={false}>{isPositive ? "👍" : "👎"}</Text>
           </View>
           <Text
             accessibilityRole="header"
@@ -50,21 +53,31 @@ function FeedbackPopup({show, close, isPositive, response}: FeedbackPopupProps):
           {!isPositive && (
             <View>
               <View style={styles.horizontalContainer}>
-                <Switch/>
+                <Switch
+                  accessibilityLabel="This is harmful / unsafe"
+                  value={thisIsHarmful}
+                  onValueChange={(value) => setThisIsHarmful(value)}/>
                 <Text>This is harmful / unsafe</Text>
               </View>
               <View style={styles.horizontalContainer}>
-                <Switch/>
+                <Switch
+                  accessibilityLabel="This isn't true"
+                  value={thisIsNotTrue}
+                  onValueChange={(value) => setThisIsNotTrue(value)}/>
                 <Text>This isn't true</Text>
               </View>
               <View style={styles.horizontalContainer}>
-                <Switch/>
+                <Switch
+                  accessibilityLabel="This isn't helpful"
+                  value={thisIsNotHelpful}
+                  onValueChange={(value) => setThisIsNotHelpful(value)}/>
                 <Text>This isn't helpful</Text>
               </View>
             </View>
           )}
         <View style={{marginTop: 12, alignSelf: 'flex-end'}}>
           <Button
+            accessibilityLabel="Submit feedback"
             title="Submit feedback"
             onPress={() => {
               const version = VersionInfo?.getConstants().appVersion;

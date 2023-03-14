@@ -24,7 +24,7 @@ function AboutPopup({show, close}: AboutPopupProps): JSX.Element {
       <View style={[styles.feedbackDialog, {gap: 12}]}>
         <View style={{flexDirection: 'row', marginBottom: 4}}>
           <View style={{backgroundColor: 'gray', borderRadius: 4, marginRight: 4}}>
-            <Text>❔</Text>
+            <Text accessible={false}>❔</Text>
           </View>
           <Text
             accessibilityRole="header"
@@ -36,6 +36,7 @@ function AboutPopup({show, close}: AboutPopupProps): JSX.Element {
         <Hyperlink url='https://github.com/chrisglein/artificial-chat/'/>
         <View style={{marginTop: 12, alignSelf: 'flex-end'}}>
           <Button
+            accessibilityLabel='OK'
             title="OK"
             onPress={() => {
               close();
