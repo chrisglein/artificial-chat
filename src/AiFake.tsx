@@ -18,7 +18,7 @@ function AiSectionWithFakeResponse({children}: PropsWithChildren): JSX.Element {
   });
 
   return (
-    <AiSection isLoading={isLoading}>
+    <AiSection id={undefined} isLoading={isLoading}>
       {!isLoading && children}
     </AiSection>
   )

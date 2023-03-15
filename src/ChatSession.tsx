@@ -165,10 +165,20 @@ function ChatSession(): JSX.Element {
     }
   }, [entries]);
 
+  const deleteEntry = React.useCallback((index: number) => {
+    let modifiedEntries = [...entries];
+    if (index >= entries.length) {
+      console.error(`Index ${index} is out of bounds`);
+    } else {
+      modifiedEntries.splice(index, 1);
+      setEntries(modifiedEntries);
+    }
+  }, [entries]);
+
   const clearConversation = () => setEntries([]);
   
   return (
-    <ChatHistoryContext.Provider value={{entries: entries, modifyResponse: modifyEntry}}>
+    <ChatHistoryContext.Provider value={{entries: entries, modifyResponse: modifyEntry, deleteResponse: deleteEntry}}>
       <AutomatedChatSession
         entries={entries}
         appendEntry={appendEntry}
