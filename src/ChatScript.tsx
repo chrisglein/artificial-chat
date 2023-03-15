@@ -11,7 +11,6 @@ import {
   ConsentSwitch,
   ImageSelection,
 } from './Controls';
-import { AiSectionWithFakeResponse } from './AiFake';
 
 const ChatScriptNames = [
   "Dinosaurs",
@@ -25,7 +24,7 @@ const runDinosaurScript = (index: number, styles, goToNext) => {
       prompt: "I want to design a board game about dinosaurs to play with my friends. Can you help?",
       aiResponse: () => {
         return (
-        <AiSectionWithFakeResponse>
+        <>
           <Text>Sure! To do this best It would be helpful to add this information, do you consent?</Text>
           <ConsentSwitch
             title="Your BoardGameGeek.com play history"
@@ -46,21 +45,21 @@ const runDinosaurScript = (index: number, styles, goToNext) => {
             details="This will help me understand how much money you have available to spend on materials for the game."
             source="Chase Bank"/>
           <Button title="Agree and Continue" onPress={() => goToNext()}/>
-        </AiSectionWithFakeResponse>
+        </>
       )}
     }
     case 1: return {
       prompt: "I agree",
       aiResponse: () =>
-        <AiSectionWithFakeResponse>
+        <>
           <Text>Thank you! Here is what I was able to come up with the information you provided to me:</Text>
           <Text>...</Text>
-        </AiSectionWithFakeResponse>,
+        </>,
     }
     case 2: return {
       prompt: "I think we're ready for a box design. Can you provide one?",
       aiResponse: () =>
-        <AiSectionWithFakeResponse>
+        <>
           <Text>Here are some box designs</Text>
           <View style={styles.horizontalContainer}>
             <ImageSelection image={require('../assets/dinobox1.png')}/>
@@ -69,12 +68,12 @@ const runDinosaurScript = (index: number, styles, goToNext) => {
             <ImageSelection image={require('../assets/dinobox4.png')}/>
           </View>
           <Attribution source="DALL-E, 14 monthly credits remaining"/>
-        </AiSectionWithFakeResponse>
+        </>
     }
     case 3: return {
       prompt: "Variations of 3",
       aiResponse: () =>
-        <AiSectionWithFakeResponse>
+        <>
           <Text>Here are variations on the image you selected</Text>
           <View style={styles.horizontalContainer}>
             <ImageSelection image={require('../assets/dinobox3_variation1.png')}/>
@@ -83,12 +82,12 @@ const runDinosaurScript = (index: number, styles, goToNext) => {
             <ImageSelection image={require('../assets/dinobox3_variation4.png')}/>
           </View>
           <Attribution source="DALL-E, 13 monthly credits remaining"/>
-        </AiSectionWithFakeResponse>
+        </>
     }
     case 4: return {
       prompt: "I like the original best, let's stick with that. But I'd like my picture on the box, since I'm the designer, can we do that?",
       aiResponse: () =>
-        <AiSectionWithFakeResponse>
+        <>
           <Text>Sure, here are some ways we can do that. Please choose one</Text>
           <View style={styles.horizontalContainer}>
             <View style={styles.inlineCard}>
@@ -106,16 +105,16 @@ const runDinosaurScript = (index: number, styles, goToNext) => {
               <Button title="Upload your own" onPress={() => goToNext()}/>
             </View>
           </View>
-        </AiSectionWithFakeResponse>
+        </>
     }
     case 5: return {
       prompt: "I have provided an image!",
       aiResponse: () =>
-        <AiSectionWithFakeResponse>
+        <>
           <Text>Thanks! Here is the updated box design that incorporate your photo</Text>
           <Image style={styles.dalleImage} source={require('../assets/compositebox.png')}/>
           <Attribution source="Adobe Creative Cloud subscription"/>
-        </AiSectionWithFakeResponse>
+        </>
     }
     default: return {
       prompt: undefined,
@@ -138,7 +137,7 @@ const runDeveloperScript = (index: number, styles, goToNext) => {
       prompt: "I'd like to run a white elephant gift exchange. Are you familiar with the rules?",
       aiResponse: () => {
         return (
-        <AiSectionWithFakeResponse>
+        <>
           <Text>Yes, I am familiar with the rules of a white elephant gift exchange! A white elephant gift exchange is a fun game typically played during holiday parties or other social gatherings. The basic rules of a white elephant gift exchange are as follows:</Text>
           {formatTextAsBullets(styles, [
             "Each participant brings a wrapped gift of a certain value, usually set by the host or organizer of the game.",
@@ -150,13 +149,13 @@ const runDeveloperScript = (index: number, styles, goToNext) => {
             "The game continues in this way until all participants have had a turn and all gifts have been opened.",
           ])}
           <Text>There are many variations on these rules, and some hosts may choose to add their own twists or rules to the game. It's important to establish any variations or rules before the game begins to avoid confusion or disagreements among participants.</Text>
-        </AiSectionWithFakeResponse>
+        </>
       )}
     }
     case -2: return {
       prompt: "I need to run this white elephant party remotely over a video call (e.g. Teams or Zoom). What are the challenges you foresee in the participants aren't able to be physically located together?",
       aiResponse: () =>
-        <AiSectionWithFakeResponse>
+        <>
           <Text>Running a white elephant gift exchange remotely over a video call can present some challenges. Here are a few that you may want to consider:</Text>
           {formatTextAsBullets(styles, [
             "Gift delivery: In a traditional white elephant gift exchange, participants bring their gifts to the party and place them in a central location. With a remote party, participants will need to send their gifts to each other in advance. This can be a logistical challenge, especially if participants are located far apart or in different countries.",
@@ -165,12 +164,12 @@ const runDeveloperScript = (index: number, styles, goToNext) => {
             "Limited visibility: With a remote party, participants may not be able to see all of the gifts at once, which can make it harder to decide which one to choose. Additionally, participants may not be able to see each other's reactions or engage in the same level of banter and camaraderie that they would during an in-person party.",
           ])}
           <Text>To address these challenges, you may want to consider setting up a clear system for gift delivery, scheduling the party at a time that works for as many participants as possible, and using a virtual whiteboard or other tool to keep track of who has which gift. You may also want to establish clear rules for how stealing will work and consider using a random number generator or other tool to determine the order in which participants will choose their gifts. Finally, make sure to set the right expectations and encourage participants to have fun and be flexible, even if the party doesn't go exactly as planned.</Text>
-        </AiSectionWithFakeResponse>,
+        </>,
     }
     case -1: return {
       prompt: "Instead of using a virtual whiteboard, I'd like to create a tool to help manage the gift exchange. Can you help me with that and what are my best options for authoring this app? I have a Windows PC.",
       aiResponse: () =>
-        <AiSectionWithFakeResponse>
+        <>
           <Text>Sure, I can definitely help you with that! Depending on your level of programming experience and the complexity of the tool you want to create, there are several different options for creating an app to help manage your remote white elephant gift exchange.</Text>
           <Text>Here are a few suggestions for different levels of programming experience:</Text>
           {formatTextAsBullets(styles, [
@@ -180,7 +179,7 @@ const runDeveloperScript = (index: number, styles, goToNext) => {
           ])}
           <Text>For Windows PC, you can use a variety of code editors or integrated development environments (IDEs) to create your app. Some popular options include Visual Studio Code, PyCharm, and Sublime Text. You will also need to choose a database to store your application data; for a simple application, you could use a lightweight database like SQLite, while for a more complex application, you may want to consider a more robust database like MySQL or PostgreSQL.</Text>
           <Text>Regardless of which option you choose, I would recommend starting with a clear set of requirements for your app and sketching out some basic wireframes to help you visualize how the user interface will work. This will help you stay focused and ensure that you're creating a tool that will be both useful and enjoyable for your participants.</Text>
-        </AiSectionWithFakeResponse>,
+        </>,
     }
     case 0: return {
       prompt: `I want to develop an app to run a white elephant gift exchange. Here are my requirements:
@@ -193,7 +192,7 @@ const runDeveloperScript = (index: number, styles, goToNext) => {
       
       I consider myself to have advanced programming experience. Let's make this a React app. Please create the JavaScript for this app.`,
       aiResponse: () =>
-        <AiSectionWithFakeResponse>
+        <>
           <Text>Great! Here is an example of how you could create a React app to meet your requirements:</Text>
           <Text>First, you would need to set up your development environment and create a new React app using a tool like Create React App. Once you have your app set up, you could create a component to represent each gift:</Text>
           <CodeBlock language="jsx" content={`import React, { useState } from 'react';
@@ -280,12 +279,12 @@ const gifts = [
     unwrappedImage: 'path/to/unwrapped/image2',
    
 `}/>
-        </AiSectionWithFakeResponse>,
+        </>,
     }
     case 1: return {
       prompt: "I'd like help visualizing this app. Can you use an ASCII diagram to roughly show the visuals?",
       aiResponse: () =>
-        <AiSectionWithFakeResponse>
+        <>
           <Text>Sure, here is an ASCII diagram to roughly show how the app could be laid out:</Text>
           <CodeBlock language="jsx" content={`+-----------------------------------------------------------+
 |                  Virtual White Elephant                    |
@@ -339,12 +338,12 @@ const gifts = [
 |                                                           |
 +-----------------------------------------------------------+
           `}/>
-        </AiSectionWithFakeResponse>,
+        </>,
     }
     case 2: return {
       prompt: "I'd like to add a menu where I can browse he entire list of participants, with checkboxes next to them depending on whether they have a gift or not. Can you create the React component for that?",
       aiResponse: () =>
-        <AiSectionWithFakeResponse>
+        <>
           <Text>Sure, here's a rough idea of what the component could look like:</Text>
           <CodeBlock language="javascript" content={`import React from 'react';
 
@@ -371,12 +370,12 @@ function ParticipantList(props) {
 export default ParticipantList;
           `}/>
           <Text>This assumes that you have an array of participants and an array of gifts that have an owner property corresponding to the name of the participant who owns the gift. The component renders a list of checkboxes for each participant, indicating whether they have a gift or not. The checkboxes are read-only so that they can't be changed by the user.</Text>
-        </AiSectionWithFakeResponse>
+        </>
     }
     case 3: return {
       prompt: "Create an application icon for this app",
       aiResponse: () =>
-        <AiSectionWithFakeResponse>
+        <>
           <Text>Here are some options</Text>
           <View style={styles.horizontalContainer}>
             <ImageSelection image={require('../assets/whiteelephant1.png')}/>
@@ -385,7 +384,7 @@ export default ParticipantList;
             <ImageSelection image={require('../assets/whiteelephant4.png')}/>
           </View>
           <Attribution source="DALL-E, 9 monthly credits remaining"/>
-        </AiSectionWithFakeResponse>
+        </>
     }
     default: return {
       prompt: undefined,
@@ -411,12 +410,12 @@ const runAdaptiveCardScript = (index: number, styles, goToNext) => {
         aiResponse: () => {
           console.log('running code now...');
           return (
-            <AiSectionWithFakeResponse>
+            <>
               <Text>
                 Sure! What content would you like included in your Adaptive
                 Card?
               </Text>
-            </AiSectionWithFakeResponse>
+            </>
           );
         },
       };
@@ -425,7 +424,7 @@ const runAdaptiveCardScript = (index: number, styles, goToNext) => {
         prompt:
           "I would like a textblock with the text 'This is an Adaptive Card', an image of the Adaptive Card logo, and the card to have a light blue background.",
         aiResponse: () => (
-          <AiSectionWithFakeResponse>
+          <>
             <Text>
               Thank you! Here is what I was able to come up with the information
               you provided to me:
@@ -466,14 +465,14 @@ const runAdaptiveCardScript = (index: number, styles, goToNext) => {
               }}
               contentHeight={300}
             />
-          </AiSectionWithFakeResponse>
+          </>
         ),
       };
     case 2:
       return {
         prompt: 'Could I see the JSON used to generate this Adaptive Card?',
         aiResponse: () => (
-          <AiSectionWithFakeResponse>
+          <>
             <Text>Certainly! Here is the JSON:</Text>
             <CodeBlock language="json" content={`{
   type: 'AdaptiveCard',
@@ -490,7 +489,7 @@ const runAdaptiveCardScript = (index: number, styles, goToNext) => {
   ],
 }`
             }/>
-          </AiSectionWithFakeResponse>
+          </>
         ),
       };
     case 3:
@@ -498,7 +497,7 @@ const runAdaptiveCardScript = (index: number, styles, goToNext) => {
         prompt:
           "I'd like the Adaptive Card to be 200 x 200 pixels. Could you make that change?",
         aiResponse: () => (
-          <AiSectionWithFakeResponse>
+          <>
             <Text>Yes! Here is your new Adaptive Card: </Text>
             <AdaptiveCard
               payload={{
@@ -536,7 +535,7 @@ const runAdaptiveCardScript = (index: number, styles, goToNext) => {
               }}
               contentHeight={200}
             />
-          </AiSectionWithFakeResponse>
+          </>
         ),
       }
     default: return {

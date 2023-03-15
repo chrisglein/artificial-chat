@@ -9,6 +9,7 @@ import type { ChatElement } from './Chat';
 import { StylesContext } from './Styles';
 import { SettingsContext } from './Settings';
 import { handleAIResponse } from './ChatScript';
+import { AiSectionWithFakeResponse } from './AiFake';
 
 // Automated ChatSession drives a ChatSession in one of two ways:
 // 1. If a script is specified, the user's inputs are fake responses are driven by that script.
@@ -21,7 +22,6 @@ type AutomatedChatSessionProps = {
 function AutomatedChatSession({entries, appendEntry, clearConversation}: AutomatedChatSessionProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const settings = React.useContext(SettingsContext);
-  const chatHistory = React.useContext(ChatHistoryContext);
 
   const [chatScriptIndex, setChatScriptIndex] = React.useState(0);
 
@@ -82,7 +82,10 @@ function AutomatedChatSession({entries, appendEntry, clearConversation}: Automat
             type: ChatSource.Ai,
             contentType: ChatContent.Text,
             text: text,
-            content: aiResponse,
+            content: 
+              <AiSectionWithFakeResponse id={entries.length + 1}>
+                {aiResponse}
+              </AiSectionWithFakeResponse>,
           }]);
       } else {
         appendEntry(
@@ -91,7 +94,10 @@ function AutomatedChatSession({entries, appendEntry, clearConversation}: Automat
             type: ChatSource.Ai,
             contentType: ChatContent.Error,
             text: '',
-            content: aiResponse,
+            content: 
+              <AiSectionWithFakeResponse id={entries.length}>
+                {aiResponse}
+              </AiSectionWithFakeResponse>,
           });
       }
     } else {

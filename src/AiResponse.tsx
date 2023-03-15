@@ -85,7 +85,7 @@ function AiTextResponse({text}: AiTextResponseProps): JSX.Element {
 }
 
 type AiSectionProps = PropsWithChildren<{
-  id?: number,
+  id: number,
   isLoading?: boolean;
   copyValue?: string;
   contentShownOnHover?: JSX.Element;
