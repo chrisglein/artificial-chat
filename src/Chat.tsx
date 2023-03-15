@@ -15,7 +15,6 @@ import {
 } from './Feedback';
 import {
   SettingsContext,
-  SettingsPopup
 } from './Settings';
 import { AboutPopup } from './About';
 import { HoverButton } from './Controls';
@@ -43,9 +42,11 @@ type ChatElement = {
 const ChatHistoryContext = React.createContext<{
   entries: ChatElement[];
   modifyResponse: (id: number, delta?: any) => void;
+  deleteResponse: (id: number) => void;
 }>({
   entries: [],
   modifyResponse: () => {},
+  deleteResponse: () => {},
 });
 
 // Context for being able to drive the chat scroller
@@ -144,7 +145,9 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
                   {
                     entry.type === ChatSource.Human ? 
                       // Human inputs are always plain text
-                      <HumanSection content={entry.text}/> :
+                      <HumanSection
+                        id={entry.id}
+                        content={entry.text}/> :
                       entry.content ?
                         // The element may have provided its own UI
                         entry.content :
@@ -162,7 +165,7 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
                   }
                 </View>
               ))}
-              {(entries.length > 0) &&
+              {(entries.length > 0 &&  entries[entries.length - 1].type === ChatSource.Ai) &&
                 <View style={{alignSelf: 'center'}}>
                   <Button
                     title="🔁 Regenerate response"
@@ -177,7 +180,7 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
           <View
             style={{flexShrink: 0, marginBottom: 12}}>
             <HumanSection
-              disableEdit={true}
+              id={undefined}
               disableCopy={true}
               contentShownOnHover={
                 <>
