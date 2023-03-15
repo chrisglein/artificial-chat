@@ -7,6 +7,7 @@ import {
 import {Hyperlink} from './Controls';
 import {Popup} from 'react-native-windows';
 import {StylesContext} from './Styles';
+import VersionInfo from './NativeVersionInfo'
 
 type AboutPopupProps = {
   show: boolean;
@@ -27,6 +28,7 @@ function AboutPopup({show, close}: AboutPopupProps): JSX.Element {
           </View>
           <Text style={{fontWeight: 'bold'}}>About</Text>
         </View>
+        <Text>{VersionInfo.appVersion}</Text>
         <Hyperlink url='https://github.com/chrisglein/artificial-chat/'/>
         <View style={{marginTop: 12, alignSelf: 'flex-end'}}>
           <Button

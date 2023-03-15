@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Button,
+  Linking,
   Switch,
   Text,
   TextInput,
@@ -8,6 +9,7 @@ import {
 } from 'react-native';
 import { Popup } from 'react-native-windows';
 import { StylesContext } from './Styles';
+import VersionInfo from './NativeVersionInfo'
 
 const FeedbackContext = React.createContext<{
   showFeedback : (positive: boolean, response?: string) => void;
@@ -61,9 +63,12 @@ function FeedbackPopup({show, close, isPositive, response}: FeedbackPopupProps):
           <Button
             title="Submit feedback"
             onPress={() => {
-              console.log(isPositive ? "like" : "dislike");
-              console.log(response);
-              console.log(feedbackText);
+              const version = VersionInfo.appVersion;
+              if (isPositive) {
+                Linking.openURL(`https://github.com/chrisglein/artificial-chat/issues/new?template=feedback-positive.yaml&version=${version}&expected=${feedbackText}&response=${response}`);
+              } else {
+                Linking.openURL(`https://github.com/chrisglein/artificial-chat/issues/new?template=feedback-negative.yaml&version=${version}&expected=${feedbackText}&response=${response}`);
+              }              
               close();
             }}/>
         </View>
