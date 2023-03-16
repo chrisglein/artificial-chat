@@ -22,11 +22,17 @@ function HumanSection({children, content, disableEdit, disableCopy, contentShown
 
   return (
     <Pressable
+      accessibilityRole="none"
+      accessibilityLabel="Human prompt"
       style={[styles.sectionContainer, styles.humanSection]}
       onHoverIn={() => setHovering(true)}
       onHoverOut={() => setHovering(false)}>
       <View style={{flexDirection: 'row', minHeight: 26}}>
-        <Text style={[styles.sectionTitle, {flexGrow: 1}]}>HUMAN</Text>
+        <Text
+          accessibilityRole="header"
+          style={[styles.sectionTitle, {flexGrow: 1}]}>
+            HUMAN
+        </Text>
         {hovering && !disableCopy && <HoverButton content="📋" tooltip="Copy to clipboard" onPress={() => Clipboard.setString(content ?? "")}/>}
         {hovering && !disableEdit && <HoverButton content="📝" tooltip="Edit" onPress={() => {console.log("Edit: Not yet implemented")}}/>}
         {hovering && contentShownOnHover}

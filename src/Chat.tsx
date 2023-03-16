@@ -77,6 +77,7 @@ function ChatEntry({submit, defaultText, clearConversation}: ChatEntryProps): JS
   return (
     <View style={styles.horizontalContainer}>
       <TextInput
+        accessibilityLabel="Prompt input"
         multiline={true}
         placeholder="Ask me anything"
         style={{flexGrow: 1, flexShrink: 1}}
@@ -85,9 +86,11 @@ function ChatEntry({submit, defaultText, clearConversation}: ChatEntryProps): JS
         onSubmitEditing={submitValue}
         value={defaultText ?? value}/>
       <Button
+        accessibilityLabel='Submit prompt'
         title="Submit"
         onPress={submitValue}/>
       <Button
+        accessibilityLabel='Clear conversation'
         title="💣"
         onPress={clearConversation}/>
     </View>
@@ -133,6 +136,7 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
       <ChatScrollContext.Provider value={{scrollToEnd: scrollToEnd}}>
         <View style={styles.appContent}>
           <ScrollView
+            accessibilityLabel="Chat log"
             contentInsetAdjustmentBehavior="automatic"
             ref={scrollViewRef}
             style={{flexShrink: 1}}>
@@ -165,6 +169,7 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
               {(entries.length > 0) &&
                 <View style={{alignSelf: 'center'}}>
                   <Button
+                    accessibilityLabel="Regenerate response"
                     title="🔁 Regenerate response"
                     onPress={() => {
                       // Clear the response for the last entry

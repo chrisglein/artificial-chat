@@ -31,7 +31,8 @@ type AiImageResponseProps = {
 function AiImageResponse({imageUrl, prompt, rejectImage}: AiImageResponseProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   return (
-    <View style={[styles.horizontalContainer, {flexWrap: 'nowrap', alignItems: 'flex-start'}]}>
+    <View
+      style={[styles.horizontalContainer, {flexWrap: 'nowrap', alignItems: 'flex-start'}]}>
       <Pressable
         onPress={() => {
           if (imageUrl) {
@@ -39,6 +40,8 @@ function AiImageResponse({imageUrl, prompt, rejectImage}: AiImageResponseProps):
           }
         }}>
         <Image
+          accessibilityRole="imagebutton"
+          accessibilityLabel={prompt}
           source={{uri: imageUrl}}
           alt={prompt}
           style={styles.dalleImage}/>
@@ -48,9 +51,11 @@ function AiImageResponse({imageUrl, prompt, rejectImage}: AiImageResponseProps):
         <Text>Here is an image created using the following requirements "{prompt}"</Text>
         <View style={{alignSelf: 'flex-end', alignItems: 'flex-end'}}>
           <Button
+            accessibilityLabel="I didn't want to see an image"
             title="I didn't want to see an image"
             onPress={() => rejectImage()}/>
           <Button
+            accessibilityLabel="Show me more"
             title="Show me more"
             onPress={() => console.log("Not yet implemented")}/>
         </View>
@@ -97,11 +102,17 @@ function AiSection({children, isLoading, copyValue, contentShownOnHover}: AiSect
 
   return (
     <Pressable
+      accessibilityRole="none"
+      accessibilityLabel="AI response"
       style={[styles.sectionContainer, styles.AiSection]}
       onHoverIn={() => setHovering(true)}
       onHoverOut={() => setHovering(false)}>
       <View style={{flexDirection: 'row'}}>
-        <Text style={[styles.sectionTitle, {flexGrow: 1}]}>AI</Text>
+        <Text
+          accessibilityRole="header"
+          style={[styles.sectionTitle, {flexGrow: 1}]}>
+            AI
+        </Text>
         {hovering && contentShownOnHover}
         {hovering && copyValue && <HoverButton content="📋" tooltip="Copy to clipboard" onPress={() => Clipboard.setString(copyValue)}/>}
         <HoverButton content="👍" tooltip="Give positive feedback" onPress={() => { showFeedbackPopup(true); }}/>
