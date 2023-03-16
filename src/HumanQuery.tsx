@@ -22,6 +22,8 @@ function HumanSection({children, content, disableEdit, disableCopy, contentShown
 
   return (
     <Pressable
+      accessibilityRole="none"
+      accessibilityLabel="Human prompt"
       style={[styles.sectionContainer, styles.humanSection]}
       onHoverIn={() => setHovering(true)}
       onHoverOut={() => setHovering(false)}>

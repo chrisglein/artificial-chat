@@ -102,6 +102,8 @@ function AiSection({children, isLoading, copyValue, contentShownOnHover}: AiSect
 
   return (
     <Pressable
+      accessibilityRole="none"
+      accessibilityLabel="AI response"
       style={[styles.sectionContainer, styles.AiSection]}
       onHoverIn={() => setHovering(true)}
       onHoverOut={() => setHovering(false)}>

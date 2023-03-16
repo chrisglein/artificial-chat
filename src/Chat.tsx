@@ -136,6 +136,7 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
       <ChatScrollContext.Provider value={{scrollToEnd: scrollToEnd}}>
         <View style={styles.appContent}>
           <ScrollView
+            accessibilityLabel="Chat log"
             contentInsetAdjustmentBehavior="automatic"
             ref={scrollViewRef}
             style={{flexShrink: 1}}>
