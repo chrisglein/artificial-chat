@@ -85,13 +85,15 @@ function AiTextResponse({text}: AiTextResponseProps): JSX.Element {
 }
 
 type AiSectionProps = PropsWithChildren<{
+  id: number,
   isLoading?: boolean;
   copyValue?: string;
   contentShownOnHover?: JSX.Element;
 }>;
-function AiSection({children, isLoading, copyValue, contentShownOnHover}: AiSectionProps): JSX.Element {
+function AiSection({children, id, isLoading, copyValue, contentShownOnHover}: AiSectionProps): JSX.Element {
   const feedbackContext = React.useContext(FeedbackContext);
   const styles = React.useContext(StylesContext);
+  const chatHistory = React.useContext(ChatHistoryContext);
   const [hovering, setHovering] = React.useState(false);
 
   const showFeedbackPopup = (positive: boolean) => {
@@ -114,6 +116,7 @@ function AiSection({children, isLoading, copyValue, contentShownOnHover}: AiSect
             AI
         </Text>
         {hovering && contentShownOnHover}
+        {hovering && id !== undefined && <HoverButton content="❌" tooltip="Delete this response" onPress={() => chatHistory.deleteResponse(id)}/>}
         {hovering && copyValue && <HoverButton content="📋" tooltip="Copy to clipboard" onPress={() => Clipboard.setString(copyValue)}/>}
         <HoverButton content="👍" tooltip="Give positive feedback" onPress={() => { showFeedbackPopup(true); }}/>
         <HoverButton content="👎" tooltip="Give negative feedback" onPress={() => { showFeedbackPopup(false); }}/>
@@ -135,7 +138,7 @@ type AiSectionContentProps = {
 function AiSectionContent({id, content}: AiSectionContentProps): JSX.Element {
   const chatHistory = React.useContext(ChatHistoryContext);
   return (
-    <AiSection copyValue={content.text}>
+    <AiSection copyValue={content.text} id={id}>
       {(() => {
         switch (content.contentType) {
           case ChatContent.Error:
