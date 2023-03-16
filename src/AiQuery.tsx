@@ -149,7 +149,7 @@ Respond with the image prompt string in the required format. Do not respond conv
   }, [imagePrompt, isRequestForImage]);
 
   return (
-    <AiSection isLoading={isLoading}>
+    <AiSection id={id} isLoading={isLoading}>
       {
         (isLoading ?
           isRequestForImage === undefined ?
