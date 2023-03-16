@@ -23,15 +23,11 @@ type SettingsContextType = {
   setScriptName: (value: string) => void,
   delayForArtificialResponse?: number,
   setDelayForArtificialResponse: (value: number) => void,
-  showPopup: boolean,
-  setShowPopup: (value: boolean) => void,
 }
 const SettingsContext = React.createContext<SettingsContextType>({
   setApiKey: () => {},
   setScriptName: () => {},
   setDelayForArtificialResponse: () => {},
-  showPopup: false,
-  setShowPopup: () => {},
 });
 
 // Settings that are saved between app sessions

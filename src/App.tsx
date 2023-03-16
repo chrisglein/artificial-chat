@@ -12,6 +12,8 @@ import {
   SettingsContext,
   SettingsPopup,
 } from './Settings';
+import { AboutPopup } from './About';
+import { PopupsContext } from './Popups';
 
 function App(): JSX.Element {
   const [currentTheme, setCurrentTheme] = React.useState(Appearance.getColorScheme());
@@ -19,6 +21,7 @@ function App(): JSX.Element {
   const [scriptName, setScriptName] = React.useState<string | undefined>("");
   const [delayForArtificialResponse, setDelayForArtificialResponse] = React.useState<number>(1500);
   const [showSettingsPopup, setShowSettingsPopup] = React.useState(false);
+  const [showAboutPopup, setShowAboutPopup] = React.useState(false);
     
   const isDarkMode = currentTheme === 'dark';
   const styles = CreateStyles(isDarkMode);
@@ -30,9 +33,14 @@ function App(): JSX.Element {
     setApiKey: setApiKey,
     delayForArtificialResponse: delayForArtificialResponse,
     setDelayForArtificialResponse: setDelayForArtificialResponse,
-    showPopup: showSettingsPopup,
-    setShowPopup: setShowSettingsPopup,
   };
+
+  const popups = {
+    showSettings: showSettingsPopup,
+    setShowSettings: setShowSettingsPopup,
+    showAbout: showAboutPopup,
+    setShowAbout: setShowAboutPopup,
+  }
 
   const onAppThemeChanged = () => {
     setCurrentTheme(Appearance.getColorScheme());
@@ -45,12 +53,17 @@ function App(): JSX.Element {
   return (
     <StylesContext.Provider value={styles}>
       <SettingsContext.Provider value={settings}>
-        <View>
-          <ChatSession/>
-          <SettingsPopup
-            show={showSettingsPopup}
-            close={() => settings.setShowPopup(false)}/>
-        </View>
+        <PopupsContext.Provider value={popups}>
+          <View>
+            <ChatSession/>
+            <SettingsPopup
+              show={showSettingsPopup}
+              close={() => popups.setShowSettings(false)}/>
+            <AboutPopup
+              show={popups.showAbout}
+              close={() => popups.setShowAbout(false)}/>
+          </View>
+        </PopupsContext.Provider>
       </SettingsContext.Provider>
     </StylesContext.Provider>
   );

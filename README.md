@@ -62,12 +62,13 @@ The app's settings are handled by a `SettingsContext` object, which has dialog U
 | File | Type | Information |
 | --- | --- | --- |
 | About.tsx | `AboutPopup` | Popup for basic app information |
-| App.tsx | `App` | Root of the app, publishes the `StylesContext` and `SettingsContext`. Hosts the `SettingsPopup` |
+| App.tsx | `App` | Root of the app, publishes the `StylesContext` and `SettingsContext`. Hosts the `SettingsPopup` and `AboutPopup`. |
 | ChatSession.tsx | `ChatSession` | Owns the `ChatElement` list, publishes the `ChatHistoryContext`, and handles any writes to that list |
 | ChatSession.tsx | `AutomatedChatSession` | Populates the `ChatSession` with either scripted responses or by creating components that query OpenAi |
-| Chat.tsx | `Chat` | The scrolling list of chat entries. Publishes the `FeedbackContext`, and `ChatScrollContext` services. Hosts a `ChatEntry` for the user input. Hosts the dialogs of the app (`FeedbackPopup` and `AboutPopup`).
+| Chat.tsx | `Chat` | The scrolling list of chat entries. Publishes the `FeedbackContext`, and `ChatScrollContext` services. Hosts a `ChatEntry` for the user input. Hosts the `FeedbackPopup`.
 | Chat.tsx | `ChatEntry` | Takes in the user's text input | 
 | Feedback.tsx | `FeedbackPopup` | Popup for giving feedback on AI responses | 
+| Popups.tsx | `PopupsContext` | Coordinates popup visibility | 
 | Settings.tsx | `SettingsPopup` | Popup that shows controls for modifying the `SettingsContext` and loads persistant values from app storage | 
 | Styles.tsx | `StylesContext` | StyleSheet that is light/dark mode aware | 
 
