@@ -28,7 +28,7 @@ function AboutPopup({show, close}: AboutPopupProps): JSX.Element {
           </View>
           <Text style={{fontWeight: 'bold'}}>About</Text>
         </View>
-        <Text>{VersionInfo.appVersion}</Text>
+        <Text>{VersionInfo.getConstants().appVersion}</Text>
         <Hyperlink url='https://github.com/chrisglein/artificial-chat/'/>
         <View style={{marginTop: 12, alignSelf: 'flex-end'}}>
           <Button

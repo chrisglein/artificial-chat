@@ -63,7 +63,7 @@ function FeedbackPopup({show, close, isPositive, response}: FeedbackPopupProps):
           <Button
             title="Submit feedback"
             onPress={() => {
-              const version = VersionInfo.appVersion;
+              const version = VersionInfo?.getConstants().appVersion;
               if (isPositive) {
                 Linking.openURL(`https://github.com/chrisglein/artificial-chat/issues/new?template=feedback-positive.yaml&version=${version}&expected=${feedbackText}&response=${response}`);
               } else {
