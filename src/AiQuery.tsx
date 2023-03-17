@@ -101,9 +101,10 @@ Respond with the image prompt string in the required format. Do not respond conv
         instructions: `The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly. If the response involves code, use markdown format for that with \`\`\`(language) blocks.`,
         identifier: "TEXT-ANSWER:",
         prompt: prompt,
-        promptHistory: chatHistory.entries.
+        options: {promptHistory: chatHistory.entries.
           filter((entry) => { return entry.text !== undefined && entry.id < id; }).
-          map((entry) => { return {role: entry.type == ChatSource.Human ? "user" : "assistant", "content": entry.text ?? ""} }),
+          map((entry) => { return {role: entry.type == ChatSource.Human ? "user" : "assistant", "content": entry.text ?? ""} })
+        },
         onError: (error) => {
           onResponse({
             prompt: prompt,
