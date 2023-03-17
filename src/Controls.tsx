@@ -33,7 +33,7 @@ function HoverButton({content, tooltip, onPress}: HoverButtonProps): JSX.Element
       onHoverOut={() => setHovering(false)}>
       {({pressed}) => (
         <View style={[backgroundBaseStyle, pressed ? backgroundPressedStyle : hovering ? backgroundHoverStyle : null]}>
-          <Text>{content}</Text>
+          <Text style={{minWidth: 20, textAlign: 'center'}}>{content}</Text>
         </View>        
       )}
     </Pressable>
@@ -105,6 +105,7 @@ function Hyperlink({url, text}: HyperlinkProps): JSX.Element {
 
   return (
     <Pressable
+      tooltip={url}
       accessibilityRole="link"
       accessibilityLabel={displayText}
       onPress={() => Linking.openURL(url)}

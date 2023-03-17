@@ -16,7 +16,7 @@ import {
 import {
   SettingsContext,
 } from './Settings';
-import { AboutPopup } from './About';
+import { PopupsContext } from './Popups';
 import { HoverButton } from './Controls';
 
 enum ChatSource {
@@ -109,13 +109,13 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
   const styles = React.useContext(StylesContext);
   const chatHistory = React.useContext(ChatHistoryContext);
   const settings = React.useContext(SettingsContext);
+  const popups = React.useContext(PopupsContext);
   const [showFeedbackPopup, setShowFeedbackPopup] = React.useState(false);
   const [feedbackTargetResponse, setFeedbackTargetResponse] = React.useState<string | undefined>(undefined);
-  const [showAboutPopup, setShowAboutPopup] = React.useState(false);
   const [feedbackIsPositive, setFeedbackIsPositive] = React.useState(false);
   const scrollViewRef : React.RefObject<ScrollView> = React.useRef(null);
 
-  let showingAnyPopups = (showFeedbackPopup || settings.showPopup || showAboutPopup);
+  let showingAnyPopups = (showFeedbackPopup || popups.showSettings || popups.showAbout);
 
   const feedbackContext = {
     showFeedback: (positive: boolean, response?: string) => {
@@ -189,8 +189,8 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
               disableCopy={true}
               contentShownOnHover={
                 <>
-                  <HoverButton content="❔" tooltip="About" onPress={() => setShowAboutPopup(true)}/>
-                  <HoverButton content="⚙️" tooltip="Settings" onPress={() => settings.setShowPopup(true)}/>
+                  <HoverButton content="❔" tooltip="About" onPress={() => popups.setShowAbout(true)}/>
+                  <HoverButton content="⚙️" tooltip="Settings" onPress={() => popups.setShowSettings(true)}/>
                 </>
               }>
               <ChatEntry
@@ -208,9 +208,6 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
             isPositive={feedbackIsPositive}
             response={feedbackTargetResponse}
             close={() => setShowFeedbackPopup(false)}/>
-          <AboutPopup
-            show={showAboutPopup}
-            close={() => setShowAboutPopup(false)}/>
         </View>
       </ChatScrollContext.Provider>
     </FeedbackContext.Provider>

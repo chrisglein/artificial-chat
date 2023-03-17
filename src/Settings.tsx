@@ -6,7 +6,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import {Popup} from 'react-native-windows';
+import {DialogFrame} from './Popups';
 import {Hyperlink} from './Controls';
 import {StylesContext} from './Styles';
 import {Picker} from '@react-native-picker/picker';
@@ -23,15 +23,11 @@ type SettingsContextType = {
   setScriptName: (value: string) => void,
   delayForArtificialResponse?: number,
   setDelayForArtificialResponse: (value: number) => void,
-  showPopup: boolean,
-  setShowPopup: (value: boolean) => void,
 }
 const SettingsContext = React.createContext<SettingsContextType>({
   setApiKey: () => {},
   setScriptName: () => {},
   setDelayForArtificialResponse: () => {},
-  showPopup: false,
-  setShowPopup: () => {},
 });
 
 // Settings that are saved between app sessions
@@ -109,70 +105,61 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
     });
   }
 
+  const buttons = [
+    <Button
+      accessibilityLabel="OK"
+      title="OK"
+      onPress={() => {
+        save();
+      }}/>
+    ];
+
   return (
-    <Popup
-      isOpen={show}
-      isLightDismissEnabled={true}
-      onDismiss={() => close()}>
-      <View style={[styles.feedbackDialog, {gap: 12}]}>
-        <View style={{flexDirection: 'row', marginBottom: 4}}>
-          <View style={{backgroundColor: 'gray', borderRadius: 4, marginRight: 4}}>
-            <Text accessible={false}>⚙️</Text>
+    <DialogFrame
+      show={show}
+      close={close}
+      titleIcon="⚙️"
+      title="OpenAI Settings"
+      buttons={buttons}>
+      <View>
+        <Text>OpenAI API key</Text>
+        <TextInput
+          accessibilityLabel='OpenAI API key'
+          secureTextEntry={true}
+          style={{flexGrow: 1, minHeight: 32}}
+          onChangeText={value => setApiKey(value)}
+          value={apiKey}/>
+          <View style={styles.horizontalContainer}>
+            <Switch
+              accessibilityLabel="Remember this"
+              value={saveApiKey}
+              onValueChange={(value) => setSaveApiKey(value)}/>
+            <Text>Remember this </Text>
           </View>
-          <Text
-            accessibilityRole="header"
-            style={{fontWeight: 'bold'}}>
-              OpenAI Settings
-          </Text>
-        </View>
-        <View>
-          <Text>OpenAI API key</Text>
-          <TextInput
-            accessibilityLabel='OpenAI API key'
-            secureTextEntry={true}
-            style={{flexGrow: 1, minHeight: 32}}
-            onChangeText={value => setApiKey(value)}
-            value={apiKey}/>
-            <View style={styles.horizontalContainer}>
-              <Switch
-                accessibilityLabel="Remember this"
-                value={saveApiKey}
-                onValueChange={(value) => setSaveApiKey(value)}/>
-              <Text>Remember this </Text>
-            </View>
-          <Hyperlink
-            url="https://platform.openai.com/account/api-keys"/>
-        </View>
-        <View>
-          <Text>Script</Text>
-          <Picker
-            accessibilityLabel="Script"
-            style={{height: 50, width: 200}}
-            selectedValue={scriptName}
-            onValueChange={(value) => setScriptName(value)}>
-            {ChatScriptNames.map(name => <Picker.Item label={name} value={name} key={name}/>)}
-            <Picker.Item label="None" value=""/>
-          </Picker>
-        </View>
-        <View>
-          <Text>Artificial Delay in Script Response</Text>
-          <TextInput
-            accessibilityLabel="Artificial Delay in Script Response"
-            keyboardType="numeric"
-            style={{flexGrow: 1, minHeight: 32}}
-            onChangeText={value => setDelayForArtificialResponse(parseInt(value))}
-            value={delayForArtificialResponse.toString()}/>
-        </View>
-        <View style={{marginTop: 12, alignSelf: 'flex-end'}}>
-          <Button
-            accessibilityLabel="OK"
-            title="OK"
-            onPress={() => {
-              save();
-            }}/>
-        </View>
+        <Hyperlink
+          url="https://platform.openai.com/account/api-keys"/>
       </View>
-    </Popup>
+      <View>
+        <Text>Script</Text>
+        <Picker
+          accessibilityLabel="Script"
+          style={{height: 50, width: 200}}
+          selectedValue={scriptName}
+          onValueChange={(value) => setScriptName(value)}>
+          {ChatScriptNames.map(name => <Picker.Item label={name} value={name} key={name}/>)}
+          <Picker.Item label="None" value=""/>
+        </Picker>
+      </View>
+      <View>
+        <Text>Artificial Delay in Script Response</Text>
+        <TextInput
+          accessibilityLabel="Artificial Delay in Script Response"
+          keyboardType="numeric"
+          style={{flexGrow: 1, minHeight: 32}}
+          onChangeText={value => setDelayForArtificialResponse(parseInt(value))}
+          value={delayForArtificialResponse.toString()}/>
+      </View>
+    </DialogFrame>
   );
 }
 

@@ -5,6 +5,7 @@ import type {
   TextStyle,
   ViewStyle
 } from 'react-native';
+import { PlatformColor } from 'react-native';
 import { StyleSheet } from 'react-native';
 
 const StylesContext = React.createContext<{
@@ -18,6 +19,8 @@ const StylesContext = React.createContext<{
   horizontalContainer: StyleProp<ViewStyle>;
   dalleImage: StyleProp<ImageStyle>;
   inlineCard: StyleProp<ViewStyle>;
+  dialogTitleIcon: StyleProp<TextStyle>;
+  dialogTitle: StyleProp<TextStyle>;
   feedbackDialog: StyleProp<ViewStyle>;
   codeBlockTitle: StyleProp<TextStyle>;
   codeBlockTitleText: StyleProp<TextStyle>;
@@ -77,6 +80,15 @@ const CreateStyles = (isDarkMode: boolean) => {
       borderRadius: 8,
       padding: 8,
     },
+    dialogTitleIcon: {
+      backgroundColor: 'gray',
+      borderRadius: 4,
+      alignSelf: 'center',
+      padding: 2,
+    },
+    dialogTitle: {
+      fontSize: 20,
+    },
     feedbackDialog: {
       backgroundColor: isDarkMode ? 'black' : 'white',
       padding: 12,
@@ -90,13 +102,14 @@ const CreateStyles = (isDarkMode: boolean) => {
       color: isDarkMode ? 'black' : 'white',
     },
     hyperlinkIdle: {
-      color: isDarkMode ? 'white' : 'black',
+      color: PlatformColor("HyperlinkButtonForeground"),
+      textDecorationLine: 'underline',
     },
     hyperlinkPressing: {
-      color: 'purple',
+      color: PlatformColor("HyperlinkButtonForegroundPressed"),
     },
     hyperlinkHovering: {
-      color: 'blue',
+      color: PlatformColor("HyperlinkButtonForegroundPointerOver"),
       textDecorationLine: 'underline',
     },
   });
