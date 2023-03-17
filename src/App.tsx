@@ -20,6 +20,7 @@ function App(): JSX.Element {
   const [apiKey, setApiKey] = React.useState<string | undefined>(undefined);
   const [scriptName, setScriptName] = React.useState<string | undefined>("");
   const [delayForArtificialResponse, setDelayForArtificialResponse] = React.useState<number>(1500);
+  const [imageSize, setImageSize] = React.useState<number>(256);
   const [showSettingsPopup, setShowSettingsPopup] = React.useState(false);
   const [showAboutPopup, setShowAboutPopup] = React.useState(false);
     
@@ -33,6 +34,8 @@ function App(): JSX.Element {
     setApiKey: setApiKey,
     delayForArtificialResponse: delayForArtificialResponse,
     setDelayForArtificialResponse: setDelayForArtificialResponse,
+    imageSize: imageSize,
+    setImageSize: setImageSize,
   };
 
   const popups = {

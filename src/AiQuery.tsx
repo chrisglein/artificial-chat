@@ -131,7 +131,7 @@ Respond with the image prompt string in the required format. Do not respond conv
           identifier: "IMAGE-ANSWER:",
           prompt: imagePrompt,
           options: {
-            imageSize: 256,
+            imageSize: settingsContext.imageSize,
           },
           onError: (error) => {
             onResponse({

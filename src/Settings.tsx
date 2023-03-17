@@ -23,11 +23,15 @@ type SettingsContextType = {
   setScriptName: (value: string) => void,
   delayForArtificialResponse?: number,
   setDelayForArtificialResponse: (value: number) => void,
+  imageSize: number,
+  setImageSize: (value: number) => void,
 }
 const SettingsContext = React.createContext<SettingsContextType>({
   setApiKey: () => {},
   setScriptName: () => {},
   setDelayForArtificialResponse: () => {},
+  imageSize: 256,
+  setImageSize: () => {},
 });
 
 // Settings that are saved between app sessions
@@ -75,6 +79,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   const [saveApiKey, setSaveApiKey] = React.useState<boolean>(false);
   const [scriptName, setScriptName] = React.useState<string>(settings.scriptName ?? "");
   const [delayForArtificialResponse, setDelayForArtificialResponse] = React.useState<number>(settings.delayForArtificialResponse ?? 0);
+  const [imageSize, setImageSize] = React.useState<number>(256);
 
   // It may seem weird to do this when the UI loads, not the app, but it's okay
   // because this component is loaded when the app starts but isn't shown. And
@@ -96,6 +101,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
     settings.setApiKey(apiKey);
     settings.setScriptName(scriptName);
     settings.setDelayForArtificialResponse(delayForArtificialResponse);
+    settings.setImageSize(imageSize);
 
     close();
 
@@ -155,6 +161,16 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
           style={{flexGrow: 1, minHeight: 32}}
           onChangeText={value => setDelayForArtificialResponse(parseInt(value))}
           value={delayForArtificialResponse.toString()}/>
+      </View>
+      <View>
+        <Text accessibilityRole="header" style={styles.dialogSectionHeader}>Image Generation</Text>
+        <Text>Image Size</Text>
+        <Picker
+          accessibilityLabel="Image Size"
+          selectedValue={imageSize}
+          onValueChange={(value) => setImageSize(value)}>
+          {[256, 512, 1024].map(size => <Picker.Item label={size.toString()} value={size} key={size}/>)}
+        </Picker>
       </View>
     </DialogFrame>
   );
