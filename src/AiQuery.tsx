@@ -129,6 +129,7 @@ Respond with the image prompt string in the required format. Do not respond conv
           apiKey: settingsContext.apiKey,
           identifier: "IMAGE-ANSWER:",
           prompt: imagePrompt,
+          options: {imageSize: settingsContext.imageSize ?? 256},
           onError: (error) => {
             onResponse({
               prompt: imagePrompt,
