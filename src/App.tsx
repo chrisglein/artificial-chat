@@ -18,6 +18,7 @@ import { PopupsContext } from './Popups';
 function App(): JSX.Element {
   const [currentTheme, setCurrentTheme] = React.useState(Appearance.getColorScheme());
   const [apiKey, setApiKey] = React.useState<string | undefined>(undefined);
+  const [imageSize, setImageSize] = React.useState<256 | 512 | 1024 | undefined>(undefined);
   const [scriptName, setScriptName] = React.useState<string | undefined>("");
   const [delayForArtificialResponse, setDelayForArtificialResponse] = React.useState<number>(1500);
   const [showSettingsPopup, setShowSettingsPopup] = React.useState(false);
@@ -33,6 +34,8 @@ function App(): JSX.Element {
     setApiKey: setApiKey,
     delayForArtificialResponse: delayForArtificialResponse,
     setDelayForArtificialResponse: setDelayForArtificialResponse,
+    imageSize: imageSize,
+    setImageSize: setImageSize,
   };
 
   const popups = {

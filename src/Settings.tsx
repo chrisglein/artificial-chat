@@ -24,7 +24,7 @@ type SettingsContextType = {
   delayForArtificialResponse?: number,
   setDelayForArtificialResponse: (value: number) => void,
   imageSize?: 256 | 512 | 1024,
-  setImageSize: (value: 256 | 512 | 1024) => void,
+  setImageSize: (value: 256 | 512 | 1024 | undefined) => void,
 }
 const SettingsContext = React.createContext<SettingsContextType>({
   setApiKey: () => {},
@@ -36,6 +36,7 @@ const SettingsContext = React.createContext<SettingsContextType>({
 // Settings that are saved between app sessions
 type SettingsData = {
   apiKey?: string,
+  imageSize?: 256 | 512 | 1024,
 }
 
 // Read settings from app storage
@@ -43,7 +44,7 @@ const SaveSettingsData = async (value: SettingsData) => {
   console.debug('Saving settings data...');
   try {
     const jsonValue = JSON.stringify(value);
-    await AsyncStorage.setItem(settingsKey, jsonValue)
+    await AsyncStorage.setItem(settingsKey, jsonValue);
     console.debug('Done saving settings data');
   } catch (e) {
     console.error(e);
@@ -61,6 +62,7 @@ const LoadSettingsData = async () => {
       const data = JSON.parse(jsonValue);
       
       if (data.hasOwnProperty('apiKey')) { value.apiKey = data.apiKey; }
+      if (data.hasOwnProperty('imageSize')) { value.imageSize = data.imageSize; }
     }
   } catch(e) {
     console.error(e);
@@ -88,8 +90,12 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   React.useEffect(() => {
     const load = async () => {
       let value = await LoadSettingsData();
+
       setApiKey(value.apiKey);
       settings.setApiKey(value.apiKey);
+
+      setImageSize(value.imageSize ?? 256);
+      settings.setImageSize(value.imageSize);
 
       // If an API key was set, continue to remember it
       setSaveApiKey(value.apiKey !== undefined);
@@ -99,6 +105,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
 
   const save = () => {
     settings.setApiKey(apiKey);
+    settings.setImageSize(imageSize);
     settings.setScriptName(scriptName);
     settings.setDelayForArtificialResponse(delayForArtificialResponse);
 
