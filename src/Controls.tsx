@@ -105,6 +105,7 @@ function Hyperlink({url, text}: HyperlinkProps): JSX.Element {
 
   return (
     <Pressable
+      tooltip={url}
       accessibilityRole="link"
       accessibilityLabel={displayText}
       onPress={() => Linking.openURL(url)}

@@ -19,6 +19,8 @@ const StylesContext = React.createContext<{
   horizontalContainer: StyleProp<ViewStyle>;
   dalleImage: StyleProp<ImageStyle>;
   inlineCard: StyleProp<ViewStyle>;
+  dialogTitleIcon: StyleProp<TextStyle>;
+  dialogTitle: StyleProp<TextStyle>;
   feedbackDialog: StyleProp<ViewStyle>;
   codeBlockTitle: StyleProp<TextStyle>;
   codeBlockTitleText: StyleProp<TextStyle>;
@@ -77,6 +79,14 @@ const CreateStyles = (isDarkMode: boolean) => {
       borderWidth: 2,
       borderRadius: 8,
       padding: 8,
+    },
+    dialogTitleIcon: {
+      backgroundColor: 'gray',
+      borderRadius: 4,
+      marginRight: 4,
+    },
+    dialogTitle: {
+      fontSize: 20,
     },
     feedbackDialog: {
       backgroundColor: isDarkMode ? 'black' : 'white',
