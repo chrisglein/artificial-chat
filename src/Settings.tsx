@@ -39,29 +39,29 @@ type SettingsData = {
 const SaveSettingsData = async (value: SettingsData) => {
   console.debug('Saving settings data...');
   try {
-    const jsonValue = JSON.stringify(value);
-    await AsyncStorage.setItem(settingsKey, jsonValue)
+    const valueAsString = JSON.stringify(value);
+    await AsyncStorage.setItem(settingsKey, valueAsString)
     console.debug('Done saving settings data');
   } catch (e) {
     console.error(e);
   }
 }
 
-// Write settings to ap storage
+// Write settings to app storage
 const LoadSettingsData = async () => {
   console.debug('Loading settings data...');
-  let value : SettingsData = {};
+  let valueToSave : SettingsData = {};
   try {
-    const jsonValue = await AsyncStorage.getItem(settingsKey);
-    if (jsonValue != null) {
-      const data = JSON.parse(jsonValue);
+    const valueAsString = await AsyncStorage.getItem(settingsKey);
+    if (valueAsString != null) {
+      const value = JSON.parse(valueAsString);
       
-      if (data.hasOwnProperty('apiKey')) { value.apiKey = data.apiKey; }
+      if (value.hasOwnProperty('apiKey')) { valueToSave.apiKey = value.apiKey; }
     }
   } catch(e) {
     console.error(e);
   }
-  return value;
+  return valueToSave;
 }
 
 type SettingsPopupProps = {
