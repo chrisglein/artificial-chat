@@ -5,6 +5,7 @@ import type {
   TextStyle,
   ViewStyle
 } from 'react-native';
+import { PlatformColor } from 'react-native';
 import { StyleSheet } from 'react-native';
 
 const StylesContext = React.createContext<{
@@ -90,13 +91,14 @@ const CreateStyles = (isDarkMode: boolean) => {
       color: isDarkMode ? 'black' : 'white',
     },
     hyperlinkIdle: {
-      color: isDarkMode ? 'white' : 'black',
+      color: PlatformColor("HyperlinkButtonForeground"),
+      textDecorationLine: 'underline',
     },
     hyperlinkPressing: {
-      color: 'purple',
+      color: PlatformColor("HyperlinkButtonForegroundPressed"),
     },
     hyperlinkHovering: {
-      color: 'blue',
+      color: PlatformColor("HyperlinkButtonForegroundPointerOver"),
       textDecorationLine: 'underline',
     },
   });
