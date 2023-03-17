@@ -143,7 +143,6 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
         <Text>Script</Text>
         <Picker
           accessibilityLabel="Script"
-          style={{height: 50, width: 200}}
           selectedValue={scriptName}
           onValueChange={(value) => setScriptName(value)}>
           {ChatScriptNames.map(name => <Picker.Item label={name} value={name} key={name}/>)}
