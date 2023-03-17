@@ -4,6 +4,11 @@ enum OpenAiApi {
   Generations,
 }
 
+type OpenAiHandlerOptions = {
+  promptHistory?: ConversationEntry[],
+  imageSize?: number,
+}
+
 type ConversationEntry = {
   role: "user" | "system" | "assistant",
   content: string,
@@ -26,7 +31,7 @@ const OpenAiHandler = ({api, engine, instructions}: OpenAiHandlerType) => {
     case OpenAiApi.Completion: 
       return {
         url: `${OpenAIUrl}/engines/${engine ?? DefaultEngine}/completions`,
-        body: (prompt: string, promptHistory?: ConversationEntry[]) => {
+        body: (prompt: string, options?: OpenAiHandlerOptions) => {
           let wrappedPrompt = `${actualInstructions}\nHuman: ${prompt}.\nAI:`;
           return {
             best_of: 1,
@@ -54,12 +59,12 @@ const OpenAiHandler = ({api, engine, instructions}: OpenAiHandlerType) => {
     case OpenAiApi.ChatCompletion: 
       return {
         url: `${OpenAIUrl}/chat/completions`,
-        body: (prompt: string, promptHistory?: ConversationEntry[]) => {
+        body: (prompt: string, options?: OpenAiHandlerOptions) => {
           return {
             model: "gpt-3.5-turbo",
             messages: [
               {"role": "system", "content": actualInstructions},
-              ...promptHistory ?? [],
+              ...options?.promptHistory ?? [],
               {"role": "user", "content": prompt},
             ]
           };
@@ -73,11 +78,12 @@ const OpenAiHandler = ({api, engine, instructions}: OpenAiHandlerType) => {
     case OpenAiApi.Generations: 
       return {
         url: `${OpenAIUrl}/images/generations`,
-        body: (prompt: string, promptHistory?: ConversationEntry[]) => {
+        body: (prompt: string, options?: OpenAiHandlerOptions) => {
+          let imageSize = options?.imageSize ?? 256;
           return {
             prompt: prompt,
             n: 1,
-            size: "256x256",
+            size: `${imageSize}x${imageSize}`,
           };
         },
         response: (json: any) => {
@@ -96,12 +102,12 @@ type CallOpenAiType = {
   instructions?: string,
   identifier?: string,
   prompt: string,
-  promptHistory?: ConversationEntry[],
+  options?: OpenAiHandlerOptions,
   onError: (error: string) => void,
   onResult: (result: string) => void,
   onComplete: () => void
 }
-const CallOpenAi = async ({api, apiKey, instructions, identifier, prompt, promptHistory, onError, onResult, onComplete}: CallOpenAiType) => {
+const CallOpenAi = async ({api, apiKey, instructions, identifier, prompt, options, onError, onResult, onComplete}: CallOpenAiType) => {
   const DefaultApiKey = undefined; // During development you can paste your API key here, but DO NOT CHECK IN
   let effectiveApiKey = apiKey ?? DefaultApiKey;
 
@@ -117,7 +123,7 @@ const CallOpenAi = async ({api, apiKey, instructions, identifier, prompt, prompt
     let apiHandler = OpenAiHandler({api: api, instructions: instructions});
 
     let url = apiHandler.url;
-    let body = apiHandler.body(prompt, promptHistory);
+    let body = apiHandler.body(prompt, options);
     console.debug(body);
 
     let response = await fetch(
