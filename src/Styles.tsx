@@ -83,7 +83,8 @@ const CreateStyles = (isDarkMode: boolean) => {
     dialogTitleIcon: {
       backgroundColor: 'gray',
       borderRadius: 4,
-      marginRight: 4,
+      alignSelf: 'center',
+      padding: 2,
     },
     dialogTitle: {
       fontSize: 20,

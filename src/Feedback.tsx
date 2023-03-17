@@ -7,7 +7,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { Popup } from 'react-native-windows';
+import {DialogFrame} from './Popups';
 import { StylesContext } from './Styles';
 import VersionInfo from './NativeVersionInfo'
 
@@ -28,69 +28,60 @@ function FeedbackPopup({show, close, isPositive, response}: FeedbackPopupProps):
   const [thisIsNotTrue, setThisIsNotTrue] = React.useState(false);
   const [thisIsNotHelpful, setThisIsNotHelpful] = React.useState(false);
 
+  const buttons = [
+    <Button
+      accessibilityLabel="Submit feedback"
+      title="Submit feedback"
+      onPress={() => {
+        const version = VersionInfo?.getConstants().appVersion;
+        if (isPositive) {
+          Linking.openURL(`https://github.com/chrisglein/artificial-chat/issues/new?template=feedback-positive.yaml&version=${version}&expected=${feedbackText}&response=${response}`);
+        } else {
+          Linking.openURL(`https://github.com/chrisglein/artificial-chat/issues/new?template=feedback-negative.yaml&version=${version}&expected=${feedbackText}&response=${response}`);
+        }              
+        close();
+      }}/>
+    ];
+
   return (
-    <Popup
-      isOpen={show}
-      isLightDismissEnabled={true}
-      onDismiss={() => close()}>
-      <View style={styles.feedbackDialog}>
-        <View style={{flexDirection: 'row', marginBottom: 4}}>
-          <View style={{backgroundColor: isPositive ? 'green' : 'red', borderRadius: 4, marginRight: 4}}>
-            <Text accessible={false}>{isPositive ? "👍" : "👎"}</Text>
+    <DialogFrame
+      show={show}
+      close={close}
+      titleIcon={isPositive ? "👍" : "👎"}
+      titleIconStyle={{backgroundColor: isPositive ? 'green' : 'red'}}
+      title="Provide additional feedback"
+      buttons={buttons}>
+      <TextInput
+        multiline={true}
+        placeholder="What would the ideal answer have been?"
+        style={{flexGrow: 1, minHeight: 32}}
+        onChangeText={value => setFeedbackText(value)}
+        value={feedbackText}/>
+      {!isPositive && (
+        <View>
+          <View style={styles.horizontalContainer}>
+            <Switch
+              accessibilityLabel="This is harmful / unsafe"
+              value={thisIsHarmful}
+              onValueChange={(value) => setThisIsHarmful(value)}/>
+            <Text>This is harmful / unsafe</Text>
           </View>
-          <Text
-            accessibilityRole="header"
-            style={{fontWeight: 'bold'}}>
-              Provide additional feedback
-          </Text>
-        </View>
-        <TextInput
-          multiline={true}
-          placeholder="What would the ideal answer have been?"
-          style={{flexGrow: 1, minHeight: 32}}
-          onChangeText={value => setFeedbackText(value)}
-          value={feedbackText}/>
-          {!isPositive && (
-            <View>
-              <View style={styles.horizontalContainer}>
-                <Switch
-                  accessibilityLabel="This is harmful / unsafe"
-                  value={thisIsHarmful}
-                  onValueChange={(value) => setThisIsHarmful(value)}/>
-                <Text>This is harmful / unsafe</Text>
-              </View>
-              <View style={styles.horizontalContainer}>
-                <Switch
-                  accessibilityLabel="This isn't true"
-                  value={thisIsNotTrue}
-                  onValueChange={(value) => setThisIsNotTrue(value)}/>
-                <Text>This isn't true</Text>
-              </View>
-              <View style={styles.horizontalContainer}>
-                <Switch
-                  accessibilityLabel="This isn't helpful"
-                  value={thisIsNotHelpful}
-                  onValueChange={(value) => setThisIsNotHelpful(value)}/>
-                <Text>This isn't helpful</Text>
-              </View>
-            </View>
-          )}
-        <View style={{marginTop: 12, alignSelf: 'flex-end'}}>
-          <Button
-            accessibilityLabel="Submit feedback"
-            title="Submit feedback"
-            onPress={() => {
-              const version = VersionInfo?.getConstants().appVersion;
-              if (isPositive) {
-                Linking.openURL(`https://github.com/chrisglein/artificial-chat/issues/new?template=feedback-positive.yaml&version=${version}&expected=${feedbackText}&response=${response}`);
-              } else {
-                Linking.openURL(`https://github.com/chrisglein/artificial-chat/issues/new?template=feedback-negative.yaml&version=${version}&expected=${feedbackText}&response=${response}`);
-              }              
-              close();
-            }}/>
-        </View>
-      </View>
-    </Popup>
+          <View style={styles.horizontalContainer}>
+            <Switch
+              accessibilityLabel="This isn't true"
+              value={thisIsNotTrue}
+              onValueChange={(value) => setThisIsNotTrue(value)}/>
+            <Text>This isn't true</Text>
+          </View>
+          <View style={styles.horizontalContainer}>
+            <Switch
+              accessibilityLabel="This isn't helpful"
+              value={thisIsNotHelpful}
+              onValueChange={(value) => setThisIsNotHelpful(value)}/>
+            <Text>This isn't helpful</Text>
+          </View>
+        </View>)}
+    </DialogFrame>
   );
 }
 
