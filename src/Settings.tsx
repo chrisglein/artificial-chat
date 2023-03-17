@@ -54,7 +54,6 @@ const LoadSettingsData = async () => {
   try {
     const jsonValue = await AsyncStorage.getItem(settingsKey);
     if (jsonValue != null) {
-      console.debug(jsonValue);
       const data = JSON.parse(jsonValue);
       
       if (data.hasOwnProperty('apiKey')) { value.apiKey = data.apiKey; }
@@ -140,6 +139,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
           url="https://platform.openai.com/account/api-keys"/>
       </View>
       <View>
+        <Text accessibilityRole="header" style={styles.dialogSectionHeader}>AI Scripts</Text>
         <Text>Script</Text>
         <Picker
           accessibilityLabel="Script"
@@ -149,8 +149,6 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
           {ChatScriptNames.map(name => <Picker.Item label={name} value={name} key={name}/>)}
           <Picker.Item label="None" value=""/>
         </Picker>
-      </View>
-      <View>
         <Text>Artificial Delay in Script Response</Text>
         <TextInput
           accessibilityLabel="Artificial Delay in Script Response"
