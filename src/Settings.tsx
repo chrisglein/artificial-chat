@@ -37,6 +37,7 @@ const SettingsContext = React.createContext<SettingsContextType>({
 // Settings that are saved between app sessions
 type SettingsData = {
   apiKey?: string,
+  imageSize?: number,
 }
 
 // Read settings from app storage
@@ -61,6 +62,7 @@ const LoadSettingsData = async () => {
       const value = JSON.parse(valueAsString);
       
       if (value.hasOwnProperty('apiKey')) { valueToSave.apiKey = value.apiKey; }
+      if (value.hasOwnProperty('imageSize')) { valueToSave.imageSize = parseInt(value.imageSize); }
     }
   } catch(e) {
     console.error(e);
@@ -88,8 +90,13 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   React.useEffect(() => {
     const load = async () => {
       let value = await LoadSettingsData();
+
       setApiKey(value.apiKey);
       settings.setApiKey(value.apiKey);
+
+      let resolvedImageSize = value.imageSize ?? 256;
+      setImageSize(resolvedImageSize);
+      settings.setImageSize(resolvedImageSize);
 
       // If an API key was set, continue to remember it
       setSaveApiKey(value.apiKey !== undefined);
@@ -106,7 +113,8 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
     close();
 
     SaveSettingsData({
-      apiKey: saveApiKey ? apiKey : undefined
+      apiKey: saveApiKey ? apiKey : undefined,
+      imageSize: imageSize,
     });
   }
 
