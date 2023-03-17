@@ -58,7 +58,6 @@ const LoadSettingsData = async () => {
   try {
     const jsonValue = await AsyncStorage.getItem(settingsKey);
     if (jsonValue != null) {
-      console.debug(jsonValue);
       const data = JSON.parse(jsonValue);
       
       if (data.hasOwnProperty('apiKey')) { value.apiKey = data.apiKey; }
@@ -112,7 +111,8 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
     close();
 
     SaveSettingsData({
-      apiKey: saveApiKey ? apiKey : undefined
+      apiKey: saveApiKey ? apiKey : undefined,
+      imageSize: imageSize,
     });
   }
 
