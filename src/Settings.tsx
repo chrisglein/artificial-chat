@@ -23,16 +23,21 @@ type SettingsContextType = {
   setScriptName: (value: string) => void,
   delayForArtificialResponse?: number,
   setDelayForArtificialResponse: (value: number) => void,
+  imageSize: number,
+  setImageSize: (value: number) => void,
 }
 const SettingsContext = React.createContext<SettingsContextType>({
   setApiKey: () => {},
   setScriptName: () => {},
   setDelayForArtificialResponse: () => {},
+  imageSize: 256,
+  setImageSize: () => {},
 });
 
 // Settings that are saved between app sessions
 type SettingsData = {
   apiKey?: string,
+  imageSize?: number,
 }
 
 // Read settings from app storage
@@ -57,6 +62,7 @@ const LoadSettingsData = async () => {
       const value = JSON.parse(valueAsString);
       
       if (value.hasOwnProperty('apiKey')) { valueToSave.apiKey = value.apiKey; }
+      if (value.hasOwnProperty('imageSize')) { valueToSave.imageSize = parseInt(value.imageSize); }
     }
   } catch(e) {
     console.error(e);
@@ -75,6 +81,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   const [saveApiKey, setSaveApiKey] = React.useState<boolean>(false);
   const [scriptName, setScriptName] = React.useState<string>(settings.scriptName ?? "");
   const [delayForArtificialResponse, setDelayForArtificialResponse] = React.useState<number>(settings.delayForArtificialResponse ?? 0);
+  const [imageSize, setImageSize] = React.useState<number>(256);
 
   // It may seem weird to do this when the UI loads, not the app, but it's okay
   // because this component is loaded when the app starts but isn't shown. And
@@ -83,8 +90,13 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   React.useEffect(() => {
     const load = async () => {
       let value = await LoadSettingsData();
+
       setApiKey(value.apiKey);
       settings.setApiKey(value.apiKey);
+
+      let resolvedImageSize = value.imageSize ?? 256;
+      setImageSize(resolvedImageSize);
+      settings.setImageSize(resolvedImageSize);
 
       // If an API key was set, continue to remember it
       setSaveApiKey(value.apiKey !== undefined);
@@ -96,11 +108,13 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
     settings.setApiKey(apiKey);
     settings.setScriptName(scriptName);
     settings.setDelayForArtificialResponse(delayForArtificialResponse);
+    settings.setImageSize(imageSize);
 
     close();
 
     SaveSettingsData({
-      apiKey: saveApiKey ? apiKey : undefined
+      apiKey: saveApiKey ? apiKey : undefined,
+      imageSize: imageSize,
     });
   }
 
@@ -155,6 +169,16 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
           style={{flexGrow: 1, minHeight: 32}}
           onChangeText={value => setDelayForArtificialResponse(parseInt(value))}
           value={delayForArtificialResponse.toString()}/>
+      </View>
+      <View>
+        <Text accessibilityRole="header" style={styles.dialogSectionHeader}>Image Generation</Text>
+        <Text>Image Size</Text>
+        <Picker
+          accessibilityLabel="Image Size"
+          selectedValue={imageSize}
+          onValueChange={(value) => setImageSize(value)}>
+          {[256, 512, 1024].map(size => <Picker.Item label={size.toString()} value={size} key={size}/>)}
+        </Picker>
       </View>
     </DialogFrame>
   );
