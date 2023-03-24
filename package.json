@@ -12,9 +12,10 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
+    "adaptivecards-reactnative": "chrisglein/adaptivecards#fixWindows",
     "@react-native-async-storage/async-storage": "^1.17.11",
     "@react-native-clipboard/clipboard": "chrisglein/clipboard#fixesForWindows",
-    "@react-native-picker/picker": "^2.2.1",
+    "@react-native-picker/picker": "chrisglein/picker#sdkVersion",
     "patch-package": "^6.5.1",
     "postinstall-postinstall": "^2.1.0",
     "react": "18.2.0",

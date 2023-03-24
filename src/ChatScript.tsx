@@ -11,6 +11,7 @@ import {
   ConsentSwitch,
   ImageSelection,
 } from './Controls';
+import AdaptiveCard from 'adaptivecards-reactnative';
 
 const ChatScriptNames = [
   "Dinosaurs",
@@ -391,15 +392,6 @@ export default ParticipantList;
       aiResponse: undefined,
     }
   }
-}
-
-function AdaptiveCard(props) {
-  return (
-    <View>
-      <Button title="Placeholder"/>
-      <Attribution source="AdaptiveCard"/>
-    </View>
-  )
 }
 
 const runAdaptiveCardScript = (index: number, styles, goToNext) => {
