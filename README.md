@@ -96,8 +96,8 @@ The app's settings are handled by a `SettingsContext` object, which has dialog U
 | CodeBlock.tsx | `CodeBlock` | Displays code with syntax highlighting and copy support |
 
 # Dependencies
-- Picker via [@react-native-clipboard/clipboard](https://github.com/react-native-clipboard/clipboard)
-- Clipboard via [@react-native-picker/picker](https://github.com/react-native-picker/picker)
+- Clipboard via [@react-native-clipboard/clipboard](https://github.com/react-native-clipboard/clipboard)
+- Picker via [@react-native-picker/picker](https://github.com/react-native-picker/picker)
 - Syntax Highlighting via [react-native-syntax-highlighter](https://github.com/conorhastings/react-native-syntax-highlighter)
 - Dependency patching via [patch-package](https://github.com/ds300/patch-package)
 - Storage via [react-native-async-storage](https://github.com/react-native-async-storage/async-storage)
