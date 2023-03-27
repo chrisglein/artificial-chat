@@ -1126,6 +1126,457 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
+"@fluentui-react-native/adapters@>=0.10.2 <1.0.0", "@fluentui-react-native/adapters@^0.10.2":
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/adapters/-/adapters-0.10.2.tgz#f627969a32bae4fc9921f5904499b3160251a64f"
+  integrity sha512-dHmPFgnHehkMc1y7UwrHUy+toQciHaD7M2+uHrZREs+O5/mHGHjhMKTrynnt6ZzPFOmvJTc1EnN8+wCTAsPbWg==
+
+"@fluentui-react-native/button@0.32.48", "@fluentui-react-native/button@^0.32.48":
+  version "0.32.48"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/button/-/button-0.32.48.tgz#d4925707a8fe2529a888d69af29f2067ad7040f5"
+  integrity sha512-VJevvzS+5lgay1lvZxeQb51s7ditTcBJ4JuBBS368ofioM1seiMLG5Uai6Gd8Xvoa7D4ErzFk4jmPnW4QYGshQ==
+  dependencies:
+    "@fluentui-react-native/adapters" ">=0.10.2 <1.0.0"
+    "@fluentui-react-native/experimental-activity-indicator" "^0.7.25"
+    "@fluentui-react-native/experimental-shadow" "0.2.79"
+    "@fluentui-react-native/framework" "0.9.8"
+    "@fluentui-react-native/icon" "0.17.24"
+    "@fluentui-react-native/interactive-hooks" ">=0.22.28 <1.0.0"
+    "@fluentui-react-native/pressable" ">=0.9.67 <1.0.0"
+    "@fluentui-react-native/styling-utils" ">=0.4.4 <1.0.0"
+    "@fluentui-react-native/text" ">=0.19.30 <1.0.0"
+    "@fluentui-react-native/theme-tokens" ">=0.24.5 <1.0.0"
+    "@fluentui-react-native/theme-types" ">=0.31.0 <1.0.0"
+    "@fluentui-react-native/theming-utils" ">=0.23.10 <1.0.0"
+    "@fluentui-react-native/tokens" ">=0.20.14 <1.0.0"
+    "@fluentui-react-native/use-styling" ">=0.9.4 <1.0.0"
+    "@uifabricshared/foundation-composable" ">=0.11.3 <1.0.0"
+    "@uifabricshared/foundation-compose" "^1.13.8"
+    "@uifabricshared/foundation-settings" ">=0.12.3 <1.0.0"
+    tslib "^2.3.1"
+
+"@fluentui-react-native/callout@0.23.11", "@fluentui-react-native/callout@>=0.23.11 <1.0.0":
+  version "0.23.11"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/callout/-/callout-0.23.11.tgz#451c06672dcb3b97ae350ad01343cf0b1441ea19"
+  integrity sha512-RILUYbVExSw2h/1yQoITNfao7nHmBeTwuNsuBHwzBmTtnQhsFHbUc4oBKcsOW1P88Zv1fmFCghUL+apWqTPDiA==
+  dependencies:
+    "@fluentui-react-native/adapters" "^0.10.2"
+    "@fluentui-react-native/component-cache" "^1.4.4"
+    "@fluentui-react-native/interactive-hooks" ">=0.22.28 <1.0.0"
+    "@fluentui-react-native/tokens" ">=0.20.14 <1.0.0"
+    "@uifabricshared/foundation-composable" ">=0.11.3 <1.0.0"
+    "@uifabricshared/foundation-compose" "^1.13.8"
+    "@uifabricshared/foundation-settings" ">=0.12.3 <1.0.0"
+
+"@fluentui-react-native/checkbox@0.19.31":
+  version "0.19.31"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/checkbox/-/checkbox-0.19.31.tgz#e3a74317c146d790a15b070e1e784341cc59a6d3"
+  integrity sha512-eSTQM4USQPHYwyYMPkCPf2Dqg9lwdBa9LOhWBvt981urQ8NttMkjbGxOI0mD2R7kYzj8xaaKW0YQ/TmARtpq7Q==
+  dependencies:
+    "@fluentui-react-native/adapters" ">=0.10.2 <1.0.0"
+    "@fluentui-react-native/framework" "0.9.8"
+    "@fluentui-react-native/interactive-hooks" ">=0.22.28 <1.0.0"
+    "@fluentui-react-native/pressable" ">=0.9.67 <1.0.0"
+    "@fluentui-react-native/styling-utils" ">=0.4.4 <1.0.0"
+    "@fluentui-react-native/text" ">=0.19.30 <1.0.0"
+    "@fluentui-react-native/theme-tokens" "^0.24.5"
+    "@fluentui-react-native/theming-utils" ">=0.23.10 <1.0.0"
+    "@fluentui-react-native/tokens" ">=0.20.14 <1.0.0"
+    "@fluentui-react-native/use-styling" ">=0.9.4 <1.0.0"
+    "@uifabricshared/foundation-composable" ">=0.11.3 <1.0.0"
+    "@uifabricshared/foundation-compose" "^1.13.8"
+    "@uifabricshared/foundation-settings" ">=0.12.3 <1.0.0"
+    tslib "^2.3.1"
+
+"@fluentui-react-native/component-cache@^1.4.4":
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/component-cache/-/component-cache-1.4.4.tgz#bec7de8722c90fd4ab2e16c56ae5faa2dee39401"
+  integrity sha512-f8X5EzMreo5NbO28tfoUwgSJjP7D2dnjHpmX+YtB4cLqPBENNVqm6hum/MZY7zPK1t8tcBv/14swKYi+eVhtpA==
+
+"@fluentui-react-native/composition@>=0.8.4 <1.0.0":
+  version "0.8.4"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/composition/-/composition-0.8.4.tgz#7bbb7a1968efd65d605c4e332fbfed4d4ca58664"
+  integrity sha512-XiYEaHNMYMY8oVpeBI9zpOrosXDoXLvilM6DPh1wPgWPMO8H7O2VWpF2DbqEgRDrUSgSxN26hHdBfKwn6fpw3Q==
+  dependencies:
+    "@fluentui-react-native/immutable-merge" "^1.1.8"
+    "@fluentui-react-native/use-slot" ">=0.3.4 <1.0.0"
+    "@fluentui-react-native/use-slots" ">=0.7.4 <1.0.0"
+    "@fluentui-react-native/use-styling" ">=0.9.4 <1.0.0"
+
+"@fluentui-react-native/contextual-menu@0.21.40", "@fluentui-react-native/contextual-menu@^0.21.40":
+  version "0.21.40"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/contextual-menu/-/contextual-menu-0.21.40.tgz#d7ddb231e6515fa0af15d58e77777122930f1e2f"
+  integrity sha512-tth3Y8Y0Yc9SCqna7S1cv57jgdmKQrOSwP0oEh6eGjeBg5moUpEOZKZBT7SqUkUJla1+QEWerEQGRZcgThoY9w==
+  dependencies:
+    "@fluentui-react-native/adapters" "^0.10.2"
+    "@fluentui-react-native/callout" ">=0.23.11 <1.0.0"
+    "@fluentui-react-native/focus-zone" "^0.11.40"
+    "@fluentui-react-native/icon" "0.17.24"
+    "@fluentui-react-native/interactive-hooks" ">=0.22.28 <1.0.0"
+    "@fluentui-react-native/text" ">=0.19.30 <1.0.0"
+    "@fluentui-react-native/tokens" ">=0.20.14 <1.0.0"
+    "@uifabricshared/foundation-composable" ">=0.11.3 <1.0.0"
+    "@uifabricshared/foundation-compose" "^1.13.8"
+    "@uifabricshared/foundation-settings" ">=0.12.3 <1.0.0"
+
+"@fluentui-react-native/default-theme@>=0.18.2 <1.0.0":
+  version "0.18.2"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/default-theme/-/default-theme-0.18.2.tgz#40df405992f26c751a62208cf855096bc97c88e0"
+  integrity sha512-b/0ntpW44iIM4zdf5nXLwjhH8uXRHI8P9LNmvrBLCckxGrFuSMLKDr/wtb+6QGzi3vDv1FDn5gi5lR/452l7Ow==
+  dependencies:
+    "@fluentui-react-native/memo-cache" "^1.1.8"
+    "@fluentui-react-native/theme" ">=0.8.3 <1.0.0"
+    "@fluentui-react-native/theme-tokens" "^0.24.5"
+    "@fluentui-react-native/theme-types" ">=0.31.0 <1.0.0"
+    "@fluentui-react-native/theming-utils" ">=0.23.10 <1.0.0"
+    assert-never "^1.2.1"
+
+"@fluentui-react-native/design-tokens-android@^0.43.0":
+  version "0.43.0"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/design-tokens-android/-/design-tokens-android-0.43.0.tgz#e8dbd668ff86716d11c37a93408f721e88bf64e3"
+  integrity sha512-33W/1MRSYW8fKHHBcf0XsZp551thsY1tV40WclNai0JZW0er7CwBx4+s1/Vv2VSm6MVFotQjAFGmyQaVDzKpqQ==
+
+"@fluentui-react-native/design-tokens-ios@^0.42.0":
+  version "0.42.0"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/design-tokens-ios/-/design-tokens-ios-0.42.0.tgz#3639e67b7749a504e6b27215d31257f469f460bd"
+  integrity sha512-qAvVfQtrpx71B0RM7W2I8BazBlYWIXExmcCqSvBoUhRlNCfKSLz4Ry1cecm1ldtEnykhnMTYrNtBwzRJ/99CEA==
+
+"@fluentui-react-native/design-tokens-win32@^0.42.0":
+  version "0.42.0"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/design-tokens-win32/-/design-tokens-win32-0.42.0.tgz#b67bc3474bcaab4aa69affcb297b37999379b29c"
+  integrity sha512-JU5HH2XmM2qhgqS4Onws1Wq6zgt9L+WEllXAwq0/QEeiLciKWlF4PQ5WIcxqFfrvTeC4ogImuslMAbsHeTSI9Q==
+
+"@fluentui-react-native/design-tokens-windows@^0.42.0":
+  version "0.42.0"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/design-tokens-windows/-/design-tokens-windows-0.42.0.tgz#6b7ca87ed30a92634e72cbe8fc1280fd21db50b8"
+  integrity sha512-hBPCikSDJ3Rgw+mAbTgnNB83dn3SeSKPo4XNli22tbV08fN8P5mEaEg8Uw0cbVMN3D138ykNeAaK/lZjO9KIqA==
+
+"@fluentui-react-native/experimental-activity-indicator@^0.7.25":
+  version "0.7.25"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/experimental-activity-indicator/-/experimental-activity-indicator-0.7.25.tgz#6598077832335761e2679bd5773a8b2f1a6e9e16"
+  integrity sha512-QWfrDNQGx2CufdreUVLvDzJp5KMYqQtZXWuRlLV86Fwd6gMZMjy9Zj5isSaMjCgqEklu0HRPb7+Eh6d6sA6E2g==
+  dependencies:
+    "@fluentui-react-native/framework" "0.9.8"
+    assert-never "^1.2.1"
+
+"@fluentui-react-native/experimental-native-font-metrics@^0.3.2":
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/experimental-native-font-metrics/-/experimental-native-font-metrics-0.3.2.tgz#243fce5cd864b937090dbadce6fa1b4bd729a4b5"
+  integrity sha512-jxJRYNU3pVWMLteqlJkPlD+Cdg60mG98lrLYSQw91B7hHFuKOd0FzXeYlf8D0NZPAI93VdJ54WFB7OFnkmF2jQ==
+
+"@fluentui-react-native/experimental-shadow@0.2.79":
+  version "0.2.79"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/experimental-shadow/-/experimental-shadow-0.2.79.tgz#3c46728e3669bc922ea9f19ec88e33483197e7c2"
+  integrity sha512-oqs8M8TIL1BxeE61+sR1nlh+9WSJ9Z7YzGSU8YwV+tjHmSMcN52SSUoyZu8PZtD0IezXJ1dHMolAvHZEhSgkVQ==
+  dependencies:
+    "@fluentui-react-native/framework" "0.9.8"
+    "@fluentui-react-native/pressable" "0.9.67"
+    "@fluentui-react-native/theme-types" "0.31.0"
+
+"@fluentui-react-native/focus-trap-zone@0.9.69":
+  version "0.9.69"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/focus-trap-zone/-/focus-trap-zone-0.9.69.tgz#3ad4c260a9f112784b0ea85fbd81296fc16e6bb7"
+  integrity sha512-D0eHTuBgGwci27phZH4PIMxeE4o8mADVrZMgecGNTMuogtigMu70P6H+ThPoI0d4zTo+KaYCciCDjzw0zn0DRQ==
+  dependencies:
+    "@fluentui-react-native/adapters" ">=0.10.2 <1.0.0"
+    "@fluentui-react-native/component-cache" "^1.4.4"
+    "@fluentui-react-native/interactive-hooks" ">=0.22.28 <1.0.0"
+    "@uifabricshared/foundation-composable" ">=0.11.3 <1.0.0"
+    "@uifabricshared/foundation-settings" ">=0.12.3 <1.0.0"
+
+"@fluentui-react-native/focus-zone@0.11.40", "@fluentui-react-native/focus-zone@>=0.11.40 <1.0.0", "@fluentui-react-native/focus-zone@^0.11.40":
+  version "0.11.40"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/focus-zone/-/focus-zone-0.11.40.tgz#6cb5060f44b18e9c417fd371cda472310e748d93"
+  integrity sha512-rYOppDJt3vbgJwrkwDh3or0N4pWuK3UkzlWgtPgew57cE7VDksulAs75GEicmc6al4BjETlVlDmBWRtPgY3yBQ==
+  dependencies:
+    "@fluentui-react-native/component-cache" "^1.4.4"
+    "@fluentui-react-native/interactive-hooks" ">=0.22.28 <1.0.0"
+    "@uifabricshared/foundation-composable" ">=0.11.3 <1.0.0"
+    "@uifabricshared/foundation-settings" ">=0.12.3 <1.0.0"
+
+"@fluentui-react-native/framework@0.9.8", "@fluentui-react-native/framework@>=0.9.8 <1.0.0":
+  version "0.9.8"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/framework/-/framework-0.9.8.tgz#0a50c7683e94756a7e9bd2eaec7a6ab61dfdbdca"
+  integrity sha512-0Jv8PQl0qDtdWk+m9NYgddGxtAKyW5BvuH6fzjJaBDp8o8jUDn9tVWc9C+pw4+SXs40AHO74OfAGib4R1XRfFQ==
+  dependencies:
+    "@fluentui-react-native/composition" ">=0.8.4 <1.0.0"
+    "@fluentui-react-native/default-theme" ">=0.18.2 <1.0.0"
+    "@fluentui-react-native/immutable-merge" "^1.1.8"
+    "@fluentui-react-native/memo-cache" "^1.1.8"
+    "@fluentui-react-native/merge-props" ">=0.5.3 <1.0.0"
+    "@fluentui-react-native/theme-types" ">=0.31.0 <1.0.0"
+    "@fluentui-react-native/tokens" ">=0.20.14 <1.0.0"
+    "@fluentui-react-native/use-slot" ">=0.3.4 <1.0.0"
+    "@fluentui-react-native/use-slots" ">=0.7.4 <1.0.0"
+    "@fluentui-react-native/use-styling" ">=0.9.4 <1.0.0"
+    "@fluentui-react-native/use-tokens" ">=0.3.4 <1.0.0"
+    tslib "^2.3.1"
+
+"@fluentui-react-native/icon@0.17.24", "@fluentui-react-native/icon@^0.17.24":
+  version "0.17.24"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/icon/-/icon-0.17.24.tgz#c1568002afed271b4e7d7e031cf17b4f20445693"
+  integrity sha512-rWxql3lqQ8Fr/nGyWLAXFEfjp205nSYbLsrDttV04CCm9Wdn67a4/RD5KD65aYEqC6fH4UVuYxx9mO3kdPTa7A==
+  dependencies:
+    "@fluentui-react-native/adapters" "^0.10.2"
+    "@fluentui-react-native/framework" ">=0.9.8 <1.0.0"
+    "@fluentui-react-native/text" "^0.19.30"
+
+"@fluentui-react-native/immutable-merge@^1.1.8":
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/immutable-merge/-/immutable-merge-1.1.8.tgz#9de28bec1667f3d3cc84ea356c36b3bfd6bdabf4"
+  integrity sha512-UpBGLQyt13oDa+z5SFv7cqvnRgf1eoUhFDzX8LIZEs7OnpOIAmPSOD0F52UhTmGCmDi726v3j4Js/IFmMZiosg==
+  dependencies:
+    tslib "^2.3.1"
+
+"@fluentui-react-native/interactive-hooks@0.22.28", "@fluentui-react-native/interactive-hooks@>=0.22.28 <1.0.0":
+  version "0.22.28"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/interactive-hooks/-/interactive-hooks-0.22.28.tgz#9c2971cad31556eb7a04b81ce76f26a57f3d885c"
+  integrity sha512-ZUj7cEoc1iZQOReazF5wkl6ZpyWkEHXzsGYtJ+ovxD59o6V6hnCFaGfOnFEa9RJ6FJvJSmTDMWaxj20AK/fpng==
+  dependencies:
+    "@fluentui-react-native/adapters" "^0.10.2"
+    "@fluentui-react-native/framework" ">=0.9.8 <1.0.0"
+    "@fluentui-react-native/memo-cache" "^1.1.8"
+    invariant "^2.2.0"
+    tslib "^2.3.1"
+
+"@fluentui-react-native/link@0.18.25":
+  version "0.18.25"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/link/-/link-0.18.25.tgz#c359d066363289fc71c24e76f95611a1e6883fc7"
+  integrity sha512-oXTtjtMHN8odaOrYctErttKMhEXhRHM4grjCcFX2OgXyPHntB8d0tQr/0ZIESMKZMQW1cDvKfIUAEae5VP4bgQ==
+  dependencies:
+    "@fluentui-react-native/adapters" ">=0.10.2 <1.0.0"
+    "@fluentui-react-native/framework" ">=0.9.8 <1.0.0"
+    "@fluentui-react-native/interactive-hooks" ">=0.22.28 <1.0.0"
+    "@fluentui-react-native/text" ">=0.19.30 <1.0.0"
+    "@fluentui-react-native/tokens" ">=0.20.14 <1.0.0"
+    "@fluentui-react-native/use-styling" "^0.9.4"
+    "@uifabricshared/foundation-composable" ">=0.11.3 <1.0.0"
+    "@uifabricshared/foundation-compose" "^1.13.8"
+    "@uifabricshared/foundation-settings" ">=0.12.3 <1.0.0"
+    tslib "^2.3.1"
+
+"@fluentui-react-native/memo-cache@^1.1.8":
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/memo-cache/-/memo-cache-1.1.8.tgz#46cf0a45bc76aa5443ac2b88b920f31418cff725"
+  integrity sha512-Yx8MNMY3xlw2U+mfzkWbOPxmRV4yOwLuJOULcmwrISDwO1wdaiFrEUnKrWMx3ouroCwGWpqBxeDaYJJTEL7G0g==
+
+"@fluentui-react-native/menu-button@0.10.47":
+  version "0.10.47"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/menu-button/-/menu-button-0.10.47.tgz#62b042f6c5bee7e51cd6591c1639688ef9d3a8aa"
+  integrity sha512-rIsF1eILHF50whGa+KvyVX0cCiOOgktZqiRJgoFcgVFmQ/2uN75HzxNr5YR0nEa7U4Fq3z6oQReTmzWeoADHvg==
+  dependencies:
+    "@fluentui-react-native/button" "^0.32.48"
+    "@fluentui-react-native/component-cache" "^1.4.4"
+    "@fluentui-react-native/contextual-menu" "^0.21.40"
+    "@fluentui-react-native/icon" "^0.17.24"
+    "@fluentui-react-native/tokens" "^0.20.14"
+    "@uifabricshared/foundation-composable" ">=0.11.3 <1.0.0"
+    "@uifabricshared/foundation-compose" "^1.13.8"
+    "@uifabricshared/foundation-settings" ">=0.12.3 <1.0.0"
+
+"@fluentui-react-native/merge-props@>=0.5.3 <1.0.0":
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/merge-props/-/merge-props-0.5.3.tgz#8ea1686daf973807a089f5c541a0c7ce800046fc"
+  integrity sha512-XMVNaLaDIKLPFveV+3G4d6F/8bNt8H9IJUmGwbI3q9WTtXh1tmPzQyBKeNFf2vuNQELhkp9bB4QX/fNITvjplA==
+  dependencies:
+    "@fluentui-react-native/immutable-merge" "^1.1.8"
+    "@fluentui-react-native/memo-cache" "^1.1.8"
+    tslib "^2.3.1"
+
+"@fluentui-react-native/persona-coin@0.12.30", "@fluentui-react-native/persona-coin@>=0.12.30 <1.0.0":
+  version "0.12.30"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/persona-coin/-/persona-coin-0.12.30.tgz#e9cb5d9f97ba6a272ef860f25909501cb8d10e34"
+  integrity sha512-7KpgWBRFfbRlI1jiO9+MmjT1NfdnosTO/K+JWNlwadY6FYDm01g+X6jjd2E2qBsFuvBKYcex3DEei/7+NPUHyA==
+  dependencies:
+    "@fluentui-react-native/adapters" ">=0.10.2 <1.0.0"
+    "@fluentui-react-native/framework" ">=0.9.8 <1.0.0"
+    "@fluentui-react-native/theme-tokens" ">=0.24.5 <1.0.0"
+    "@fluentui-react-native/tokens" ">=0.20.14 <1.0.0"
+    "@uifabricshared/foundation-composable" ">=0.11.3 <1.0.0"
+    "@uifabricshared/foundation-compose" "^1.13.8"
+    "@uifabricshared/foundation-settings" ">=0.12.3 <1.0.0"
+    "@uifabricshared/foundation-tokens" ">=0.12.31 <1.0.0"
+
+"@fluentui-react-native/persona@0.13.49":
+  version "0.13.49"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/persona/-/persona-0.13.49.tgz#36df355627a559999f30f3b6ed60d0edcee04a89"
+  integrity sha512-a2PIwjx93bSNihQ/sHJONh287PZ71/iEjK47PAnR1CUx89Hbr7qJ3oB5Fpg42DuAfPmEHVbIq2W6oNBl2yqprQ==
+  dependencies:
+    "@fluentui-react-native/adapters" ">=0.10.2 <1.0.0"
+    "@fluentui-react-native/framework" ">=0.9.8 <1.0.0"
+    "@fluentui-react-native/persona-coin" ">=0.12.30 <1.0.0"
+    "@fluentui-react-native/tokens" ">=0.20.14 <1.0.0"
+    "@uifabricshared/foundation-composable" ">=0.11.3 <1.0.0"
+    "@uifabricshared/foundation-compose" "^1.13.8"
+    "@uifabricshared/foundation-settings" ">=0.12.3 <1.0.0"
+    "@uifabricshared/foundation-tokens" ">=0.12.31 <1.0.0"
+
+"@fluentui-react-native/pressable@0.9.67", "@fluentui-react-native/pressable@>=0.9.67 <1.0.0":
+  version "0.9.67"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/pressable/-/pressable-0.9.67.tgz#8459cd38748304a0edbed8fc0a92129ca29b3793"
+  integrity sha512-s0rpO5HBHicCKmDl0cvUFb9X7hrk/S0n8OSezJmi2CHtTrWKF5bdU5/zC1TSM9dM2/BtxqPDpQcOrzriX3O0Uw==
+  dependencies:
+    "@fluentui-react-native/adapters" ">=0.10.2 <1.0.0"
+    "@fluentui-react-native/interactive-hooks" ">=0.22.28 <1.0.0"
+    "@uifabricshared/foundation-composable" ">=0.11.3 <1.0.0"
+    "@uifabricshared/foundation-settings" ">=0.12.3 <1.0.0"
+
+"@fluentui-react-native/radio-group@0.16.44":
+  version "0.16.44"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/radio-group/-/radio-group-0.16.44.tgz#01cb98e87cd52a86a1651cc3db7bb73398d0b3d4"
+  integrity sha512-G0F809qh60J37yoOJIf6FZzShyqfJmUI1IOJN9o1wSmsnX/9F1Z/zPahuiH0/fDEfiY/CHepZholuTrXPumuYw==
+  dependencies:
+    "@fluentui-react-native/adapters" ">=0.10.2 <1.0.0"
+    "@fluentui-react-native/component-cache" "^1.4.4"
+    "@fluentui-react-native/focus-zone" ">=0.11.40 <1.0.0"
+    "@fluentui-react-native/interactive-hooks" ">=0.22.28 <1.0.0"
+    "@fluentui-react-native/pressable" ">=0.9.67 <1.0.0"
+    "@fluentui-react-native/text" ">=0.19.30 <1.0.0"
+    "@fluentui-react-native/tokens" ">=0.20.14 <1.0.0"
+    "@uifabricshared/foundation-composable" ">=0.11.3 <1.0.0"
+    "@uifabricshared/foundation-compose" "^1.13.8"
+    "@uifabricshared/foundation-settings" ">=0.12.3 <1.0.0"
+
+"@fluentui-react-native/separator@0.14.22":
+  version "0.14.22"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/separator/-/separator-0.14.22.tgz#727b011c7efe00797e1c7e36609aae42192e04c1"
+  integrity sha512-++Fn2SPaHW0ePQsH55L8FwaOpp/9p+ViFP7+QM2jJcBp2TMRX6lhDw2eYhXYfQrdc2Kg+3ElL/q8t7QHxdTIWw==
+  dependencies:
+    "@fluentui-react-native/framework" ">=0.9.8 <1.0.0"
+    "@fluentui-react-native/theme-tokens" "^0.24.5"
+    "@fluentui-react-native/use-styling" "^0.9.4"
+
+"@fluentui-react-native/styling-utils@>=0.4.4 <1.0.0":
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/styling-utils/-/styling-utils-0.4.4.tgz#6f636a4c7f8532df84548754f82132f638aaf7db"
+  integrity sha512-hlzf6lv0errJpjkE9UogW3YVc6owNuqoyHTuGEb4Xp1IXTE2eiH9+Y+5U8bFn+kjuT2Bihb92UNZE1teonOs6A==
+
+"@fluentui-react-native/tabs@0.11.44":
+  version "0.11.44"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/tabs/-/tabs-0.11.44.tgz#7a146dbafc739e9af14712176885c03ef3c9b62d"
+  integrity sha512-FIFPHbpz9U9cVTK3ko3I51EEWhcb5OMvM33sUEW3KQ+ZM/6BwBb0KtK0m+SxHHAhFmkPHIlqH3d4yzS1je5AXA==
+  dependencies:
+    "@fluentui-react-native/adapters" ">=0.10.2 <1.0.0"
+    "@fluentui-react-native/focus-zone" ">=0.11.40 <1.0.0"
+    "@fluentui-react-native/icon" "0.17.24"
+    "@fluentui-react-native/interactive-hooks" ">=0.22.28 <1.0.0"
+    "@fluentui-react-native/text" ">=0.19.30 <1.0.0"
+    "@fluentui-react-native/tokens" ">=0.20.14 <1.0.0"
+    "@uifabricshared/foundation-composable" ">=0.11.3 <1.0.0"
+    "@uifabricshared/foundation-compose" "^1.13.8"
+    "@uifabricshared/foundation-settings" ">=0.12.3 <1.0.0"
+
+"@fluentui-react-native/text@0.19.30", "@fluentui-react-native/text@>=0.19.30 <1.0.0", "@fluentui-react-native/text@^0.19.30":
+  version "0.19.30"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/text/-/text-0.19.30.tgz#e4d5b44f24b41ed2a75e7ad40ccd122e093242d7"
+  integrity sha512-tB8EL9xG3c7NcdF2tQo7PJ6QzmNqecFLtL4cuWaBMfH81p5AB92uxtDfGeX5Pyx97KDB8M+DlyIhpLzB6veOCA==
+  dependencies:
+    "@fluentui-react-native/adapters" ">=0.10.2 <1.0.0"
+    "@fluentui-react-native/experimental-native-font-metrics" "^0.3.2"
+    "@fluentui-react-native/framework" "0.9.8"
+    "@fluentui-react-native/interactive-hooks" ">=0.22.28 <1.0.0"
+    "@fluentui-react-native/theme-tokens" ">=0.24.5 <1.0.0"
+    "@fluentui-react-native/tokens" ">=0.20.14 <1.0.0"
+    "@uifabricshared/foundation-compose" "^1.13.8"
+    tslib "^2.3.1"
+
+"@fluentui-react-native/theme-tokens@>=0.24.5 <1.0.0", "@fluentui-react-native/theme-tokens@^0.24.5":
+  version "0.24.5"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/theme-tokens/-/theme-tokens-0.24.5.tgz#a8753cef4e49952636a004d987f33c5c400e4d2f"
+  integrity sha512-oJqa7QxoLBkpZfBtkZ0/gNNTrrE/O9I0wOshmKRgnN8vkmGKFkgsGT2G2eoYexYOdblKy3TpHBOxoPdZp4vWZg==
+  dependencies:
+    "@fluentui-react-native/design-tokens-android" "^0.43.0"
+    "@fluentui-react-native/design-tokens-ios" "^0.42.0"
+    "@fluentui-react-native/design-tokens-win32" "^0.42.0"
+    "@fluentui-react-native/design-tokens-windows" "^0.42.0"
+    "@fluentui-react-native/theme-types" ">=0.31.0 <1.0.0"
+    assert-never "^1.2.1"
+
+"@fluentui-react-native/theme-types@0.31.0", "@fluentui-react-native/theme-types@>=0.31.0 <1.0.0":
+  version "0.31.0"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/theme-types/-/theme-types-0.31.0.tgz#6ebd513446e4be469733a7bd6925a654ae489bf9"
+  integrity sha512-/FdcYnmk/UxpPWDAM7m5luQzs+PoisJ7MVkPY76MO65p4ccPkDww6h6R69Loy5ZJtw4JVCEdG8oLSYG0R8uMYg==
+
+"@fluentui-react-native/theme@>=0.8.3 <1.0.0":
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/theme/-/theme-0.8.3.tgz#236d037ad72bb067d5f893aed9c3c676dc1a61a8"
+  integrity sha512-0BqCwVhrlNBlS/OnAHO8hIStgSoRv4R4BB9MURX8hVNGuD8wIpa5PDRxmDgK8Ktn8mM9g/ZhO4LNnVpr2y0xzA==
+  dependencies:
+    "@fluentui-react-native/immutable-merge" "^1.1.8"
+    "@fluentui-react-native/theme-types" ">=0.31.0 <1.0.0"
+
+"@fluentui-react-native/theming-utils@>=0.23.10 <1.0.0":
+  version "0.23.10"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/theming-utils/-/theming-utils-0.23.10.tgz#620c4938409042bac62bd87027766a06ff69760f"
+  integrity sha512-4iVnjT0QjN68x3A8stv1abwyRyflkzueWMXCgqLnrpOHCeR+g3RjexTw5r/0MM0an6t7FL52j6KV8T2YWohDJw==
+  dependencies:
+    "@fluentui-react-native/theme-types" ">=0.31.0 <1.0.0"
+    "@fluentui-react-native/tokens" ">=0.20.14 <1.0.0"
+
+"@fluentui-react-native/tokens@0.20.14", "@fluentui-react-native/tokens@>=0.20.14 <1.0.0", "@fluentui-react-native/tokens@^0.20.14":
+  version "0.20.14"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/tokens/-/tokens-0.20.14.tgz#e7cdb4487a5fcd7f37c801eefbefa8a31287f98e"
+  integrity sha512-iCtqpN6JKBxS5/k36S7DKq+JHPrIa5nlbQiitMWfm7zn3PC24KmWHI3iB1RLT43h1m1A4prJu/biBh55ibjNjQ==
+  dependencies:
+    "@fluentui-react-native/adapters" ">=0.10.2 <1.0.0"
+    "@fluentui-react-native/theme-types" ">=0.31.0 <1.0.0"
+    tslib "^2.3.1"
+
+"@fluentui-react-native/use-slot@>=0.3.4 <1.0.0":
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/use-slot/-/use-slot-0.3.4.tgz#b06a281587041245383e642acd50fa279cf08648"
+  integrity sha512-mvyYgmHFlRQ20EylZygHlI+Q2LnZV27IMsVxlG435kBF/TF1Vtch6VqpdtWX9srDdDEMgGmgO7Er95Y3Wa4/eg==
+  dependencies:
+    "@fluentui-react-native/merge-props" ">=0.5.3 <1.0.0"
+    tslib "^2.3.1"
+
+"@fluentui-react-native/use-slots@>=0.7.4 <1.0.0":
+  version "0.7.4"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/use-slots/-/use-slots-0.7.4.tgz#5005aeed9963cd3ff264531f675bbeb4430704fe"
+  integrity sha512-hOhUpUrsT7kxFik7xxyDC3WmupOC7eOxVjhSYxltim3qTcTwR7GiC6WyJbh7nfovtwL3fA3rOUxYFDy+/1lIcg==
+  dependencies:
+    "@fluentui-react-native/use-slot" ">=0.3.4 <1.0.0"
+
+"@fluentui-react-native/use-styling@>=0.9.4 <1.0.0", "@fluentui-react-native/use-styling@^0.9.4":
+  version "0.9.4"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/use-styling/-/use-styling-0.9.4.tgz#302f9018c0d7580490e8b8099f57944e7695df9e"
+  integrity sha512-6cI7vIelb59hFwFsu4Pj7k4ig5RU5jJmsBWRaWa2jL4gKwFn4z9NOhD5sq9QoIPfhSpsiHWbQZUwublVTiu3RQ==
+  dependencies:
+    "@fluentui-react-native/memo-cache" "^1.1.8"
+    "@fluentui-react-native/use-tokens" "^0.3.4"
+    tslib "^2.3.1"
+
+"@fluentui-react-native/use-tokens@>=0.3.4 <1.0.0", "@fluentui-react-native/use-tokens@^0.3.4":
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/@fluentui-react-native/use-tokens/-/use-tokens-0.3.4.tgz#19712a4596f31a36bd7f73a5146f62ce46d6e979"
+  integrity sha512-P672zu1ZVjp+dZfdZSIcZYxP1lXGsAShj3YBebSNUqTuMRo5zEAoIDYhtmviDnTnZC1TPlxzGyP+Z2kykzmyWw==
+  dependencies:
+    "@fluentui-react-native/immutable-merge" "^1.1.8"
+    "@fluentui-react-native/memo-cache" "^1.1.8"
+    tslib "^2.3.1"
+
+"@fluentui/react-native@^0.36.20":
+  version "0.36.20"
+  resolved "https://registry.yarnpkg.com/@fluentui/react-native/-/react-native-0.36.20.tgz#71750c0d76649b7520837df97a8dc05b711338e4"
+  integrity sha512-LB/HA4RsbqK/aDuGSDds0I5TkLhUzpKEce/HEDny+p9pTdf9Sq1vZtu57ApEhf5pFiYikh1/uIywzfzZDf4bmA==
+  dependencies:
+    "@fluentui-react-native/button" "0.32.48"
+    "@fluentui-react-native/callout" "0.23.11"
+    "@fluentui-react-native/checkbox" "0.19.31"
+    "@fluentui-react-native/contextual-menu" "0.21.40"
+    "@fluentui-react-native/focus-trap-zone" "0.9.69"
+    "@fluentui-react-native/focus-zone" "0.11.40"
+    "@fluentui-react-native/interactive-hooks" "0.22.28"
+    "@fluentui-react-native/link" "0.18.25"
+    "@fluentui-react-native/menu-button" "0.10.47"
+    "@fluentui-react-native/persona" "0.13.49"
+    "@fluentui-react-native/persona-coin" "0.12.30"
+    "@fluentui-react-native/pressable" "0.9.67"
+    "@fluentui-react-native/radio-group" "0.16.44"
+    "@fluentui-react-native/separator" "0.14.22"
+    "@fluentui-react-native/tabs" "0.11.44"
+    "@fluentui-react-native/text" "0.19.30"
+
 "@hapi/hoek@^9.0.0":
   version "9.3.0"
   resolved "https://registry.yarnpkg.com/@hapi/hoek/-/hoek-9.3.0.tgz#8368869dcb735be2e7f5cb7647de78e167a251fb"
@@ -2112,6 +2563,62 @@
     "@typescript-eslint/types" "5.50.0"
     eslint-visitor-keys "^3.3.0"
 
+"@uifabricshared/foundation-composable@>=0.11.3 <1.0.0":
+  version "0.11.3"
+  resolved "https://registry.yarnpkg.com/@uifabricshared/foundation-composable/-/foundation-composable-0.11.3.tgz#6502054a6faa4e1ec3fbebf79478f7f21e243196"
+  integrity sha512-tUrV4ti4fi8YEEn/VYPbdY9nlpuduIa3jajmU6M3wTAReqyp/sa2h/ix8pKu/uyJAE2Wb/zGrEfyLZS+ANxT5A==
+  dependencies:
+    "@fluentui-react-native/merge-props" ">=0.5.3 <1.0.0"
+    "@uifabricshared/foundation-settings" ">=0.12.3 <1.0.0"
+
+"@uifabricshared/foundation-compose@^1.13.8":
+  version "1.13.8"
+  resolved "https://registry.yarnpkg.com/@uifabricshared/foundation-compose/-/foundation-compose-1.13.8.tgz#f5c06aff24a5a5aed6f61c587d088708977fe86d"
+  integrity sha512-qNYgv+r0hJjAItly2Mwm/JH7meA4a+m4q0MnS5UetYm85hF1u968IkFuPtSbWh1mYgTQOnrbBJgTpAXbtyH/Kw==
+  dependencies:
+    "@fluentui-react-native/default-theme" ">=0.18.2 <1.0.0"
+    "@fluentui-react-native/immutable-merge" "^1.1.8"
+    "@fluentui-react-native/memo-cache" "^1.1.8"
+    "@fluentui-react-native/theme-types" ">=0.31.0 <1.0.0"
+    "@uifabricshared/foundation-composable" ">=0.11.3 <1.0.0"
+    "@uifabricshared/foundation-settings" ">=0.12.3 <1.0.0"
+    "@uifabricshared/foundation-tokens" ">=0.12.31 <1.0.0"
+    "@uifabricshared/themed-settings" ">=0.9.3 <1.0.0"
+    "@uifabricshared/theming-ramp" ">=0.17.22 <1.0.0"
+
+"@uifabricshared/foundation-settings@>=0.12.3 <1.0.0":
+  version "0.12.3"
+  resolved "https://registry.yarnpkg.com/@uifabricshared/foundation-settings/-/foundation-settings-0.12.3.tgz#8ae0a4d9f0fcae4d308d05a1a147eda2bf3e2997"
+  integrity sha512-si0cZXgAByTMD4tEHLHQNRzjjJgkW0EZ0WPh9JuAVES6Em3uuRsrmPu3b3Cl3XnXi6P0drcTCK/cEFEkBj718A==
+  dependencies:
+    "@fluentui-react-native/immutable-merge" "^1.1.8"
+    "@fluentui-react-native/merge-props" ">=0.5.3 <1.0.0"
+
+"@uifabricshared/foundation-tokens@>=0.12.31 <1.0.0":
+  version "0.12.31"
+  resolved "https://registry.yarnpkg.com/@uifabricshared/foundation-tokens/-/foundation-tokens-0.12.31.tgz#1c858b0b257b6a68b06d88e9eac8d61c7c245fd8"
+  integrity sha512-XJL4lfLGotQtasjk1kGjnL6YgYP883G6ULIa5aqcf63xt6ynRGNclRfwPCGD/uaTILtAU9GgLT41ZIYobfbrqA==
+  dependencies:
+    "@fluentui-react-native/merge-props" ">=0.5.3 <1.0.0"
+    "@fluentui-react-native/tokens" "0.20.14"
+    "@uifabricshared/foundation-settings" ">=0.12.3 <1.0.0"
+
+"@uifabricshared/themed-settings@>=0.9.3 <1.0.0":
+  version "0.9.3"
+  resolved "https://registry.yarnpkg.com/@uifabricshared/themed-settings/-/themed-settings-0.9.3.tgz#18a29feb90b4308ae94407e4c807b34f243495e6"
+  integrity sha512-hXMdbP1imuUSn7THzTeDrOpN28ivIfaUP6RvgwemtoPtFLqsfej+Eu5zb2pmRQQfOdXF8qVbhI4OBTAI0dcOjA==
+  dependencies:
+    "@uifabricshared/foundation-settings" ">=0.12.3 <1.0.0"
+
+"@uifabricshared/theming-ramp@>=0.17.22 <1.0.0":
+  version "0.17.22"
+  resolved "https://registry.yarnpkg.com/@uifabricshared/theming-ramp/-/theming-ramp-0.17.22.tgz#0b305ee94bf8407585f895c19cad8e271545c0b2"
+  integrity sha512-JH+uE1xbEq4p2KAiUm6ZmBID3zMwC6a+NChiKOeiSpuFqBkXSFxFHG9cTI7wYZ783+o103wirP2bQLNt3mT7ww==
+  dependencies:
+    "@fluentui-react-native/immutable-merge" "^1.1.8"
+    "@fluentui-react-native/theme-types" ">=0.31.0 <1.0.0"
+    "@uifabricshared/foundation-settings" ">=0.12.3 <1.0.0"
+
 "@xmldom/xmldom@^0.7.7":
   version "0.7.9"
   resolved "https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.7.9.tgz#7f9278a50e737920e21b297b8a35286e9942c056"
@@ -2334,6 +2841,11 @@ asap@~2.0.6:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/asap/-/asap-2.0.6.tgz#e50347611d7e690943208bbdafebcbc2fb866d46"
   integrity sha512-BSHWgDSAiKs50o2Re8ppvp3seVHXSRM44cdSsT9FfNEUUZLOGWVCsiWaRPWM1Znn+mqZ1OfVZ3z3DWEzSp7hRA==
+
+assert-never@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/assert-never/-/assert-never-1.2.1.tgz#11f0e363bf146205fb08193b5c7b90f4d1cf44fe"
+  integrity sha512-TaTivMB6pYI1kXwrFlEhLeGfOqoDNdTxjCdwRfFFkEA30Eu+k48W34nlok2EYWJfFFzqaEmichdNM7th6M5HNw==
 
 assign-symbols@^1.0.0:
   version "1.0.0"
@@ -4316,7 +4828,7 @@ interpret@^1.0.0:
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.4.0.tgz#665ab8bc4da27a774a40584e812e3e0fa45b1a1e"
   integrity sha512-agE4QfB2Lkp9uICn7BAqoscw4SZP9kTE2hxiFI3jBPmXJfdqiahTbUuKGsMoN2GtqL9AxhYioAcVvgsb1HvRbA==
 
-invariant@*, invariant@^2.2.4:
+invariant@*, invariant@^2.2.0, invariant@^2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
   integrity sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==
@@ -7657,7 +8169,7 @@ tslib@^1.8.1:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
 
-tslib@^2.0.1, tslib@^2.2.0:
+tslib@^2.0.1, tslib@^2.2.0, tslib@^2.3.1:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.5.0.tgz#42bfed86f5787aeb41d031866c8f402429e0fddf"
   integrity sha512-336iVw3rtn2BUK7ORdIAHTyxHGRIHVReokCR3XjbckJMK7ms8FysBfhLR8IXnAgy7T0PTPNBWKiH514FOW/WSg==

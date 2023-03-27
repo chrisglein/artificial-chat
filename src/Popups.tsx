@@ -1,11 +1,11 @@
 import React, { PropsWithChildren } from 'react';
 import {
-  Button,
   Text,
   View,
 } from 'react-native';
 import {Popup} from 'react-native-windows';
 import {StylesContext} from './Styles';
+import { Button, IFocusable } from '@fluentui/react-native';
 
 type PopupsContextType = {
     showAbout: boolean,
