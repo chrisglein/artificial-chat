@@ -44,7 +44,7 @@ function DialogFrame({children, show, close, titleIcon, titleIconStyle, title, b
       isOpen={show}
       isLightDismissEnabled={true}
       onDismiss={() => close()}>
-      <View style={[styles.feedbackDialog, {gap: 12}]}>
+      <View style={[styles.dialogBackground, {gap: 12}]}>
         <View style={{flexDirection: 'row', marginBottom: 4, gap: 4}}>
           <View style={[styles.dialogTitleIcon, titleIconStyle]}>
             <Text accessible={false}>{titleIcon}</Text>

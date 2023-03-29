@@ -22,7 +22,7 @@ const StylesContext = React.createContext<{
   dialogTitleIcon: StyleProp<TextStyle>;
   dialogTitle: StyleProp<TextStyle>;
   dialogSectionHeader: StyleProp<TextStyle>;
-  feedbackDialog: StyleProp<ViewStyle>;
+  dialogBackground: StyleProp<ViewStyle>;
   codeBlockTitle: StyleProp<TextStyle>;
   codeBlockTitleText: StyleProp<TextStyle>;
   hyperlinkIdle: StyleProp<TextStyle>;
@@ -33,7 +33,7 @@ const StylesContext = React.createContext<{
 const CreateStyles = (isDarkMode: boolean) => {
   return StyleSheet.create({
     appContent: {
-      backgroundColor: isDarkMode ? 'black' : 'white',
+      backgroundColor: isDarkMode ? '#1F1F1F' : '#F5F5F5',
       justifyContent: 'space-between',
       height: '100%',
     },
@@ -51,11 +51,11 @@ const CreateStyles = (isDarkMode: boolean) => {
       borderRadius: 8,
     },
     humanSection: {
-      backgroundColor: isDarkMode ? '#333355' : 'lightblue',
+      backgroundColor: isDarkMode ? '#2F2F4A' : '#E8EBFA',
       marginRight: 64,
     },
     AiSection: {
-      backgroundColor: isDarkMode ? '#444444' : 'lightgray',
+      backgroundColor: isDarkMode ? '#292929' : '#FFFFFF',
       marginLeft: 64,
     },
     sectionTitle: {
@@ -93,8 +93,8 @@ const CreateStyles = (isDarkMode: boolean) => {
     dialogSectionHeader: {
       fontSize: 16,
     },
-    feedbackDialog: {
-      backgroundColor: isDarkMode ? 'black' : 'white',
+    dialogBackground: {
+      backgroundColor: isDarkMode ? '#292929' : '#FFFFFF',
       padding: 12,
       borderRadius: 8,
       minWidth: 300
