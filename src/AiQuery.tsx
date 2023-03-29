@@ -41,6 +41,9 @@ function AiSectionWithQuery({prompt, intent, id, onResponse}: AiSectionWithQuery
     CallOpenAi({
       api: OpenAiApi.ChatCompletion,
       apiKey: settingsContext.apiKey,
+      options: {
+        chatModel: settingsContext.chatModel,
+      },
       instructions: `You are an intuitive assistant helping the user with a project. Your only job is need to determine the primary intent of the user's last prompt.
 If and only if you are absolutely certain the user's primary intent is to see an image, respond with exactly the string "${imageIntentSentinel}". Otherwise, respond with your description of their intent.`,
       identifier: "INTENT:",
@@ -64,6 +67,9 @@ If and only if you are absolutely certain the user's primary intent is to see an
       CallOpenAi({
         api: OpenAiApi.ChatCompletion,
         apiKey: settingsContext.apiKey,
+        options: {
+          chatModel: settingsContext.chatModel,
+        },
         instructions: `You are an assistant helping the user generate an image from a description. Take the user's prompt and reply with a valid image prompt, which is be a comma-separated list of keywords describing the desired image. An example list of keywords:
 - photography
 - fun
@@ -102,6 +108,7 @@ Respond with the image prompt string in the required format. Do not respond conv
         identifier: "TEXT-ANSWER:",
         prompt: prompt,
         options: {
+          chatModel: settingsContext.chatModel,
           promptHistory: chatHistory.entries.
             filter((entry) => { return entry.text !== undefined && entry.id < id; }).
             map((entry) => { return {role: entry.type == ChatSource.Human ? "user" : "assistant", "content": entry.text ?? ""} }),

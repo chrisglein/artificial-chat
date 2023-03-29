@@ -18,6 +18,7 @@ import {
   ChatContent,
   ChatHistoryContext
 } from './Chat';
+import { SettingsContext } from './Settings';
 import { StylesContext } from './Styles';
 import { FeedbackContext } from './Feedback';
 import Clipboard from '@react-native-clipboard/clipboard';
@@ -92,6 +93,7 @@ type AiSectionProps = PropsWithChildren<{
 }>;
 function AiSection({children, id, isLoading, copyValue, contentShownOnHover}: AiSectionProps): JSX.Element {
   const feedbackContext = React.useContext(FeedbackContext);
+  const settings = React.useContext(SettingsContext);
   const styles = React.useContext(StylesContext);
   const chatHistory = React.useContext(ChatHistoryContext);
   const [hovering, setHovering] = React.useState(false);
@@ -113,7 +115,7 @@ function AiSection({children, id, isLoading, copyValue, contentShownOnHover}: Ai
         <Text
           accessibilityRole="header"
           style={[styles.sectionTitle, {flexGrow: 1}]}>
-            AI
+            {settings.aiName}
         </Text>
         {hovering && contentShownOnHover}
         {hovering && id !== undefined && <HoverButton content="❌" tooltip="Delete this response" onPress={() => chatHistory.deleteResponse(id)}/>}

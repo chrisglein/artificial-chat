@@ -17,6 +17,8 @@ import { PopupsContext } from './Popups';
 
 function App(): JSX.Element {
   const [currentTheme, setCurrentTheme] = React.useState(Appearance.getColorScheme());
+  const [aiName, setAiName] = React.useState<string>("OpenAI");
+  const [chatModel, setChatModel] = React.useState<string>("gpt-3.5-turbo");
   const [apiKey, setApiKey] = React.useState<string | undefined>(undefined);
   const [scriptName, setScriptName] = React.useState<string | undefined>("");
   const [delayForArtificialResponse, setDelayForArtificialResponse] = React.useState<number>(1500);
@@ -36,6 +38,10 @@ function App(): JSX.Element {
     setDelayForArtificialResponse: setDelayForArtificialResponse,
     imageSize: imageSize,
     setImageSize: setImageSize,
+    aiName: aiName,
+    setAiName: setAiName,
+    chatModel: chatModel,
+    setChatModel: setChatModel,
   };
 
   const popups = {

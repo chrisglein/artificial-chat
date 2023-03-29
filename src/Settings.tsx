@@ -25,6 +25,10 @@ type SettingsContextType = {
   setDelayForArtificialResponse: (value: number) => void,
   imageSize: number,
   setImageSize: (value: number) => void,
+  aiName: string,
+  setAiName: (value: string) => void,
+  chatModel: string,
+  setChatModel: (value: string) => void,
 }
 const SettingsContext = React.createContext<SettingsContextType>({
   setApiKey: () => {},
@@ -32,6 +36,10 @@ const SettingsContext = React.createContext<SettingsContextType>({
   setDelayForArtificialResponse: () => {},
   imageSize: 256,
   setImageSize: () => {},
+  aiName: '',
+  setAiName: () => {},
+  chatModel: '',
+  setChatModel: () => {},
 });
 
 // Settings that are saved between app sessions
@@ -77,6 +85,8 @@ type SettingsPopupProps = {
 function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const settings = React.useContext(SettingsContext);
+  const [aiName, setAiName] = React.useState<string>(settings.aiName);
+  const [chatModel, setChatModel] = React.useState<string>(settings.chatModel);
   const [apiKey, setApiKey] = React.useState<string | undefined>(settings.apiKey);
   const [saveApiKey, setSaveApiKey] = React.useState<boolean>(false);
   const [scriptName, setScriptName] = React.useState<string>(settings.scriptName ?? "");
@@ -135,9 +145,24 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
       title="OpenAI Settings"
       buttons={buttons}>
       <View>
-        <Text>OpenAI API key</Text>
+        <Text accessibilityRole="header" style={styles.dialogSectionHeader}>AI Settings</Text>
+        <Text>AI Name</Text>
+        <Picker
+          accessibilityLabel="AI Name"
+          selectedValue={aiName}
+          onValueChange={(value) => setAiName(value)}>
+          {["OpenAI", "Azure OpenAI"].map(value => <Picker.Item label={value} value={value} key={value}/>)}
+        </Picker>
+        <Text>Chat Model</Text>
+        <Picker
+          accessibilityLabel="Chat Model"
+          selectedValue={chatModel}
+          onValueChange={(value) => setChatModel(value)}>
+          {["gpt-3.5-turbo", "gpt-4"].map(value => <Picker.Item label={value} value={value} key={value}/>)}
+        </Picker>
+        <Text>API key</Text>
         <TextInput
-          accessibilityLabel='OpenAI API key'
+          accessibilityLabel='API key'
           secureTextEntry={true}
           style={{flexGrow: 1, minHeight: 32}}
           onChangeText={value => setApiKey(value)}

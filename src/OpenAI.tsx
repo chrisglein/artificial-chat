@@ -5,6 +5,7 @@ enum OpenAiApi {
 }
 
 type OpenAiHandlerOptions = {
+  engine?: string,
   promptHistory?: ConversationEntry[],
   imageSize?: number,
 }
@@ -16,10 +17,10 @@ type ConversationEntry = {
 
 type OpenAiHandlerType = {
   api: OpenAiApi,
-  engine?: string,
+  chatModel?: string,
   instructions?: string,
 }
-const OpenAiHandler = ({api, engine, instructions}: OpenAiHandlerType) => {
+const OpenAiHandler = ({api, instructions}: OpenAiHandlerType) => {
   const DefaultEngine = 'text-davinci-003-playground';
   const BaseApiUrl = 'https://api.openai.com';
   const APIVersion = 'v1';
@@ -30,7 +31,7 @@ const OpenAiHandler = ({api, engine, instructions}: OpenAiHandlerType) => {
   switch (api) {
     case OpenAiApi.Completion: 
       return {
-        url: `${OpenAIUrl}/engines/${engine ?? DefaultEngine}/completions`,
+        url: `${OpenAIUrl}/engines/${DefaultEngine}/completions`,
         body: (prompt: string, options?: OpenAiHandlerOptions) => {
           let wrappedPrompt = `${actualInstructions}\nHuman: ${prompt}.\nAI:`;
           return {
@@ -61,7 +62,7 @@ const OpenAiHandler = ({api, engine, instructions}: OpenAiHandlerType) => {
         url: `${OpenAIUrl}/chat/completions`,
         body: (prompt: string, options?: OpenAiHandlerOptions) => {
           return {
-            model: "gpt-3.5-turbo",
+            model: options?.chatModel ?? "gpt-3.5-turbo",
             messages: [
               {"role": "system", "content": actualInstructions},
               ...options?.promptHistory ?? [],
