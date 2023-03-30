@@ -27,7 +27,7 @@ import Markdown from 'react-native-markdown-display';
 type AiImageResponseProps = {
   imageUrls?: string[];
   prompt?: string;
-  rejectImage: () => void;
+  rejectImage?: () => void;
   requestMore: () => void;
 };
 function AiImageResponse({imageUrls, prompt, rejectImage, requestMore}: AiImageResponseProps): JSX.Element {
@@ -54,10 +54,10 @@ function AiImageResponse({imageUrls, prompt, rejectImage, requestMore}: AiImageR
         style={{flexShrink: 1, gap: 8}}>
         <Text>Here is an image created using the following requirements "{prompt}"</Text>
         <View style={{alignSelf: 'flex-end', alignItems: 'flex-end'}}>
-          <Button
+          {rejectImage && <Button
             accessibilityLabel="I didn't want to see an image"
             title="I didn't want to see an image"
-            onPress={() => rejectImage()}/>
+            onPress={() => rejectImage()}/>}
           <Button
             accessibilityLabel="Show me more"
             title="Show me more"
@@ -152,7 +152,7 @@ function AiSectionContent({id, content}: AiSectionContentProps): JSX.Element {
             return <AiImageResponse
               imageUrls={content.responses}
               prompt={content.prompt}
-              rejectImage={() => chatHistory.modifyResponse(id, {intent: 'text', responses: undefined})}
+              rejectImage={content.intent ? undefined : () => chatHistory.modifyResponse(id, {intent: 'text', responses: undefined})}
               requestMore={() => chatHistory.add({
                 type: ChatSource.Ai,
                 id: -1,
