@@ -21,6 +21,8 @@ const StylesContext = React.createContext<{
   inlineCard: StyleProp<ViewStyle>;
   dialogTitleIcon: StyleProp<TextStyle>;
   dialogTitle: StyleProp<TextStyle>;
+  dialogSectionsContainer: StyleProp<ViewStyle>;
+  dialogSection: StyleProp<ViewStyle>;
   dialogSectionHeader: StyleProp<TextStyle>;
   dialogBackground: StyleProp<ViewStyle>;
   dialogButtons: StyleProp<ViewStyle>;
@@ -91,8 +93,18 @@ const CreateStyles = (isDarkMode: boolean) => {
     dialogTitle: {
       fontSize: 20,
     },
+    dialogSectionsContainer: {
+      gap: 12,
+    },
+    dialogSection: {
+      backgroundColor: isDarkMode ? '#1F1F1F' : '#F5F5F5',
+      borderRadius: 8,
+      padding: 12,
+    },
     dialogSectionHeader: {
       fontSize: 16,
+      fontWeight: '600',
+      marginBottom: 4,
     },
     dialogBackground: {
       backgroundColor: isDarkMode ? '#292929' : '#FFFFFF',

@@ -65,4 +65,19 @@ function DialogFrame({children, show, close, isLightDismissEnabled, titleIcon, t
   )
 }
 
-export { PopupsContext, DialogFrame }
+type DialogSectionProps = PropsWithChildren<{
+  header: string,
+}>;
+function DialogSection({children, header}: DialogSectionProps): JSX.Element {
+  const styles = React.useContext(StylesContext);
+  return (
+    <View>
+      <Text accessibilityRole="header" style={styles.dialogSectionHeader}>{header}</Text>
+      <View style={styles.dialogSection}>
+        {children}
+      </View>
+    </View>
+  );
+}
+
+export { PopupsContext, DialogFrame, DialogSection }

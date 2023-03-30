@@ -6,7 +6,10 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import {DialogFrame} from './Popups';
+import {
+  DialogFrame,
+  DialogSection,
+} from './Popups';
 import {Hyperlink} from './Controls';
 import {StylesContext} from './Styles';
 import {Picker} from '@react-native-picker/picker';
@@ -159,65 +162,64 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
       titleIcon="⚙️"
       title="OpenAI Settings"
       buttons={buttons}>
-      <View>
-        <Text accessibilityRole="header" style={styles.dialogSectionHeader}>AI Settings</Text>
-        <Text>AI Endpoint</Text>
-        <TextInput
-          accessibilityLabel="AI Endpoint"
-          style={{flexGrow: 1, minHeight: 32}}
-          value={aiEndpoint}
-          onChangeText={value => setAiEndpoint(value)}/>
-        <Text>Chat Model</Text>
-        <Picker
-          accessibilityLabel="Chat Model"
-          selectedValue={chatModel}
-          onValueChange={(value) => setChatModel(value)}>
-          {["gpt-3.5-turbo", "gpt-4"].map(value => <Picker.Item label={value} value={value} key={value}/>)}
-        </Picker>
-        <Text>API key</Text>
-        <TextInput
-          accessibilityLabel='API key'
-          secureTextEntry={true}
-          style={{flexGrow: 1, minHeight: 32}}
-          onChangeText={value => setApiKey(value)}
-          value={apiKey}/>
-          <View style={styles.horizontalContainer}>
-            <Switch
-              accessibilityLabel="Remember this"
-              value={saveApiKey}
-              onValueChange={(value) => setSaveApiKey(value)}/>
-            <Text>Remember this </Text>
-          </View>
-        <Hyperlink
-          url="https://platform.openai.com/account/api-keys"/>
-      </View>
-      <View>
-        <Text accessibilityRole="header" style={styles.dialogSectionHeader}>AI Scripts</Text>
-        <Text>Script</Text>
-        <Picker
-          accessibilityLabel="Script"
-          selectedValue={scriptName}
-          onValueChange={(value) => setScriptName(value)}>
-          {ChatScriptNames.map(name => <Picker.Item label={name} value={name} key={name}/>)}
-          <Picker.Item label="None" value=""/>
-        </Picker>
-        <Text>Artificial Delay in Script Response</Text>
-        <TextInput
-          accessibilityLabel="Artificial Delay in Script Response"
-          keyboardType="numeric"
-          style={{flexGrow: 1, minHeight: 32}}
-          onChangeText={value => setDelayForArtificialResponse(parseInt(value))}
-          value={delayForArtificialResponse.toString()}/>
-      </View>
-      <View>
-        <Text accessibilityRole="header" style={styles.dialogSectionHeader}>Image Generation</Text>
-        <Text>Image Size</Text>
-        <Picker
-          accessibilityLabel="Image Size"
-          selectedValue={imageSize}
-          onValueChange={(value) => setImageSize(value)}>
-          {[256, 512, 1024].map(size => <Picker.Item label={size.toString()} value={size} key={size}/>)}
-        </Picker>
+      <View style={styles.dialogSectionsContainer}>
+        <DialogSection header="AI Settings">
+          <Text>AI Endpoint</Text>
+          <TextInput
+            accessibilityLabel="AI Endpoint"
+            style={{flexGrow: 1, minHeight: 32}}
+            value={aiEndpoint}
+            onChangeText={value => setAiEndpoint(value)}/>
+          <Text>Chat Model</Text>
+          <Picker
+            accessibilityLabel="Chat Model"
+            selectedValue={chatModel}
+            onValueChange={(value) => setChatModel(value)}>
+            {["gpt-3.5-turbo", "gpt-4"].map(value => <Picker.Item label={value} value={value} key={value}/>)}
+          </Picker>
+          <Text>API key</Text>
+          <TextInput
+            accessibilityLabel='API key'
+            secureTextEntry={true}
+            style={{flexGrow: 1, minHeight: 32}}
+            onChangeText={value => setApiKey(value)}
+            value={apiKey}/>
+            <View style={styles.horizontalContainer}>
+              <Switch
+                accessibilityLabel="Remember this"
+                value={saveApiKey}
+                onValueChange={(value) => setSaveApiKey(value)}/>
+              <Text>Remember this </Text>
+            </View>
+          <Hyperlink
+            url="https://platform.openai.com/account/api-keys"/>
+        </DialogSection>
+        <DialogSection header="AI Scripts">
+          <Text>Script</Text>
+          <Picker
+            accessibilityLabel="Script"
+            selectedValue={scriptName}
+            onValueChange={(value) => setScriptName(value)}>
+            {ChatScriptNames.map(name => <Picker.Item label={name} value={name} key={name}/>)}
+            <Picker.Item label="None" value=""/>
+          </Picker>
+          <Text>Artificial Delay in Script Response</Text>
+          <TextInput
+            accessibilityLabel="Artificial Delay in Script Response"
+            keyboardType="numeric"
+            style={{flexGrow: 1, minHeight: 32}}
+            onChangeText={value => setDelayForArtificialResponse(parseInt(value))}
+            value={delayForArtificialResponse.toString()}/>
+        </DialogSection>
+        <DialogSection header="Image Generation">
+          <Text>Image Size</Text>
+          <Picker
+            accessibilityLabel="Image Size"
+            selectedValue={imageSize}
+            onValueChange={(value) => setImageSize(value)}>
+            {[256, 512, 1024].map(size => <Picker.Item label={size.toString()} value={size} key={size}/>)}
+          </Picker>
+        </DialogSection>
       </View>
     </DialogFrame>
   );
