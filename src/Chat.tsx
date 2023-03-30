@@ -13,9 +13,6 @@ import {
   FeedbackContext,
   FeedbackPopup,
 } from './Feedback';
-import {
-  SettingsContext,
-} from './Settings';
 import { PopupsContext } from './Popups';
 import { HoverButton } from './Controls';
 
@@ -34,7 +31,7 @@ type ChatElement = {
   contentType: ChatContent;
   intent?: string;
   prompt?: string;
-  text?: string;
+  responses?: string[];
   content?: JSX.Element;
 }
 
@@ -43,10 +40,12 @@ const ChatHistoryContext = React.createContext<{
   entries: ChatElement[];
   modifyResponse: (id: number, delta?: any) => void;
   deleteResponse: (id: number) => void;
+  add: (response: ChatElement) => void;
 }>({
   entries: [],
   modifyResponse: () => {},
   deleteResponse: () => {},
+  add: () => {},
 });
 
 // Context for being able to drive the chat scroller
@@ -108,7 +107,6 @@ type ChatProps = {
 function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const chatHistory = React.useContext(ChatHistoryContext);
-  const settings = React.useContext(SettingsContext);
   const popups = React.useContext(PopupsContext);
   const [showFeedbackPopup, setShowFeedbackPopup] = React.useState(false);
   const [feedbackTargetResponse, setFeedbackTargetResponse] = React.useState<string | undefined>(undefined);
@@ -138,7 +136,6 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
         <View style={styles.appContent}>
           <ScrollView
             accessibilityLabel="Chat log"
-            contentInsetAdjustmentBehavior="automatic"
             ref={scrollViewRef}
             style={{flexShrink: 1}}>
             <View
@@ -151,12 +148,12 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
                       // Human inputs are always plain text
                       <HumanSection
                         id={entry.id}
-                        content={entry.text}/> :
+                        content={entry.responses ? entry.responses[0] : ""}/> :
                       entry.content ?
                         // The element may have provided its own UI
                         entry.content :
                         // Otherwise, either render the completed query or start a query to get the resolved text
-                        entry.text ?
+                        entry.responses ?
                           <AiSectionContent
                             id={entry.id}
                             content={entry}/> : 
@@ -164,8 +161,8 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
                             id={entry.id}
                             prompt={entry.prompt ?? ""}
                             intent={entry.intent}
-                            onResponse={({prompt, response, contentType}) => 
-                              chatHistory.modifyResponse(entry.id, {prompt: prompt, text: response, contentType: contentType})}/>
+                            onResponse={({prompt, responses, contentType}) => 
+                              chatHistory.modifyResponse(entry.id, {prompt: prompt, responses: responses, contentType: contentType})}/>
                   }
                 </View>
               ))}
@@ -176,7 +173,7 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
                     title="🔁 Regenerate response"
                     onPress={() => {
                       // Clear the response for the last entry
-                      chatHistory.modifyResponse(entries.length - 1, {text: undefined});
+                      chatHistory.modifyResponse(entries.length - 1, {responses: undefined});
                     }}/>
                 </View>
               }

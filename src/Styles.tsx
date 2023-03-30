@@ -21,8 +21,11 @@ const StylesContext = React.createContext<{
   inlineCard: StyleProp<ViewStyle>;
   dialogTitleIcon: StyleProp<TextStyle>;
   dialogTitle: StyleProp<TextStyle>;
+  dialogSectionsContainer: StyleProp<ViewStyle>;
+  dialogSection: StyleProp<ViewStyle>;
   dialogSectionHeader: StyleProp<TextStyle>;
-  feedbackDialog: StyleProp<ViewStyle>;
+  dialogBackground: StyleProp<ViewStyle>;
+  dialogButtons: StyleProp<ViewStyle>;
   codeBlockTitle: StyleProp<TextStyle>;
   codeBlockTitleText: StyleProp<TextStyle>;
   hyperlinkIdle: StyleProp<TextStyle>;
@@ -33,7 +36,7 @@ const StylesContext = React.createContext<{
 const CreateStyles = (isDarkMode: boolean) => {
   return StyleSheet.create({
     appContent: {
-      backgroundColor: isDarkMode ? 'black' : 'white',
+      backgroundColor: isDarkMode ? '#1F1F1F' : '#F5F5F5',
       justifyContent: 'space-between',
       height: '100%',
     },
@@ -51,11 +54,11 @@ const CreateStyles = (isDarkMode: boolean) => {
       borderRadius: 8,
     },
     humanSection: {
-      backgroundColor: isDarkMode ? '#333355' : 'lightblue',
+      backgroundColor: isDarkMode ? '#2F2F4A' : '#E8EBFA',
       marginRight: 64,
     },
     AiSection: {
-      backgroundColor: isDarkMode ? '#444444' : 'lightgray',
+      backgroundColor: isDarkMode ? '#292929' : '#FFFFFF',
       marginLeft: 64,
     },
     sectionTitle: {
@@ -90,14 +93,32 @@ const CreateStyles = (isDarkMode: boolean) => {
     dialogTitle: {
       fontSize: 20,
     },
+    dialogSectionsContainer: {
+      gap: 12,
+    },
+    dialogSection: {
+      backgroundColor: isDarkMode ? '#1F1F1F' : '#F5F5F5',
+      borderRadius: 8,
+      padding: 12,
+    },
     dialogSectionHeader: {
       fontSize: 16,
+      fontWeight: '600',
+      marginBottom: 4,
     },
-    feedbackDialog: {
-      backgroundColor: isDarkMode ? 'black' : 'white',
+    dialogBackground: {
+      backgroundColor: isDarkMode ? '#292929' : '#FFFFFF',
       padding: 12,
       borderRadius: 8,
       minWidth: 300
+    },
+    dialogButtons: {
+      marginTop: 12,
+      alignSelf: 'flex-end',
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      gap: 4,
     },
     codeBlockTitle: {
       backgroundColor: isDarkMode ? 'white' : '#444',

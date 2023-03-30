@@ -124,4 +124,17 @@ function Hyperlink({url, text}: HyperlinkProps): JSX.Element {
   );
 }
 
-export { HoverButton, Attribution, ConsentSwitch, ImageSelection, Hyperlink, CodeBlock };
+function SwitchWithLabel({label, value, onValueChange}: {label: string, value: boolean, onValueChange: (value: boolean) => void}): JSX.Element {
+  return (
+    <View style={{flexDirection: 'row', alignItems: 'flex-start'}}>
+      <Switch
+        style={{marginTop: -6}}
+        accessibilityLabel={label}
+        value={value}
+        onValueChange={onValueChange}/>
+      <Text style={{marginTop: 4}}>{label}</Text>
+    </View>
+  );
+}
+
+export { HoverButton, Attribution, ConsentSwitch, ImageSelection, Hyperlink, CodeBlock, SwitchWithLabel };

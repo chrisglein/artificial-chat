@@ -75,13 +75,13 @@ function AutomatedChatSession({entries, appendEntry, clearConversation}: Automat
             type: ChatSource.Human,
             id: entries.length,
             contentType: ChatContent.Text,
-            text: text,
+            responses: [text],
           },
           {
             id: entries.length + 1,
             type: ChatSource.Ai,
             contentType: ChatContent.Text,
-            text: text,
+            responses: [text],
             content: 
               <AiSectionWithFakeResponse id={entries.length + 1}>
                 {aiResponse}
@@ -93,7 +93,7 @@ function AutomatedChatSession({entries, appendEntry, clearConversation}: Automat
             id: entries.length,
             type: ChatSource.Ai,
             contentType: ChatContent.Error,
-            text: '',
+            responses: [''],
             content: 
               <AiSectionWithFakeResponse id={entries.length}>
                 {aiResponse}
@@ -108,7 +108,7 @@ function AutomatedChatSession({entries, appendEntry, clearConversation}: Automat
           id: entries.length,
           type: ChatSource.Human,
           contentType: ChatContent.Text,
-          text: text,
+          responses: [text],
         },
         {
           id: entries.length + 1,
@@ -161,7 +161,7 @@ function ChatSession(): JSX.Element {
     } else {
       let entry = modifiedEntries[index];
 
-      if (delta.hasOwnProperty('text')) entry.text = delta.text;
+      if (delta.hasOwnProperty('responses')) entry.responses = delta.responses;
       if (delta.hasOwnProperty('contentType')) entry.contentType = delta.contentType;
       if (delta.hasOwnProperty('prompt')) entry.prompt = delta.prompt;
       if (delta.hasOwnProperty('intent')) entry.intent = delta.intent;
@@ -184,7 +184,14 @@ function ChatSession(): JSX.Element {
   const clearConversation = () => setEntries([]);
   
   return (
-    <ChatHistoryContext.Provider value={{entries: entries, modifyResponse: modifyEntry, deleteResponse: deleteEntry}}>
+    <ChatHistoryContext.Provider value={{
+        entries: entries,
+        modifyResponse: modifyEntry,
+        deleteResponse: deleteEntry,
+        add: element => {
+          element.id = entries.length;
+          appendEntry(element);
+        }}}>
       <AutomatedChatSession
         entries={entries}
         appendEntry={appendEntry}

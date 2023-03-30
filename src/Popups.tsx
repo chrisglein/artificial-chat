@@ -23,12 +23,13 @@ const PopupsContext = React.createContext<PopupsContextType>({
 type DialogFrameType = PropsWithChildren<{
   show: boolean,
   close: () => void;
+  isLightDismissEnabled?: boolean,
   titleIcon: string,
   titleIconStyle?: any,
   title: string,
   buttons?: JSX.Element[],
 }>;
-function DialogFrame({children, show, close, titleIcon, titleIconStyle, title, buttons}: DialogFrameType) {
+function DialogFrame({children, show, close, isLightDismissEnabled, titleIcon, titleIconStyle, title, buttons}: DialogFrameType) {
   const styles = React.useContext(StylesContext);
 
   const populatedButtons = buttons ?? [<Button
@@ -42,9 +43,9 @@ function DialogFrame({children, show, close, titleIcon, titleIconStyle, title, b
   return (
     <Popup
       isOpen={show}
-      isLightDismissEnabled={true}
+      isLightDismissEnabled={isLightDismissEnabled ?? true}
       onDismiss={() => close()}>
-      <View style={[styles.feedbackDialog, {gap: 12}]}>
+      <View style={[styles.dialogBackground, {gap: 12}]}>
         <View style={{flexDirection: 'row', marginBottom: 4, gap: 4}}>
           <View style={[styles.dialogTitleIcon, titleIconStyle]}>
             <Text accessible={false}>{titleIcon}</Text>
@@ -56,7 +57,7 @@ function DialogFrame({children, show, close, titleIcon, titleIconStyle, title, b
           </Text>
         </View>
         {children}
-        <View style={{marginTop: 12, alignSelf: 'flex-end'}}>
+        <View style={styles.dialogButtons}>
           {buttonList}
         </View>
       </View>
@@ -64,4 +65,19 @@ function DialogFrame({children, show, close, titleIcon, titleIconStyle, title, b
   )
 }
 
-export { PopupsContext, DialogFrame }
+type DialogSectionProps = PropsWithChildren<{
+  header: string,
+}>;
+function DialogSection({children, header}: DialogSectionProps): JSX.Element {
+  const styles = React.useContext(StylesContext);
+  return (
+    <View>
+      <Text accessibilityRole="header" style={styles.dialogSectionHeader}>{header}</Text>
+      <View style={styles.dialogSection}>
+        {children}
+      </View>
+    </View>
+  );
+}
+
+export { PopupsContext, DialogFrame, DialogSection }
