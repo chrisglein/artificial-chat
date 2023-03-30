@@ -24,28 +24,30 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import Markdown from 'react-native-markdown-display';
 
 type AiImageResponseProps = {
-  imageUrl?: string;
+  imageUrls?: string[];
   prompt?: string;
   rejectImage: () => void;
 };
-function AiImageResponse({imageUrl, prompt, rejectImage}: AiImageResponseProps): JSX.Element {
+function AiImageResponse({imageUrls, prompt, rejectImage}: AiImageResponseProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   return (
     <View
       style={[styles.horizontalContainer, {flexWrap: 'nowrap', alignItems: 'flex-start'}]}>
-      <Pressable
-        onPress={() => {
-          if (imageUrl) {
-            Linking.openURL(imageUrl);
-          }
-        }}>
-        <Image
-          accessibilityRole="imagebutton"
-          accessibilityLabel={prompt}
-          source={{uri: imageUrl}}
-          alt={prompt}
-          style={styles.dalleImage}/>
-      </Pressable>
+      {imageUrls?.map((imageUrl, index) => (
+        <Pressable
+          key={index}
+          onPress={() => {
+            if (imageUrl) {
+              Linking.openURL(imageUrl);
+            }
+          }}>
+          <Image
+            accessibilityRole="imagebutton"
+            accessibilityLabel={prompt}
+            source={{uri: imageUrl}}
+            alt={prompt}
+            style={styles.dalleImage}/>
+        </Pressable>))}
       <View
         style={{flexShrink: 1, gap: 8}}>
         <Text>Here is an image created using the following requirements "{prompt}"</Text>
@@ -137,20 +139,21 @@ type AiSectionContentProps = {
 }
 function AiSectionContent({id, content}: AiSectionContentProps): JSX.Element {
   const chatHistory = React.useContext(ChatHistoryContext);
+  const firstResult = content.text ? content.text[0] : "";
   return (
-    <AiSection copyValue={content.text} id={id}>
+    <AiSection copyValue={firstResult} id={id}>
       {(() => {
         switch (content.contentType) {
           case ChatContent.Error:
-            return <Text style={{color: 'red'}}>{content.text}</Text>
+            return <Text style={{color: 'red'}}>{firstResult}</Text>
           case ChatContent.Image:
             return <AiImageResponse
-              imageUrl={content.text}
+              imageUrls={content.text}
               prompt={content.prompt}
               rejectImage={() => chatHistory.modifyResponse(id, {intent: 'text', text: undefined})}/>;
           default:
           case ChatContent.Text:
-            return <AiTextResponse text={content.text}/>
+            return <AiTextResponse text={firstResult}/>
         }
       })()}
     </AiSection>

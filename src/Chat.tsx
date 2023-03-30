@@ -34,7 +34,7 @@ type ChatElement = {
   contentType: ChatContent;
   intent?: string;
   prompt?: string;
-  text?: string;
+  text?: string[];
   content?: JSX.Element;
 }
 
@@ -150,7 +150,7 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
                       // Human inputs are always plain text
                       <HumanSection
                         id={entry.id}
-                        content={entry.text}/> :
+                        content={entry.text ? entry.text[0] : ""}/> :
                       entry.content ?
                         // The element may have provided its own UI
                         entry.content :
@@ -163,8 +163,8 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
                             id={entry.id}
                             prompt={entry.prompt ?? ""}
                             intent={entry.intent}
-                            onResponse={({prompt, response, contentType}) => 
-                              chatHistory.modifyResponse(entry.id, {prompt: prompt, text: response, contentType: contentType})}/>
+                            onResponse={({prompt, responses, contentType}) => 
+                              chatHistory.modifyResponse(entry.id, {prompt: prompt, text: responses, contentType: contentType})}/>
                   }
                 </View>
               ))}

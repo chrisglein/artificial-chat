@@ -53,7 +53,7 @@ const OpenAiHandler = ({api, options, instructions}: OpenAiHandlerType) => {
           let match = fullTextResult.matchAll(regex).next().value;
           let trimmedTextResult = match[2].trim();
           console.log(`AI response: "${trimmedTextResult}"`);
-          return trimmedTextResult;
+          return [trimmedTextResult];
         }
       }
     case OpenAiApi.ChatCompletion: 
@@ -72,7 +72,7 @@ const OpenAiHandler = ({api, options, instructions}: OpenAiHandlerType) => {
         response: (json: any) => {
           let result = json.choices[0].message.content;
           console.log(`AI response: "${result}"`);
-          return result;
+          return [result];
         }
       }
     case OpenAiApi.Generations: 
@@ -82,13 +82,13 @@ const OpenAiHandler = ({api, options, instructions}: OpenAiHandlerType) => {
           let imageSize = options?.imageSize ?? 256;
           return {
             prompt: prompt,
-            n: 1,
+            n: 2,
             size: `${imageSize}x${imageSize}`,
           };
         },
         response: (json: any) => {
           console.log(`AI response: "${json.data[0].url}"`);
-          return json.data[0].url;
+          return json.data.map(item => item.url);
         },
       }
     default:
@@ -104,7 +104,7 @@ type CallOpenAiType = {
   prompt: string,
   options?: OpenAiHandlerOptions,
   onError: (error: string) => void,
-  onResult: (result: string) => void,
+  onResult: (results: string[]) => void,
   onComplete: () => void
 }
 const CallOpenAi = async ({api, apiKey, instructions, identifier, prompt, options, onError, onResult, onComplete}: CallOpenAiType) => {
@@ -134,7 +134,7 @@ const CallOpenAi = async ({api, apiKey, instructions, identifier, prompt, option
           'Authorization': `Bearer ${effectiveApiKey}`,
           'Content-Type': 'application/json',
           // Azure endpoint seems to want this instead of Bearer, despite docs https://learn.microsoft.com/en-us/azure/cognitive-services/openai/how-to/managed-identity#assign-yourself-to-the-cognitive-services-user-role
-          'Ocp-Apim-Subscription-Key': '${effectiveApiKey}', 
+          'Ocp-Apim-Subscription-Key': `${effectiveApiKey}`, 
         },
         body: JSON.stringify(body),
       });

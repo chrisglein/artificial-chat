@@ -18,7 +18,7 @@ type AiSectionWithQueryProps = {
   prompt: string;
   intent?: string;
   id: number;
-  onResponse: ({prompt, intent, response, contentType} : { prompt: string, intent?: string, response: string, contentType: ChatContent} ) => void;
+  onResponse: ({prompt, intent, responses, contentType} : { prompt: string, intent?: string, responses: string[], contentType: ChatContent} ) => void;
 };
 function AiSectionWithQuery({prompt, intent, id, onResponse}: AiSectionWithQueryProps): JSX.Element {
   const settingsContext = React.useContext(SettingsContext);
@@ -53,7 +53,7 @@ If and only if you are absolutely certain the user's primary intent is to see an
         setIsRequestForImage(false);
       },
       onResult: (result) => {
-        const isImage = result == imageIntentSentinel;
+        const isImage = result[0] == imageIntentSentinel;
         setIsRequestForImage(isImage);
       },
       onComplete: () => {
@@ -93,7 +93,7 @@ Respond with the image prompt string in the required format. Do not respond conv
           setIsRequestForImage(false);
         },
         onResult: (result) => {
-          setImagePrompt(result);
+          setImagePrompt(result[0]);
         },
         onComplete: () => {
       }});
@@ -119,13 +119,13 @@ Respond with the image prompt string in the required format. Do not respond conv
         onError: (error) => {
           onResponse({
             prompt: prompt,
-            response: error ?? "",
+            responses: [error] ?? [""],
             contentType: ChatContent.Error});
         },
         onResult: (result) => {
           onResponse({
             prompt: prompt,
-            response: result ?? "", 
+            responses: result ?? [""], 
             contentType: ChatContent.Text});
         },
         onComplete: () => {
@@ -147,13 +147,13 @@ Respond with the image prompt string in the required format. Do not respond conv
           onError: (error) => {
             onResponse({
               prompt: imagePrompt,
-              response: error ?? "",
+              responses: [error] ?? [""],
               contentType: ChatContent.Error});
           },
           onResult: (result) => {
             onResponse({
               prompt: imagePrompt,
-              response: result ?? "",
+              responses: result ?? [""],
               contentType: ChatContent.Image});
           },
           onComplete: () => {

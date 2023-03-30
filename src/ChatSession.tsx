@@ -75,13 +75,13 @@ function AutomatedChatSession({entries, appendEntry, clearConversation}: Automat
             type: ChatSource.Human,
             id: entries.length,
             contentType: ChatContent.Text,
-            text: text,
+            text: [text],
           },
           {
             id: entries.length + 1,
             type: ChatSource.Ai,
             contentType: ChatContent.Text,
-            text: text,
+            text: [text],
             content: 
               <AiSectionWithFakeResponse id={entries.length + 1}>
                 {aiResponse}
@@ -93,7 +93,7 @@ function AutomatedChatSession({entries, appendEntry, clearConversation}: Automat
             id: entries.length,
             type: ChatSource.Ai,
             contentType: ChatContent.Error,
-            text: '',
+            text: [''],
             content: 
               <AiSectionWithFakeResponse id={entries.length}>
                 {aiResponse}
@@ -108,7 +108,7 @@ function AutomatedChatSession({entries, appendEntry, clearConversation}: Automat
           id: entries.length,
           type: ChatSource.Human,
           contentType: ChatContent.Text,
-          text: text,
+          text: [text],
         },
         {
           id: entries.length + 1,
