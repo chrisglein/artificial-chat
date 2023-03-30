@@ -10,7 +10,10 @@ import {
   DialogFrame,
   DialogSection,
 } from './Popups';
-import {Hyperlink} from './Controls';
+import {
+  Hyperlink,
+  SwitchWithLabel,
+} from './Controls';
 import {StylesContext} from './Styles';
 import {Picker} from '@react-native-picker/picker';
 import {ChatScriptNames} from './ChatScript';
@@ -26,6 +29,8 @@ type SettingsContextType = {
   setScriptName: (value: string) => void,
   delayForArtificialResponse?: number,
   setDelayForArtificialResponse: (value: number) => void,
+  detectImageIntent: boolean,
+  setDetectImageIntent: (value: boolean) => void,
   imageSize: number,
   setImageSize: (value: number) => void,
   aiEndpoint: string,
@@ -37,6 +42,8 @@ const SettingsContext = React.createContext<SettingsContextType>({
   setApiKey: () => {},
   setScriptName: () => {},
   setDelayForArtificialResponse: () => {},
+  detectImageIntent: false,
+  setDetectImageIntent: () => {},
   imageSize: 256,
   setImageSize: () => {},
   aiEndpoint: '',
@@ -94,6 +101,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   const [saveApiKey, setSaveApiKey] = React.useState<boolean>(false);
   const [scriptName, setScriptName] = React.useState<string>(settings.scriptName ?? "");
   const [delayForArtificialResponse, setDelayForArtificialResponse] = React.useState<number>(settings.delayForArtificialResponse ?? 0);
+  const [detectImageIntent, setDetectImageIntent] = React.useState<boolean>(settings.detectImageIntent);
   const [imageSize, setImageSize] = React.useState<number>(256);
 
   // It may seem weird to do this when the UI loads, not the app, but it's okay
@@ -118,9 +126,12 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   }, []);
 
   const save = () => {
+    settings.setAiEndpoint(aiEndpoint);
+    settings.setChatModel(chatModel);
     settings.setApiKey(apiKey);
     settings.setScriptName(scriptName);
     settings.setDelayForArtificialResponse(delayForArtificialResponse);
+    settings.setDetectImageIntent(detectImageIntent);
     settings.setImageSize(imageSize);
 
     close();
@@ -132,9 +143,12 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   }
 
   const cancel = () => {
+    setAiEndpoint(settings.aiEndpoint);
+    setChatModel(settings.chatModel);
     setApiKey(settings.apiKey);
     setScriptName(settings.scriptName ?? "");
     setDelayForArtificialResponse(settings.delayForArtificialResponse ?? 0);
+    setDetectImageIntent(settings.detectImageIntent);
     setImageSize(settings.imageSize);
     close();
   }
@@ -174,7 +188,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
           <Picker
             accessibilityLabel="Chat Model"
             selectedValue={chatModel}
-            onValueChange={(value) => setChatModel(value)}>
+            onValueChange={value => setChatModel(value)}>
             {["gpt-3.5-turbo", "gpt-4"].map(value => <Picker.Item label={value} value={value} key={value}/>)}
           </Picker>
           <Text>API key</Text>
@@ -184,13 +198,10 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             style={{flexGrow: 1, minHeight: 32}}
             onChangeText={value => setApiKey(value)}
             value={apiKey}/>
-            <View style={styles.horizontalContainer}>
-              <Switch
-                accessibilityLabel="Remember this"
-                value={saveApiKey}
-                onValueChange={(value) => setSaveApiKey(value)}/>
-              <Text>Remember this </Text>
-            </View>
+            <SwitchWithLabel
+              label="Remember this"
+              value={saveApiKey}
+              onValueChange={value => setSaveApiKey(value)}/>
           <Hyperlink
             url="https://platform.openai.com/account/api-keys"/>
         </DialogSection>
@@ -199,7 +210,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
           <Picker
             accessibilityLabel="Script"
             selectedValue={scriptName}
-            onValueChange={(value) => setScriptName(value)}>
+            onValueChange={value => setScriptName(value)}>
             {ChatScriptNames.map(name => <Picker.Item label={name} value={name} key={name}/>)}
             <Picker.Item label="None" value=""/>
           </Picker>
@@ -212,11 +223,15 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             value={delayForArtificialResponse.toString()}/>
         </DialogSection>
         <DialogSection header="Image Generation">
+          <SwitchWithLabel
+            label="Detect image intent"
+            value={detectImageIntent}
+            onValueChange={value => setDetectImageIntent(value)}/>
           <Text>Image Size</Text>
           <Picker
             accessibilityLabel="Image Size"
             selectedValue={imageSize}
-            onValueChange={(value) => setImageSize(value)}>
+            onValueChange={value => setImageSize(value)}>
             {[256, 512, 1024].map(size => <Picker.Item label={size.toString()} value={size} key={size}/>)}
           </Picker>
         </DialogSection>

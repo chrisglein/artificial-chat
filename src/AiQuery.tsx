@@ -34,7 +34,7 @@ function AiSectionWithQuery({prompt, intent, id, onResponse}: AiSectionWithQuery
     setIsLoading(true);
     setIsRequestForImage(undefined);
     setImagePrompt(undefined);
-    if (intent === 'text') {
+    if (intent === 'text' || !settingsContext.detectImageIntent) {
       setIsRequestForImage(false);
       return;
     }
