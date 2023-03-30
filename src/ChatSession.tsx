@@ -184,7 +184,14 @@ function ChatSession(): JSX.Element {
   const clearConversation = () => setEntries([]);
   
   return (
-    <ChatHistoryContext.Provider value={{entries: entries, modifyResponse: modifyEntry, deleteResponse: deleteEntry}}>
+    <ChatHistoryContext.Provider value={{
+        entries: entries,
+        modifyResponse: modifyEntry,
+        deleteResponse: deleteEntry,
+        add: element => {
+          element.id = entries.length;
+          appendEntry(element);
+        }}}>
       <AutomatedChatSession
         entries={entries}
         appendEntry={appendEntry}

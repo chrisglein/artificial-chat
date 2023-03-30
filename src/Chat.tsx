@@ -13,9 +13,6 @@ import {
   FeedbackContext,
   FeedbackPopup,
 } from './Feedback';
-import {
-  SettingsContext,
-} from './Settings';
 import { PopupsContext } from './Popups';
 import { HoverButton } from './Controls';
 
@@ -43,10 +40,12 @@ const ChatHistoryContext = React.createContext<{
   entries: ChatElement[];
   modifyResponse: (id: number, delta?: any) => void;
   deleteResponse: (id: number) => void;
+  add: (response: ChatElement) => void;
 }>({
   entries: [],
   modifyResponse: () => {},
   deleteResponse: () => {},
+  add: () => {},
 });
 
 // Context for being able to drive the chat scroller
@@ -108,7 +107,6 @@ type ChatProps = {
 function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const chatHistory = React.useContext(ChatHistoryContext);
-  const settings = React.useContext(SettingsContext);
   const popups = React.useContext(PopupsContext);
   const [showFeedbackPopup, setShowFeedbackPopup] = React.useState(false);
   const [feedbackTargetResponse, setFeedbackTargetResponse] = React.useState<string | undefined>(undefined);

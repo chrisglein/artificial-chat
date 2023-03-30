@@ -38,6 +38,11 @@ function AiSectionWithQuery({prompt, intent, id, onResponse}: AiSectionWithQuery
       setIsRequestForImage(false);
       return;
     }
+    if (intent === 'image') {
+      setImagePrompt(prompt);
+      setIsRequestForImage(true);
+      return;
+    }
     CallOpenAi({
       api: OpenAiApi.ChatCompletion,
       apiKey: settingsContext.apiKey,
@@ -63,7 +68,7 @@ If and only if you are absolutely certain the user's primary intent is to see an
 
   // If the intent is to request an image, then we need to create keywords for the image prompt
   React.useEffect(() => {
-    if (isRequestForImage) {
+    if (isRequestForImage && imagePrompt === undefined) {
       setIsLoading(true);
       CallOpenAi({
         api: OpenAiApi.ChatCompletion,

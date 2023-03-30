@@ -16,7 +16,8 @@ import {
 import {
   ChatElement,
   ChatContent,
-  ChatHistoryContext
+  ChatHistoryContext,
+  ChatSource,
 } from './Chat';
 import { StylesContext } from './Styles';
 import { FeedbackContext } from './Feedback';
@@ -27,8 +28,9 @@ type AiImageResponseProps = {
   imageUrls?: string[];
   prompt?: string;
   rejectImage: () => void;
+  requestMore: () => void;
 };
-function AiImageResponse({imageUrls, prompt, rejectImage}: AiImageResponseProps): JSX.Element {
+function AiImageResponse({imageUrls, prompt, rejectImage, requestMore}: AiImageResponseProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   return (
     <View
@@ -59,7 +61,7 @@ function AiImageResponse({imageUrls, prompt, rejectImage}: AiImageResponseProps)
           <Button
             accessibilityLabel="Show me more"
             title="Show me more"
-            onPress={() => console.log("Not yet implemented")}/>
+            onPress={() => requestMore()}/>
         </View>
       </View>
     </View>
@@ -150,7 +152,14 @@ function AiSectionContent({id, content}: AiSectionContentProps): JSX.Element {
             return <AiImageResponse
               imageUrls={content.responses}
               prompt={content.prompt}
-              rejectImage={() => chatHistory.modifyResponse(id, {intent: 'text', responses: undefined})}/>;
+              rejectImage={() => chatHistory.modifyResponse(id, {intent: 'text', responses: undefined})}
+              requestMore={() => chatHistory.add({
+                type: ChatSource.Ai,
+                id: -1,
+                contentType: ChatContent.Error,
+                intent: 'image',
+                prompt: content.prompt,
+              })}/>;
           default:
           case ChatContent.Text:
             return <AiTextResponse text={firstResult}/>
