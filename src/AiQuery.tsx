@@ -113,8 +113,8 @@ Respond with the image prompt string in the required format. Do not respond conv
           endpoint: settingsContext.aiEndpoint,
           chatModel: settingsContext.chatModel,
           promptHistory: chatHistory.entries.
-            filter((entry) => { return entry.text !== undefined && entry.id < id; }).
-            map((entry) => { return {role: entry.type == ChatSource.Human ? "user" : "assistant", "content": entry.text ?? ""} }),
+            filter((entry) => { return entry.responses !== undefined && entry.id < id; }).
+            map((entry) => { return {role: entry.type == ChatSource.Human ? "user" : "assistant", "content": entry.responses ? entry.responses[0] : ""} }),
         },
         onError: (error) => {
           onResponse({

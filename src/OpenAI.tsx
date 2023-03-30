@@ -88,7 +88,7 @@ const OpenAiHandler = ({api, options, instructions}: OpenAiHandlerType) => {
         },
         response: (json: any) => {
           console.log(`AI response: "${json.data[0].url}"`);
-          return json.data.map(item => item.url);
+          return json.data.map((item : any) => item.url);
         },
       }
     default:

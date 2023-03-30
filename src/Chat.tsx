@@ -34,7 +34,7 @@ type ChatElement = {
   contentType: ChatContent;
   intent?: string;
   prompt?: string;
-  text?: string[];
+  responses?: string[];
   content?: JSX.Element;
 }
 
@@ -150,12 +150,12 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
                       // Human inputs are always plain text
                       <HumanSection
                         id={entry.id}
-                        content={entry.text ? entry.text[0] : ""}/> :
+                        content={entry.responses ? entry.responses[0] : ""}/> :
                       entry.content ?
                         // The element may have provided its own UI
                         entry.content :
                         // Otherwise, either render the completed query or start a query to get the resolved text
-                        entry.text ?
+                        entry.responses ?
                           <AiSectionContent
                             id={entry.id}
                             content={entry}/> : 
@@ -164,7 +164,7 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
                             prompt={entry.prompt ?? ""}
                             intent={entry.intent}
                             onResponse={({prompt, responses, contentType}) => 
-                              chatHistory.modifyResponse(entry.id, {prompt: prompt, text: responses, contentType: contentType})}/>
+                              chatHistory.modifyResponse(entry.id, {prompt: prompt, responses: responses, contentType: contentType})}/>
                   }
                 </View>
               ))}
@@ -175,7 +175,7 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
                     title="🔁 Regenerate response"
                     onPress={() => {
                       // Clear the response for the last entry
-                      chatHistory.modifyResponse(entries.length - 1, {text: undefined});
+                      chatHistory.modifyResponse(entries.length - 1, {responses: undefined});
                     }}/>
                 </View>
               }

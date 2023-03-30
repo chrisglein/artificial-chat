@@ -139,7 +139,7 @@ type AiSectionContentProps = {
 }
 function AiSectionContent({id, content}: AiSectionContentProps): JSX.Element {
   const chatHistory = React.useContext(ChatHistoryContext);
-  const firstResult = content.text ? content.text[0] : "";
+  const firstResult = content.responses ? content.responses[0] : "";
   return (
     <AiSection copyValue={firstResult} id={id}>
       {(() => {
@@ -148,9 +148,9 @@ function AiSectionContent({id, content}: AiSectionContentProps): JSX.Element {
             return <Text style={{color: 'red'}}>{firstResult}</Text>
           case ChatContent.Image:
             return <AiImageResponse
-              imageUrls={content.text}
+              imageUrls={content.responses}
               prompt={content.prompt}
-              rejectImage={() => chatHistory.modifyResponse(id, {intent: 'text', text: undefined})}/>;
+              rejectImage={() => chatHistory.modifyResponse(id, {intent: 'text', responses: undefined})}/>;
           default:
           case ChatContent.Text:
             return <AiTextResponse text={firstResult}/>
