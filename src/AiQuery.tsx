@@ -142,6 +142,7 @@ Respond with the image prompt string in the required format. Do not respond conv
           prompt: imagePrompt,
           options: {
             endpoint: settingsContext.aiEndpoint,
+            responseCount: settingsContext.imageResponseCount,
             imageSize: settingsContext.imageSize,
           },
           onError: (error) => {

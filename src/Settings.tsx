@@ -31,6 +31,8 @@ type SettingsContextType = {
   setDelayForArtificialResponse: (value: number) => void,
   detectImageIntent: boolean,
   setDetectImageIntent: (value: boolean) => void,
+  imageResponseCount: number,
+  setImageResponseCount: (value: number) => void,
   imageSize: number,
   setImageSize: (value: number) => void,
   aiEndpoint: string,
@@ -44,6 +46,8 @@ const SettingsContext = React.createContext<SettingsContextType>({
   setDelayForArtificialResponse: () => {},
   detectImageIntent: false,
   setDetectImageIntent: () => {},
+  imageResponseCount: 1,
+  setImageResponseCount: () => {},
   imageSize: 256,
   setImageSize: () => {},
   aiEndpoint: '',
@@ -102,6 +106,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   const [scriptName, setScriptName] = React.useState<string>(settings.scriptName ?? "");
   const [delayForArtificialResponse, setDelayForArtificialResponse] = React.useState<number>(settings.delayForArtificialResponse ?? 0);
   const [detectImageIntent, setDetectImageIntent] = React.useState<boolean>(settings.detectImageIntent);
+  const [imageResponseCount, setImageResponseCount] = React.useState<number>(settings.imageResponseCount);
   const [imageSize, setImageSize] = React.useState<number>(256);
 
   // It may seem weird to do this when the UI loads, not the app, but it's okay
@@ -132,6 +137,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
     settings.setScriptName(scriptName);
     settings.setDelayForArtificialResponse(delayForArtificialResponse);
     settings.setDetectImageIntent(detectImageIntent);
+    settings.setImageResponseCount(imageResponseCount);
     settings.setImageSize(imageSize);
 
     close();
@@ -149,6 +155,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
     setScriptName(settings.scriptName ?? "");
     setDelayForArtificialResponse(settings.delayForArtificialResponse ?? 0);
     setDetectImageIntent(settings.detectImageIntent);
+    setImageResponseCount(settings.imageResponseCount);
     setImageSize(settings.imageSize);
     close();
   }
@@ -210,6 +217,13 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             label="Infer image intent from prompt"
             value={detectImageIntent}
             onValueChange={value => setDetectImageIntent(value)}/>
+          <Text>Image Count</Text>
+          <Picker
+            accessibilityLabel="Image Count"
+            selectedValue={imageResponseCount}
+            onValueChange={value => setImageResponseCount(typeof value === 'number' ? value : parseInt(value))}>
+            {[1, 2, 3, 4].map(number => <Picker.Item label={number.toString()} value={number} key={number}/>)}
+          </Picker>
           <Text>Image Size</Text>
           <Picker
             accessibilityLabel="Image Size"

@@ -9,6 +9,7 @@ type OpenAiHandlerOptions = {
   engine?: string,
   chatModel?: string,
   promptHistory?: ConversationEntry[],
+  responseCount?: number,
   imageSize?: number,
 }
 
@@ -34,7 +35,7 @@ const OpenAiHandler = ({api, options, instructions}: OpenAiHandlerType) => {
         body: (prompt: string) => {
           let wrappedPrompt = `${actualInstructions}\nHuman: ${prompt}.\nAI:`;
           return {
-            best_of: 1,
+            best_of: options?.responseCount ?? 1,
             echo: true,
             frequency_penalty: 0,
             logprobs: 0,
@@ -82,7 +83,7 @@ const OpenAiHandler = ({api, options, instructions}: OpenAiHandlerType) => {
           let imageSize = options?.imageSize ?? 256;
           return {
             prompt: prompt,
-            n: 2,
+            n: options?.responseCount ?? 1,
             size: `${imageSize}x${imageSize}`,
           };
         },

@@ -23,6 +23,7 @@ function App(): JSX.Element {
   const [scriptName, setScriptName] = React.useState<string | undefined>("");
   const [delayForArtificialResponse, setDelayForArtificialResponse] = React.useState<number>(1500);
   const [detectImageIntent, setDetectImageIntent] = React.useState<boolean>(true);
+  const [imageResponseCount, setImageResponseCount] = React.useState<number>(1);
   const [imageSize, setImageSize] = React.useState<number>(256);
   const [showSettingsPopup, setShowSettingsPopup] = React.useState(false);
   const [showAboutPopup, setShowAboutPopup] = React.useState(false);
@@ -39,6 +40,8 @@ function App(): JSX.Element {
     setDelayForArtificialResponse: setDelayForArtificialResponse,
     detectImageIntent: detectImageIntent,
     setDetectImageIntent: setDetectImageIntent,
+    imageResponseCount: imageResponseCount,
+    setImageResponseCount: setImageResponseCount,
     imageSize: imageSize,
     setImageSize: setImageSize,
     aiEndpoint: aiEndpoint,
