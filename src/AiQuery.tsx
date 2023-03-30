@@ -42,6 +42,7 @@ function AiSectionWithQuery({prompt, intent, id, onResponse}: AiSectionWithQuery
       api: OpenAiApi.ChatCompletion,
       apiKey: settingsContext.apiKey,
       options: {
+        endpoint: settingsContext.aiEndpoint,
         chatModel: settingsContext.chatModel,
       },
       instructions: `You are an intuitive assistant helping the user with a project. Your only job is need to determine the primary intent of the user's last prompt.
@@ -68,6 +69,7 @@ If and only if you are absolutely certain the user's primary intent is to see an
         api: OpenAiApi.ChatCompletion,
         apiKey: settingsContext.apiKey,
         options: {
+          endpoint: settingsContext.aiEndpoint,
           chatModel: settingsContext.chatModel,
         },
         instructions: `You are an assistant helping the user generate an image from a description. Take the user's prompt and reply with a valid image prompt, which is be a comma-separated list of keywords describing the desired image. An example list of keywords:
@@ -108,6 +110,7 @@ Respond with the image prompt string in the required format. Do not respond conv
         identifier: "TEXT-ANSWER:",
         prompt: prompt,
         options: {
+          endpoint: settingsContext.aiEndpoint,
           chatModel: settingsContext.chatModel,
           promptHistory: chatHistory.entries.
             filter((entry) => { return entry.text !== undefined && entry.id < id; }).
@@ -138,6 +141,7 @@ Respond with the image prompt string in the required format. Do not respond conv
           identifier: "IMAGE-ANSWER:",
           prompt: imagePrompt,
           options: {
+            endpoint: settingsContext.aiEndpoint,
             imageSize: settingsContext.imageSize,
           },
           onError: (error) => {

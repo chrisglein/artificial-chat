@@ -33,7 +33,7 @@ function HumanSection({children, id, content, disableCopy, contentShownOnHover}:
         <Text
           accessibilityRole="header"
           style={[styles.sectionTitle, {flexGrow: 1}]}>
-            PROMPT
+            Prompt
         </Text>
         {hovering && contentShownOnHover}
         {hovering && id !== undefined && <HoverButton content="❌" tooltip="Delete this response" onPress={() => chatHistory.deleteResponse(id)}/>}

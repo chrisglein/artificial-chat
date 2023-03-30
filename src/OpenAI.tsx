@@ -5,7 +5,9 @@ enum OpenAiApi {
 }
 
 type OpenAiHandlerOptions = {
+  endpoint?: string,
   engine?: string,
+  chatModel?: string,
   promptHistory?: ConversationEntry[],
   imageSize?: number,
 }
@@ -17,22 +19,19 @@ type ConversationEntry = {
 
 type OpenAiHandlerType = {
   api: OpenAiApi,
-  chatModel?: string,
+  options?: OpenAiHandlerOptions,
   instructions?: string,
 }
-const OpenAiHandler = ({api, instructions}: OpenAiHandlerType) => {
-  const DefaultEngine = 'text-davinci-003-playground';
-  const BaseApiUrl = 'https://api.openai.com';
-  const APIVersion = 'v1';
-  const OpenAIUrl = `${BaseApiUrl}/${APIVersion}`;
+const OpenAiHandler = ({api, options, instructions}: OpenAiHandlerType) => {
+  const OpenAIUrl = options?.endpoint ?? `https://api.openai.com/v1`;
 
   let actualInstructions = instructions ?? 'The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly.';
 
   switch (api) {
     case OpenAiApi.Completion: 
       return {
-        url: `${OpenAIUrl}/engines/${DefaultEngine}/completions`,
-        body: (prompt: string, options?: OpenAiHandlerOptions) => {
+        url: `${OpenAIUrl}/engines/text-davinci-003-playground/completions`,
+        body: (prompt: string) => {
           let wrappedPrompt = `${actualInstructions}\nHuman: ${prompt}.\nAI:`;
           return {
             best_of: 1,
@@ -60,7 +59,7 @@ const OpenAiHandler = ({api, instructions}: OpenAiHandlerType) => {
     case OpenAiApi.ChatCompletion: 
       return {
         url: `${OpenAIUrl}/chat/completions`,
-        body: (prompt: string, options?: OpenAiHandlerOptions) => {
+        body: (prompt: string) => {
           return {
             model: options?.chatModel ?? "gpt-3.5-turbo",
             messages: [
@@ -79,7 +78,7 @@ const OpenAiHandler = ({api, instructions}: OpenAiHandlerType) => {
     case OpenAiApi.Generations: 
       return {
         url: `${OpenAIUrl}/images/generations`,
-        body: (prompt: string, options?: OpenAiHandlerOptions) => {
+        body: (prompt: string) => {
           let imageSize = options?.imageSize ?? 256;
           return {
             prompt: prompt,
@@ -121,10 +120,10 @@ const CallOpenAi = async ({api, apiKey, instructions, identifier, prompt, option
   try {
     console.debug(`Start ${identifier}"${prompt}"`);
 
-    let apiHandler = OpenAiHandler({api: api, instructions: instructions});
+    let apiHandler = OpenAiHandler({api: api, options: options, instructions: instructions});
 
     let url = apiHandler.url;
-    let body = apiHandler.body(prompt, options);
+    let body = apiHandler.body(prompt);
     console.debug(body);
 
     let response = await fetch(
@@ -134,15 +133,24 @@ const CallOpenAi = async ({api, apiKey, instructions, identifier, prompt, option
           Accept: 'application/json',
           'Authorization': `Bearer ${effectiveApiKey}`,
           'Content-Type': 'application/json',
+          // Azure endpoint seems to want this instead of Bearer, despite docs https://learn.microsoft.com/en-us/azure/cognitive-services/openai/how-to/managed-identity#assign-yourself-to-the-cognitive-services-user-role
+          'Ocp-Apim-Subscription-Key': '${effectiveApiKey}', 
         },
         body: JSON.stringify(body),
       });
     
     try {
-      const json = await response.json();
+      let json = await response.json();
 
       try {
         console.debug(`Have result for ${identifier}"${prompt}"`);
+
+        // Seeing this with some Azure endpoints, working around it with a warning
+        if (typeof json === 'string') {
+          console.warn(`Response came as string instead of JSON`)
+          json = JSON.parse(json);
+        }
+
         console.debug(json);
 
         if (json.error) {

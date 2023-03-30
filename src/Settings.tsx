@@ -25,8 +25,8 @@ type SettingsContextType = {
   setDelayForArtificialResponse: (value: number) => void,
   imageSize: number,
   setImageSize: (value: number) => void,
-  aiName: string,
-  setAiName: (value: string) => void,
+  aiEndpoint: string,
+  setAiEndpoint: (value: string) => void,
   chatModel: string,
   setChatModel: (value: string) => void,
 }
@@ -36,8 +36,8 @@ const SettingsContext = React.createContext<SettingsContextType>({
   setDelayForArtificialResponse: () => {},
   imageSize: 256,
   setImageSize: () => {},
-  aiName: '',
-  setAiName: () => {},
+  aiEndpoint: '',
+  setAiEndpoint: () => {},
   chatModel: '',
   setChatModel: () => {},
 });
@@ -85,7 +85,7 @@ type SettingsPopupProps = {
 function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const settings = React.useContext(SettingsContext);
-  const [aiName, setAiName] = React.useState<string>(settings.aiName);
+  const [aiEndpoint, setAiEndpoint] = React.useState<string>(settings.aiEndpoint);
   const [chatModel, setChatModel] = React.useState<string>(settings.chatModel);
   const [apiKey, setApiKey] = React.useState<string | undefined>(settings.apiKey);
   const [saveApiKey, setSaveApiKey] = React.useState<boolean>(false);
@@ -128,31 +128,45 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
     });
   }
 
+  const cancel = () => {
+    setApiKey(settings.apiKey);
+    setScriptName(settings.scriptName ?? "");
+    setDelayForArtificialResponse(settings.delayForArtificialResponse ?? 0);
+    setImageSize(settings.imageSize);
+    close();
+  }
+
   const buttons = [
     <Button
       accessibilityLabel="OK"
       title="OK"
       onPress={() => {
         save();
+      }}/>,
+    <Button
+      accessibilityLabel="Cancel"
+      title="Cancel"
+      onPress={() => {
+        cancel();
       }}/>
     ];
 
   return (
     <DialogFrame
       show={show}
-      close={close}
+      close={cancel}
+      isLightDismissEnabled={false}
       titleIcon="⚙️"
       title="OpenAI Settings"
       buttons={buttons}>
       <View>
         <Text accessibilityRole="header" style={styles.dialogSectionHeader}>AI Settings</Text>
-        <Text>AI Name</Text>
-        <Picker
-          accessibilityLabel="AI Name"
-          selectedValue={aiName}
-          onValueChange={(value) => setAiName(value)}>
-          {["OpenAI", "Azure OpenAI"].map(value => <Picker.Item label={value} value={value} key={value}/>)}
-        </Picker>
+        <Text>AI Endpoint</Text>
+        <TextInput
+          accessibilityLabel="AI Endpoint"
+          style={{flexGrow: 1, minHeight: 32}}
+          value={aiEndpoint}
+          onChangeText={value => setAiEndpoint(value)}/>
         <Text>Chat Model</Text>
         <Picker
           accessibilityLabel="Chat Model"

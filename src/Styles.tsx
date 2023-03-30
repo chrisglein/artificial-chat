@@ -23,6 +23,7 @@ const StylesContext = React.createContext<{
   dialogTitle: StyleProp<TextStyle>;
   dialogSectionHeader: StyleProp<TextStyle>;
   dialogBackground: StyleProp<ViewStyle>;
+  dialogButtons: StyleProp<ViewStyle>;
   codeBlockTitle: StyleProp<TextStyle>;
   codeBlockTitleText: StyleProp<TextStyle>;
   hyperlinkIdle: StyleProp<TextStyle>;
@@ -98,6 +99,14 @@ const CreateStyles = (isDarkMode: boolean) => {
       padding: 12,
       borderRadius: 8,
       minWidth: 300
+    },
+    dialogButtons: {
+      marginTop: 12,
+      alignSelf: 'flex-end',
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      gap: 4,
     },
     codeBlockTitle: {
       backgroundColor: isDarkMode ? 'white' : '#444',

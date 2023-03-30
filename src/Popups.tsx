@@ -23,12 +23,13 @@ const PopupsContext = React.createContext<PopupsContextType>({
 type DialogFrameType = PropsWithChildren<{
   show: boolean,
   close: () => void;
+  isLightDismissEnabled?: boolean,
   titleIcon: string,
   titleIconStyle?: any,
   title: string,
   buttons?: JSX.Element[],
 }>;
-function DialogFrame({children, show, close, titleIcon, titleIconStyle, title, buttons}: DialogFrameType) {
+function DialogFrame({children, show, close, isLightDismissEnabled, titleIcon, titleIconStyle, title, buttons}: DialogFrameType) {
   const styles = React.useContext(StylesContext);
 
   const populatedButtons = buttons ?? [<Button
@@ -42,7 +43,7 @@ function DialogFrame({children, show, close, titleIcon, titleIconStyle, title, b
   return (
     <Popup
       isOpen={show}
-      isLightDismissEnabled={true}
+      isLightDismissEnabled={isLightDismissEnabled ?? true}
       onDismiss={() => close()}>
       <View style={[styles.dialogBackground, {gap: 12}]}>
         <View style={{flexDirection: 'row', marginBottom: 4, gap: 4}}>
@@ -56,7 +57,7 @@ function DialogFrame({children, show, close, titleIcon, titleIconStyle, title, b
           </Text>
         </View>
         {children}
-        <View style={{marginTop: 12, alignSelf: 'flex-end'}}>
+        <View style={styles.dialogButtons}>
           {buttonList}
         </View>
       </View>
