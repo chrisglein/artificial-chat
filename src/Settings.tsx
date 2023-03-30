@@ -177,7 +177,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
       title="OpenAI Settings"
       buttons={buttons}>
       <View style={styles.dialogSectionsContainer}>
-        <DialogSection header="AI Settings">
+        <DialogSection header="Chat">
           <Text>AI Endpoint</Text>
           <TextInput
             accessibilityLabel="AI Endpoint"
@@ -205,6 +205,19 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
           <Hyperlink
             url="https://platform.openai.com/account/api-keys"/>
         </DialogSection>
+        <DialogSection header="Image Generation">
+          <SwitchWithLabel
+            label="Infer image intent from prompt"
+            value={detectImageIntent}
+            onValueChange={value => setDetectImageIntent(value)}/>
+          <Text>Image Size</Text>
+          <Picker
+            accessibilityLabel="Image Size"
+            selectedValue={imageSize}
+            onValueChange={value => setImageSize(value)}>
+            {[256, 512, 1024].map(size => <Picker.Item label={size.toString()} value={size} key={size}/>)}
+          </Picker>
+        </DialogSection>
         <DialogSection header="AI Scripts">
           <Text>Script</Text>
           <Picker
@@ -221,19 +234,6 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             style={{flexGrow: 1, minHeight: 32}}
             onChangeText={value => setDelayForArtificialResponse(parseInt(value))}
             value={delayForArtificialResponse.toString()}/>
-        </DialogSection>
-        <DialogSection header="Image Generation">
-          <SwitchWithLabel
-            label="Detect image intent"
-            value={detectImageIntent}
-            onValueChange={value => setDetectImageIntent(value)}/>
-          <Text>Image Size</Text>
-          <Picker
-            accessibilityLabel="Image Size"
-            selectedValue={imageSize}
-            onValueChange={value => setImageSize(value)}>
-            {[256, 512, 1024].map(size => <Picker.Item label={size.toString()} value={size} key={size}/>)}
-          </Picker>
         </DialogSection>
       </View>
     </DialogFrame>
