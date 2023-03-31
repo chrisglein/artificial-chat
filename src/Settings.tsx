@@ -161,7 +161,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
 
   const buttons = [
     <Button
-      onPress={() => {
+      onClick={() => {
         save();
       }}>OK</Button>,
     <Button
