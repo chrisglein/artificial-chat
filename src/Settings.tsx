@@ -1,7 +1,5 @@
 import React from 'react';
 import {
-  Button,
-  Switch,
   Text,
   TextInput,
   View,
@@ -18,6 +16,7 @@ import {StylesContext} from './Styles';
 import {Picker} from '@react-native-picker/picker';
 import {ChatScriptNames} from './ChatScript';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ButtonV1 as Button } from '@fluentui/react-native';
 
 const settingsKey = 'settings';
 
@@ -162,17 +161,14 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
 
   const buttons = [
     <Button
-      accessibilityLabel="OK"
-      title="OK"
       onPress={() => {
         save();
-      }}/>,
+      }}>OK</Button>,
     <Button
-      accessibilityLabel="Cancel"
-      title="Cancel"
-      onPress={() => {
+      appearance='primary'
+      onClick={() => {
         cancel();
-      }}/>
+      }}>Cancel</Button>
     ];
 
   return (

@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import {Popup} from 'react-native-windows';
 import {StylesContext} from './Styles';
-import { Button, IFocusable } from '@fluentui/react-native';
+import { ButtonV1 as Button } from '@fluentui/react-native';
 
 type PopupsContextType = {
     showAbout: boolean,
@@ -32,12 +32,12 @@ type DialogFrameType = PropsWithChildren<{
 function DialogFrame({children, show, close, isLightDismissEnabled, titleIcon, titleIconStyle, title, buttons}: DialogFrameType) {
   const styles = React.useContext(StylesContext);
 
-  const populatedButtons = buttons ?? [<Button
-    accessibilityLabel='OK'
-    title="OK"
-    onPress={() => {
-      close();
-    }}/>];
+  const populatedButtons = buttons ?? [
+    <Button
+      appearance='primary'
+      onClick={() => {
+        close();
+      }}>OK</Button>];
   const buttonList = populatedButtons.map((button, index) => <View key={index}>{button}</View>);
 
   return (
