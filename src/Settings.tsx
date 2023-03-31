@@ -9,14 +9,17 @@ import {
   DialogSection,
 } from './Popups';
 import {
-  Hyperlink,
   SwitchWithLabel,
 } from './Controls';
 import {StylesContext} from './Styles';
 import {Picker} from '@react-native-picker/picker';
 import {ChatScriptNames} from './ChatScript';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ButtonV1 as Button } from '@fluentui/react-native';
+import {
+  ButtonV1 as Button,
+  Link,
+  CheckboxV1 as Checkbox,
+} from '@fluentui/react-native';
 
 const settingsKey = 'settings';
 
@@ -203,11 +206,12 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             style={{flexGrow: 1, minHeight: 32}}
             onChangeText={value => setApiKey(value)}
             value={apiKey}/>
-            <SwitchWithLabel
+            <Checkbox
               label="Remember this"
-              value={saveApiKey}
-              onValueChange={value => setSaveApiKey(value)}/>
-          <Hyperlink
+              checked={saveApiKey}
+              onChange={(event, value) => setSaveApiKey(value)}/>
+          <Link
+            content="https://platform.openai.com/account/api-keys"
             url="https://platform.openai.com/account/api-keys"/>
         </DialogSection>
         <DialogSection header="Image Generation">
