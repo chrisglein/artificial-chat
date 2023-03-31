@@ -12,6 +12,9 @@
 // Includes from @react-native-picker/picker
 #include <winrt/ReactNativePicker.h>
 
+// Includes from react-native-svg
+#include <winrt/RNSVG.h>
+
 namespace winrt::Microsoft::ReactNative
 {
 
@@ -23,6 +26,8 @@ void RegisterAutolinkedNativeModulePackages(winrt::Windows::Foundation::Collecti
     packageProviders.Append(winrt::NativeClipboard::ReactPackageProvider());
     // IReactPackageProviders from @react-native-picker/picker
     packageProviders.Append(winrt::ReactNativePicker::ReactPackageProvider());
+    // IReactPackageProviders from react-native-svg
+    packageProviders.Append(winrt::RNSVG::ReactPackageProvider());
 }
 
 }

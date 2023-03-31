@@ -33,6 +33,11 @@
         "resolved": "1.0.1264.42",
         "contentHash": "7OBUTkzQ5VI/3gb0ufi5U4zjuCowAJwQg2li0zXXzqkM+S1kmOlivTy1R4jAW+gY5Vyg510M+qMAESCQUjrfgA=="
       },
+      "Win2D.uwp": {
+        "type": "Transitive",
+        "resolved": "1.26.0",
+        "contentHash": "smA/NJWM3ruhWeKPHmCyW8PX8w1ckD9SN7qWEOePe/iuFKvLyC8govCHq/F40hQCRs8zBqHWaWBpekTnQuXx6w=="
+      },
       "clipboard": {
         "type": "Project",
         "dependencies": {
@@ -87,6 +92,14 @@
           "Microsoft.ReactNative": "[1.0.0, )",
           "Microsoft.UI.Xaml": "[2.8.0, )"
         }
+      },
+      "rnsvg": {
+        "type": "Project",
+        "dependencies": {
+          "Microsoft.ReactNative": "[1.0.0, )",
+          "Microsoft.UI.Xaml": "[2.8.0, )",
+          "Win2D.uwp": "[1.26.0, )"
+        }
       }
     },
     "native,Version=v0.0/win10-arm": {
@@ -94,6 +107,11 @@
         "type": "Transitive",
         "resolved": "1.0.1264.42",
         "contentHash": "7OBUTkzQ5VI/3gb0ufi5U4zjuCowAJwQg2li0zXXzqkM+S1kmOlivTy1R4jAW+gY5Vyg510M+qMAESCQUjrfgA=="
+      },
+      "Win2D.uwp": {
+        "type": "Transitive",
+        "resolved": "1.26.0",
+        "contentHash": "smA/NJWM3ruhWeKPHmCyW8PX8w1ckD9SN7qWEOePe/iuFKvLyC8govCHq/F40hQCRs8zBqHWaWBpekTnQuXx6w=="
       }
     },
     "native,Version=v0.0/win10-arm-aot": {
@@ -101,6 +119,11 @@
         "type": "Transitive",
         "resolved": "1.0.1264.42",
         "contentHash": "7OBUTkzQ5VI/3gb0ufi5U4zjuCowAJwQg2li0zXXzqkM+S1kmOlivTy1R4jAW+gY5Vyg510M+qMAESCQUjrfgA=="
+      },
+      "Win2D.uwp": {
+        "type": "Transitive",
+        "resolved": "1.26.0",
+        "contentHash": "smA/NJWM3ruhWeKPHmCyW8PX8w1ckD9SN7qWEOePe/iuFKvLyC8govCHq/F40hQCRs8zBqHWaWBpekTnQuXx6w=="
       }
     },
     "native,Version=v0.0/win10-arm64-aot": {
@@ -108,6 +131,11 @@
         "type": "Transitive",
         "resolved": "1.0.1264.42",
         "contentHash": "7OBUTkzQ5VI/3gb0ufi5U4zjuCowAJwQg2li0zXXzqkM+S1kmOlivTy1R4jAW+gY5Vyg510M+qMAESCQUjrfgA=="
+      },
+      "Win2D.uwp": {
+        "type": "Transitive",
+        "resolved": "1.26.0",
+        "contentHash": "smA/NJWM3ruhWeKPHmCyW8PX8w1ckD9SN7qWEOePe/iuFKvLyC8govCHq/F40hQCRs8zBqHWaWBpekTnQuXx6w=="
       }
     },
     "native,Version=v0.0/win10-x64": {
@@ -115,6 +143,11 @@
         "type": "Transitive",
         "resolved": "1.0.1264.42",
         "contentHash": "7OBUTkzQ5VI/3gb0ufi5U4zjuCowAJwQg2li0zXXzqkM+S1kmOlivTy1R4jAW+gY5Vyg510M+qMAESCQUjrfgA=="
+      },
+      "Win2D.uwp": {
+        "type": "Transitive",
+        "resolved": "1.26.0",
+        "contentHash": "smA/NJWM3ruhWeKPHmCyW8PX8w1ckD9SN7qWEOePe/iuFKvLyC8govCHq/F40hQCRs8zBqHWaWBpekTnQuXx6w=="
       }
     },
     "native,Version=v0.0/win10-x64-aot": {
@@ -122,6 +155,11 @@
         "type": "Transitive",
         "resolved": "1.0.1264.42",
         "contentHash": "7OBUTkzQ5VI/3gb0ufi5U4zjuCowAJwQg2li0zXXzqkM+S1kmOlivTy1R4jAW+gY5Vyg510M+qMAESCQUjrfgA=="
+      },
+      "Win2D.uwp": {
+        "type": "Transitive",
+        "resolved": "1.26.0",
+        "contentHash": "smA/NJWM3ruhWeKPHmCyW8PX8w1ckD9SN7qWEOePe/iuFKvLyC8govCHq/F40hQCRs8zBqHWaWBpekTnQuXx6w=="
       }
     },
     "native,Version=v0.0/win10-x86": {
@@ -129,6 +167,11 @@
         "type": "Transitive",
         "resolved": "1.0.1264.42",
         "contentHash": "7OBUTkzQ5VI/3gb0ufi5U4zjuCowAJwQg2li0zXXzqkM+S1kmOlivTy1R4jAW+gY5Vyg510M+qMAESCQUjrfgA=="
+      },
+      "Win2D.uwp": {
+        "type": "Transitive",
+        "resolved": "1.26.0",
+        "contentHash": "smA/NJWM3ruhWeKPHmCyW8PX8w1ckD9SN7qWEOePe/iuFKvLyC8govCHq/F40hQCRs8zBqHWaWBpekTnQuXx6w=="
       }
     },
     "native,Version=v0.0/win10-x86-aot": {
@@ -136,6 +179,11 @@
         "type": "Transitive",
         "resolved": "1.0.1264.42",
         "contentHash": "7OBUTkzQ5VI/3gb0ufi5U4zjuCowAJwQg2li0zXXzqkM+S1kmOlivTy1R4jAW+gY5Vyg510M+qMAESCQUjrfgA=="
+      },
+      "Win2D.uwp": {
+        "type": "Transitive",
+        "resolved": "1.26.0",
+        "contentHash": "smA/NJWM3ruhWeKPHmCyW8PX8w1ckD9SN7qWEOePe/iuFKvLyC8govCHq/F40hQCRs8zBqHWaWBpekTnQuXx6w=="
       }
     }
   }

@@ -14,5 +14,9 @@
     <ProjectReference Include="$(ProjectDir)..\..\node_modules\@react-native-picker\picker\windows\ReactNativePicker\ReactNativePicker.vcxproj">
       <Project>{bedcc600-4541-41f2-aa46-9e058202b6ad}</Project>
     </ProjectReference>
+    <!-- Projects from react-native-svg -->
+    <ProjectReference Include="$(ProjectDir)..\..\node_modules\react-native-svg\windows\RNSVG\RNSVG.vcxproj">
+      <Project>{7acf84ec-efba-4043-8e14-40b159508902}</Project>
+    </ProjectReference>
   </ItemGroup>
 </Project>

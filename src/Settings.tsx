@@ -16,6 +16,7 @@ import {StylesContext} from './Styles';
 import {Picker} from '@react-native-picker/picker';
 import {ChatScriptNames} from './ChatScript';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ButtonV1 as Button } from '@fluentui/react-native';
 
 const settingsKey = 'settings';
 
