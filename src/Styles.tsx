@@ -7,6 +7,9 @@ import type {
 } from 'react-native';
 import { PlatformColor } from 'react-native';
 import { StyleSheet } from 'react-native';
+import { ThemeReference } from '@fluentui-react-native/theme';
+import { createDefaultTheme } from '@fluentui-react-native/default-theme';
+import { globalTokens } from '@fluentui-react-native/theme-tokens';
 
 const StylesContext = React.createContext<{
   appContent: StyleProp<ViewStyle>;
@@ -140,4 +143,66 @@ const CreateStyles = (isDarkMode: boolean) => {
   });
 }
 
-export { StylesContext, CreateStyles };
+let windowsThemeReference: ThemeReference;
+  
+function createWindowsTheme(): ThemeReference {
+  windowsThemeReference = new ThemeReference(createDefaultTheme(), (t) => {
+    return {
+      components: {
+        Checkbox: {
+          large: {
+            borderRadius: globalTokens.corner.radius40,
+            checkboxBorderRadius: globalTokens.corner.radius40,
+            checkmarkSize: 12,
+          },
+          checkboxBackgroundColor: PlatformColor('ControlAltFillColorSecondaryBrush'),
+          hovered: {
+            checkboxBackgroundColor: PlatformColor('ControlAltFillColorTertiaryBrush'),
+          },
+          pressed: {
+            checkboxBackgroundColor: PlatformColor('ControlAltFillColorQuarternaryBrush'),
+          }
+        }
+      },
+      colors: {
+        link: PlatformColor('AccentTextFillColorPrimaryBrush'),
+        linkHovered: PlatformColor('AccentTextFillColorSecondaryBrush'),
+        linkPressed: PlatformColor('AccentTextFillColorTertiaryBrush'),
+
+        neutralStrokeAccessible: PlatformColor('ControlStrongStrokeColorDefaultBrush'), // border for unchecked checkbox (idle)
+        neutralStrokeAccessibleHover: PlatformColor('ControlStrongStrokeColorDefaultBrush'), // border for unchecked checkbox (hover)
+        neutralStrokeAccessiblePressed: PlatformColor('ControlStrongStrokeColorDisabledBrush'), // border for unchecked checkbox (pressed)
+        neutralStrokeDisabled: PlatformColor('ControlStrongStrokeColorDisabledBrush'), // border for unchecked checkbox (disabled)
+
+        neutralForeground1: PlatformColor('TextFillColorPrimaryBrush'), // foreground for unchecked checkbox (pressed)
+        neutralForeground1Hover: PlatformColor('TextFillColorPrimaryBrush'),
+        neutralForeground1Pressed: PlatformColor('TextFillColorPrimaryBrush'),
+        neutralForegroundDisabled: PlatformColor('TextFillColorDisabledBrush'), // check color for checked/unchecked checkbox (disabled)
+        neutralForeground2: PlatformColor('TextFillColorPrimaryBrush'), // foreground for unchecked checkbox (hover)
+        neutralForeground3: PlatformColor('TextFillColorPrimaryBrush'), // foreground for unchecked checkbox (idle)
+
+        // Used for Button
+        neutralForegroundOnBrand: PlatformColor('TextOnAccentFillColorPrimaryBrush'), // check color for checked checkbox (hover/pressed/idle)
+
+        // Used for Button
+        neutralBackground1: PlatformColor('ControlFillColorDefaultBrush'), // fill for unchecked checkbox (idle/hover/pressed)
+        neutralBackground1Hover: PlatformColor('ControlFillColorSecondaryBrush'),
+        neutralBackground1Pressed: PlatformColor('ControlFillColorTertiaryBrush'),
+        neutralBackgroundDisabled: PlatformColor('ControlFillColorDisabledBrush'), // fill for unchecked checkbox (disabled)
+
+        // Used for Button
+        brandBackground: PlatformColor('AccentFillColorDefaultBrush'),
+        brandBackgroundHover: PlatformColor('AccentFillColorSecondaryBrush'),
+        brandBackgroundPressed: PlatformColor('AccentFillColorTertiaryBrush'),
+        brandBackgroundDisabled: PlatformColor('AccentFillColorDisabledBrush'),
+
+        compoundBrandBackground1: PlatformColor('AccentFillColorDefaultBrush'), // fill and border for checked checkbox (idle)
+        compoundBrandBackground1Pressed: PlatformColor('AccentFillColorTertiaryBrush'), // fill and border for checked checkbox (pressed)
+        compoundBrandBackground1Hover: PlatformColor('AccentFillColorSecondaryBrush'), // fill and border for checked checkbox (hover)
+      }
+    }});
+
+  return windowsThemeReference;
+}
+
+export { StylesContext, CreateStyles, createWindowsTheme };
