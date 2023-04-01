@@ -102,3 +102,4 @@ The app's settings are handled by a `SettingsContext` object, which has dialog U
 - Dependency patching via [patch-package](https://github.com/ds300/patch-package)
 - Storage via [react-native-async-storage](https://github.com/react-native-async-storage/async-storage)
 - Markdown rendering via [react-native-markdown-display](https://github.com/iamacup/react-native-markdown-display)
+- Button, Checkbox, Link via [@fluentui/react-native](https://github.com/microsoft/fluentui-react-native)
