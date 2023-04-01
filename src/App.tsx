@@ -27,7 +27,7 @@ function App(): JSX.Element {
   const [detectImageIntent, setDetectImageIntent] = React.useState<boolean>(true);
   const [imageResponseCount, setImageResponseCount] = React.useState<number>(1);
   const [imageSize, setImageSize] = React.useState<number>(256);
-  const [showSettingsPopup, setShowSettingsPopup] = React.useState(true);
+  const [showSettingsPopup, setShowSettingsPopup] = React.useState(false);
   const [showAboutPopup, setShowAboutPopup] = React.useState(false);
     
   const isDarkMode = currentTheme === 'dark';

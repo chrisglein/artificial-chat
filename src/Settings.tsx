@@ -8,9 +8,6 @@ import {
   ContentDialog,
   DialogSection,
 } from './Popups';
-import {
-  SwitchWithLabel,
-} from './Controls';
 import {StylesContext} from './Styles';
 import {Picker} from '@react-native-picker/picker';
 import {ChatScriptNames} from './ChatScript';
@@ -216,10 +213,11 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             url="https://platform.openai.com/account/api-keys"/>
         </DialogSection>
         <DialogSection header="Image Generation">
-          <SwitchWithLabel
+          <Checkbox
             label="Infer image intent from prompt"
-            value={detectImageIntent}
-            onValueChange={value => setDetectImageIntent(value)}/>
+            size='large'
+            checked={detectImageIntent}
+            onChange={(event, value) => setDetectImageIntent(value)}/>
           <Text>Image Count</Text>
           <Picker
             accessibilityLabel="Image Count"
