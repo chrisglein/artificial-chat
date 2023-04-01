@@ -107,3 +107,4 @@ The app's settings are handled by a `SettingsContext` object, which has dialog U
 - Storage via [react-native-async-storage](https://github.com/react-native-async-storage/async-storage)
 - Markdown rendering via [react-native-markdown-display-updated](https://github.com/willmac321/react-native-markdown-display)
 - Dialogs via [react-native-content-dialog](https://github.com/chrisglein/react-native-content-dialog)
+- Button, Checkbox, Link via [@fluentui/react-native](https://github.com/microsoft/fluentui-react-native)
