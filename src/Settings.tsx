@@ -208,6 +208,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             value={apiKey}/>
             <Checkbox
               label="Remember this"
+              size='large'
               checked={saveApiKey}
               onChange={(event, value) => setSaveApiKey(value)}/>
           <Link
@@ -230,7 +231,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
           <Picker
             accessibilityLabel="Image Size"
             selectedValue={imageSize}
-            onValueChange={value => setImageSize(value)}>
+            onValueChange={value => setImageSize(typeof value === 'number' ? value : parseInt(value))}>
             {[256, 512, 1024].map(size => <Picker.Item label={size.toString()} value={size} key={size}/>)}
           </Picker>
         </DialogSection>
