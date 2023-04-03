@@ -106,7 +106,8 @@ const CreateStyles = (isDarkMode: boolean) => {
       backgroundColor: isDarkMode ? '#292929' : '#FFFFFF',
       padding: 12,
       borderRadius: 8,
-      minWidth: 300
+      minWidth: 300,
+      gap: 12,
     },
     dialogButtons: {
       marginTop: 12,

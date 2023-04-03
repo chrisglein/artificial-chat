@@ -25,7 +25,7 @@ function AboutPopup({show, close}: AboutPopupProps): JSX.Element {
       title="About"
       defaultButtonIndex={0}>
       <Text>Version: <Text style={{fontWeight: 'bold'}}>{VersionInfo.getConstants().appVersion}</Text></Text>
-      <View style={{flexDirection: 'row', gap: 4}}>
+      <View style={{flexDirection: 'row', gap: 4, marginBottom: 40}}>
         <Text>Source code:</Text>
         <Hyperlink
           text='GitHub'
