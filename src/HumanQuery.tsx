@@ -5,11 +5,10 @@ import {
   Text,
   View,
 } from 'react-native';
-import { HoverButton } from './Controls';
 import { StylesContext } from './Styles';
 import { ChatHistoryContext } from './Chat';
 import Clipboard from '@react-native-clipboard/clipboard';
-
+import { ButtonV1 as Button } from '@fluentui/react-native';
 
 type HumanSectionProps = PropsWithChildren<{
   id?: number,
@@ -36,8 +35,22 @@ function HumanSection({children, id, content, disableCopy, contentShownOnHover}:
             Prompt
         </Text>
         {hovering && contentShownOnHover}
-        {hovering && id !== undefined && <HoverButton content="❌" tooltip="Delete this response" onPress={() => chatHistory.deleteResponse(id)}/>}
-        {hovering && !disableCopy && <HoverButton content="📋" tooltip="Copy to clipboard" onPress={() => Clipboard.setString(content ?? "")}/>}
+        {hovering && id !== undefined && 
+          <Button
+            size="small"
+            shape="circular"
+            tooltip="Delete this response"
+            onClick={() => chatHistory.deleteResponse(id)}>
+              ❌
+          </Button>}
+        {hovering && !disableCopy && 
+          <Button
+            size="small"
+            shape="circular"
+            tooltip="Copy to clipboard"
+            onClick={() => Clipboard.setString(content ?? "")}>
+              📋
+          </Button>}
       </View>
       {content ? <Text>{content}</Text> : null}
       {children}

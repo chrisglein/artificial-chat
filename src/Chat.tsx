@@ -13,7 +13,6 @@ import {
   FeedbackPopup,
 } from './Feedback';
 import { PopupsContext } from './Popups';
-import { HoverButton } from './Controls';
 import { ButtonV1 as Button } from '@fluentui/react-native';
 
 enum ChatSource {
@@ -187,8 +186,20 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
               disableCopy={true}
               contentShownOnHover={
                 <>
-                  <HoverButton content="❔" tooltip="About" onPress={() => popups.setShowAbout(true)}/>
-                  <HoverButton content="⚙️" tooltip="Settings" onPress={() => popups.setShowSettings(true)}/>
+                  <Button
+                    tooltip="About"
+                    size="small"
+                    shape="circular"
+                    onClick={() => popups.setShowAbout(true)}>
+                      ❔
+                  </Button>
+                  <Button
+                    tooltip="Settings"
+                    size="small"
+                    shape="circular"
+                    onClick={() => popups.setShowSettings(true)}>
+                      ⚙️
+                  </Button>
                 </>
               }>
               <ChatEntry

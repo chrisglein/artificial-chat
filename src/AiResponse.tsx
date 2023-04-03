@@ -2,7 +2,6 @@ import React from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   ActivityIndicator,
-  Button,
   Image,
   Linking,
   Pressable,
@@ -10,7 +9,6 @@ import {
   View,
 } from 'react-native';
 import {
-  HoverButton,
   CodeBlock
 } from './Controls';
 import {
@@ -23,6 +21,7 @@ import { StylesContext } from './Styles';
 import { FeedbackContext } from './Feedback';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Markdown from 'react-native-markdown-display';
+import { ButtonV1 as Button } from '@fluentui/react-native';
 
 type AiImageResponseProps = {
   imageUrls?: string[];
@@ -120,10 +119,36 @@ function AiSection({children, id, isLoading, copyValue, contentShownOnHover}: Ai
             OpenAI
         </Text>
         {hovering && contentShownOnHover}
-        {hovering && id !== undefined && <HoverButton content="❌" tooltip="Delete this response" onPress={() => chatHistory.deleteResponse(id)}/>}
-        {hovering && copyValue && <HoverButton content="📋" tooltip="Copy to clipboard" onPress={() => Clipboard.setString(copyValue)}/>}
-        <HoverButton content="👍" tooltip="Give positive feedback" onPress={() => { showFeedbackPopup(true); }}/>
-        <HoverButton content="👎" tooltip="Give negative feedback" onPress={() => { showFeedbackPopup(false); }}/>
+        {hovering && id !== undefined && 
+          <Button
+            size="small"
+            shape="circular"
+            tooltip="Delete this response"
+            onClick={() => chatHistory.deleteResponse(id)}>
+              ❌
+          </Button>}
+        {hovering && copyValue && 
+          <Button
+            size="small"
+            shape="circular"
+            tooltip="Copy to clipboard"
+            onClick={() => Clipboard.setString(copyValue)}>
+              📋
+          </Button>}
+        <Button
+          size="small"
+          shape="circular"
+          tooltip="Give positive feedback"
+          onClick={() => { showFeedbackPopup(true); }}>
+            👍
+        </Button>
+        <Button
+          size="small"
+          shape="circular"
+          tooltip="Give negative feedback"
+          onClick={() => { showFeedbackPopup(false); }}>
+            👎
+        </Button>
       </View>
       {isLoading && 
         <ActivityIndicator/>
