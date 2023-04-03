@@ -55,14 +55,16 @@ const CreateStyles = (isDarkMode: boolean) => {
       marginHorizontal: 12,
       paddingHorizontal: 24,
       paddingVertical: 12,
-      borderRadius: 8,
+      borderRadius: 12,
     },
     humanSection: {
       backgroundColor: isDarkMode ? '#2F2F4A' : '#E8EBFA',
+      borderBottomLeftRadius: 0,
       marginRight: 64,
     },
     AiSection: {
       backgroundColor: isDarkMode ? '#292929' : '#FFFFFF',
+      borderBottomRightRadius: 0,
       marginLeft: 64,
     },
     sectionTitle: {
