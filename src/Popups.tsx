@@ -1,5 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 import {
+  ScrollView,
   Text,
   View,
 } from 'react-native';
@@ -42,16 +43,21 @@ function DialogFrame({children, show, close, isLightDismissEnabled, title, butto
     <Popup
       isOpen={show}
       isLightDismissEnabled={isLightDismissEnabled ?? true}
-      onDismiss={() => close()}>
-      <View style={[styles.dialogBackground, {gap: 12}]}>
-        <Text
-          accessibilityRole="header"
-          style={styles.dialogTitle}>
-          {title}
-        </Text>
-        {children}
-        <View style={styles.dialogButtons}>
-          {buttonList}
+      onDismiss={() => close()}
+      style={{height: '100%'}}>
+      <View style={{justifyContent: 'center', height: '100%'}}>
+        <View style={[styles.dialogBackground, {flexShrink: 1}]}>
+          <Text
+            accessibilityRole="header"
+            style={styles.dialogTitle}>
+            {title}
+          </Text>
+          <ScrollView style={{flexShrink: 1}}>
+            {children}
+          </ScrollView>
+          <View style={styles.dialogButtons}>
+            {buttonList}
+          </View>
         </View>
       </View>
     </Popup>
