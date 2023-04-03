@@ -178,6 +178,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
     <ContentDialog
       show={show}
       close={cancel}
+      isLightDismissEnabled={false}
       title="OpenAI Settings"
       buttons={buttons}
       defaultButtonIndex={0}>

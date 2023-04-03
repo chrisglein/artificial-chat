@@ -22,7 +22,6 @@ const StylesContext = React.createContext<{
   horizontalContainer: StyleProp<ViewStyle>;
   dalleImage: StyleProp<ImageStyle>;
   inlineCard: StyleProp<ViewStyle>;
-  dialogTitleIcon: StyleProp<TextStyle>;
   dialogTitle: StyleProp<TextStyle>;
   dialogSectionsContainer: StyleProp<ViewStyle>;
   dialogSection: StyleProp<ViewStyle>;
@@ -87,12 +86,6 @@ const CreateStyles = (isDarkMode: boolean) => {
       borderRadius: 8,
       padding: 8,
     },
-    dialogTitleIcon: {
-      backgroundColor: 'gray',
-      borderRadius: 4,
-      alignSelf: 'center',
-      padding: 2,
-    },
     dialogTitle: {
       fontSize: 20,
     },
@@ -121,7 +114,7 @@ const CreateStyles = (isDarkMode: boolean) => {
       flexDirection: 'row',
       flexWrap: 'wrap',
       alignItems: 'center',
-      gap: 4,
+      gap: 8,
     },
     codeBlockTitle: {
       backgroundColor: isDarkMode ? 'white' : '#444',
