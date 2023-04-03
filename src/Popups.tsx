@@ -45,16 +45,18 @@ function DialogFrame({children, show, close, isLightDismissEnabled, title, butto
       isLightDismissEnabled={isLightDismissEnabled ?? true}
       onDismiss={() => close()}
       style={{height: '100%'}}>
-      <View style={{justifyContent: 'center', height: '100%'}}>
+      <View style={{justifyContent: 'center', height: '100%', padding: 24}}>
         <View style={[styles.dialogBackground, {flexShrink: 1}]}>
           <Text
             accessibilityRole="header"
             style={styles.dialogTitle}>
             {title}
           </Text>
-          <ScrollView style={{flexShrink: 1}}>
+          <ScrollView style={[styles.dialogContentArea, {flexShrink: 1}]}>
             {children}
           </ScrollView>
+        </View>
+        <View style={styles.dialogButtonBackground}>
           <View style={styles.dialogButtons}>
             {buttonList}
           </View>
