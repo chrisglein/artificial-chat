@@ -24,12 +24,10 @@ type DialogFrameType = PropsWithChildren<{
   show: boolean,
   close: () => void;
   isLightDismissEnabled?: boolean,
-  titleIcon: string,
-  titleIconStyle?: any,
   title: string,
   buttons?: JSX.Element[],
 }>;
-function DialogFrame({children, show, close, isLightDismissEnabled, titleIcon, titleIconStyle, title, buttons}: DialogFrameType) {
+function DialogFrame({children, show, close, isLightDismissEnabled, title, buttons}: DialogFrameType) {
   const styles = React.useContext(StylesContext);
 
   const populatedButtons = buttons ?? [
@@ -46,16 +44,11 @@ function DialogFrame({children, show, close, isLightDismissEnabled, titleIcon, t
       isLightDismissEnabled={isLightDismissEnabled ?? true}
       onDismiss={() => close()}>
       <View style={[styles.dialogBackground, {gap: 12}]}>
-        <View style={{flexDirection: 'row', marginBottom: 4, gap: 4}}>
-          <View style={[styles.dialogTitleIcon, titleIconStyle]}>
-            <Text accessible={false}>{titleIcon}</Text>
-          </View>
-          <Text
-            accessibilityRole="header"
-            style={styles.dialogTitle}>
-            {title}
-          </Text>
-        </View>
+        <Text
+          accessibilityRole="header"
+          style={styles.dialogTitle}>
+          {title}
+        </Text>
         {children}
         <View style={styles.dialogButtons}>
           {buttonList}

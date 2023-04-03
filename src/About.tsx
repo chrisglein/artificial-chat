@@ -22,7 +22,6 @@ function AboutPopup({show, close}: AboutPopupProps): JSX.Element {
     <DialogFrame
       show={show}
       close={close}
-      titleIcon="❔"
       title="About">
       <Text>Version: <Text style={{fontWeight: 'bold'}}>{VersionInfo.getConstants().appVersion}</Text></Text>
       <View style={{flexDirection: 'row', gap: 4}}>
