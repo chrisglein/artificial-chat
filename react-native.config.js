@@ -2,9 +2,9 @@ module.exports = {
   project: {
     windows: {
       sourceDir: 'windows',
-      solutionFile: 'RNTesterApp-Fabric.sln',
+      solutionFile: 'artificialChat.sln',
       project: {
-        projectFile: 'RNTesterApp-Fabric\\RNTesterApp-Fabric.vcxproj',
+        projectFile: 'artificialChat\\RNTesterApp-Fabric.vcxproj',
       },
     },
   },

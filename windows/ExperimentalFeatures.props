@@ -9,7 +9,7 @@
     <ReactExperimentalFeaturesSet>true</ReactExperimentalFeaturesSet>
   </PropertyGroup>
 
-  <PropertyGroup Label="Unpackaged RNTesterApp-Fabric" Condition="'$(SolutionName)'=='RNTesterApp-Fabric'">
+  <PropertyGroup Label="Unpackaged artificialChat" Condition="'$(SolutionName)'=='artificialChat'">
     <!--
       WARNING - DO NOT MAKE THE VERSION OF MICROSOFT.UI.XAML BE ANYTHING BUT PRERELEASE.
       Playground-Win32 is an unpackaged win32 app, and needs to use Microsoft.UI.Xaml from a prerelease,
