@@ -1,6 +1,6 @@
 {
-  "name": "e2e-test-app-fabric",
-  "version": "0.0.0",
+  "name": "artificialChat",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "react-native start",

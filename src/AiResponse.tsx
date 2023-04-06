@@ -21,8 +21,17 @@ import {
 } from './Chat';
 import { StylesContext } from './Styles';
 import { FeedbackContext } from './Feedback';
-import Clipboard from '@react-native-clipboard/clipboard';
-import Markdown from 'react-native-markdown-display';
+//import Clipboard from '@react-native-clipboard/clipboard';
+//import Markdown from 'react-native-markdown-display';
+
+const Clipboard = {
+  setString: (content: string) => void {
+  }
+}
+
+function Markdown ({children}: {children: string}) {
+  return null;
+}
 
 type AiImageResponseProps = {
   imageUrls?: string[];

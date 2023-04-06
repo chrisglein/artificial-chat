@@ -5,10 +5,23 @@ import {
   View,
 } from 'react-native';
 import { StylesContext } from './Styles';
-import SyntaxHighlighter from 'react-native-syntax-highlighter';
+//import SyntaxHighlighter from 'react-native-syntax-highlighter';
 // See all styles here: https://highlightjs.org/static/demo/
-import { vs2015 } from 'react-syntax-highlighter/styles/hljs';
-import Clipboard from '@react-native-clipboard/clipboard';
+//import { vs2015 } from 'react-syntax-highlighter/styles/hljs';
+//import Clipboard from '@react-native-clipboard/clipboard';
+
+const Clipboard = {
+  setString: (content: string) => void {
+  }
+}
+
+const vs2015 = {
+
+}
+
+function SyntaxHighlighter({language, children, customStyle, fontSize, fontFamily, style} : {language: string, children: string, customStyle: any, fontSize: number, fontFamily: string, style: any}) {
+  return null;
+}
 
 function CodeBlock({content, language} : {content: string, language: string}) {
   const styles = React.useContext(StylesContext);

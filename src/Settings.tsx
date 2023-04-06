@@ -15,9 +15,21 @@ import {
   SwitchWithLabel,
 } from './Controls';
 import {StylesContext} from './Styles';
-import {Picker} from '@react-native-picker/picker';
+//import {Picker} from '@react-native-picker/picker';
 import {ChatScriptNames} from './ChatScript';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+//import AsyncStorage from '@react-native-async-storage/async-storage';
+
+function Picker (props: any) {
+  return null;
+}
+
+const AsyncStorage = {
+  getItem: async (key: string) => {
+    return null;
+  },
+  setItem: async (key: string, value: string) => {
+  },
+}
 
 const settingsKey = 'settings';
 
