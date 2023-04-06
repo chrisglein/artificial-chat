@@ -1,55 +1,41 @@
 {
-  "name": "artificialChat",
-  "version": "0.0.1",
+  "name": "e2e-test-app-fabric",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest",
+    "lint": "rnw-scripts lint",
+    "lint:fix": "rnw-scripts lint:fix",
+    "watch": "rnw-scripts watch",
     "windows": "react-native run-windows",
-    "postinstall": "patch-package"
+    "e2etest": "jest",
+    "e2etest:updateSnapshots": "jest -u",
+    "e2etest:debug": "jest --config ./jest.debug.config.js"
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^1.17.11",
-    "@react-native-clipboard/clipboard": "^1.11.2",
-    "@react-native-picker/picker": "^2.2.1",
-    "patch-package": "^6.5.1",
-    "postinstall-postinstall": "^2.1.0",
     "react": "18.2.0",
-    "react-native": "0.71.0",
-    "react-native-markdown-display": "^7.0.0-alpha.2",
-    "react-native-syntax-highlighter": "^2.1.0",
-    "react-native-windows": "0.71.1"
+    "react-native": "0.0.0-20230321-2153-7b86e3aae",
+    "react-native-windows": "0.0.0-canary.637"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9",
-    "@babel/preset-env": "^7.14.0",
-    "@babel/runtime": "^7.12.5",
-    "@react-native-community/eslint-config": "^3.0.0",
-    "@tsconfig/react-native": "^2.0.2",
-    "@types/jest": "^29.2.1",
-    "@types/react": "^18.0.24",
-    "@types/react-test-renderer": "^18.0.0",
-    "babel-jest": "^29.2.1",
+    "@babel/core": "^7.20.0",
+    "@babel/generator": "^7.20.0",
+    "@babel/preset-env": "^7.8.4",
+    "@babel/preset-typescript": "^7.8.3",
+    "@babel/runtime": "^7.8.4",
+    "@types/jest": "^29.2.2",
+    "@types/node": "^14.14.22",
+    "@types/react": "^18.0.18",
+    "babel-jest": "^29.3.0",
     "eslint": "^8.19.0",
     "jest": "^29.2.1",
-    "metro-config": "^0.73.7",
-    "metro-react-native-babel-preset": "0.73.5",
+    "metro-react-native-babel-transformer": "0.73.7",
     "prettier": "^2.4.1",
     "react-test-renderer": "18.2.0",
-    "typescript": "4.8.4"
+    "sanitize-filename": "^1.6.3",
+    "typescript": "^4.9.5"
   },
-  "jest": {
-    "preset": "react-native"
-  },
-  "codegenConfig": {
-    "name": "artificialChat",
-    "type": "modules",
-    "jsSrcsDir": "src",
-    "windows": {
-      "namespace": "ArtificialChatModules"
-    }
+  "engines": {
+    "node": ">= 14"
   }
 }
