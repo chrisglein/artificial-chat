@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by RNTesterApp-Fabric.rc
+// Used by artificialChat.rc
 
 #define IDC_RNTESTER_COMPOSITION 100
 #define IDI_ICON1 1008

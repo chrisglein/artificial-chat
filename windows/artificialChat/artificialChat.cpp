@@ -1,8 +1,8 @@
-// RNTesterApp-Fabric.cpp : Defines the entry point for the application.
+// artificialChat.cpp : Defines the entry point for the application.
 //
 
 #include "pch.h"
-#include "RNTesterApp-Fabric.h"
+#include "artificialChat.h"
 
 #include "../../node_modules/react-native-windows/codegen/NativeDeviceInfoSpec.g.h"
 
