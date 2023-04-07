@@ -3,18 +3,22 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "react-native start",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
     "lint": "rnw-scripts lint",
     "lint:fix": "rnw-scripts lint:fix",
+    "start": "react-native start",
+    "test": "jest",
     "watch": "rnw-scripts watch",
-    "windows": "react-native run-windows",
-    "e2etest": "jest",
-    "e2etest:updateSnapshots": "jest -u",
-    "e2etest:debug": "jest --config ./jest.debug.config.js"
+    "windows": "react-native run-windows"
   },
   "dependencies": {
+    "patch-package": "^6.5.1",
+    "postinstall-postinstall": "^2.1.0",
     "react": "18.2.0",
     "react-native": "0.0.0-20230321-2153-7b86e3aae",
+    "react-native-markdown-display": "^7.0.0-alpha.2",
+    "react-native-syntax-highlighter": "^2.1.0",
     "react-native-windows": "0.0.0-canary.637"
   },
   "devDependencies": {
@@ -37,5 +41,16 @@
   },
   "engines": {
     "node": ">= 14"
+  },
+  "jest": {
+    "preset": "react-native"
+  },
+  "codegenConfig": {
+    "name": "artificialChat",
+    "type": "modules",
+    "jsSrcsDir": "src",
+    "windows": {
+      "namespace": "ArtificialChatModules"
+    }
   }
 }
