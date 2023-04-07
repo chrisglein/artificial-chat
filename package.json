@@ -10,7 +10,8 @@
     "start": "react-native start",
     "test": "jest",
     "watch": "rnw-scripts watch",
-    "windows": "react-native run-windows"
+    "windows": "react-native run-windows",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "patch-package": "^6.5.1",
