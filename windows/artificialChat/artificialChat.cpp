@@ -5,6 +5,7 @@
 #include "artificialChat.h"
 
 #include "../../node_modules/react-native-windows/codegen/NativeDeviceInfoSpec.g.h"
+#include "VersionInfo.h"
 
 #include <DispatcherQueue.h>
 #include <UIAutomation.h>
@@ -53,6 +54,7 @@ struct CompReactPackageProvider
   void CreatePackage(winrt::Microsoft::ReactNative::IReactPackageBuilder const &packageBuilder) noexcept {
     AddAttributedModules(packageBuilder, true);
     packageBuilder.AddModule(L"DeviceInfo", winrt::Microsoft::ReactNative::MakeTurboModuleProvider<DeviceInfo>());
+    packageBuilder.AddModule(L"VersionInfo", winrt::Microsoft::ReactNative::MakeTurboModuleProvider<ArtificialChatModules::VersionInfo>());
   }
 };
 

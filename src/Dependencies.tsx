@@ -11,7 +11,7 @@ import Markdown from 'react-native-markdown-display';
 //import {Popup} from 'react-native-windows';
 import SyntaxHighlighter from 'react-native-syntax-highlighter';
 import { vs2015 } from 'react-syntax-highlighter/styles/hljs';
-//import VersionInfo from './NativeVersionInfo'
+import VersionInfo from './NativeVersionInfo'
 
 const AsyncStorage = {
   getItem: async (key: string) => {
@@ -112,14 +112,6 @@ function Popup({isOpen, isLightDismissEnabled, onDismiss, children}: any) {
       }
     </Pressable>
   );
-}
-
-const VersionInfo = {
-  getConstants: () => {
-    return {
-      appVersion: '1.0.0',
-    };
-  }
 }
 
 export { AsyncStorage, Clipboard, Markdown, Picker, Popup, SyntaxHighlighter, vs2015, VersionInfo }
