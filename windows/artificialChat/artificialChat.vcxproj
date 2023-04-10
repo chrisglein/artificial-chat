@@ -2,8 +2,8 @@
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(SolutionDir)\ExperimentalFeatures.props" Condition="Exists('$(SolutionDir)\ExperimentalFeatures.props')" />
   <PropertyGroup Label="Globals">
-      <CppWinRTOptimized>true</CppWinRTOptimized>
-      <MinimalCoreWin>true</MinimalCoreWin>
+    <CppWinRTOptimized>true</CppWinRTOptimized>
+    <MinimalCoreWin>true</MinimalCoreWin>
     <ProjectGuid>{3719BE61-52D1-4F42-8A4C-E575BA16E65F}</ProjectGuid>
     <ProjectName>artificialChat</ProjectName>
     <Keyword>Win32Proj</Keyword>
@@ -78,7 +78,7 @@
       <DisableSpecificWarnings>4453;28204</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>shell32.lib;user32.lib;windowsapp.lib;%(AdditionalDependenices)</AdditionalDependencies>
+      <AdditionalDependencies>shell32.lib;user32.lib;windowsapp.lib;version.lib;%(AdditionalDependenices)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
@@ -130,6 +130,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ReactNativeWindowsTargets">
     <Import Project="$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Uwp.CppApp.targets" Condition="Exists('$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Uwp.CppApp.targets')" />
+    <Import Project="..\packages\Microsoft.Windows.ImplementationLibrary.1.0.230202.1\build\native\Microsoft.Windows.ImplementationLibrary.targets" Condition="Exists('..\packages\Microsoft.Windows.ImplementationLibrary.1.0.230202.1\build\native\Microsoft.Windows.ImplementationLibrary.targets')" />
   </ImportGroup>
   <ItemGroup>
     <PackageReference Include="boost" Version="1.76.0.0" />
@@ -142,5 +143,11 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Uwp.CppApp.props')" Text="$([System.String]::Format('$(ErrorText)', '$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Uwp.CppApp.props'))" />
     <Error Condition="!Exists('$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Uwp.CppApp.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Uwp.CppApp.targets'))" />
+  </Target>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Windows.ImplementationLibrary.1.0.230202.1\build\native\Microsoft.Windows.ImplementationLibrary.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Windows.ImplementationLibrary.1.0.230202.1\build\native\Microsoft.Windows.ImplementationLibrary.targets'))" />
   </Target>
 </Project>

@@ -37,6 +37,10 @@ Ankh.NoLoad
 
 # Visual C++ cache files
 
+#NuGet
+packages/
+*.nupkg
+
 #Other files
 *.DotSettings
 .vs/
