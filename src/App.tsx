@@ -29,7 +29,8 @@ function App(): JSX.Element {
   const [showAboutPopup, setShowAboutPopup] = React.useState(false);
     
   const isDarkMode = currentTheme === 'dark';
-  const styles = CreateStyles(isDarkMode);
+  const isHighContrast = false;
+  const styles = CreateStyles(isDarkMode, isHighContrast);
 
   const settings = {
     scriptName: scriptName,
