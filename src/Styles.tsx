@@ -31,9 +31,10 @@ const StylesContext = React.createContext<{
   hyperlinkIdle: StyleProp<TextStyle>;
   hyperlinkPressing: StyleProp<TextStyle>;
   hyperlinkHovering: StyleProp<TextStyle>;
+  hyperlinkDisabled: StyleProp<TextStyle>;
 }>({});
 
-const CreateStyles = (isDarkMode: boolean) => {
+const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
   return StyleSheet.create({
     appContent: {
       backgroundColor: isDarkMode ? '#1F1F1F' : '#F5F5F5',
@@ -127,16 +128,21 @@ const CreateStyles = (isDarkMode: boolean) => {
       color: isDarkMode ? 'black' : 'white',
     },
     hyperlinkIdle: {
-      color: PlatformColor("HyperlinkButtonForeground"),
+      color: isHighContrast ? PlatformColor("SystemColorWindowTextColor") : isDarkMode ? PlatformColor("SystemAccentColorDark2") : PlatformColor("SystemAccentColorLight3"),
       textDecorationLine: 'underline',
     },
     hyperlinkPressing: {
-      color: PlatformColor("HyperlinkButtonForegroundPressed"),
+      color: isHighContrast ? PlatformColor("SystemColorWindowTextColor") : isDarkMode ? PlatformColor("SystemAccentColorDark2") : PlatformColor("SystemAccentColorLight2"),
     },
     hyperlinkHovering: {
-      color: PlatformColor("HyperlinkButtonForegroundPointerOver"),
+      color: isHighContrast ? PlatformColor("SystemColorWindowTextColor") : isDarkMode ? PlatformColor("SystemAccentColorDark3") : PlatformColor("SystemAccentColorLight3"),
       textDecorationLine: 'underline',
     },
+    hyperlinkDisabled: {
+      color: isHighContrast ? PlatformColor("SystemColorGrayTextColor") : PlatformColor("AccentTextFillColorDisabled"),
+      textDecorationLine: 'underline',
+    },
+
   });
 }
 

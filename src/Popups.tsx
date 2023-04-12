@@ -4,7 +4,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import {Popup} from 'react-native-windows';
+import {Popup} from './Dependencies';
 import {StylesContext} from './Styles';
 
 type PopupsContextType = {

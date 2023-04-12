@@ -8,8 +8,7 @@ import {
 import { HoverButton } from './Controls';
 import { StylesContext } from './Styles';
 import { ChatHistoryContext } from './Chat';
-import Clipboard from '@react-native-clipboard/clipboard';
-
+import { Clipboard } from './Dependencies';
 
 type HumanSectionProps = PropsWithChildren<{
   id?: number,

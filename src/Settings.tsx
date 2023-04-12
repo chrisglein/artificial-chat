@@ -15,9 +15,9 @@ import {
   SwitchWithLabel,
 } from './Controls';
 import {StylesContext} from './Styles';
-import {Picker} from '@react-native-picker/picker';
+import {Picker} from './Dependencies';
 import {ChatScriptNames} from './ChatScript';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {AsyncStorage} from './Dependencies';
 
 const settingsKey = 'settings';
 
