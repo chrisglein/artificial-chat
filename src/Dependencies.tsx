@@ -45,7 +45,7 @@ class Picker extends React.Component<PickerProps> {
   
   static Item(props : PickerItemProps) {
     return (
-      <Text key={props.key}>{props.value}</Text>
+      <Text>{props.value}</Text>
     )
   }
 
