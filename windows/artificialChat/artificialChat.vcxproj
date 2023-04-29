@@ -5,9 +5,9 @@
     <CppWinRTOptimized>true</CppWinRTOptimized>
     <MinimalCoreWin>true</MinimalCoreWin>
     <ProjectGuid>{3719BE61-52D1-4F42-8A4C-E575BA16E65F}</ProjectGuid>
-    <ProjectName>artificialChat</ProjectName>
+    <ProjectName>Artificial Chat</ProjectName>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>RNTesterApp</RootNamespace>
+    <RootNamespace>ArtificialChat</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <DefaultLanguage>en-US</DefaultLanguage>
     <MinimumVisualStudioVersion>17.0</MinimumVisualStudioVersion>
@@ -121,7 +121,6 @@
     <ResourceCompile Include="artificialChat.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="artificialChat.ico" />
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>

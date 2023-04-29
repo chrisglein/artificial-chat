@@ -68,6 +68,7 @@ winrt::Windows::UI::Composition::Compositor g_compositor{nullptr};
 constexpr auto WindowDataProperty = L"WindowData";
 constexpr PCWSTR c_windowClassName = L"MS_REACTNATIVE_RNTESTER_COMPOSITION";
 constexpr PCWSTR appName = L"artificialChat";
+constexpr PCWSTR windowTitle = L"Artificial Chat";
 
 // Forward declarations of functions included in this code module:
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
@@ -212,7 +213,7 @@ int RunRNTester(int showCmd) {
   auto windowData = std::make_unique<WindowData>(winrt::Microsoft::ReactNative::CompositionHwndHost());
   HWND hwnd = CreateWindow(
       c_windowClassName,
-      appName,
+      windowTitle,
       WS_OVERLAPPEDWINDOW,
       CW_USEDEFAULT,
       CW_USEDEFAULT,
