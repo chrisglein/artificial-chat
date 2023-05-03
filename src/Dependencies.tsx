@@ -5,7 +5,7 @@ import {
   View,
 } from 'react-native';
 //import AsyncStorage from '@react-native-async-storage/async-storage';
-//import Clipboard from '@react-native-clipboard/clipboard';
+import Clipboard from './NativeClipboard'
 import Markdown from 'react-native-markdown-display';
 //import {Picker} from '@react-native-picker/picker';
 //import {Popup} from 'react-native-windows';
@@ -19,11 +19,6 @@ const AsyncStorage = {
   },
   setItem: async (key: string, value: string) => {
   },
-}
-
-const Clipboard = {
-  setString: (content: string) => void {
-  }
 }
 
 type PickerItemProps = {
