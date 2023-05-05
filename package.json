@@ -20,7 +20,7 @@
     "react-native": "0.0.0-20230414-2146-adb210306",
     "react-native-markdown-display": "^7.0.0-alpha.2",
     "react-native-syntax-highlighter": "^2.1.0",
-    "react-native-windows": "0.0.0-canary.648"
+    "react-native-windows": "0.0.0-canary.649"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
