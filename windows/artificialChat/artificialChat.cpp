@@ -80,14 +80,23 @@ struct WindowData {
   static HINSTANCE s_instance;
   static constexpr uint16_t defaultDebuggerPort{9229};
 
-  std::wstring m_bundleFile = L"index";
   bool m_windowInited{false};
   winrt::Microsoft::ReactNative::CompositionHwndHost m_CompositionHwndHost{nullptr};
   winrt::Microsoft::ReactNative::ReactNativeHost m_host{nullptr};
   winrt::Microsoft::ReactNative::ReactInstanceSettings m_instanceSettings{nullptr};
 
+#if BUNDLE
+  std::wstring m_bundleFile = L"index.windows";
+  bool m_useWebDebugger{false};
+  bool m_fastRefreshEnabled{false};
+  bool m_useDeveloperSupport{false};
+#else
+  std::wstring m_bundleFile = L"index";
   bool m_useWebDebugger{false};
   bool m_fastRefreshEnabled{true};
+  bool m_useDeveloperSupport{true};
+#endif
+
   bool m_useDirectDebugger{false};
   bool m_breakOnNextLine{false};
   uint16_t m_debuggerPort{defaultDebuggerPort};
@@ -138,7 +147,7 @@ struct WindowData {
     host.InstanceSettings().DebuggerBreakOnNextLine(m_breakOnNextLine);
     host.InstanceSettings().UseFastRefresh(m_fastRefreshEnabled);
     host.InstanceSettings().DebuggerPort(m_debuggerPort);
-    host.InstanceSettings().UseDeveloperSupport(true);
+    host.InstanceSettings().UseDeveloperSupport(m_useDeveloperSupport);
 
     host.PackageProviders().Append(winrt::make<CompReactPackageProvider>());
     winrt::Microsoft::ReactNative::ReactCoreInjection::SetTopLevelWindowId(
