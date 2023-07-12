@@ -10,6 +10,7 @@
 
 #include <DispatcherQueue.h>
 #include <UIAutomation.h>
+#include <appmodel.h>
 
 #include <winrt/Microsoft.ReactNative.Composition.h>
 #include <winrt/Windows.UI.Composition.Desktop.h>
@@ -143,7 +144,22 @@ struct WindowData {
 
     host.InstanceSettings().UseWebDebugger(m_useWebDebugger);
     host.InstanceSettings().UseDirectDebugger(m_useDirectDebugger);
-    host.InstanceSettings().BundleRootPath(std::wstring(L"file:").append(workingDir).append(L"\\Bundle\\").c_str());
+
+    bool isPackaged = [](){
+      wil::unique_handle processHandle(GetCurrentProcess());
+      UINT32 length = 0;
+      LONG result = GetPackageFamilyName(processHandle.get(), &length, NULL);
+      return (result != APPMODEL_ERROR_NO_PACKAGE);
+    }();
+
+    if (isPackaged)
+    {
+      host.InstanceSettings().BundleRootPath(std::wstring(L"ms-appx://").append(L"Bundle\\").c_str());
+    }
+    else
+    {
+      host.InstanceSettings().BundleRootPath(std::wstring(L"file:").append(workingDir).append(L"\\Bundle\\").c_str());
+    }
     host.InstanceSettings().DebuggerBreakOnNextLine(m_breakOnNextLine);
     host.InstanceSettings().UseFastRefresh(m_fastRefreshEnabled);
     host.InstanceSettings().DebuggerPort(m_debuggerPort);
