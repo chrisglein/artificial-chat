@@ -9,12 +9,12 @@
   <Identity
     Name="d48c658e-13fa-4114-be72-501b4236056f"
     Publisher="CN=cglein"
-    Version="1.0.0.0" />
+    Version="1.0.5.0" />
 
   <Properties>
     <DisplayName>Artificial Chat Package</DisplayName>
     <PublisherDisplayName>cglein</PublisherDisplayName>
-    <Logo>Images\StoreLogo.png</Logo>
+    <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
   <Dependencies>
