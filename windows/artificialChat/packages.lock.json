@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "dependencies": {
+    "native,Version=v0.0": {
+      "Microsoft.Windows.ImplementationLibrary": {
+        "type": "Direct",
+        "requested": "[1.0.230202.1, 1.0.230202.1]",
+        "resolved": "1.0.230202.1",
+        "contentHash": "BzSD+iMB+u7oop5tIk4J59W09qs1KgHkCcQzfYgv1Txo/bF9UBtyG9Qnmv0zGoAXE/citSphJ3CbcEguyj5pLQ=="
+      }
+    }
+  }
+}

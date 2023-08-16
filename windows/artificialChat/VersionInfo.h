@@ -6,6 +6,7 @@
 #include "pch.h"
 
 #include "NativeModules.h"
+#include "../../codegen/NativeVersionInfoDataTypes.g.h"
 #include "../../codegen/NativeVersionInfoSpec.g.h"
 
 #include <winrt/Windows.ApplicationModel.h>

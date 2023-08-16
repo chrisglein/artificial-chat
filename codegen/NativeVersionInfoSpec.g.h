@@ -8,18 +8,19 @@
  */
 #pragma once
 
-#include "NativeModules.h"
+// #include "NativeVersionInfoDataTypes.g.h" before this file to use the generated type definition
+#include <NativeModules.h>
 #include <tuple>
 
 namespace ArtificialChatModules {
 
-REACT_STRUCT(VersionInfoSpec_Constants)
-struct VersionInfoSpec_Constants {
-    REACT_FIELD(appVersion)
-    std::string appVersion;
-    REACT_FIELD(buildVersion)
-    std::string buildVersion;
-};
+inline winrt::Microsoft::ReactNative::FieldMap GetStructInfo(VersionInfoSpec_Constants*) noexcept {
+    winrt::Microsoft::ReactNative::FieldMap fieldMap {
+        {L"appVersion", &VersionInfoSpec_Constants::appVersion},
+        {L"buildVersion", &VersionInfoSpec_Constants::buildVersion},
+    };
+    return fieldMap;
+}
 
 struct VersionInfoSpec : winrt::Microsoft::ReactNative::TurboModuleSpec {
   static constexpr auto constants = std::tuple{
