@@ -8,11 +8,16 @@
  */
 #pragma once
 
-// #include "NativeVersionInfoDataTypes.g.h" before this file to use the generated type definition
 #include <NativeModules.h>
 #include <tuple>
 
 namespace ArtificialChatModules {
+
+struct VersionInfoSpec_Constants {
+    std::string appVersion;
+    std::string buildVersion;
+};
+
 
 inline winrt::Microsoft::ReactNative::FieldMap GetStructInfo(VersionInfoSpec_Constants*) noexcept {
     winrt::Microsoft::ReactNative::FieldMap fieldMap {

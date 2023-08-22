@@ -8,11 +8,11 @@
  */
 #pragma once
 
-
 #include <NativeModules.h>
 #include <tuple>
 
 namespace ArtificialChatModules {
+
 
 struct ClipboardSpec : winrt::Microsoft::ReactNative::TurboModuleSpec {
   static constexpr auto methods = std::tuple{

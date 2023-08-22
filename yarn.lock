@@ -1863,10 +1863,10 @@
     prompts "^2.4.0"
     semver "^6.3.0"
 
-"@react-native-windows/cli@0.0.0-canary.184":
-  version "0.0.0-canary.184"
-  resolved "https://registry.yarnpkg.com/@react-native-windows/cli/-/cli-0.0.0-canary.184.tgz#3408fc1706baf24989c753a8d64b8fec0e929724"
-  integrity sha512-C3UfTEBOTdfCQ60tmMYwHFd00GAGzfQkOR4caxzMqDVUSIrMzaCNT31v1Ks31rOJob3gHanf2azUjbbOAHYYLQ==
+"@react-native-windows/cli@0.0.0-canary.185":
+  version "0.0.0-canary.185"
+  resolved "https://registry.yarnpkg.com/@react-native-windows/cli/-/cli-0.0.0-canary.185.tgz#80d1e57ea1b160b367c9c309edfc95388e3af886"
+  integrity sha512-5CkiDvQIDONYvm1lKkK89+qVuzVYnWzcmlmzHIwRiJWyO50TTEwffshWjZbIdf41p+LG6HdL5Izlt7XMhdDxeA==
   dependencies:
     "@react-native-windows/codegen" "0.0.0-canary.68"
     "@react-native-windows/fs" "^0.0.0-canary.27"
@@ -5828,17 +5828,17 @@ react-native-syntax-highlighter@^2.1.0:
   dependencies:
     react-syntax-highlighter "^6.0.4"
 
-react-native-windows@0.0.0-canary.693:
-  version "0.0.0-canary.693"
-  resolved "https://registry.yarnpkg.com/react-native-windows/-/react-native-windows-0.0.0-canary.693.tgz#c170ebfa9248ba288ed2cb2afefc56d002705bbf"
-  integrity sha512-TsDkbwbA2zQQlNK693lWPnwRrKfClC40DsfFNgKTFAFpuZcWQlQhY67gymWJc2NGPcf29FY+E1tpH4fmTN4Z4A==
+react-native-windows@0.0.0-canary.694:
+  version "0.0.0-canary.694"
+  resolved "https://registry.yarnpkg.com/react-native-windows/-/react-native-windows-0.0.0-canary.694.tgz#bf60fb49f23b0bfffbb41fb000e3290ba9bc6bdd"
+  integrity sha512-1DxmV8KgFX0Q2u5NMss5iYAFnBRml8syWZb7U8eTvPljziVXITxjwDwwcUgEXkcp82enfRnXADvosf8C7H9F/A==
   dependencies:
     "@babel/runtime" "^7.0.0"
     "@jest/create-cache-key-function" "^29.2.1"
     "@react-native-community/cli" "12.0.0-alpha.6"
     "@react-native-community/cli-platform-android" "12.0.0-alpha.6"
     "@react-native-community/cli-platform-ios" "12.0.0-alpha.6"
-    "@react-native-windows/cli" "0.0.0-canary.184"
+    "@react-native-windows/cli" "0.0.0-canary.185"
     "@react-native/assets" "1.0.0"
     "@react-native/assets-registry" "0.73.0-nightly-20230622-0201e51bb"
     "@react-native/codegen" "0.73.0-nightly-20230711-f396067cc"
