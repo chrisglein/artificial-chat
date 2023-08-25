@@ -32,6 +32,7 @@ const StylesContext = React.createContext<{
   hyperlinkPressing: StyleProp<TextStyle>;
   hyperlinkHovering: StyleProp<TextStyle>;
   hyperlinkDisabled: StyleProp<TextStyle>;
+  textBox: StyleProp<ViewStyle>;
 }>({});
 
 const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
@@ -142,6 +143,21 @@ const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
       color: isHighContrast ? PlatformColor("SystemColorGrayTextColor") : PlatformColor("AccentTextFillColorDisabled"),
       textDecorationLine: 'underline',
     },
+    textBox: {
+      flexGrow: 1,
+      flexShrink: 1,
+      backgroundColor: isDarkMode ? '#FFFFFFFF' : '#FFFFFFFF', // TextBoxBackgroundThemeBrush
+      borderRadius: 4, // ControlCornerRadius
+      borderWidth: 1, // TextControlBorderThemeThickness
+      borderBottomWidth: 2,
+      borderColor: isDarkMode ? '#FFFFFFFF' : '#A3000000', // TextBoxBorderThemeBrush
+      borderBottomColor: isDarkMode ? '#8BFFFFFF' : '#72000000', // ControlStrongStrokeColorDefault
+      paddingLeft: 10, // TextControlThemePadding
+      paddingTop: 6,
+      paddingRight: 6,
+      paddingBottom: 5,
+      minHeight: 32, // TextControlThemeMinHeight
+    }
 
   });
 }
