@@ -5853,10 +5853,10 @@ react-native-syntax-highlighter@^2.1.0:
   dependencies:
     react-syntax-highlighter "^6.0.4"
 
-react-native-windows@0.0.0-canary.698:
-  version "0.0.0-canary.698"
-  resolved "https://registry.yarnpkg.com/react-native-windows/-/react-native-windows-0.0.0-canary.698.tgz#785d89a20e57e9722ee1147c4859770009be264e"
-  integrity sha512-4LyRTXzV7sBdtyUZCOhy6WSnLk8OOKN1l5gg7mXqe+NWEjo2LhBAjHko1+akrkIKZItCLyfiyV1msRhSIPgewg==
+react-native-windows@0.0.0-canary.700:
+  version "0.0.0-canary.700"
+  resolved "https://registry.yarnpkg.com/react-native-windows/-/react-native-windows-0.0.0-canary.700.tgz#74a2bce0875df95e0067a8577302daeecab7de6b"
+  integrity sha512-qqDwheB5bvNktotP2cNg+jx89yGtIao4+k20IxCSJEcki0Vdem5mnZ4x4YbThT4hGYulZ24TI5xkfrSy+k88Xw==
   dependencies:
     "@babel/runtime" "^7.0.0"
     "@jest/create-cache-key-function" "^29.2.1"
