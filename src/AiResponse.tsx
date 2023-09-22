@@ -22,7 +22,7 @@ import {
 import { StylesContext } from './Styles';
 import { FeedbackContext } from './Feedback';
 import Clipboard from '@react-native-clipboard/clipboard';
-import Markdown from 'react-native-markdown-display';
+import Markdown from 'react-native-markdown-display-updated';
 
 type AiImageResponseProps = {
   imageUrls?: string[];
