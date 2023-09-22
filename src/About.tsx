@@ -22,7 +22,8 @@ function AboutPopup({show, close}: AboutPopupProps): JSX.Element {
     <ContentDialog
       show={show}
       close={close}
-      title="About">
+      title="About"
+      defaultButtonIndex={0}>
       <Text>Version: <Text style={{fontWeight: 'bold'}}>{VersionInfo.getConstants().appVersion}</Text></Text>
       <View style={{flexDirection: 'row', gap: 4}}>
         <Text>Source code:</Text>
