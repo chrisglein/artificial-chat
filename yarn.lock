@@ -6651,6 +6651,11 @@ react-native-codegen@^0.71.3:
     jscodeshift "^0.13.1"
     nullthrows "^1.1.1"
 
+react-native-content-dialog@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-content-dialog/-/react-native-content-dialog-0.1.0.tgz#f04b2c43d87d42b03324c824cd61571a585d91ed"
+  integrity sha512-862F6r5FyQNChEVOmPgUF21meXC8uhK4zv7JQtJZli/xAzwaE+Uu1XwdNjmAe67ubDf1R324MPYuscVEW/Mb5Q==
+
 react-native-fit-image@^1.5.5:
   version "1.5.5"
   resolved "https://registry.yarnpkg.com/react-native-fit-image/-/react-native-fit-image-1.5.5.tgz#c660d1ad74b9dcaa1cba27a0d9c23837e000226c"
@@ -6663,10 +6668,10 @@ react-native-gradle-plugin@^0.71.12:
   resolved "https://registry.yarnpkg.com/react-native-gradle-plugin/-/react-native-gradle-plugin-0.71.14.tgz#cc399662f04fbfcc0e352d03eae1d3efbd5f635a"
   integrity sha512-nnLawTZEPPRAKq92UqDkzoGgCBl9aa9zAihFHMwmwzn4WRVdK4O6Cd4XYiyoNOiQzx3Hh9k5WOckHE80C92ivQ==
 
-react-native-markdown-display@^7.0.0-alpha.2:
-  version "7.0.0-alpha.2"
-  resolved "https://registry.yarnpkg.com/react-native-markdown-display/-/react-native-markdown-display-7.0.0-alpha.2.tgz#a48a70d3cb5c510a52ecf7f1509a4a3d14d728aa"
-  integrity sha512-Od1a4wJEcVGwO1bh02sHivsEkKKpu99+ew/OtmVTPRmfT8V3B0aTut7k7ICV0Vej9F4ZjylRHvm28/maYUBeGw==
+react-native-markdown-display-updated@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-markdown-display-updated/-/react-native-markdown-display-updated-7.0.0.tgz#c5c9dc25670573700843540f86c74e972cd74508"
+  integrity sha512-0bLyxigFEP0M1vzvxMILyCltyQGvdYgriuOLzLBFot9YNJPbaIYtR2c9o432gzPLotGpkU+HytgSD/cea6JygQ==
   dependencies:
     css-to-react-native "^3.0.0"
     markdown-it "^10.0.0"

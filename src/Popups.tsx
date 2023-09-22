@@ -1,4 +1,5 @@
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
+import type { PropsWithChildren } from 'react';
 import {
   Button,
   Text,
@@ -6,6 +7,7 @@ import {
 } from 'react-native';
 import {Popup} from 'react-native-windows';
 import {StylesContext} from './Styles';
+import {ContentDialog} from 'react-native-content-dialog';
 
 type PopupsContextType = {
     showAbout: boolean,
@@ -80,4 +82,4 @@ function DialogSection({children, header}: DialogSectionProps): JSX.Element {
   );
 }
 
-export { PopupsContext, DialogFrame, DialogSection }
+export { PopupsContext, DialogFrame, ContentDialog, DialogSection }
