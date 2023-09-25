@@ -19,7 +19,7 @@
     "postinstall-postinstall": "^2.1.0",
     "react": "18.2.0",
     "react-native": "0.71.0",
-    "react-native-content-dialog": "^0.1.0",
+    "react-native-content-dialog": "^0.2.0",
     "react-native-markdown-display-updated": "^7.0.0",
     "react-native-syntax-highlighter": "^2.1.0",
     "react-native-windows": "0.71.1"

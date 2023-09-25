@@ -6651,10 +6651,10 @@ react-native-codegen@^0.71.3:
     jscodeshift "^0.13.1"
     nullthrows "^1.1.1"
 
-react-native-content-dialog@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/react-native-content-dialog/-/react-native-content-dialog-0.1.0.tgz#f04b2c43d87d42b03324c824cd61571a585d91ed"
-  integrity sha512-862F6r5FyQNChEVOmPgUF21meXC8uhK4zv7JQtJZli/xAzwaE+Uu1XwdNjmAe67ubDf1R324MPYuscVEW/Mb5Q==
+react-native-content-dialog@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-content-dialog/-/react-native-content-dialog-0.2.0.tgz#715fc0404fe6b05ad8efad41b6ad5f4eee9bad22"
+  integrity sha512-TB+UUtjNzYOiJ2YyC6j+dN1dYR6kx+E8zHQSm/gNhsaUbUpV0XMDQIaoiV2kUnkGpOPFg4Y9Jx4iPt5vQPIehQ==
 
 react-native-fit-image@^1.5.5:
   version "1.5.5"
