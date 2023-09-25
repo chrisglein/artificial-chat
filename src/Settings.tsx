@@ -1,13 +1,11 @@
 import React from 'react';
 import {
-  Button,
-  Switch,
   Text,
   TextInput,
   View,
 } from 'react-native';
 import {
-  DialogFrame,
+  ContentDialog,
   DialogSection,
 } from './Popups';
 import {
@@ -161,28 +159,27 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   }
 
   const buttons = [
-    <Button
-      accessibilityLabel="OK"
-      title="OK"
-      onPress={() => {
+    {
+      title: "OK",
+      onPress: () => {
         save();
-      }}/>,
-    <Button
-      accessibilityLabel="Cancel"
-      title="Cancel"
-      onPress={() => {
+      }
+    },
+    {
+      title: "Cancel",
+      onPress: () => {
         cancel();
-      }}/>
-    ];
+      }
+    }
+  ];
 
   return (
-    <DialogFrame
+    <ContentDialog
       show={show}
       close={cancel}
-      isLightDismissEnabled={false}
-      titleIcon="⚙️"
       title="OpenAI Settings"
-      buttons={buttons}>
+      buttons={buttons}
+      defaultButtonIndex={0}>
       <View style={styles.dialogSectionsContainer}>
         <DialogSection header="Chat">
           <Text>AI Endpoint</Text>
@@ -250,7 +247,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             value={delayForArtificialResponse.toString()}/>
         </DialogSection>
       </View>
-    </DialogFrame>
+    </ContentDialog>
   );
 }
 

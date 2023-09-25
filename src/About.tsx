@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import {Hyperlink} from './Controls';
 import {
-  DialogFrame,
+  ContentDialog,
 } from './Popups';
 import {StylesContext} from './Styles';
 import VersionInfo from './NativeVersionInfo'
@@ -19,11 +19,11 @@ function AboutPopup({show, close}: AboutPopupProps): JSX.Element {
   const styles = React.useContext(StylesContext);
 
   return (
-    <DialogFrame
+    <ContentDialog
       show={show}
       close={close}
-      titleIcon="❔"
-      title="About">
+      title="About"
+      defaultButtonIndex={0}>
       <Text>Version: <Text style={{fontWeight: 'bold'}}>{VersionInfo.getConstants().appVersion}</Text></Text>
       <View style={{flexDirection: 'row', gap: 4}}>
         <Text>Source code:</Text>
@@ -31,7 +31,7 @@ function AboutPopup({show, close}: AboutPopupProps): JSX.Element {
           text='GitHub'
           url='https://github.com/chrisglein/artificial-chat/'/>
       </View>
-    </DialogFrame>
+    </ContentDialog>
   );
 }
 
