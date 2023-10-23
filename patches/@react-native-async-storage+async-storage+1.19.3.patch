@@ -1,5 +1,5 @@
 diff --git a/node_modules/@react-native-async-storage/async-storage/windows/ReactNativeAsyncStorage/ReactNativeAsyncStorage.vcxproj b/node_modules/@react-native-async-storage/async-storage/windows/ReactNativeAsyncStorage/ReactNativeAsyncStorage.vcxproj
-index fb2a141..df34f6f 100644
+index fb2a141..82172b0 100644
 --- a/node_modules/@react-native-async-storage/async-storage/windows/ReactNativeAsyncStorage/ReactNativeAsyncStorage.vcxproj
 +++ b/node_modules/@react-native-async-storage/async-storage/windows/ReactNativeAsyncStorage/ReactNativeAsyncStorage.vcxproj
 @@ -1,10 +1,10 @@
@@ -29,24 +29,14 @@ index fb2a141..df34f6f 100644
 +  </PropertyGroup>
 +  <Import Project="$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.WindowsSdk.Default.props" Condition="Exists('$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.WindowsSdk.Default.props')" />
 +  <PropertyGroup Label="Fallback Windows SDK Versions">
-+   <WindowsTargetPlatformVersion Condition=" '$(WindowsTargetPlatformVersion)' == '' ">10.0.18362.0</WindowsTargetPlatformVersion>
-+   <WindowsTargetPlatformMinVersion Condition=" '$(WindowsTargetPlatformMinVersion)' == '' ">10.0.17763.0</WindowsTargetPlatformMinVersion>
++   <WindowsTargetPlatformVersion Condition=" '$(WindowsTargetPlatformVersion)' == '' ">10.0</WindowsTargetPlatformVersion>
++   <WindowsTargetPlatformMinVersion Condition=" '$(WindowsTargetPlatformMinVersion)' == '' ">10.0.16299.0</WindowsTargetPlatformMinVersion>
    </PropertyGroup>
 +  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
    <ItemGroup Label="ProjectConfigurations">
      <ProjectConfiguration Include="Debug|ARM">
        <Configuration>Debug</Configuration>
-@@ -71,6 +74,9 @@
-   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-   <ImportGroup Label="ExtensionSettings">
-   </ImportGroup>
-+  <ImportGroup Label="Shared">
-+    <Import Project="$(ReactNativeWindowsDir)\Microsoft.ReactNative.Cxx\Microsoft.ReactNative.Cxx.vcxitems" Label="Shared" />
-+  </ImportGroup>
-   <ImportGroup Label="PropertySheets">
-     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-   </ImportGroup>
-@@ -99,7 +105,7 @@
+@@ -99,7 +102,7 @@
        <SubSystem>Console</SubSystem>
        <GenerateWindowsMetadata>true</GenerateWindowsMetadata>
        <ModuleDefinitionFile>..\code\ReactNativeAsyncStorage.def</ModuleDefinitionFile>
@@ -55,7 +45,7 @@ index fb2a141..df34f6f 100644
        <DelayLoadDLLs>winsqlite3.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
      </Link>
    </ItemDefinitionGroup>
-@@ -112,7 +118,7 @@
+@@ -112,7 +115,7 @@
      <ClCompile>
        <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
      </ClCompile>
@@ -64,7 +54,7 @@ index fb2a141..df34f6f 100644
    <ItemGroup>
      <ClInclude Include="..\code\pch.h" />
      <ClInclude Include="..\code\ReactPackageProvider.h">
-@@ -136,18 +142,18 @@
+@@ -136,18 +139,18 @@
    </ItemGroup>
    <ItemGroup>
      <None Include="packages.config" />
@@ -86,7 +76,7 @@ index fb2a141..df34f6f 100644
    <ImportGroup Label="ReactNativeWindowsTargets">
      <Import Project="$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Uwp.CppLib.targets" Condition="Exists('$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Uwp.CppLib.targets')" />
    </ImportGroup>
-@@ -159,14 +165,14 @@
+@@ -159,14 +162,14 @@
      <Error Condition="!Exists('$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Uwp.CppLib.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Uwp.CppLib.targets'))" />
    </Target>
    <ImportGroup Label="ExtensionTargets">
@@ -105,3 +95,127 @@ index fb2a141..df34f6f 100644
 +    <Error Condition="!Exists('$(SolutionDir)\packages\Microsoft.Windows.CppWinRT.2.0.200316.3\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\packages\Microsoft.Windows.CppWinRT.2.0.200316.3\build\native\Microsoft.Windows.CppWinRT.targets'))" />
    </Target>
  </Project>
+diff --git a/node_modules/@react-native-async-storage/async-storage/windows/ReactNativeAsyncStorage/packages.lock.json b/node_modules/@react-native-async-storage/async-storage/windows/ReactNativeAsyncStorage/packages.lock.json
+new file mode 100644
+index 0000000..b6c0564
+--- /dev/null
++++ b/node_modules/@react-native-async-storage/async-storage/windows/ReactNativeAsyncStorage/packages.lock.json
+@@ -0,0 +1,117 @@
++{
++  "version": 1,
++  "dependencies": {
++    "native,Version=v0.0": {
++      "Microsoft.UI.Xaml": {
++        "type": "Direct",
++        "requested": "[2.8.0, )",
++        "resolved": "2.8.0",
++        "contentHash": "vxdHxTr63s5KVtNddMFpgvjBjUH50z7seq/5jLWmmSuf8poxg+sXrywkofUdE8ZstbpO9y3FL/IXXUcPYbeesA==",
++        "dependencies": {
++          "Microsoft.Web.WebView2": "1.0.1264.42"
++        }
++      },
++      "Microsoft.Windows.CppWinRT": {
++        "type": "Direct",
++        "requested": "[2.0.211028.7, )",
++        "resolved": "2.0.211028.7",
++        "contentHash": "JBGI0c3WLoU6aYJRy9Qo0MLDQfObEp+d4nrhR95iyzf7+HOgjRunHDp/6eGFREd7xq3OI1mll9ecJrMfzBvlyg=="
++      },
++      "boost": {
++        "type": "Transitive",
++        "resolved": "1.76.0",
++        "contentHash": "p+w3YvNdXL8Cu9Fzrmexssu0tZbWxuf6ywsQqHjDlKFE5ojXHof1HIyMC3zDLfLnh80dIeFcEUAuR2Asg/XHRA=="
++      },
++      "Microsoft.JavaScript.Hermes": {
++        "type": "Transitive",
++        "resolved": "0.1.15",
++        "contentHash": "My/u5RvxoymtwWokoweU6iVpuP79w271UjadcmSNqnQ9ESIv00tlVP4sHnIiN3t2lJNDeciyE1EVF4swGPECKQ=="
++      },
++      "Microsoft.Web.WebView2": {
++        "type": "Transitive",
++        "resolved": "1.0.1264.42",
++        "contentHash": "7OBUTkzQ5VI/3gb0ufi5U4zjuCowAJwQg2li0zXXzqkM+S1kmOlivTy1R4jAW+gY5Vyg510M+qMAESCQUjrfgA=="
++      },
++      "common": {
++        "type": "Project"
++      },
++      "fmt": {
++        "type": "Project"
++      },
++      "folly": {
++        "type": "Project",
++        "dependencies": {
++          "boost": "[1.76.0, )",
++          "fmt": "[1.0.0, )"
++        }
++      },
++      "microsoft.reactnative": {
++        "type": "Project",
++        "dependencies": {
++          "Common": "[1.0.0, )",
++          "Folly": "[1.0.0, )",
++          "Microsoft.JavaScript.Hermes": "[0.1.15, )",
++          "Microsoft.UI.Xaml": "[2.8.0, )",
++          "ReactCommon": "[1.0.0, )",
++          "boost": "[1.76.0, )"
++        }
++      },
++      "reactcommon": {
++        "type": "Project",
++        "dependencies": {
++          "Folly": "[1.0.0, )",
++          "boost": "[1.76.0, )"
++        }
++      }
++    },
++    "native,Version=v0.0/win10-arm": {
++      "Microsoft.Web.WebView2": {
++        "type": "Transitive",
++        "resolved": "1.0.1264.42",
++        "contentHash": "7OBUTkzQ5VI/3gb0ufi5U4zjuCowAJwQg2li0zXXzqkM+S1kmOlivTy1R4jAW+gY5Vyg510M+qMAESCQUjrfgA=="
++      }
++    },
++    "native,Version=v0.0/win10-arm-aot": {
++      "Microsoft.Web.WebView2": {
++        "type": "Transitive",
++        "resolved": "1.0.1264.42",
++        "contentHash": "7OBUTkzQ5VI/3gb0ufi5U4zjuCowAJwQg2li0zXXzqkM+S1kmOlivTy1R4jAW+gY5Vyg510M+qMAESCQUjrfgA=="
++      }
++    },
++    "native,Version=v0.0/win10-arm64-aot": {
++      "Microsoft.Web.WebView2": {
++        "type": "Transitive",
++        "resolved": "1.0.1264.42",
++        "contentHash": "7OBUTkzQ5VI/3gb0ufi5U4zjuCowAJwQg2li0zXXzqkM+S1kmOlivTy1R4jAW+gY5Vyg510M+qMAESCQUjrfgA=="
++      }
++    },
++    "native,Version=v0.0/win10-x64": {
++      "Microsoft.Web.WebView2": {
++        "type": "Transitive",
++        "resolved": "1.0.1264.42",
++        "contentHash": "7OBUTkzQ5VI/3gb0ufi5U4zjuCowAJwQg2li0zXXzqkM+S1kmOlivTy1R4jAW+gY5Vyg510M+qMAESCQUjrfgA=="
++      }
++    },
++    "native,Version=v0.0/win10-x64-aot": {
++      "Microsoft.Web.WebView2": {
++        "type": "Transitive",
++        "resolved": "1.0.1264.42",
++        "contentHash": "7OBUTkzQ5VI/3gb0ufi5U4zjuCowAJwQg2li0zXXzqkM+S1kmOlivTy1R4jAW+gY5Vyg510M+qMAESCQUjrfgA=="
++      }
++    },
++    "native,Version=v0.0/win10-x86": {
++      "Microsoft.Web.WebView2": {
++        "type": "Transitive",
++        "resolved": "1.0.1264.42",
++        "contentHash": "7OBUTkzQ5VI/3gb0ufi5U4zjuCowAJwQg2li0zXXzqkM+S1kmOlivTy1R4jAW+gY5Vyg510M+qMAESCQUjrfgA=="
++      }
++    },
++    "native,Version=v0.0/win10-x86-aot": {
++      "Microsoft.Web.WebView2": {
++        "type": "Transitive",
++        "resolved": "1.0.1264.42",
++        "contentHash": "7OBUTkzQ5VI/3gb0ufi5U4zjuCowAJwQg2li0zXXzqkM+S1kmOlivTy1R4jAW+gY5Vyg510M+qMAESCQUjrfgA=="
++      }
++    }
++  }
++}
+\ No newline at end of file
