@@ -45,6 +45,9 @@
     <Image Include="small.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="artificialChat.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

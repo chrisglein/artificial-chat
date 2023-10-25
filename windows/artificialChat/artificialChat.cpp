@@ -10,7 +10,6 @@
 
 #include <DispatcherQueue.h>
 #include <UIAutomation.h>
-#include <appmodel.h>
 
 #include <winrt/Microsoft.ReactNative.Composition.h>
 #include <winrt/Windows.UI.Composition.Desktop.h>
@@ -33,8 +32,8 @@ struct DeviceInfo {
   }
 
   REACT_GET_CONSTANTS(GetConstants)
-  Microsoft::ReactNativeSpecs::DeviceInfoSpec_Constants GetConstants() noexcept {
-    Microsoft::ReactNativeSpecs::DeviceInfoSpec_Constants constants;
+  Microsoft::ReactNativeSpecs::DeviceInfoSpec_DeviceInfoConstants GetConstants() noexcept {
+    Microsoft::ReactNativeSpecs::DeviceInfoSpec_DeviceInfoConstants constants;
     Microsoft::ReactNativeSpecs::DeviceInfoSpec_DisplayMetrics screenDisplayMetrics;
     screenDisplayMetrics.fontScale = 1;
     screenDisplayMetrics.height = 1024;
@@ -55,7 +54,6 @@ struct CompReactPackageProvider
  public: // IReactPackageProvider
   void CreatePackage(winrt::Microsoft::ReactNative::IReactPackageBuilder const &packageBuilder) noexcept {
     AddAttributedModules(packageBuilder, true);
-    packageBuilder.AddModule(L"DeviceInfo", winrt::Microsoft::ReactNative::MakeTurboModuleProvider<DeviceInfo>());
     packageBuilder.AddModule(L"VersionInfo", winrt::Microsoft::ReactNative::MakeTurboModuleProvider<ArtificialChatModules::VersionInfo>());
     packageBuilder.AddModule(L"Clipboard", winrt::Microsoft::ReactNative::MakeTurboModuleProvider<ArtificialChatModules::Clipboard>());
   }
@@ -90,12 +88,10 @@ struct WindowData {
   std::wstring m_bundleFile = L"index.windows";
   bool m_useWebDebugger{false};
   bool m_fastRefreshEnabled{false};
-  bool m_useDeveloperSupport{false};
 #else
   std::wstring m_bundleFile = L"index";
   bool m_useWebDebugger{false};
   bool m_fastRefreshEnabled{true};
-  bool m_useDeveloperSupport{true};
 #endif
 
   bool m_useDirectDebugger{false};
@@ -106,7 +102,7 @@ struct WindowData {
   WindowData(const winrt::Microsoft::ReactNative::CompositionHwndHost &compHost) : m_CompositionHwndHost(compHost) {
     winrt::Microsoft::ReactNative::Composition::CompositionUIService::SetCompositionContext(
         InstanceSettings().Properties(),
-        winrt::Microsoft::ReactNative::Composition::CompositionContextHelper::CreateContext(g_compositor));
+        winrt::Microsoft::ReactNative::Composition::WindowsCompositionContextHelper::CreateContext(g_compositor));
   }
 
   static WindowData *GetFromWindow(HWND hwnd) {
@@ -144,26 +140,11 @@ struct WindowData {
 
     host.InstanceSettings().UseWebDebugger(m_useWebDebugger);
     host.InstanceSettings().UseDirectDebugger(m_useDirectDebugger);
-
-    bool isPackaged = [](){
-      wil::unique_handle processHandle(GetCurrentProcess());
-      UINT32 length = 0;
-      LONG result = GetPackageFamilyName(processHandle.get(), &length, NULL);
-      return (result != APPMODEL_ERROR_NO_PACKAGE);
-    }();
-
-    if (isPackaged)
-    {
-      host.InstanceSettings().BundleRootPath(std::wstring(L"ms-appx://").append(L"Bundle\\").c_str());
-    }
-    else
-    {
-      host.InstanceSettings().BundleRootPath(std::wstring(L"file:").append(workingDir).append(L"\\Bundle\\").c_str());
-    }
+    host.InstanceSettings().BundleRootPath(std::wstring(L"file:").append(workingDir).append(L"\\Bundle\\").c_str());
     host.InstanceSettings().DebuggerBreakOnNextLine(m_breakOnNextLine);
     host.InstanceSettings().UseFastRefresh(m_fastRefreshEnabled);
     host.InstanceSettings().DebuggerPort(m_debuggerPort);
-    host.InstanceSettings().UseDeveloperSupport(m_useDeveloperSupport);
+    host.InstanceSettings().UseDeveloperSupport(true);
 
     host.PackageProviders().Append(winrt::make<CompReactPackageProvider>());
     winrt::Microsoft::ReactNative::ReactCoreInjection::SetTopLevelWindowId(
@@ -219,14 +200,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
       break;
     }
     case WM_GETOBJECT: {
-      if (lParam == UiaRootObjectId) {
+      {
         auto windowData = WindowData::GetFromWindow(hWnd);
-        if (!windowData->m_windowInited)
+        if (windowData == nullptr || !windowData->m_windowInited)
           break;
 
         auto hwndHost = windowData->m_CompositionHwndHost;
         winrt::com_ptr<IRawElementProviderSimple> spReps;
-        hwndHost.UiaProvider().as(spReps);
+        if (!hwndHost.UiaProvider().try_as(spReps)) {
+          break;
+        }
         LRESULT lResult = UiaReturnRawElementProvider(hWnd, wParam, lParam, spReps.get());
         return lResult;
       }

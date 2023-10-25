@@ -7,19 +7,19 @@
   IgnorableNamespaces="uap rescap">
 
   <Identity
-    Name="d48c658e-13fa-4114-be72-501b4236056f"
-    Publisher="CN=cglein"
-    Version="1.0.5.0" />
+    Name="34515PNBIndustries.ArtificialChat"
+    Publisher="CN=5C24357C-C5B6-4999-B1F2-13387994FDD6"
+    Version="1.1.0.0" />
 
   <Properties>
-    <DisplayName>Artificial Chat Package</DisplayName>
-    <PublisherDisplayName>cglein</PublisherDisplayName>
-    <Logo>Assets\StoreLogo.png</Logo>
+    <DisplayName>Artificial Chat</DisplayName>
+    <PublisherDisplayName>PNB Industries</PublisherDisplayName>
+    <Logo>Images\StoreLogo.png</Logo>
   </Properties>
 
   <Dependencies>
     <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
-    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.14393.0" MaxVersionTested="10.0.14393.0" />
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17763.0" MaxVersionTested="10.0.17763.0" />
   </Dependencies>
 
   <Resources>
@@ -32,11 +32,12 @@
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
         DisplayName="Artificial Chat"
-        Square150x150Logo="Assets\Square150x150Logo.png"
-        Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="Talk to an artificial entity"
-        BackgroundColor="#515FB7">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" ShortName="Artificial Chat" />
+        Description="artificialChat"
+        BackgroundColor="transparent"
+        Square150x150Logo="Images\Square150x150Logo.png"
+        Square44x44Logo="Images\Square44x44Logo.png">
+        <uap:DefaultTile Wide310x150Logo="Images\Wide310x150Logo.png" />
+        <uap:SplashScreen Image="Images\SplashScreen.png" />
       </uap:VisualElements>
     </Application>
   </Applications>

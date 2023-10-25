@@ -1,22 +1,19 @@
 {
   "version": 1,
   "dependencies": {
-    "native,Version=v0.0": {
+    "UAP,Version=v10.0.17763": {
       "boost": {
-        "type": "Direct",
-        "requested": "[1.76.0, )",
+        "type": "Transitive",
         "resolved": "1.76.0",
         "contentHash": "p+w3YvNdXL8Cu9Fzrmexssu0tZbWxuf6ywsQqHjDlKFE5ojXHof1HIyMC3zDLfLnh80dIeFcEUAuR2Asg/XHRA=="
       },
       "Microsoft.JavaScript.Hermes": {
-        "type": "Direct",
-        "requested": "[0.1.15, )",
+        "type": "Transitive",
         "resolved": "0.1.15",
         "contentHash": "My/u5RvxoymtwWokoweU6iVpuP79w271UjadcmSNqnQ9ESIv00tlVP4sHnIiN3t2lJNDeciyE1EVF4swGPECKQ=="
       },
       "Microsoft.UI.Xaml": {
-        "type": "Direct",
-        "requested": "[2.8.0, )",
+        "type": "Transitive",
         "resolved": "2.8.0",
         "contentHash": "vxdHxTr63s5KVtNddMFpgvjBjUH50z7seq/5jLWmmSuf8poxg+sXrywkofUdE8ZstbpO9y3FL/IXXUcPYbeesA==",
         "dependencies": {
@@ -24,21 +21,24 @@
         }
       },
       "Microsoft.VCRTForwarders.140": {
-        "type": "Direct",
-        "requested": "[1.0.2-rc, )",
+        "type": "Transitive",
         "resolved": "1.0.2-rc",
         "contentHash": "/r+sjtEeCIGyDhobIZ5hSmYhC/dSyGZxf1SxYJpElUhB0LMCktOMFs9gXrauXypIFECpVynNyVjAmJt6hjJ5oQ=="
-      },
-      "Microsoft.Windows.CppWinRT": {
-        "type": "Direct",
-        "requested": "[2.0.211028.7, )",
-        "resolved": "2.0.211028.7",
-        "contentHash": "JBGI0c3WLoU6aYJRy9Qo0MLDQfObEp+d4nrhR95iyzf7+HOgjRunHDp/6eGFREd7xq3OI1mll9ecJrMfzBvlyg=="
       },
       "Microsoft.Web.WebView2": {
         "type": "Transitive",
         "resolved": "1.0.1264.42",
         "contentHash": "7OBUTkzQ5VI/3gb0ufi5U4zjuCowAJwQg2li0zXXzqkM+S1kmOlivTy1R4jAW+gY5Vyg510M+qMAESCQUjrfgA=="
+      },
+      "artificialchat": {
+        "type": "Project",
+        "dependencies": {
+          "Microsoft.JavaScript.Hermes": "[0.1.15, )",
+          "Microsoft.ReactNative": "[1.0.0, )",
+          "Microsoft.UI.Xaml": "[2.8.0, )",
+          "Microsoft.VCRTForwarders.140": "[1.0.2-rc, )",
+          "boost": "[1.76.0, )"
+        }
       },
       "common": {
         "type": "Project"
@@ -72,10 +72,9 @@
         }
       }
     },
-    "native,Version=v0.0/win": {
+    "UAP,Version=v10.0.17763/win10-arm": {
       "Microsoft.VCRTForwarders.140": {
-        "type": "Direct",
-        "requested": "[1.0.2-rc, )",
+        "type": "Transitive",
         "resolved": "1.0.2-rc",
         "contentHash": "/r+sjtEeCIGyDhobIZ5hSmYhC/dSyGZxf1SxYJpElUhB0LMCktOMFs9gXrauXypIFECpVynNyVjAmJt6hjJ5oQ=="
       },
@@ -85,10 +84,9 @@
         "contentHash": "7OBUTkzQ5VI/3gb0ufi5U4zjuCowAJwQg2li0zXXzqkM+S1kmOlivTy1R4jAW+gY5Vyg510M+qMAESCQUjrfgA=="
       }
     },
-    "native,Version=v0.0/win-arm64": {
+    "UAP,Version=v10.0.17763/win10-arm-aot": {
       "Microsoft.VCRTForwarders.140": {
-        "type": "Direct",
-        "requested": "[1.0.2-rc, )",
+        "type": "Transitive",
         "resolved": "1.0.2-rc",
         "contentHash": "/r+sjtEeCIGyDhobIZ5hSmYhC/dSyGZxf1SxYJpElUhB0LMCktOMFs9gXrauXypIFECpVynNyVjAmJt6hjJ5oQ=="
       },
@@ -98,10 +96,9 @@
         "contentHash": "7OBUTkzQ5VI/3gb0ufi5U4zjuCowAJwQg2li0zXXzqkM+S1kmOlivTy1R4jAW+gY5Vyg510M+qMAESCQUjrfgA=="
       }
     },
-    "native,Version=v0.0/win-x64": {
+    "UAP,Version=v10.0.17763/win10-arm64-aot": {
       "Microsoft.VCRTForwarders.140": {
-        "type": "Direct",
-        "requested": "[1.0.2-rc, )",
+        "type": "Transitive",
         "resolved": "1.0.2-rc",
         "contentHash": "/r+sjtEeCIGyDhobIZ5hSmYhC/dSyGZxf1SxYJpElUhB0LMCktOMFs9gXrauXypIFECpVynNyVjAmJt6hjJ5oQ=="
       },
@@ -111,10 +108,45 @@
         "contentHash": "7OBUTkzQ5VI/3gb0ufi5U4zjuCowAJwQg2li0zXXzqkM+S1kmOlivTy1R4jAW+gY5Vyg510M+qMAESCQUjrfgA=="
       }
     },
-    "native,Version=v0.0/win-x86": {
+    "UAP,Version=v10.0.17763/win10-x64": {
       "Microsoft.VCRTForwarders.140": {
-        "type": "Direct",
-        "requested": "[1.0.2-rc, )",
+        "type": "Transitive",
+        "resolved": "1.0.2-rc",
+        "contentHash": "/r+sjtEeCIGyDhobIZ5hSmYhC/dSyGZxf1SxYJpElUhB0LMCktOMFs9gXrauXypIFECpVynNyVjAmJt6hjJ5oQ=="
+      },
+      "Microsoft.Web.WebView2": {
+        "type": "Transitive",
+        "resolved": "1.0.1264.42",
+        "contentHash": "7OBUTkzQ5VI/3gb0ufi5U4zjuCowAJwQg2li0zXXzqkM+S1kmOlivTy1R4jAW+gY5Vyg510M+qMAESCQUjrfgA=="
+      }
+    },
+    "UAP,Version=v10.0.17763/win10-x64-aot": {
+      "Microsoft.VCRTForwarders.140": {
+        "type": "Transitive",
+        "resolved": "1.0.2-rc",
+        "contentHash": "/r+sjtEeCIGyDhobIZ5hSmYhC/dSyGZxf1SxYJpElUhB0LMCktOMFs9gXrauXypIFECpVynNyVjAmJt6hjJ5oQ=="
+      },
+      "Microsoft.Web.WebView2": {
+        "type": "Transitive",
+        "resolved": "1.0.1264.42",
+        "contentHash": "7OBUTkzQ5VI/3gb0ufi5U4zjuCowAJwQg2li0zXXzqkM+S1kmOlivTy1R4jAW+gY5Vyg510M+qMAESCQUjrfgA=="
+      }
+    },
+    "UAP,Version=v10.0.17763/win10-x86": {
+      "Microsoft.VCRTForwarders.140": {
+        "type": "Transitive",
+        "resolved": "1.0.2-rc",
+        "contentHash": "/r+sjtEeCIGyDhobIZ5hSmYhC/dSyGZxf1SxYJpElUhB0LMCktOMFs9gXrauXypIFECpVynNyVjAmJt6hjJ5oQ=="
+      },
+      "Microsoft.Web.WebView2": {
+        "type": "Transitive",
+        "resolved": "1.0.1264.42",
+        "contentHash": "7OBUTkzQ5VI/3gb0ufi5U4zjuCowAJwQg2li0zXXzqkM+S1kmOlivTy1R4jAW+gY5Vyg510M+qMAESCQUjrfgA=="
+      }
+    },
+    "UAP,Version=v10.0.17763/win10-x86-aot": {
+      "Microsoft.VCRTForwarders.140": {
+        "type": "Transitive",
         "resolved": "1.0.2-rc",
         "contentHash": "/r+sjtEeCIGyDhobIZ5hSmYhC/dSyGZxf1SxYJpElUhB0LMCktOMFs9gXrauXypIFECpVynNyVjAmJt6hjJ5oQ=="
       },
