@@ -1,0 +1,97 @@
+diff --git a/node_modules/@react-native-async-storage/async-storage/windows/ReactNativeAsyncStorage/ReactNativeAsyncStorage.vcxproj b/node_modules/@react-native-async-storage/async-storage/windows/ReactNativeAsyncStorage/ReactNativeAsyncStorage.vcxproj
+index fb2a141..82172b0 100644
+--- a/node_modules/@react-native-async-storage/async-storage/windows/ReactNativeAsyncStorage/ReactNativeAsyncStorage.vcxproj
++++ b/node_modules/@react-native-async-storage/async-storage/windows/ReactNativeAsyncStorage/ReactNativeAsyncStorage.vcxproj
+@@ -1,10 +1,10 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+-  <Import Project="$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.200316.3\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.200316.3\build\native\Microsoft.Windows.CppWinRT.props')" />
++  <Import Project="$(SolutionDir)\packages\Microsoft.Windows.CppWinRT.2.0.200316.3\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('$(SolutionDir)\packages\Microsoft.Windows.CppWinRT.2.0.200316.3\build\native\Microsoft.Windows.CppWinRT.props')" />
+   <PropertyGroup Label="Globals">
+     <CppWinRTOptimized>true</CppWinRTOptimized>
+     <CppWinRTRootNamespaceAutoMerge>true</CppWinRTRootNamespaceAutoMerge>
+-    <MinimalCoreWin>true</MinimalCoreWin>
++        <MinimalCoreWin>true</MinimalCoreWin>
+     <ProjectGuid>{4855D892-E16C-404D-8286-0089E0F7F9C4}</ProjectGuid>
+     <ProjectName>ReactNativeAsyncStorage</ProjectName>
+     <RootNamespace>ReactNativeAsyncStorage</RootNamespace>
+@@ -13,13 +13,16 @@
+     <AppContainerApplication>true</AppContainerApplication>
+     <ApplicationType>Windows Store</ApplicationType>
+     <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
+-    <WindowsTargetPlatformVersion Condition=" '$(WindowsTargetPlatformVersion)' == '' ">10.0</WindowsTargetPlatformVersion>
+-    <WindowsTargetPlatformMinVersion>10.0.16299.0</WindowsTargetPlatformMinVersion>
+   </PropertyGroup>
+-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+   <PropertyGroup Label="ReactNativeWindowsProps">
+-    <ReactNativeWindowsDir Condition="'$(ReactNativeWindowsDir)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(SolutionDir), 'node_modules\react-native-windows\package.json'))\node_modules\react-native-windows\</ReactNativeWindowsDir>
++    <ReactNativeWindowsDir Condition="'$(ReactNativeWindowsDir)' == ''">$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), 'node_modules\react-native-windows\package.json'))\node_modules\react-native-windows\</ReactNativeWindowsDir>
++  </PropertyGroup>
++  <Import Project="$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.WindowsSdk.Default.props" Condition="Exists('$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.WindowsSdk.Default.props')" />
++  <PropertyGroup Label="Fallback Windows SDK Versions">
++   <WindowsTargetPlatformVersion Condition=" '$(WindowsTargetPlatformVersion)' == '' ">10.0</WindowsTargetPlatformVersion>
++   <WindowsTargetPlatformMinVersion Condition=" '$(WindowsTargetPlatformMinVersion)' == '' ">10.0.16299.0</WindowsTargetPlatformMinVersion>
+   </PropertyGroup>
++  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+   <ItemGroup Label="ProjectConfigurations">
+     <ProjectConfiguration Include="Debug|ARM">
+       <Configuration>Debug</Configuration>
+@@ -99,7 +102,7 @@
+       <SubSystem>Console</SubSystem>
+       <GenerateWindowsMetadata>true</GenerateWindowsMetadata>
+       <ModuleDefinitionFile>..\code\ReactNativeAsyncStorage.def</ModuleDefinitionFile>
+-      <AdditionalDependencies>winsqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
++<AdditionalDependencies>winsqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+       <DelayLoadDLLs>winsqlite3.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
+     </Link>
+   </ItemDefinitionGroup>
+@@ -112,7 +115,7 @@
+     <ClCompile>
+       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+     </ClCompile>
+-  </ItemDefinitionGroup>
++      </ItemDefinitionGroup>
+   <ItemGroup>
+     <ClInclude Include="..\code\pch.h" />
+     <ClInclude Include="..\code\ReactPackageProvider.h">
+@@ -136,18 +139,18 @@
+   </ItemGroup>
+   <ItemGroup>
+     <None Include="packages.config" />
+-    <None Include="..\code\ReactNativeAsyncStorage.def" />
++<None Include="..\code\ReactNativeAsyncStorage.def" />
+   </ItemGroup>
+   <ItemGroup>
+     <None Include="PropertySheet.props" />
+-  </ItemGroup>
++      </ItemGroup>
+   <ItemGroup>
+     <ProjectReference Include="$(ReactNativeWindowsDir)\Microsoft.ReactNative\Microsoft.ReactNative.vcxproj">
+       <Project>{f7d32bd0-2749-483e-9a0d-1635ef7e3136}</Project>
+       <Private>false</Private>
+     </ProjectReference>
+   </ItemGroup>
+-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
++    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+   <ImportGroup Label="ReactNativeWindowsTargets">
+     <Import Project="$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Uwp.CppLib.targets" Condition="Exists('$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Uwp.CppLib.targets')" />
+   </ImportGroup>
+@@ -159,14 +162,14 @@
+     <Error Condition="!Exists('$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Uwp.CppLib.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.Uwp.CppLib.targets'))" />
+   </Target>
+   <ImportGroup Label="ExtensionTargets">
+-    <Import Project="$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.200316.3\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.200316.3\build\native\Microsoft.Windows.CppWinRT.targets')" />
++    <Import Project="$(SolutionDir)\packages\Microsoft.Windows.CppWinRT.2.0.200316.3\build\native\Microsoft.Windows.CppWinRT.targets" Condition="Exists('$(SolutionDir)\packages\Microsoft.Windows.CppWinRT.2.0.200316.3\build\native\Microsoft.Windows.CppWinRT.targets')" />
+   </ImportGroup>
+-  <Target Name="Deploy" />
++  <Target Name="Deploy"/>
+   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+     <PropertyGroup>
+       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+     </PropertyGroup>
+-    <Error Condition="!Exists('$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.200316.3\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.200316.3\build\native\Microsoft.Windows.CppWinRT.props'))" />
+-    <Error Condition="!Exists('$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.200316.3\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)packages\Microsoft.Windows.CppWinRT.2.0.200316.3\build\native\Microsoft.Windows.CppWinRT.targets'))" />
++    <Error Condition="!Exists('$(SolutionDir)\packages\Microsoft.Windows.CppWinRT.2.0.200316.3\build\native\Microsoft.Windows.CppWinRT.props')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\packages\Microsoft.Windows.CppWinRT.2.0.200316.3\build\native\Microsoft.Windows.CppWinRT.props'))" />
++    <Error Condition="!Exists('$(SolutionDir)\packages\Microsoft.Windows.CppWinRT.2.0.200316.3\build\native\Microsoft.Windows.CppWinRT.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\packages\Microsoft.Windows.CppWinRT.2.0.200316.3\build\native\Microsoft.Windows.CppWinRT.targets'))" />
+   </Target>
+ </Project>
