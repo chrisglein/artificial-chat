@@ -22,7 +22,7 @@
     "react-native": "0.73.0-rc.1",
     "react-native-content-dialog": "^0.2.0",
     "react-native-markdown-display-updated": "^7.0.0",
-    "react-native-svg": "^13.9.0",
+    "react-native-svg": "^14.0.0",
     "react-native-syntax-highlighter": "^2.1.0",
     "react-native-windows": "0.73.10"
   },
