@@ -2,7 +2,7 @@
 <Project ToolsVersion="Current" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(SolutionDir)\ExperimentalFeatures.props" Condition="Exists('$(SolutionDir)\ExperimentalFeatures.props')" />
   <PropertyGroup>
-    <ProjectGuid>{440b1dcd-116f-4a99-bb56-1a64f74564cd}</ProjectGuid>
+    <ProjectGuid>{bb8ab8d3-9980-4cb7-857b-378ed527cba4}</ProjectGuid>
     <DefaultLanguage>en-US</DefaultLanguage>
     <EntryPointProjectUniqueName>..\artificialChat\artificialChat.vcxproj</EntryPointProjectUniqueName>
     <DebuggerType>NativeOnly</DebuggerType>
@@ -14,26 +14,27 @@
   <Import Project="$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.WindowsSdk.Default.props" />
   <PropertyGroup>
     <WapProjPath Condition="'$(WapProjPath)'==''">$(MSBuildExtensionsPath)\Microsoft\DesktopBridge\</WapProjPath>
+    <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+    <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <GenerateTestArtifacts>True</GenerateTestArtifacts>
     <AppxBundlePlatforms>x86|x64</AppxBundlePlatforms>
-    <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
-    <AppxBundle>Always</AppxBundle>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <AppxBundle>Always</AppxBundle>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <AppxBundle>Always</AppxBundle>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
     <AppxBundle>Always</AppxBundle>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <AppxBundle>Always</AppxBundle>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+    <AppxBundle>Always</AppxBundle>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <AppxBundle>Always</AppxBundle>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
