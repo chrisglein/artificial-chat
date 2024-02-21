@@ -7,13 +7,13 @@
   IgnorableNamespaces="uap rescap">
 
   <Identity
-    Name="34515PNBIndustries.ArtificialChat"
-    Publisher="CN=5C24357C-C5B6-4999-B1F2-13387994FDD6"
-    Version="1.2.0.0" />
+    Name="artificialChat"
+    Publisher="CN=cglein"
+    Version="1.0.0.0" />
 
   <Properties>
-    <DisplayName>Artificial Chat</DisplayName>
-    <PublisherDisplayName>PNB Industries</PublisherDisplayName>
+    <DisplayName>artificialChat</DisplayName>
+    <PublisherDisplayName>cglein</PublisherDisplayName>
     <Logo>Images\StoreLogo.png</Logo>
   </Properties>
 
