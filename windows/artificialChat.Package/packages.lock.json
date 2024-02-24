@@ -24,8 +24,8 @@
       },
       "Microsoft.WindowsAppSDK": {
         "type": "Transitive",
-        "resolved": "1.4.230913002",
-        "contentHash": "l+9RshN4TsTuxL0ijFp5smbs3Y07RO7CxKBHNM/RsrsGtWvuk6edITMp4oqL9C3ufEAmpYk3dqOZRSf+sFH4Zg==",
+        "resolved": "1.4.240211001",
+        "contentHash": "43PdPLNSbBfugbQ7fd5imnZPpg7TGNirCe1/f3KLLYCg1NgDJeTh7t2ihLPuIdmD7rf6mTaUtRXUJYw0HBOzFQ==",
         "dependencies": {
           "Microsoft.Windows.SDK.BuildTools": "10.0.22621.1"
         }
@@ -36,7 +36,7 @@
           "Microsoft.JavaScript.Hermes": "[0.1.18, )",
           "Microsoft.ReactNative": "[1.0.0, )",
           "Microsoft.VCRTForwarders.140": "[1.0.2-rc, )",
-          "Microsoft.WindowsAppSDK": "[1.4.230913002, )",
+          "Microsoft.WindowsAppSDK": "[1.4.240211001, )",
           "boost": "[1.76.0, )"
         }
       },
@@ -62,7 +62,7 @@
           "Common": "[1.0.0, )",
           "Folly": "[1.0.0, )",
           "Microsoft.JavaScript.Hermes": "[0.1.18, )",
-          "Microsoft.WindowsAppSDK": "[1.4.230913002, )",
+          "Microsoft.WindowsAppSDK": "[1.4.240211001, )",
           "ReactCommon": "[1.0.0, )",
           "boost": "[1.76.0, )"
         }
@@ -83,8 +83,8 @@
       },
       "Microsoft.WindowsAppSDK": {
         "type": "Transitive",
-        "resolved": "1.4.230913002",
-        "contentHash": "l+9RshN4TsTuxL0ijFp5smbs3Y07RO7CxKBHNM/RsrsGtWvuk6edITMp4oqL9C3ufEAmpYk3dqOZRSf+sFH4Zg==",
+        "resolved": "1.4.240211001",
+        "contentHash": "43PdPLNSbBfugbQ7fd5imnZPpg7TGNirCe1/f3KLLYCg1NgDJeTh7t2ihLPuIdmD7rf6mTaUtRXUJYw0HBOzFQ==",
         "dependencies": {
           "Microsoft.Windows.SDK.BuildTools": "10.0.22621.1"
         }
@@ -98,8 +98,8 @@
       },
       "Microsoft.WindowsAppSDK": {
         "type": "Transitive",
-        "resolved": "1.4.230913002",
-        "contentHash": "l+9RshN4TsTuxL0ijFp5smbs3Y07RO7CxKBHNM/RsrsGtWvuk6edITMp4oqL9C3ufEAmpYk3dqOZRSf+sFH4Zg==",
+        "resolved": "1.4.240211001",
+        "contentHash": "43PdPLNSbBfugbQ7fd5imnZPpg7TGNirCe1/f3KLLYCg1NgDJeTh7t2ihLPuIdmD7rf6mTaUtRXUJYw0HBOzFQ==",
         "dependencies": {
           "Microsoft.Windows.SDK.BuildTools": "10.0.22621.1"
         }
@@ -113,8 +113,8 @@
       },
       "Microsoft.WindowsAppSDK": {
         "type": "Transitive",
-        "resolved": "1.4.230913002",
-        "contentHash": "l+9RshN4TsTuxL0ijFp5smbs3Y07RO7CxKBHNM/RsrsGtWvuk6edITMp4oqL9C3ufEAmpYk3dqOZRSf+sFH4Zg==",
+        "resolved": "1.4.240211001",
+        "contentHash": "43PdPLNSbBfugbQ7fd5imnZPpg7TGNirCe1/f3KLLYCg1NgDJeTh7t2ihLPuIdmD7rf6mTaUtRXUJYw0HBOzFQ==",
         "dependencies": {
           "Microsoft.Windows.SDK.BuildTools": "10.0.22621.1"
         }
@@ -128,8 +128,8 @@
       },
       "Microsoft.WindowsAppSDK": {
         "type": "Transitive",
-        "resolved": "1.4.230913002",
-        "contentHash": "l+9RshN4TsTuxL0ijFp5smbs3Y07RO7CxKBHNM/RsrsGtWvuk6edITMp4oqL9C3ufEAmpYk3dqOZRSf+sFH4Zg==",
+        "resolved": "1.4.240211001",
+        "contentHash": "43PdPLNSbBfugbQ7fd5imnZPpg7TGNirCe1/f3KLLYCg1NgDJeTh7t2ihLPuIdmD7rf6mTaUtRXUJYw0HBOzFQ==",
         "dependencies": {
           "Microsoft.Windows.SDK.BuildTools": "10.0.22621.1"
         }
@@ -143,8 +143,8 @@
       },
       "Microsoft.WindowsAppSDK": {
         "type": "Transitive",
-        "resolved": "1.4.230913002",
-        "contentHash": "l+9RshN4TsTuxL0ijFp5smbs3Y07RO7CxKBHNM/RsrsGtWvuk6edITMp4oqL9C3ufEAmpYk3dqOZRSf+sFH4Zg==",
+        "resolved": "1.4.240211001",
+        "contentHash": "43PdPLNSbBfugbQ7fd5imnZPpg7TGNirCe1/f3KLLYCg1NgDJeTh7t2ihLPuIdmD7rf6mTaUtRXUJYw0HBOzFQ==",
         "dependencies": {
           "Microsoft.Windows.SDK.BuildTools": "10.0.22621.1"
         }
@@ -158,8 +158,8 @@
       },
       "Microsoft.WindowsAppSDK": {
         "type": "Transitive",
-        "resolved": "1.4.230913002",
-        "contentHash": "l+9RshN4TsTuxL0ijFp5smbs3Y07RO7CxKBHNM/RsrsGtWvuk6edITMp4oqL9C3ufEAmpYk3dqOZRSf+sFH4Zg==",
+        "resolved": "1.4.240211001",
+        "contentHash": "43PdPLNSbBfugbQ7fd5imnZPpg7TGNirCe1/f3KLLYCg1NgDJeTh7t2ihLPuIdmD7rf6mTaUtRXUJYw0HBOzFQ==",
         "dependencies": {
           "Microsoft.Windows.SDK.BuildTools": "10.0.22621.1"
         }
@@ -173,8 +173,8 @@
       },
       "Microsoft.WindowsAppSDK": {
         "type": "Transitive",
-        "resolved": "1.4.230913002",
-        "contentHash": "l+9RshN4TsTuxL0ijFp5smbs3Y07RO7CxKBHNM/RsrsGtWvuk6edITMp4oqL9C3ufEAmpYk3dqOZRSf+sFH4Zg==",
+        "resolved": "1.4.240211001",
+        "contentHash": "43PdPLNSbBfugbQ7fd5imnZPpg7TGNirCe1/f3KLLYCg1NgDJeTh7t2ihLPuIdmD7rf6mTaUtRXUJYw0HBOzFQ==",
         "dependencies": {
           "Microsoft.Windows.SDK.BuildTools": "10.0.22621.1"
         }
