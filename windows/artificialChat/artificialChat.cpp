@@ -15,7 +15,7 @@ struct CompReactPackageProvider
  public: // IReactPackageProvider
   void CreatePackage(winrt::Microsoft::ReactNative::IReactPackageBuilder const &packageBuilder) noexcept {
     AddAttributedModules(packageBuilder, true);
-packageBuilder.AddModule(L"VersionInfo", winrt::Microsoft::ReactNative::MakeTurboModuleProvider<ArtificialChatModules::VersionInfo>());
+    packageBuilder.AddModule(L"VersionInfo", winrt::Microsoft::ReactNative::MakeTurboModuleProvider<ArtificialChatModules::VersionInfo>());
     packageBuilder.AddModule(L"Clipboard", winrt::Microsoft::ReactNative::MakeTurboModuleProvider<ArtificialChatModules::Clipboard>());
   }
 };

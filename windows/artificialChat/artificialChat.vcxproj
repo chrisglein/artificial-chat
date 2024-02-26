@@ -5,7 +5,7 @@
   <PropertyGroup Label="Globals">
     <CppWinRTOptimized>true</CppWinRTOptimized>
     <MinimalCoreWin>true</MinimalCoreWin>
-    <ProjectGuid>{961D8A37-D4CF-4A95-828C-F62D8CA216F2}</ProjectGuid>
+    <ProjectGuid>{B021407A-8B7F-4B63-BC08-9270A4807F64}</ProjectGuid>
     <ProjectName>Artificial Chat</ProjectName>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>ArtificialChat</RootNamespace>
@@ -104,7 +104,7 @@
     <ClInclude Include="AutolinkedNativeModules.g.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="targetver.h" />
-<ClInclude Include="VersionInfo.h" />
+    <ClInclude Include="VersionInfo.h" />
     <ClInclude Include="Clipboard.h" />
   </ItemGroup>
   <ItemGroup>
