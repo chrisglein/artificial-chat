@@ -80,7 +80,7 @@ function ChatEntry({submit, defaultText, clearConversation}: ChatEntryProps): JS
         accessibilityLabel="Prompt input"
         multiline={true}
         placeholder="Ask me anything"
-        style={{flexGrow: 1, flexShrink: 1}}
+        style={styles.textBox}
         onChangeText={newValue => setValue(newValue)}
         submitKeyEvents={[{code: 'Enter', shiftKey: false}]}
         onSubmitEditing={submitValue}
