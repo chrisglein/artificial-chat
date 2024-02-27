@@ -196,7 +196,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             accessibilityLabel="Chat Model"
             selectedValue={chatModel}
             onValueChange={value => setChatModel(value)}>
-            {["gpt-3.5-turbo", "gpt-4"].map(value => <Picker.Item label={value} value={value} key={value}/>)}
+            {["gpt-3.5-turbo", "gpt-4", "gpt-4-turbo-preview"].map(value => <Picker.Item label={value} value={value} key={value}/>)}
           </Picker>
           <Text>API key</Text>
           <TextInput
