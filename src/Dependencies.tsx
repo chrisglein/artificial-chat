@@ -4,7 +4,7 @@ import {
   Text,
   View,
 } from 'react-native';
-//import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Clipboard from './NativeClipboard'
 import Markdown from 'react-native-markdown-display';
 //import {Picker} from '@react-native-picker/picker';
@@ -12,14 +12,6 @@ import Markdown from 'react-native-markdown-display';
 import SyntaxHighlighter from 'react-native-syntax-highlighter';
 import { vs2015 } from 'react-syntax-highlighter/styles/hljs';
 import VersionInfo from './NativeVersionInfo'
-
-const AsyncStorage = {
-  getItem: async (key: string) => {
-    return null;
-  },
-  setItem: async (key: string, value: string) => {
-  },
-}
 
 type PickerItemProps = {
   label: string,
