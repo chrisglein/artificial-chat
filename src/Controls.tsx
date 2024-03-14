@@ -92,38 +92,6 @@ function ImageSelection({image}: ImageSelectionProps): JSX.Element {
   );
 }
 
-type HyperlinkProps = {
-  url: string,
-  text?: string,
-};
-function Hyperlink({url, text}: HyperlinkProps): JSX.Element {
-  const styles = React.useContext(StylesContext);
-  const [hovering, setHovering] = React.useState(false);
-  const [pressing, setPressing] = React.useState(false);
-
-  let displayText = text ?? url;
-
-  return (
-    <Pressable
-      tooltip={url}
-      accessibilityRole="link"
-      accessibilityLabel={displayText}
-      onPress={() => Linking.openURL(url)}
-      onPressIn={() => setPressing(true)}
-      onPressOut={() => setPressing(false)}
-      onHoverIn={() => setHovering(true)}
-      onHoverOut={() => setHovering(false)}>
-      <Text
-        style={
-          pressing ? styles.hyperlinkPressing : 
-          hovering ? styles.hyperlinkHovering : 
-          styles.hyperlinkIdle}>
-        {displayText}
-      </Text>
-    </Pressable>
-  );
-}
-
 function SwitchWithLabel({label, value, onValueChange}: {label: string, value: boolean, onValueChange: (value: boolean) => void}): JSX.Element {
   return (
     <View style={{flexDirection: 'row', alignItems: 'flex-start'}}>
@@ -137,4 +105,4 @@ function SwitchWithLabel({label, value, onValueChange}: {label: string, value: b
   );
 }
 
-export { HoverButton, Attribution, ConsentSwitch, ImageSelection, Hyperlink, CodeBlock, SwitchWithLabel };
+export { HoverButton, Attribution, ConsentSwitch, ImageSelection, CodeBlock, SwitchWithLabel };

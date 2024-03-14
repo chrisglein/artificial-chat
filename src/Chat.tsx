@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Button,
   ScrollView,
   TextInput,
   View,
@@ -15,6 +14,7 @@ import {
 } from './Feedback';
 import { PopupsContext } from './Popups';
 import { HoverButton } from './Controls';
+import { ButtonV1 as Button } from '@fluentui/react-native';
 
 enum ChatSource {
   Human,
@@ -86,13 +86,15 @@ function ChatEntry({submit, defaultText, clearConversation}: ChatEntryProps): JS
         onSubmitEditing={submitValue}
         value={defaultText ?? value}/>
       <Button
+        appearance='primary'
         accessibilityLabel='Submit prompt'
-        title="Submit"
-        onPress={submitValue}/>
+        onClick={submitValue}>Submit</Button>
       <Button
         accessibilityLabel='Clear conversation'
-        title="💣"
-        onPress={clearConversation}/>
+        icon={{ fontSource: { fontFamily: 'Segoe MDL2 Assets', codepoint: 0xE74D, fontSize: 20 } }}
+        iconOnly={true}
+        tooltip='Clear conversation'
+        onClick={clearConversation}></Button>
     </View>
   );
 }
@@ -170,11 +172,10 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
                 <View style={{alignSelf: 'center'}}>
                   <Button
                     accessibilityLabel="Regenerate response"
-                    title="🔁 Regenerate response"
-                    onPress={() => {
+                    onClick={() => {
                       // Clear the response for the last entry
                       chatHistory.modifyResponse(entries.length - 1, {responses: undefined});
-                    }}/>
+                    }}>🔁 Regenerate response</Button>
                 </View>
               }
             </View>

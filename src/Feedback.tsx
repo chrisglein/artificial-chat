@@ -50,10 +50,10 @@ function FeedbackPopup({show, close, isPositive, response}: FeedbackPopupProps):
     <ContentDialog
       show={show}
       close={close}
-      titleIconStyle={{backgroundColor: isPositive ? 'green' : 'red'}}
-      title={(isPositive ? "👍" : "👎") + "Provide additional feedback"}
+      title="Provide additional feedback"
       buttons={buttons}
       defaultButtonIndex={1}>
+      <Text>{"Your feedback: " + (isPositive ? "👍" : "👎")}</Text>
       <TextInput
         multiline={true}
         placeholder="What would the ideal answer have been?"
