@@ -22,19 +22,11 @@ const StylesContext = React.createContext<{
   horizontalContainer: StyleProp<ViewStyle>;
   dalleImage: StyleProp<ImageStyle>;
   inlineCard: StyleProp<ViewStyle>;
-  dialogTitle: StyleProp<TextStyle>;
   dialogSectionsContainer: StyleProp<ViewStyle>;
   dialogSection: StyleProp<ViewStyle>;
   dialogSectionHeader: StyleProp<TextStyle>;
-  dialogBackground: StyleProp<ViewStyle>;
-  dialogContentArea: StyleProp<ViewStyle>;
-  dialogButtonBackground: StyleProp<ViewStyle>;
-  dialogButtons: StyleProp<ViewStyle>;
   codeBlockTitle: StyleProp<TextStyle>;
   codeBlockTitleText: StyleProp<TextStyle>;
-  hyperlinkIdle: StyleProp<TextStyle>;
-  hyperlinkPressing: StyleProp<TextStyle>;
-  hyperlinkHovering: StyleProp<TextStyle>;
 }>({});
 
 const CreateStyles = (isDarkMode: boolean) => {
@@ -90,11 +82,6 @@ const CreateStyles = (isDarkMode: boolean) => {
       borderRadius: 8,
       padding: 8,
     },
-    dialogTitle: {
-      fontWeight: '600',
-      fontSize: 20,
-      marginBottom: 12,
-    },
     dialogSectionsContainer: {
       gap: 12,
     },
@@ -108,51 +95,11 @@ const CreateStyles = (isDarkMode: boolean) => {
       fontWeight: '600',
       marginBottom: 4,
     },
-    dialogBackground: {
-      backgroundColor: isDarkMode ? '#292929' : '#FFFFFF',
-      paddingLeft: 12,
-      paddingRight: 12,
-      paddingTop: 12,
-      borderTopLeftRadius: 8,
-      borderTopRightRadius: 8,
-      minWidth: 320,
-      minHeight: 184,
-    },
-    dialogContentArea: {
-      paddingBottom: 12,
-    },
-    dialogButtonBackground: {
-      borderColor: isDarkMode ? '#1D1D1D': '#E5E5E5',
-      borderTopWidth: 1,
-      backgroundColor: isDarkMode ? '#202020' : '#F3F3F3',
-      borderBottomLeftRadius: 8,
-      borderBottomRightRadius: 8,
-      padding: 12,
-    },
-    dialogButtons: {
-      marginTop: 12,
-      alignSelf: 'flex-end',
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      alignItems: 'center',
-      gap: 8,
-    },
     codeBlockTitle: {
       backgroundColor: isDarkMode ? 'white' : '#444',
     },
     codeBlockTitleText: {
       color: isDarkMode ? 'black' : 'white',
-    },
-    hyperlinkIdle: {
-      color: PlatformColor("HyperlinkButtonForeground"),
-      textDecorationLine: 'underline',
-    },
-    hyperlinkPressing: {
-      color: PlatformColor("HyperlinkButtonForegroundPressed"),
-    },
-    hyperlinkHovering: {
-      color: PlatformColor("HyperlinkButtonForegroundPointerOver"),
-      textDecorationLine: 'underline',
     },
   });
 }

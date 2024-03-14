@@ -1,7 +1,6 @@
 import React from 'react';
 import type { PropsWithChildren } from 'react';
 import {
-  ScrollView,
   Text,
   View,
 } from 'react-native';
