@@ -1,5 +1,5 @@
 diff --git a/node_modules/@react-native-async-storage/async-storage/windows/ReactNativeAsyncStorage/ReactNativeAsyncStorage.vcxproj b/node_modules/@react-native-async-storage/async-storage/windows/ReactNativeAsyncStorage/ReactNativeAsyncStorage.vcxproj
-index fb2a141..82172b0 100644
+index 356e26d..9ad543b 100644
 --- a/node_modules/@react-native-async-storage/async-storage/windows/ReactNativeAsyncStorage/ReactNativeAsyncStorage.vcxproj
 +++ b/node_modules/@react-native-async-storage/async-storage/windows/ReactNativeAsyncStorage/ReactNativeAsyncStorage.vcxproj
 @@ -1,10 +1,10 @@
@@ -20,7 +20,7 @@ index fb2a141..82172b0 100644
      <ApplicationType>Windows Store</ApplicationType>
      <ApplicationTypeRevision>10.0</ApplicationTypeRevision>
 -    <WindowsTargetPlatformVersion Condition=" '$(WindowsTargetPlatformVersion)' == '' ">10.0</WindowsTargetPlatformVersion>
--    <WindowsTargetPlatformMinVersion>10.0.16299.0</WindowsTargetPlatformMinVersion>
+-    <WindowsTargetPlatformMinVersion Condition=" '$(WindowsTargetPlatformMinVersion)' == '' ">10.0.17763.0</WindowsTargetPlatformMinVersion>
    </PropertyGroup>
 -  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
    <PropertyGroup Label="ReactNativeWindowsProps">
@@ -30,7 +30,7 @@ index fb2a141..82172b0 100644
 +  <Import Project="$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.WindowsSdk.Default.props" Condition="Exists('$(ReactNativeWindowsDir)\PropertySheets\External\Microsoft.ReactNative.WindowsSdk.Default.props')" />
 +  <PropertyGroup Label="Fallback Windows SDK Versions">
 +   <WindowsTargetPlatformVersion Condition=" '$(WindowsTargetPlatformVersion)' == '' ">10.0</WindowsTargetPlatformVersion>
-+   <WindowsTargetPlatformMinVersion Condition=" '$(WindowsTargetPlatformMinVersion)' == '' ">10.0.16299.0</WindowsTargetPlatformMinVersion>
++   <WindowsTargetPlatformMinVersion Condition=" '$(WindowsTargetPlatformMinVersion)' == '' ">10.0.17763.0</WindowsTargetPlatformMinVersion>
    </PropertyGroup>
 +  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
    <ItemGroup Label="ProjectConfigurations">
@@ -54,12 +54,7 @@ index fb2a141..82172b0 100644
    <ItemGroup>
      <ClInclude Include="..\code\pch.h" />
      <ClInclude Include="..\code\ReactPackageProvider.h">
-@@ -136,18 +139,18 @@
-   </ItemGroup>
-   <ItemGroup>
-     <None Include="packages.config" />
--    <None Include="..\code\ReactNativeAsyncStorage.def" />
-+<None Include="..\code\ReactNativeAsyncStorage.def" />
+@@ -140,14 +143,14 @@
    </ItemGroup>
    <ItemGroup>
      <None Include="PropertySheet.props" />
