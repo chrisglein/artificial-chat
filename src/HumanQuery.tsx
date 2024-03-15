@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import {
   FlyoutMenu,
+  MarkdownWithRules,
 } from './Controls';
 import type { FlyoutMenuButtonType } from './Controls';
 import { StylesContext } from './Styles';
@@ -51,7 +52,7 @@ function HumanSection({children, id, content, disableCopy, moreMenu}: HumanSecti
         </Text>
         <FlyoutMenu items={menuItems}/>
       </View>
-      {content ? <Text>{content}</Text> : null}
+      {content ? <MarkdownWithRules content={content}/> : null}
       {children}
     </Pressable>
   );

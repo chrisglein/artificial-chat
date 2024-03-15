@@ -18,6 +18,7 @@ import {
 } from '@fluentui/react-native';
 import { StylesContext } from './Styles';
 import { CodeBlock } from './CodeBlock';
+import Markdown from 'react-native-markdown-display-updated';
 
 type HoverButtonProps = {
   content: string;
@@ -188,5 +189,25 @@ function FlyoutMenu({items}: FlyoutMenuProps): JSX.Element {
   );
 }
 
-export { HoverButton, Attribution, ConsentSwitch, ImageSelection, CodeBlock, SwitchWithLabel, FlyoutMenu };
+type MarkdownWithRulesProps = {
+  content?: string;
+};
+function MarkdownWithRules({content} : MarkdownWithRulesProps): JSX.Element {
+  const rules = {
+    fence: (node, children, parent, styles) => {
+      return (
+        <CodeBlock
+          key={node.key}
+          language={node.sourceInfo}
+          content={node.content}/>
+        )
+      },
+  }
+
+  return (
+    <Markdown rules={rules}>{content}</Markdown>
+  );
+}
+
+export { HoverButton, Attribution, ConsentSwitch, ImageSelection, CodeBlock, SwitchWithLabel, FlyoutMenu, MarkdownWithRules };
 export type { FlyoutMenuButtonType };
