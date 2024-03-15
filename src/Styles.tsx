@@ -106,7 +106,6 @@ const CreateStyles = (isDarkMode: boolean) => {
       backgroundColor: isDarkMode ? 'black' : 'white',
       borderRadius: 4,
       padding: 8,
-      minWidth: 150,
       alignItems: 'flex-start',
     },
   });
