@@ -5,20 +5,21 @@ import {
   Text,
   View,
 } from 'react-native';
-import { HoverButton } from './Controls';
+import {
+  FlyoutMenu,
+  FlyoutMenuButton,
+} from './Controls';
 import { StylesContext } from './Styles';
 import { ChatHistoryContext } from './Chat';
 import Clipboard from '@react-native-clipboard/clipboard';
-
 
 type HumanSectionProps = PropsWithChildren<{
   id?: number,
   content?: string;
   disableCopy?: boolean;
-  contentShownOnHover?: React.ReactNode;
+  moreMenu?: React.ReactNode;
 }>;
-function HumanSection({children, id, content, disableCopy, contentShownOnHover}: HumanSectionProps): JSX.Element {
-  const [hovering, setHovering] = React.useState(false);
+function HumanSection({children, id, content, disableCopy, moreMenu}: HumanSectionProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const chatHistory = React.useContext(ChatHistoryContext);
 
@@ -26,18 +27,26 @@ function HumanSection({children, id, content, disableCopy, contentShownOnHover}:
     <Pressable
       accessibilityRole="none"
       accessibilityLabel="Human prompt"
-      style={[styles.sectionContainer, styles.humanSection]}
-      onHoverIn={() => setHovering(true)}
-      onHoverOut={() => setHovering(false)}>
+      style={[styles.sectionContainer, styles.humanSection]}>
       <View style={{flexDirection: 'row', minHeight: 26}}>
         <Text
           accessibilityRole="header"
           style={[styles.sectionTitle, {flexGrow: 1}]}>
             Prompt
         </Text>
-        {hovering && contentShownOnHover}
-        {hovering && id !== undefined && <HoverButton content="❌" tooltip="Delete this response" onPress={() => chatHistory.deleteResponse(id)}/>}
-        {hovering && !disableCopy && <HoverButton content="📋" tooltip="Copy to clipboard" onPress={() => Clipboard.setString(content ?? "")}/>}
+        <FlyoutMenu>
+          {moreMenu}
+          {id !== undefined && 
+            <FlyoutMenuButton
+              icon={0xE74D}
+              onClick={() => chatHistory.deleteResponse(id)}>Delete this response</FlyoutMenuButton>
+          }
+          {!disableCopy && 
+            <FlyoutMenuButton
+              icon={0xE8C8}
+              onClick={() => Clipboard.setString(content ?? "")}>Copy to clipboard</FlyoutMenuButton>
+          }
+        </FlyoutMenu>
       </View>
       {content ? <Text>{content}</Text> : null}
       {children}

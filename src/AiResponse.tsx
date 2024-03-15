@@ -10,7 +10,8 @@ import {
   View,
 } from 'react-native';
 import {
-  HoverButton,
+  FlyoutMenu,
+  FlyoutMenuButton,
   CodeBlock
 } from './Controls';
 import {
@@ -92,13 +93,12 @@ type AiSectionProps = PropsWithChildren<{
   id: number,
   isLoading?: boolean;
   copyValue?: string;
-  contentShownOnHover?: JSX.Element;
+  moreMenu?: JSX.Element;
 }>;
-function AiSection({children, id, isLoading, copyValue, contentShownOnHover}: AiSectionProps): JSX.Element {
+function AiSection({children, id, isLoading, copyValue, moreMenu}: AiSectionProps): JSX.Element {
   const feedbackContext = React.useContext(FeedbackContext);
   const styles = React.useContext(StylesContext);
   const chatHistory = React.useContext(ChatHistoryContext);
-  const [hovering, setHovering] = React.useState(false);
 
   const showFeedbackPopup = (positive: boolean) => {
     if (feedbackContext) {
@@ -110,20 +110,28 @@ function AiSection({children, id, isLoading, copyValue, contentShownOnHover}: Ai
     <Pressable
       accessibilityRole="none"
       accessibilityLabel="AI response"
-      style={[styles.sectionContainer, styles.AiSection]}
-      onHoverIn={() => setHovering(true)}
-      onHoverOut={() => setHovering(false)}>
+      style={[styles.sectionContainer, styles.AiSection]}>
       <View style={{flexDirection: 'row'}}>
         <Text
           accessibilityRole="header"
           style={[styles.sectionTitle, {flexGrow: 1}]}>
             OpenAI
         </Text>
-        {hovering && contentShownOnHover}
-        {hovering && id !== undefined && <HoverButton content="❌" tooltip="Delete this response" onPress={() => chatHistory.deleteResponse(id)}/>}
-        {hovering && copyValue && <HoverButton content="📋" tooltip="Copy to clipboard" onPress={() => Clipboard.setString(copyValue)}/>}
-        <HoverButton content="👍" tooltip="Give positive feedback" onPress={() => { showFeedbackPopup(true); }}/>
-        <HoverButton content="👎" tooltip="Give negative feedback" onPress={() => { showFeedbackPopup(false); }}/>
+        <FlyoutMenu>
+          {moreMenu}
+          {id !== undefined && 
+            <FlyoutMenuButton
+              icon={0xE74D}
+              onClick={() => chatHistory.deleteResponse(id)}>Delete this response</FlyoutMenuButton>
+          }
+          {copyValue && 
+            <FlyoutMenuButton
+              icon={0xE8C8}
+              onClick={() => Clipboard.setString(copyValue)}>Copy to clipboard</FlyoutMenuButton>
+          }
+          <FlyoutMenuButton onClick={() => { showFeedbackPopup(true); }}>👍 Give positive feedback</FlyoutMenuButton>
+          <FlyoutMenuButton onClick={() => { showFeedbackPopup(false); }}>👎 Give negative feedback</FlyoutMenuButton>
+        </FlyoutMenu>
       </View>
       {isLoading && 
         <ActivityIndicator/>
