@@ -132,6 +132,12 @@ const MoreMenuButton = React.forwardRef(function MoreMenuButton({showMenu, setSh
   );
 });
 
+type FlyoutMenuButtonType = {
+  title: string,
+  icon?: number,
+  onPress: () => void,
+}
+
 type FlyoutMenuButtonProps = PropsWithChildren<{
   icon?: number;
   onClick: () => void;
@@ -145,12 +151,23 @@ function FlyoutMenuButton({icon, onClick, children}: FlyoutMenuButtonProps): JSX
   );
 }
 
-type FlyoutMenuProps = PropsWithChildren<{
-}>;
-function FlyoutMenu({children}: FlyoutMenuProps): JSX.Element {
+type FlyoutMenuProps = {
+  items: FlyoutMenuButtonType[];
+};
+function FlyoutMenu({items}: FlyoutMenuProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const [isOpen, setIsOpen] = React.useState(false);
   const placementRef = React.useRef(null);
+
+  const buttonList = items.map((button, index) =>
+    <FlyoutMenuButton
+      key={index}
+      icon={button.icon}
+      onClick={() => {
+        button.onPress();
+        setIsOpen(false);
+      }}>{button.title}</FlyoutMenuButton>
+  );
 
   return (
     <>
@@ -164,11 +181,12 @@ function FlyoutMenu({children}: FlyoutMenuProps): JSX.Element {
         placement='bottom-edge-aligned-right'
         target={placementRef.current}>
         <View style={styles.flyoutBackground}>
-          {children}
+          {buttonList}
         </View>
       </Flyout>
     </>
   );
 }
 
-export { HoverButton, Attribution, ConsentSwitch, ImageSelection, CodeBlock, SwitchWithLabel, FlyoutMenuButton, FlyoutMenu };
+export { HoverButton, Attribution, ConsentSwitch, ImageSelection, CodeBlock, SwitchWithLabel, FlyoutMenu };
+export type { FlyoutMenuButtonType };

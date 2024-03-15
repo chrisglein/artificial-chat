@@ -185,12 +185,18 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
             <HumanSection
               id={undefined}
               disableCopy={true}
-              moreMenu={
-                <>
-                  <FlyoutMenuButton icon={0xE897} onClick={() => popups.setShowAbout(true)}>About</FlyoutMenuButton>
-                  <FlyoutMenuButton icon={0xE713} onClick={() => popups.setShowSettings(true)}>Settings</FlyoutMenuButton>
-                </>
-              }>
+              moreMenu={[
+                {
+                  title: "About",
+                  icon: 0xE897,
+                  onPress: () => popups.setShowAbout(true)
+                },
+                {
+                  title: "Settings",
+                  icon: 0xE713,
+                  onPress: () => popups.setShowSettings(true)
+                }
+              ]}>
               <ChatEntry
                 defaultText={humanText}
                 submit={(newEntry) => {

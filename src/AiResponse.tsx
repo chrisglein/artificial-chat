@@ -11,9 +11,9 @@ import {
 } from 'react-native';
 import {
   FlyoutMenu,
-  FlyoutMenuButton,
   CodeBlock
 } from './Controls';
+import type { FlyoutMenuButtonType } from './Controls';
 import {
   ChatElement,
   ChatContent,
@@ -93,7 +93,7 @@ type AiSectionProps = PropsWithChildren<{
   id: number,
   isLoading?: boolean;
   copyValue?: string;
-  moreMenu?: JSX.Element;
+  moreMenu?: FlyoutMenuButtonType[];
 }>;
 function AiSection({children, id, isLoading, copyValue, moreMenu}: AiSectionProps): JSX.Element {
   const feedbackContext = React.useContext(FeedbackContext);
@@ -106,6 +106,25 @@ function AiSection({children, id, isLoading, copyValue, moreMenu}: AiSectionProp
     }
   }
 
+  const menuItems = [];
+  if (moreMenu) {
+    menuItems.push(...moreMenu);
+  }
+  if (id !== undefined) {
+    menuItems.push(
+      {title: "Delete this response", icon: 0xE74D, onPress: () => chatHistory.deleteResponse(id)}
+    );
+  }
+  if (copyValue) {
+    menuItems.push(
+      {title: "Copy to clipboard", icon: 0xE8C8, onPress: () => Clipboard.setString(copyValue)}
+    );
+  }
+  menuItems.push(
+    {title: "👍 Give positive feedback", onPress: () => { showFeedbackPopup(true); }},
+    {title: "👎 Give negative feedback", onPress: () => { showFeedbackPopup(false); }},
+  );
+
   return (
     <Pressable
       accessibilityRole="none"
@@ -117,21 +136,7 @@ function AiSection({children, id, isLoading, copyValue, moreMenu}: AiSectionProp
           style={[styles.sectionTitle, {flexGrow: 1}]}>
             OpenAI
         </Text>
-        <FlyoutMenu>
-          {moreMenu}
-          {id !== undefined && 
-            <FlyoutMenuButton
-              icon={0xE74D}
-              onClick={() => chatHistory.deleteResponse(id)}>Delete this response</FlyoutMenuButton>
-          }
-          {copyValue && 
-            <FlyoutMenuButton
-              icon={0xE8C8}
-              onClick={() => Clipboard.setString(copyValue)}>Copy to clipboard</FlyoutMenuButton>
-          }
-          <FlyoutMenuButton onClick={() => { showFeedbackPopup(true); }}>👍 Give positive feedback</FlyoutMenuButton>
-          <FlyoutMenuButton onClick={() => { showFeedbackPopup(false); }}>👎 Give negative feedback</FlyoutMenuButton>
-        </FlyoutMenu>
+        <FlyoutMenu items={menuItems}/>
       </View>
       {isLoading && 
         <ActivityIndicator/>
