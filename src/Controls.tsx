@@ -1,14 +1,21 @@
 import React from 'react';
+import type {
+  PropsWithChildren,
+  Dispatch,
+  SetStateAction
+} from 'react';
 import {
-  Button,
   Image,
   ImageSourcePropType,
-  Linking,
   Pressable,
   Text,
   Switch,
   View,
 } from 'react-native';
+import { Flyout } from 'react-native-windows';
+import {
+  ButtonV1 as Button
+} from '@fluentui/react-native';
 import { StylesContext } from './Styles';
 import { CodeBlock } from './CodeBlock';
 
@@ -85,8 +92,8 @@ function ImageSelection({image}: ImageSelectionProps): JSX.Element {
     <View>
       <Image style={styles.dalleImage} source={image}/>
       <View style={[styles.horizontalContainer, {marginTop: 4, justifyContent: 'space-between'}]}>
-        <Button title="Variations"/>
-        <Button title="Select"/>
+        <Button>Variations</Button>
+        <Button>Select</Button>
       </View>
     </View>
   );
@@ -105,4 +112,81 @@ function SwitchWithLabel({label, value, onValueChange}: {label: string, value: b
   );
 }
 
-export { HoverButton, Attribution, ConsentSwitch, ImageSelection, CodeBlock, SwitchWithLabel };
+type MoreMenuButtonProps = PropsWithChildren<{
+  showMenu: boolean,
+  setShowMenu: Dispatch<SetStateAction<boolean>>;
+}>;
+const MoreMenuButton = React.forwardRef(function MoreMenuButton({showMenu, setShowMenu}: MoreMenuButtonProps, ref): JSX.Element {
+  return (
+    <View
+      ref={ref}>
+      <Button
+        enabled={!showMenu}
+        appearance='subtle'
+        accessibilityLabel='More options'
+        icon={{ fontSource: { fontFamily: 'Segoe MDL2 Assets', codepoint: 0xE712 } }}
+        iconOnly={true}
+        tooltip='More options'
+        onClick={() => setShowMenu(true)}></Button>
+    </View>
+  );
+});
+
+type FlyoutMenuButtonType = {
+  title: string,
+  icon?: number,
+  onPress: () => void,
+}
+
+type FlyoutMenuButtonProps = PropsWithChildren<{
+  icon?: number;
+  onClick: () => void;
+}>;
+function FlyoutMenuButton({icon, onClick, children}: FlyoutMenuButtonProps): JSX.Element {
+  return (
+    <Button
+      appearance='subtle'
+      icon={icon ? { fontSource: { fontFamily: 'Segoe MDL2 Assets', codepoint: icon } } : undefined}
+      onClick={onClick}>{children}</Button>
+  );
+}
+
+type FlyoutMenuProps = {
+  items: FlyoutMenuButtonType[];
+};
+function FlyoutMenu({items}: FlyoutMenuProps): JSX.Element {
+  const styles = React.useContext(StylesContext);
+  const [isOpen, setIsOpen] = React.useState(false);
+  const placementRef = React.useRef(null);
+
+  const buttonList = items.map((button, index) =>
+    <FlyoutMenuButton
+      key={index}
+      icon={button.icon}
+      onClick={() => {
+        button.onPress();
+        setIsOpen(false);
+      }}>{button.title}</FlyoutMenuButton>
+  );
+
+  return (
+    <>
+      <MoreMenuButton
+        ref={placementRef}
+        showMenu={isOpen}
+        setShowMenu={setIsOpen}/>
+      <Flyout
+        isOpen={isOpen}
+        onDismiss={() => setIsOpen(false)}
+        placement='bottom-edge-aligned-right'
+        target={placementRef.current}>
+        <View style={styles.flyoutBackground}>
+          {buttonList}
+        </View>
+      </Flyout>
+    </>
+  );
+}
+
+export { HoverButton, Attribution, ConsentSwitch, ImageSelection, CodeBlock, SwitchWithLabel, FlyoutMenu };
+export type { FlyoutMenuButtonType };

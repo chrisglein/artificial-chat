@@ -27,6 +27,7 @@ const StylesContext = React.createContext<{
   dialogSectionHeader: StyleProp<TextStyle>;
   codeBlockTitle: StyleProp<TextStyle>;
   codeBlockTitleText: StyleProp<TextStyle>;
+  flyoutBackground: StyleProp<ViewStyle>;
 }>({});
 
 const CreateStyles = (isDarkMode: boolean) => {
@@ -100,6 +101,12 @@ const CreateStyles = (isDarkMode: boolean) => {
     },
     codeBlockTitleText: {
       color: isDarkMode ? 'black' : 'white',
+    },
+    flyoutBackground: {
+      backgroundColor: isDarkMode ? 'black' : 'white',
+      borderRadius: 4,
+      padding: 8,
+      alignItems: 'flex-start',
     },
   });
 }
