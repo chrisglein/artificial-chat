@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {
   FlyoutMenu,
-  CodeBlock
+  MarkdownWithRules,
 } from './Controls';
 import type { FlyoutMenuButtonType } from './Controls';
 import {
@@ -23,7 +23,6 @@ import {
 import { StylesContext } from './Styles';
 import { FeedbackContext } from './Feedback';
 import Clipboard from '@react-native-clipboard/clipboard';
-import Markdown from 'react-native-markdown-display-updated';
 
 type AiImageResponseProps = {
   imageUrls?: string[];
@@ -66,26 +65,6 @@ function AiImageResponse({imageUrls, prompt, rejectImage, requestMore}: AiImageR
         </View>
       </View>
     </View>
-  );
-}
-
-type AiTextResponseProps = {
-  text?: string;
-};
-function AiTextResponse({text}: AiTextResponseProps): JSX.Element {
-  const rules = {
-    fence: (node, children, parent, styles) => {
-      return (
-        <CodeBlock
-          key={node.key}
-          language={node.sourceInfo}
-          content={node.content}/>
-        )
-      },
-  }
-
-  return (
-    <Markdown rules={rules}>{text}</Markdown>
   );
 }
 
@@ -175,11 +154,11 @@ function AiSectionContent({id, content}: AiSectionContentProps): JSX.Element {
               })}/>;
           default:
           case ChatContent.Text:
-            return <AiTextResponse text={firstResult}/>
+            return <MarkdownWithRules content={firstResult}/>
         }
       })()}
     </AiSection>
   )
 }
 
-export { AiSectionContent, AiSection, AiImageResponse, AiTextResponse }
+export { AiSectionContent, AiSection, AiImageResponse }
