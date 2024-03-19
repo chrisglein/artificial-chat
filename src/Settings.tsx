@@ -40,7 +40,7 @@ type SettingsContextType = {
   chatModel: string,
   setChatModel: (value: string) => void,
   readToMeVoice: string,
-  setReadToMeVoice: (value: string | undefined) => void,
+  setReadToMeVoice: (value: string) => void,
 }
 const SettingsContext = React.createContext<SettingsContextType>({
   setApiKey: () => {},
@@ -114,7 +114,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   const [detectImageIntent, setDetectImageIntent] = React.useState<boolean>(settings.detectImageIntent);
   const [imageResponseCount, setImageResponseCount] = React.useState<number>(settings.imageResponseCount);
   const [imageSize, setImageSize] = React.useState<number>(256);
-  const [readToMeVoice, setReadToMeVoice] = React.useState<string | undefined>(settings.readToMeVoice);
+  const [readToMeVoice, setReadToMeVoice] = React.useState<string>(settings.readToMeVoice);
 
   // It may seem weird to do this when the UI loads, not the app, but it's okay
   // because this component is loaded when the app starts but isn't shown. And
@@ -131,10 +131,9 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
       setImageSize(resolvedImageSize);
       settings.setImageSize(resolvedImageSize);
 
-      if (value.readToMeVoice !== undefined) {
-        settings.setReadToMeVoice(value.readToMeVoice);
-        SetVoice(value.readToMeVoice);
-      }
+      let resolvedReadToMeVoice = value.readToMeVoice ?? '';
+      settings.setReadToMeVoice(resolvedReadToMeVoice);
+      SetVoice(resolvedReadToMeVoice);
 
       // If an API key was set, continue to remember it
       setSaveApiKey(value.apiKey !== undefined);
@@ -152,11 +151,11 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
     settings.setImageResponseCount(imageResponseCount);
     settings.setImageSize(imageSize);
     settings.setReadToMeVoice(readToMeVoice);
-
+    
+    close();
+    
     // Need to apply to the speech engine
     SetVoice(readToMeVoice);
-
-    close();
 
     SaveSettingsData({
       apiKey: saveApiKey ? apiKey : undefined,
@@ -196,7 +195,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   return (
     <ContentDialog
       show={show}
-      close={cancel}
+      close={() => {}}
       isLightDismissEnabled={false}
       title="OpenAI Settings"
       buttons={buttons}
@@ -256,7 +255,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
         <DialogSection header="Read to Me">
           <Text>Read to me</Text>
           <Picker
-            accessibilityLabel="Read to me voice"
+            accessibilityLabel="Read to me"
             selectedValue={readToMeVoice}
             onValueChange={value => setReadToMeVoice(value)}>
             {GetVoices().map(voice => <Picker.Item label={voice.displayName} value={voice.id} key={voice.id}/>)}

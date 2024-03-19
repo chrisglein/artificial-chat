@@ -29,7 +29,7 @@ function App(): JSX.Element {
   const [imageSize, setImageSize] = React.useState<number>(256);
   const [showSettingsPopup, setShowSettingsPopup] = React.useState(false);
   const [showAboutPopup, setShowAboutPopup] = React.useState(false);
-  const [readToMeVoice, setReadToMeVoice] = React.useState<string | undefined>(undefined);
+  const [readToMeVoice, setReadToMeVoice] = React.useState<string>('');
     
   const isDarkMode = currentTheme === 'dark';
   const styles = CreateStyles(isDarkMode);
