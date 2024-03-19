@@ -13,8 +13,9 @@ import {
   FeedbackPopup,
 } from './Feedback';
 import { PopupsContext } from './Popups';
-import { FlyoutMenuButton } from './Controls';
+import { SettingsContext } from './Settings';
 import { ButtonV1 as Button } from '@fluentui/react-native';
+import { Speak } from './Speech';
 
 enum ChatSource {
   Human,
@@ -110,6 +111,7 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
   const styles = React.useContext(StylesContext);
   const chatHistory = React.useContext(ChatHistoryContext);
   const popups = React.useContext(PopupsContext);
+  const settings = React.useContext(SettingsContext);
   const [showFeedbackPopup, setShowFeedbackPopup] = React.useState(false);
   const [feedbackTargetResponse, setFeedbackTargetResponse] = React.useState<string | undefined>(undefined);
   const [feedbackIsPositive, setFeedbackIsPositive] = React.useState(false);
@@ -130,6 +132,15 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
     setTimeout(() => {
       scrollViewRef.current?.scrollToEnd({animated: true});
     }, 100);
+  }
+
+  const onQueryResponse = (id: number, prompt: string, responses: string[], contentType: ChatContent) => {
+    chatHistory.modifyResponse(id, {prompt: prompt, responses: responses, contentType: contentType});
+    
+    // As the responses come in, speak them aloud (if enabled)
+    if (contentType == ChatContent.Text && settings.readToMeVoice) {
+      Speak(responses[0]);
+    }
   }
 
   return (
@@ -164,7 +175,7 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
                             prompt={entry.prompt ?? ""}
                             intent={entry.intent}
                             onResponse={({prompt, responses, contentType}) => 
-                              chatHistory.modifyResponse(entry.id, {prompt: prompt, responses: responses, contentType: contentType})}/>
+                              onQueryResponse(entry.id, prompt, responses, contentType)}/>
                   }
                 </View>
               ))}

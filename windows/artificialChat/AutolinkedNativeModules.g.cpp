@@ -15,6 +15,9 @@
 // Includes from react-native-svg
 #include <winrt/RNSVG.h>
 
+// Includes from react-native-winrt
+#include <winrt/WinRTTurboModule.h>
+
 namespace winrt::Microsoft::ReactNative
 {
 
@@ -28,6 +31,8 @@ void RegisterAutolinkedNativeModulePackages(winrt::Windows::Foundation::Collecti
     packageProviders.Append(winrt::ReactNativePicker::ReactPackageProvider());
     // IReactPackageProviders from react-native-svg
     packageProviders.Append(winrt::RNSVG::ReactPackageProvider());
+    // IReactPackageProviders from react-native-winrt
+    packageProviders.Append(winrt::WinRTTurboModule::ReactPackageProvider());
 }
 
 }
