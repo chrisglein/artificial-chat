@@ -23,7 +23,7 @@ import {
 import { StylesContext } from './Styles';
 import { FeedbackContext } from './Feedback';
 import Clipboard from '@react-native-clipboard/clipboard';
-import Speak from './Speech';
+import { Speak } from './Speech';
 
 type AiImageResponseProps = {
   imageUrls?: string[];

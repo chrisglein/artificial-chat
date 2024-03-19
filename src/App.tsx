@@ -29,6 +29,7 @@ function App(): JSX.Element {
   const [imageSize, setImageSize] = React.useState<number>(256);
   const [showSettingsPopup, setShowSettingsPopup] = React.useState(false);
   const [showAboutPopup, setShowAboutPopup] = React.useState(false);
+  const [readToMeVoice, setReadToMeVoice] = React.useState<string | undefined>(undefined);
     
   const isDarkMode = currentTheme === 'dark';
   const styles = CreateStyles(isDarkMode);
@@ -50,6 +51,8 @@ function App(): JSX.Element {
     setAiEndpoint: setAiEndpoint,
     chatModel: chatModel,
     setChatModel: setChatModel,
+    readToMeVoice: readToMeVoice,
+    setReadToMeVoice: setReadToMeVoice,
   };
 
   const popups = {
