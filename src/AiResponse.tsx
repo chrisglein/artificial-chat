@@ -23,6 +23,7 @@ import {
 import { StylesContext } from './Styles';
 import { FeedbackContext } from './Feedback';
 import Clipboard from '@react-native-clipboard/clipboard';
+import Speak from './Speech';
 
 type AiImageResponseProps = {
   imageUrls?: string[];
@@ -98,6 +99,9 @@ function AiSection({children, id, isLoading, copyValue, moreMenu}: AiSectionProp
     menuItems.push(
       {title: "Copy to clipboard", icon: 0xE8C8, onPress: () => Clipboard.setString(copyValue)}
     );
+    menuItems.push(
+      {title: "Read to me", icon: 0xE995, onPress: () => { Speak(copyValue) } }
+    )
   }
   menuItems.push(
     {title: "👍 Give positive feedback", onPress: () => { showFeedbackPopup(true); }},

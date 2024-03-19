@@ -34,6 +34,14 @@
     <UseExperimentalNuget>false</UseExperimentalNuget>
 
     <ReactExperimentalFeaturesSet>true</ReactExperimentalFeaturesSet>
+
+    <RnWinRTParameters>
+    -include Windows.UI.Notifications
+    -include Windows.Data.Xml.Dom
+    -include Windows.Media.SpeechSynthesis
+    -include Windows.Media.Playback
+    -include Windows.Media.Core
+    </RnWinRTParameters>
   
   </PropertyGroup>
 
