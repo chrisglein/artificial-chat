@@ -24,7 +24,8 @@
     "react-native-markdown-display-updated": "^7.0.0",
     "react-native-svg": "^15.1.0",
     "react-native-syntax-highlighter": "^2.1.0",
-    "react-native-windows": "0.73.10"
+    "react-native-windows": "0.73.10",
+    "react-native-winrt": "^0.72.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

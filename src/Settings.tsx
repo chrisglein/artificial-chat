@@ -17,6 +17,7 @@ import {
   Link,
   CheckboxV1 as Checkbox,
 } from '@fluentui/react-native';
+import { GetVoices, SetVoice } from './Speech';
 
 const settingsKey = 'settings';
 
@@ -38,6 +39,8 @@ type SettingsContextType = {
   setAiEndpoint: (value: string) => void,
   chatModel: string,
   setChatModel: (value: string) => void,
+  readToMeVoice: string,
+  setReadToMeVoice: (value: string) => void,
 }
 const SettingsContext = React.createContext<SettingsContextType>({
   setApiKey: () => {},
@@ -53,12 +56,15 @@ const SettingsContext = React.createContext<SettingsContextType>({
   setAiEndpoint: () => {},
   chatModel: '',
   setChatModel: () => {},
+  readToMeVoice: '',
+  setReadToMeVoice: () => {},
 });
 
 // Settings that are saved between app sessions
 type SettingsData = {
   apiKey?: string,
   imageSize?: number,
+  readToMeVoice?: string,
 }
 
 // Read settings from app storage
@@ -84,6 +90,7 @@ const LoadSettingsData = async () => {
       
       if (value.hasOwnProperty('apiKey')) { valueToSave.apiKey = value.apiKey; }
       if (value.hasOwnProperty('imageSize')) { valueToSave.imageSize = parseInt(value.imageSize); }
+      if (value.hasOwnProperty('readToMeVoice')) { valueToSave.readToMeVoice = value.readToMeVoice; }
     }
   } catch(e) {
     console.error(e);
@@ -107,6 +114,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   const [detectImageIntent, setDetectImageIntent] = React.useState<boolean>(settings.detectImageIntent);
   const [imageResponseCount, setImageResponseCount] = React.useState<number>(settings.imageResponseCount);
   const [imageSize, setImageSize] = React.useState<number>(256);
+  const [readToMeVoice, setReadToMeVoice] = React.useState<string>(settings.readToMeVoice);
 
   // It may seem weird to do this when the UI loads, not the app, but it's okay
   // because this component is loaded when the app starts but isn't shown. And
@@ -123,6 +131,10 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
       setImageSize(resolvedImageSize);
       settings.setImageSize(resolvedImageSize);
 
+      let resolvedReadToMeVoice = value.readToMeVoice ?? '';
+      settings.setReadToMeVoice(resolvedReadToMeVoice);
+      SetVoice(resolvedReadToMeVoice);
+
       // If an API key was set, continue to remember it
       setSaveApiKey(value.apiKey !== undefined);
     }
@@ -138,12 +150,17 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
     settings.setDetectImageIntent(detectImageIntent);
     settings.setImageResponseCount(imageResponseCount);
     settings.setImageSize(imageSize);
-
+    settings.setReadToMeVoice(readToMeVoice);
+    
     close();
+    
+    // Need to apply to the speech engine
+    SetVoice(readToMeVoice);
 
     SaveSettingsData({
       apiKey: saveApiKey ? apiKey : undefined,
       imageSize: imageSize,
+      readToMeVoice: readToMeVoice,
     });
   }
 
@@ -156,6 +173,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
     setDetectImageIntent(settings.detectImageIntent);
     setImageResponseCount(settings.imageResponseCount);
     setImageSize(settings.imageSize);
+    setReadToMeVoice(settings.readToMeVoice);
     close();
   }
 
@@ -177,7 +195,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   return (
     <ContentDialog
       show={show}
-      close={cancel}
+      close={() => {}}
       isLightDismissEnabled={false}
       title="OpenAI Settings"
       buttons={buttons}
@@ -232,6 +250,16 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             selectedValue={imageSize}
             onValueChange={value => setImageSize(typeof value === 'number' ? value : parseInt(value))}>
             {[256, 512, 1024].map(size => <Picker.Item label={size.toString()} value={size} key={size}/>)}
+          </Picker>
+        </DialogSection>
+        <DialogSection header="Read to Me">
+          <Text>Read to me</Text>
+          <Picker
+            accessibilityLabel="Read to me"
+            selectedValue={readToMeVoice}
+            onValueChange={value => setReadToMeVoice(value)}>
+            {GetVoices().map(voice => <Picker.Item label={voice.displayName} value={voice.id} key={voice.id}/>)}
+            <Picker.Item label="None" value=""/>
           </Picker>
         </DialogSection>
         <DialogSection header="AI Scripts">
