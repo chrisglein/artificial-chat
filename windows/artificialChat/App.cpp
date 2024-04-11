@@ -27,11 +27,12 @@ App::App() noexcept
     JavaScriptBundleFile(L"index");
     InstanceSettings().UseFastRefresh(true);
 #endif
-    InstanceSettings().UseWebDebugger(false);
 
 #if _DEBUG
+    InstanceSettings().UseDirectDebugger(true);
     InstanceSettings().UseDeveloperSupport(true);
 #else
+    InstanceSettings().UseDirectDebugger(false);
     InstanceSettings().UseDeveloperSupport(false);
 #endif
 
