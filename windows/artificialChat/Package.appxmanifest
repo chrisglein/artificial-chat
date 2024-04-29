@@ -7,15 +7,15 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="8b7614a1-05c5-4f65-bec8-343650bf10ba"
-    Publisher="CN=cglein"
-    Version="1.0.8.0" />
+    Name="34515PNBIndustries.ArtificialChat"
+    Publisher="CN=5C24357C-C5B6-4999-B1F2-13387994FDD6"
+    Version="1.0.26.0" />
 
-  <mp:PhoneIdentity PhoneProductId="8b7614a1-05c5-4f65-bec8-343650bf10ba" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="cb70ced8-cd7c-4e60-a0d8-c6e44435cb5c" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>artificialChat</DisplayName>
-    <PublisherDisplayName>cglein</PublisherDisplayName>
+    <DisplayName>Artificial Chat</DisplayName>
+    <PublisherDisplayName>PNB Industries</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
