@@ -48,6 +48,12 @@ function AboutPopup({show, close}: AboutPopupProps): JSX.Element {
           content='GitHub'
           url='https://github.com/chrisglein/artificial-chat/'/>
       </View>
+      <View style={{flexDirection: 'row', gap: 4}}>
+        <Text>React Native: </Text>
+        <Link
+          content='0.74.0'
+          url='https://github.com/microsoft/react-native-windows/releases/tag/react-native-windows_v0.74.0/'/>
+      </View>
     </ContentDialog>
   );
 }
