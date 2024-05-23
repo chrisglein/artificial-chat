@@ -1,44 +1,31 @@
 name: Windows CI
-on: [pull_request]
+on:
+  pull_request:
+    branches: [ main ]
 
 jobs:
   run-windows-tests:
     name: Build & run tests
-    runs-on: windows-2019
+    runs-on: windows-2022
+    strategy:
+      matrix:
+        configuration: ['Debug', 'Release']
+        platform: ['x86', 'x64']
 
     steps:
-    - uses: actions/checkout@v2
-      name: Checkout Code
-     
-    - name: Setup Node.js
-      uses: actions/setup-node@v1
-      with:
-        node-version: '^18'
+      - uses: actions/checkout@v2
+        name: Checkout Code
 
-    - name: Setup MSBuild
-      uses: microsoft/setup-msbuild@v2
-      with:
-        vs-version: '17.x'
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '^18'
 
-    - name: Check node modules cache
-      uses: actions/cache@v1
-      id: yarn-cache
-      with:
-        path: ./node_modules
-        key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-yarn-
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
 
-    - name: Install node modules
-      if: steps.yarn-cache.outputs.cache-hit != 'true'
-      run: yarn --pure-lockfile
-    
-    - name: yarn build
-      if: steps.yarn-cache.outputs.cache-hit == 'true'
-      run: |
-        yarn build
-        yarn tsc
+      - name: Install node modules
+        run: yarn --frozen-lockfile
 
-    - name: Build x64 release
-      shell: powershell
-      run: npx react-native run-windows --root example --arch x64 --release --no-packager --no-deploy --logging
+      - name: Run Windows ${{ matrix.platform }} ${{ matrix.configuration }}
+        run: npx react-native run-windows --arch ${{ matrix.platform }} --${{ matrix.configuration }} --logging --no-packager --no-deploy
