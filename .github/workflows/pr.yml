@@ -9,7 +9,7 @@ jobs:
     runs-on: windows-2022
     strategy:
       matrix:
-        configuration: ['Debug', 'Release']
+        configuration: ['debug', 'release']
         platform: ['x86', 'x64']
 
     steps:
@@ -28,4 +28,4 @@ jobs:
         run: yarn --frozen-lockfile
 
       - name: Run Windows ${{ matrix.platform }} ${{ matrix.configuration }}
-        run: npx react-native run-windows --arch ${{ matrix.platform }} --${{ matrix.configuration }} --logging --no-packager --no-deploy
+        run: npx react-native run-windows --arch ${{ matrix.platform }} ${{ matrix.configuration == 'release' && '--release' || '' }} --logging --no-packager --no-deploy
