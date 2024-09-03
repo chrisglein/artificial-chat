@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- This project was created with react-native-windows 0.74.0 -->
+<!-- This project was created with react-native-windows 0.75.1 -->
 <Project ToolsVersion="Current" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(SolutionDir)\ExperimentalFeatures.props" Condition="Exists('$(SolutionDir)\ExperimentalFeatures.props')" />
   <PropertyGroup Label="Globals">
     <CppWinRTOptimized>true</CppWinRTOptimized>
     <CppWinRTRootNamespaceAutoMerge>true</CppWinRTRootNamespaceAutoMerge>
     <MinimalCoreWin>true</MinimalCoreWin>
-    <ProjectGuid>{6cb65148-ce4e-4cb5-92f1-95e1fb3f3e19}</ProjectGuid>
+    <ProjectGuid>{6CB65148-CE4E-4CB5-92F1-95E1FB3F3E19}</ProjectGuid>
     <ProjectName>artificialChat</ProjectName>
     <RootNamespace>artificialChat</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
