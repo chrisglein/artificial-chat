@@ -57,14 +57,14 @@
       "name": "artificialChat",
       "namespace": "artificialChat",
       "template": "old/uwp-cpp-app"
-    },
-    "codegenConfig": {
-      "name": "artificialChat",
-      "type": "modules",
-      "jsSrcsDir": "src",
-      "windows": {
-        "namespace": "ArtificialChatModules"
-      }
+    }
+  },
+  "codegenConfig": {
+    "name": "artificialChat",
+    "type": "modules",
+    "jsSrcsDir": "src",
+    "windows": {
+      "namespace": "ArtificialChatModules"
     }
   }
 }

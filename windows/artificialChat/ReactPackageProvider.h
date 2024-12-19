@@ -1,6 +1,7 @@
 #pragma once
 
 #include "winrt/Microsoft.ReactNative.h"
+#include "VersionInfo.h"
 
 namespace winrt::artificialChat::implementation
 {
