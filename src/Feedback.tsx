@@ -50,7 +50,8 @@ function FeedbackPopup({show, close, isPositive, response}: FeedbackPopupProps):
       titleIcon={isPositive ? "👍" : "👎"}
       titleIconStyle={{backgroundColor: isPositive ? 'green' : 'red'}}
       title="Provide additional feedback"
-      buttons={buttons}>
+      buttons={buttons}
+      maxHeight={300}>
       <TextInput
         multiline={true}
         placeholder="What would the ideal answer have been?"

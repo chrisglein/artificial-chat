@@ -8,7 +8,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Clipboard from './NativeClipboard'
 import Markdown from 'react-native-markdown-display';
 //import {Picker} from '@react-native-picker/picker';
-//import {Popup} from 'react-native-windows';
 import { SyntaxHighlighter } from 'react-native-syntax-highlighter';
 import { vs2015 } from 'react-syntax-highlighter/styles/hljs';
 import VersionInfo from './NativeVersionInfo';
@@ -80,25 +79,4 @@ class Picker extends React.Component<PickerProps> {
   }
 }
 
-function Popup({isOpen, isLightDismissEnabled, onDismiss, children}: any) {
-  return (
-    <Pressable
-      style={isOpen ? 
-        {position: 'absolute', width: '100%', height: '100%', alignItems: 'center'} :
-        {display: 'none'}
-      }
-      onPress={() => {
-        if (isLightDismissEnabled) {
-          onDismiss();
-        }
-      }}>
-      {isOpen && 
-        <View>
-          {children}
-        </View>
-      }
-    </Pressable>
-  );
-}
-
-export { AsyncStorage, Clipboard, Markdown, Picker, Popup, SyntaxHighlighter, vs2015, VersionInfo }
+export { AsyncStorage, Clipboard, Markdown, Picker, SyntaxHighlighter, vs2015, VersionInfo }

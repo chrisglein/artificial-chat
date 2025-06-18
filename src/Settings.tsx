@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Button,
-  Switch,
   Text,
   TextInput,
   View,
@@ -182,7 +181,9 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
       isLightDismissEnabled={false}
       titleIcon="⚙️"
       title="OpenAI Settings"
-      buttons={buttons}>
+      buttons={buttons}
+      maxWidth={400}
+      maxHeight={800}>
       <View style={styles.dialogSectionsContainer}>
         <DialogSection header="Chat">
           <Text>AI Endpoint</Text>
