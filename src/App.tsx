@@ -1,34 +1,29 @@
 import React from 'react';
-import {
-  Appearance,
-  View
-} from 'react-native';
-import { ChatSession } from './ChatSession';
-import {
-  StylesContext,
-  CreateStyles,
-  createWindowsTheme,
-} from './Styles';
-import {
-  SettingsContext,
-  SettingsPopup,
-} from './Settings';
-import { AboutPopup } from './About';
-import { PopupsContext } from './Popups';
-import { ThemeProvider } from '@fluentui-react-native/theme';
+import {Appearance, View} from 'react-native';
+import {ChatSession} from './ChatSession';
+import {StylesContext, CreateStyles, createWindowsTheme} from './Styles';
+import {SettingsContext, SettingsPopup} from './Settings';
+import {AboutPopup} from './About';
+import {PopupsContext} from './Popups';
+import {ThemeProvider} from '@fluentui-react-native/theme';
 
 function App(): JSX.Element {
-  const [currentTheme, setCurrentTheme] = React.useState(Appearance.getColorScheme());
-  const [aiEndpoint, setAiEndpoint] = React.useState<string>("https://api.openai.com/v1");
-  const [chatModel, setChatModel] = React.useState<string>("gpt-3.5-turbo");
+  const [currentTheme, setCurrentTheme] = React.useState(
+    Appearance.getColorScheme(),
+  );
+  const [aiEndpoint, setAiEndpoint] = React.useState<string>(
+    'https://api.openai.com/v1',
+  );
+  const [chatModel, setChatModel] = React.useState<string>('gpt-3.5-turbo');
   const [apiKey, setApiKey] = React.useState<string | undefined>(undefined);
-  const [detectImageIntent, setDetectImageIntent] = React.useState<boolean>(true);
+  const [detectImageIntent, setDetectImageIntent] =
+    React.useState<boolean>(true);
   const [imageResponseCount, setImageResponseCount] = React.useState<number>(1);
   const [imageSize, setImageSize] = React.useState<number>(256);
   const [showSettingsPopup, setShowSettingsPopup] = React.useState(false);
   const [showAboutPopup, setShowAboutPopup] = React.useState(false);
   const [readToMeVoice, setReadToMeVoice] = React.useState<string>('');
-    
+
   const isDarkMode = currentTheme === 'dark';
   const styles = CreateStyles(isDarkMode);
 
@@ -54,7 +49,7 @@ function App(): JSX.Element {
     setShowSettings: setShowSettingsPopup,
     showAbout: showAboutPopup,
     setShowAbout: setShowAboutPopup,
-  }
+  };
 
   const onAppThemeChanged = () => {
     setCurrentTheme(Appearance.getColorScheme());
@@ -70,13 +65,15 @@ function App(): JSX.Element {
         <SettingsContext.Provider value={settings}>
           <PopupsContext.Provider value={popups}>
             <View>
-              <ChatSession/>
+              <ChatSession />
               <SettingsPopup
                 show={showSettingsPopup}
-                close={() => popups.setShowSettings(false)}/>
+                close={() => popups.setShowSettings(false)}
+              />
               <AboutPopup
                 show={popups.showAbout}
-                close={() => popups.setShowAbout(false)}/>
+                close={() => popups.setShowAbout(false)}
+              />
             </View>
           </PopupsContext.Provider>
         </SettingsContext.Provider>
