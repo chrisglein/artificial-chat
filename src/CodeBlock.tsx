@@ -5,12 +5,12 @@ import {
   View,
 } from 'react-native';
 import { StylesContext } from './Styles';
-import { SyntaxHighlighter } from './Dependencies'
+import { SyntaxHighlighter } from './Dependencies';
 // See all styles here: https://highlightjs.org/static/demo/
-import { vs2015 } from './Dependencies'
-import { Clipboard } from './Dependencies'
+import { vs2015 } from './Dependencies';
+import { Clipboard } from './Dependencies';
 
-function CodeBlock({content, language} : {content: string, language: string}) {
+function CodeBlock({content, language} : {content: string, language: string}): JSX.Element {
   const styles = React.useContext(StylesContext);
 
   return (

@@ -100,7 +100,6 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="VersionInfo.h" />
-    <ClInclude Include="Clipboard.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="artificialChat.cpp" />
