@@ -9,7 +9,7 @@ import {
   DialogFrame,
 } from './Popups';
 import {StylesContext} from './Styles';
-import { VersionInfo } from './Dependencies'
+import VersionInfo from './NativeVersionInfo';
 
 type AboutPopupProps = {
   show: boolean;
