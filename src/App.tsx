@@ -22,8 +22,6 @@ function App(): JSX.Element {
   const [aiEndpoint, setAiEndpoint] = React.useState<string>("https://api.openai.com/v1");
   const [chatModel, setChatModel] = React.useState<string>("gpt-3.5-turbo");
   const [apiKey, setApiKey] = React.useState<string | undefined>(undefined);
-  const [scriptName, setScriptName] = React.useState<string | undefined>("");
-  const [delayForArtificialResponse, setDelayForArtificialResponse] = React.useState<number>(1500);
   const [detectImageIntent, setDetectImageIntent] = React.useState<boolean>(true);
   const [imageResponseCount, setImageResponseCount] = React.useState<number>(1);
   const [imageSize, setImageSize] = React.useState<number>(256);
@@ -35,12 +33,8 @@ function App(): JSX.Element {
   const styles = CreateStyles(isDarkMode);
 
   const settings = {
-    scriptName: scriptName,
-    setScriptName: setScriptName,
     apiKey: apiKey,
     setApiKey: setApiKey,
-    delayForArtificialResponse: delayForArtificialResponse,
-    setDelayForArtificialResponse: setDelayForArtificialResponse,
     detectImageIntent: detectImageIntent,
     setDetectImageIntent: setDetectImageIntent,
     imageResponseCount: imageResponseCount,

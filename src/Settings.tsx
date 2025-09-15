@@ -10,7 +10,6 @@ import {
 } from './Popups';
 import {StylesContext} from './Styles';
 import {Picker} from '@react-native-picker/picker';
-import {ChatScriptNames} from './ChatScript';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   ButtonV1 as Button,
@@ -25,10 +24,6 @@ const settingsKey = 'settings';
 type SettingsContextType = {
   apiKey?: string,
   setApiKey: (value?: string) => void,
-  scriptName?: string,
-  setScriptName: (value: string) => void,
-  delayForArtificialResponse?: number,
-  setDelayForArtificialResponse: (value: number) => void,
   detectImageIntent: boolean,
   setDetectImageIntent: (value: boolean) => void,
   imageResponseCount: number,
@@ -44,8 +39,6 @@ type SettingsContextType = {
 }
 const SettingsContext = React.createContext<SettingsContextType>({
   setApiKey: () => {},
-  setScriptName: () => {},
-  setDelayForArtificialResponse: () => {},
   detectImageIntent: false,
   setDetectImageIntent: () => {},
   imageResponseCount: 1,
@@ -109,8 +102,6 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   const [chatModel, setChatModel] = React.useState<string>(settings.chatModel);
   const [apiKey, setApiKey] = React.useState<string | undefined>(settings.apiKey);
   const [saveApiKey, setSaveApiKey] = React.useState<boolean>(false);
-  const [scriptName, setScriptName] = React.useState<string>(settings.scriptName ?? "");
-  const [delayForArtificialResponse, setDelayForArtificialResponse] = React.useState<number>(settings.delayForArtificialResponse ?? 0);
   const [detectImageIntent, setDetectImageIntent] = React.useState<boolean>(settings.detectImageIntent);
   const [imageResponseCount, setImageResponseCount] = React.useState<number>(settings.imageResponseCount);
   const [imageSize, setImageSize] = React.useState<number>(256);
@@ -145,8 +136,6 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
     settings.setAiEndpoint(aiEndpoint);
     settings.setChatModel(chatModel);
     settings.setApiKey(apiKey);
-    settings.setScriptName(scriptName);
-    settings.setDelayForArtificialResponse(delayForArtificialResponse);
     settings.setDetectImageIntent(detectImageIntent);
     settings.setImageResponseCount(imageResponseCount);
     settings.setImageSize(imageSize);
@@ -168,8 +157,6 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
     setAiEndpoint(settings.aiEndpoint);
     setChatModel(settings.chatModel);
     setApiKey(settings.apiKey);
-    setScriptName(settings.scriptName ?? "");
-    setDelayForArtificialResponse(settings.delayForArtificialResponse ?? 0);
     setDetectImageIntent(settings.detectImageIntent);
     setImageResponseCount(settings.imageResponseCount);
     setImageSize(settings.imageSize);
@@ -261,23 +248,6 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             {GetVoices().map(voice => <Picker.Item label={voice.displayName} value={voice.id} key={voice.id}/>)}
             <Picker.Item label="None" value=""/>
           </Picker>
-        </DialogSection>
-        <DialogSection header="AI Scripts">
-          <Text>Script</Text>
-          <Picker
-            accessibilityLabel="Script"
-            selectedValue={scriptName}
-            onValueChange={value => setScriptName(value)}>
-            {ChatScriptNames.map(name => <Picker.Item label={name} value={name} key={name}/>)}
-            <Picker.Item label="None" value=""/>
-          </Picker>
-          <Text>Artificial Delay in Script Response</Text>
-          <TextInput
-            accessibilityLabel="Artificial Delay in Script Response"
-            keyboardType="numeric"
-            style={{flexGrow: 1, minHeight: 32}}
-            onChangeText={value => setDelayForArtificialResponse(parseInt(value))}
-            value={delayForArtificialResponse.toString()}/>
         </DialogSection>
       </View>
     </ContentDialog>
