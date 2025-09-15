@@ -1,10 +1,10 @@
 import React, { PropsWithChildren } from 'react';
 import {
   Button,
+  Modal,
   Text,
   View,
 } from 'react-native';
-import {Popup} from './Dependencies';
 import {StylesContext} from './Styles';
 
 type PopupsContextType = {
@@ -28,8 +28,10 @@ type DialogFrameType = PropsWithChildren<{
   titleIconStyle?: any,
   title: string,
   buttons?: JSX.Element[],
+  maxWidth?: number,
+  maxHeight?: number,
 }>;
-function DialogFrame({children, show, close, isLightDismissEnabled, titleIcon, titleIconStyle, title, buttons}: DialogFrameType) {
+function DialogFrame({children, show, close, isLightDismissEnabled, titleIcon, titleIconStyle, title, buttons, maxWidth, maxHeight}: DialogFrameType) {
   const styles = React.useContext(StylesContext);
 
   const populatedButtons = buttons ?? [<Button
@@ -40,28 +42,32 @@ function DialogFrame({children, show, close, isLightDismissEnabled, titleIcon, t
     }}/>];
   const buttonList = populatedButtons.map((button, index) => <View key={index}>{button}</View>);
 
+  // TODO: isLightDismissEnabled is not implemented
+  // NOTE: presence of maxWidth and maxHeight is a workaround for this bug: https://github.com/microsoft/react-native-windows/issues/14805
+
   return (
-    <Popup
-      isOpen={show}
-      isLightDismissEnabled={isLightDismissEnabled ?? true}
-      onDismiss={() => close()}>
-      <View style={[styles.dialogBackground, {gap: 12}]}>
-        <View style={{flexDirection: 'row', marginBottom: 4, gap: 4}}>
-          <View style={[styles.dialogTitleIcon, titleIconStyle]}>
-            <Text accessible={false}>{titleIcon}</Text>
+    <Modal
+      visible={show}
+      onRequestClose={() => close()}>
+      <View style={{maxWidth: maxWidth, maxHeight: maxHeight}}>
+        <View style={[styles.dialogBackground, {gap: 12}]}>
+          <View style={{flexDirection: 'row', marginBottom: 4, gap: 4}}>
+            <View style={[styles.dialogTitleIcon, titleIconStyle]}>
+              <Text accessible={false}>{titleIcon}</Text>
+            </View>
+            <Text
+              accessibilityRole="header"
+              style={styles.dialogTitle}>
+              {title}
+            </Text>
           </View>
-          <Text
-            accessibilityRole="header"
-            style={styles.dialogTitle}>
-            {title}
-          </Text>
-        </View>
-        {children}
-        <View style={styles.dialogButtons}>
-          {buttonList}
+          {children}
+          <View style={styles.dialogButtons}>
+            {buttonList}
+          </View>
         </View>
       </View>
-    </Popup>
+    </Modal>
   )
 }
 
