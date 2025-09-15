@@ -4,13 +4,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Clipboard from '@react-native-clipboard/clipboard';
-import Markdown from 'react-native-markdown-display';
 //import {Picker} from '@react-native-picker/picker';
-import { SyntaxHighlighter } from 'react-native-syntax-highlighter';
-import { vs2015 } from 'react-syntax-highlighter/styles/hljs';
-import VersionInfo from './NativeVersionInfo';
 
 type PickerItemProps = {
   label: string,
@@ -79,4 +73,4 @@ class Picker extends React.Component<PickerProps> {
   }
 }
 
-export { AsyncStorage, Clipboard, Markdown, Picker, SyntaxHighlighter, vs2015, VersionInfo }
+export { Picker }

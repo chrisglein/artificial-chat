@@ -16,7 +16,7 @@ import {
 import {StylesContext} from './Styles';
 import {Picker} from './Dependencies';
 import {ChatScriptNames} from './ChatScript';
-import {AsyncStorage} from './Dependencies';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const settingsKey = 'settings';
 
