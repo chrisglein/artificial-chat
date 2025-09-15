@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, useState, useEffect } from 'react';
 import {
   Pressable,
   Text,
@@ -60,120 +60,111 @@ type PickerProps = PropsWithChildren<{
   Item: (props: PickerItemProps) => React.ReactElement,
 }>
 
-interface PickerState {
-  isOpen: boolean;
-  selectedValue: string;
-}
+// Static Item component for the Picker
+const PickerItem = (props: PickerItemProps) => {
+  return (
+    <Text style={styles.pickerItemText}>{props.label}</Text>
+  );
+};
 
-class Picker extends React.Component<PickerProps, PickerState> {
-  constructor(props: PickerProps) {
-    super(props);
-    this.state = {
-      isOpen: false,
-      selectedValue: this.props.selectedValue,
-    };
-  }
-  
-  static Item(props: PickerItemProps) {
-    return (
-      <Text style={styles.pickerItemText}>{props.label}</Text>
-    );
-  }
+const Picker = (props: PickerProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedValue, setSelectedValue] = useState(props.selectedValue);
 
-  componentDidUpdate(prevProps: PickerProps) {
-    if (prevProps.selectedValue !== this.props.selectedValue) {
-      this.setState({ selectedValue: this.props.selectedValue });
-    }
-  }
+  // Update selectedValue when props.selectedValue changes
+  useEffect(() => {
+    setSelectedValue(props.selectedValue);
+  }, [props.selectedValue]);
 
-  private openDropdown = () => {
-    this.setState({ isOpen: true });
+  const openDropdown = () => {
+    setIsOpen(true);
   };
 
-  private closeDropdown = () => {
-    this.setState({ isOpen: false });
+  const closeDropdown = () => {
+    setIsOpen(false);
   };
 
-  private selectItem = (value: string) => {
-    this.setState({ selectedValue: value });
-    this.props.onValueChange(value);
-    this.closeDropdown();
+  const selectItem = (value: string) => {
+    setSelectedValue(value);
+    props.onValueChange(value);
+    closeDropdown();
   };
 
-  private findSelectedChild = (children: Iterable<React.ReactNode>) => {
+  const findSelectedChild = (children: Iterable<React.ReactNode>) => {
     for (let child of children) {
       let childElement = child as React.ReactElement<any>;
-      if (childElement?.props?.value === this.state.selectedValue) {
+      if (childElement?.props?.value === selectedValue) {
         return childElement?.props?.label || childElement?.props?.value;
       }
     }
     return '';
   };
 
-  render() {
-    let children = this.props.children as React.ReactNode;
-    const selectedLabel = this.findSelectedChild(children as any);
-    
-    // Filter out invalid children before mapping
-    const validChildren = Array.from(children as any).filter((child: any) =>
-      child?.props && (child.props.value !== undefined || child.props.label !== undefined)
-    );
-    
-    const itemHeight = 44; // minHeight from styles.pickerItem
-    const calculatedHeight = Math.min(validChildren.length * itemHeight, 300); // Max height of 300
+  let children = props.children as React.ReactNode;
+  const selectedLabel = findSelectedChild(children as any);
+  
+  // Filter out invalid children before mapping
+  const validChildren = Array.from(children as any).filter((child: any) =>
+    child?.props && (child.props.value !== undefined || child.props.label !== undefined)
+  );
+  
+  const itemHeight = 44; // minHeight from styles.pickerItem
+  const calculatedHeight = Math.min(validChildren.length * itemHeight, 300); // Max height of 300
 
-    return (
-      <View style={styles.container}>
-        <Pressable
-          style={({ pressed }) => [
-            styles.pickerButton,
-            pressed && styles.pickerButtonPressed,
-            this.state.isOpen && styles.pickerButtonOpen,
-          ]}
-          onPress={this.openDropdown}
-          accessibilityLabel={this.props.accessibilityLabel}
-          accessibilityRole="combobox"
-          accessibilityState={{
-            expanded: this.state.isOpen,
-            selected: false,
-          }}
-          accessibilityValue={{ text: selectedLabel || 'No selection' }}
-          accessibilityHint="Double tap to open dropdown menu">
-          <Text style={styles.pickerButtonText} numberOfLines={1}>
-            {selectedLabel || 'Select an option...'}
-          </Text>
-          <Text style={styles.dropdownArrow} accessibilityLabel="dropdown arrow">
-            {this.state.isOpen ? '▲' : '▼'}
-          </Text>
-        </Pressable>
+  return (
+    <View style={styles.container}>
+      <Pressable
+        style={({ pressed }) => [
+          styles.pickerButton,
+          pressed && styles.pickerButtonPressed,
+          isOpen && styles.pickerButtonOpen,
+        ]}
+        onPress={openDropdown}
+        accessibilityLabel={props.accessibilityLabel}
+        accessibilityRole="combobox"
+        accessibilityState={{
+          expanded: isOpen,
+          selected: false,
+        }}
+        accessibilityValue={{ text: selectedLabel || 'No selection' }}
+        accessibilityHint="Double tap to open dropdown menu">
+        <Text style={styles.pickerButtonText} numberOfLines={1}>
+          {selectedLabel || 'Select an option...'}
+        </Text>
+        <Text style={styles.dropdownArrow} accessibilityLabel="dropdown arrow">
+          {isOpen ? '▲' : '▼'}
+        </Text>
+      </Pressable>
 
-        <Modal
-          visible={this.state.isOpen}
-          onRequestClose={this.closeDropdown}>
-          <View style={{ height: calculatedHeight }}>
-            <Pressable onPress={() => {}}>
-              <View
-                style={styles.dropdown}
-                accessibilityRole="menu"
-                accessibilityLabel={`${this.props.accessibilityLabel} options`}>
-                  {validChildren.map((child: any) => (
-                    <PickerListItem
-                      key={child.props.value}
-                      child={child}
-                      selectedValue={this.state.selectedValue}
-                      onSelectItem={this.selectItem}
-                    />
-                  ))}
-              </View>
-            </Pressable>
-          </View>
-        </Modal>
-      </View>
-      );
-    }
-  }
+      <Modal
+        visible={isOpen}
+        onRequestClose={closeDropdown}>
+        <View style={{ height: calculatedHeight }}>
+          <Pressable onPress={() => {}}>
+            <View
+              style={styles.dropdown}
+              accessibilityRole="menu"
+              accessibilityLabel={`${props.accessibilityLabel} options`}>
+                {validChildren.map((child: any) => (
+                  <PickerListItem
+                    key={child.props.value}
+                    child={child}
+                    selectedValue={selectedValue}
+                    onSelectItem={selectItem}
+                  />
+                ))}
+            </View>
+          </Pressable>
+        </View>
+      </Modal>
+    </View>
+  );
+};
 
-  const styles = StyleSheet.create({
+// Attach the Item component as a static property for compatibility
+Picker.Item = PickerItem;
+
+const styles = StyleSheet.create({
   container: {
     position: 'relative',
   },
