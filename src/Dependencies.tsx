@@ -5,7 +5,7 @@ import {
   View,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Clipboard from './NativeClipboard'
+import Clipboard from '@react-native-clipboard/clipboard';
 import Markdown from 'react-native-markdown-display';
 //import {Picker} from '@react-native-picker/picker';
 import { SyntaxHighlighter } from 'react-native-syntax-highlighter';

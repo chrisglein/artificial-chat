@@ -5,7 +5,6 @@
 #include "artificialChat.h"
 
 #include "AutolinkedNativeModules.g.h"
-#include "Clipboard.h"
 #include "VersionInfo.h"
 
 #include "NativeModules.h"
@@ -17,7 +16,6 @@ struct CompReactPackageProvider
   void CreatePackage(winrt::Microsoft::ReactNative::IReactPackageBuilder const &packageBuilder) noexcept {
     AddAttributedModules(packageBuilder, true);
     packageBuilder.AddModule(L"VersionInfo", winrt::Microsoft::ReactNative::MakeTurboModuleProvider<ArtificialChatModules::VersionInfo>());
-    packageBuilder.AddModule(L"Clipboard", winrt::Microsoft::ReactNative::MakeTurboModuleProvider<ArtificialChatModules::Clipboard>());
   }
 };
 
