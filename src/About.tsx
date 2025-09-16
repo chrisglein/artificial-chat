@@ -51,8 +51,8 @@ function AboutPopup({show, close}: AboutPopupProps): JSX.Element {
       <View style={{flexDirection: 'row', gap: 4}}>
         <Text>React Native: </Text>
         <Link
-          content='0.74.0'
-          url='https://github.com/microsoft/react-native-windows/releases/tag/react-native-windows_v0.74.0/'/>
+          content='0.79.0'
+          url='https://github.com/microsoft/react-native-windows/releases/tag/react-native-windows_v0.79.0/'/>
       </View>
     </ContentDialog>
   );
