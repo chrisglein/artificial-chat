@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
   Text,
+  PlatformColor,
   Pressable,
   Linking,
 } from 'react-native';
@@ -39,6 +40,49 @@ const FluentButton = (props: FluentButtonProps) => {
     }
   };
 
+  const renderIcon = () => {
+    if (!props.icon?.fontSource) {
+      return null;
+    }
+    
+    const { fontFamily = 'Segoe MDL2 Assets', codepoint, fontSize = 16 } = props.icon.fontSource;
+    const iconChar = codepoint ? String.fromCharCode(codepoint) : '';
+    
+    return (
+      <Text style={{
+        fontFamily,
+        fontSize,
+        color: props.appearance === 'primary' ? PlatformColor("TextOnAccentFillColorPrimary") : PlatformColor("TextControlForeground"),
+        marginRight: props.iconOnly ? 0 : 4,
+      }}>
+        {iconChar}
+      </Text>
+    );
+  };
+
+  const renderContent = () => {
+    const icon = renderIcon();
+    const text = props.title || props.children;
+    
+    if (props.iconOnly) {
+      return icon;
+    }
+    
+    return (
+      <>
+        {icon}
+        {text && (
+          <Text style={{
+            color: props.appearance === 'primary' ? PlatformColor("TextOnAccentFillColorPrimary") : PlatformColor("TextControlForeground"),
+            textAlign: 'center',
+          }}>
+            {text}
+          </Text>
+        )}
+      </>
+    );
+  };
+
   return (
     <Pressable
       onPress={handlePress}
@@ -47,16 +91,15 @@ const FluentButton = (props: FluentButtonProps) => {
       accessibilityRole="button"
       style={({ pressed }) => ({
         padding: 8,
-        backgroundColor: props.appearance === 'primary' ? '#0078d4' : 'transparent',
-        borderRadius: 4,
-        opacity: props.enabled === false ? 0.5 : pressed ? 0.8 : 1,
+        backgroundColor: props.appearance === 'primary' ? PlatformColor("AccentFillColorDefault") : PlatformColor("ControlFillColorDefault"),
+        borderColor: PlatformColor("ControlStrokeColorDefault"),
+        borderWidth: 1,
+        borderRadius: 8,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
       })}>
-      <Text style={{
-        color: props.appearance === 'primary' ? 'white' : '#0078d4',
-        textAlign: 'center',
-      }}>
-        {props.title || props.children}
-      </Text>
+      {renderContent()}
     </Pressable>
   );
 };
