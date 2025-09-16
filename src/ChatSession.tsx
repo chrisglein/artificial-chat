@@ -171,12 +171,18 @@ function ChatSession(): JSX.Element {
       } else {
         let entry = modifiedEntries[index];
 
-        if (delta.hasOwnProperty('responses'))
-          {entry.responses = delta.responses;}
-        if (delta.hasOwnProperty('contentType'))
-          {entry.contentType = delta.contentType;}
-        if (delta.hasOwnProperty('prompt')) {entry.prompt = delta.prompt;}
-        if (delta.hasOwnProperty('intent')) {entry.intent = delta.intent;}
+        if (delta.hasOwnProperty('responses')) {
+          entry.responses = delta.responses;
+        }
+        if (delta.hasOwnProperty('contentType')) {
+          entry.contentType = delta.contentType;
+        }
+        if (delta.hasOwnProperty('prompt')) {
+          entry.prompt = delta.prompt;
+        }
+        if (delta.hasOwnProperty('intent')) {
+          entry.intent = delta.intent;
+        }
 
         modifiedEntries[index] = entry;
         setEntries(modifiedEntries);

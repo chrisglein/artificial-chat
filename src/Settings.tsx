@@ -11,6 +11,11 @@ import {
   CheckboxV1 as Checkbox,
 } from '@fluentui/react-native';
 import {GetVoices, SetVoice} from './Speech';
+import {
+  getRemainingTrialUses,
+  getTrialLimit,
+  getFallbackApiKey,
+} from './TrialMode';
 
 const settingsKey = 'settings';
 
@@ -127,6 +132,9 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   const [readToMeVoice, setReadToMeVoice] = React.useState<string>(
     settings.readToMeVoice,
   );
+  const [remainingTrialUses, setRemainingTrialUses] = React.useState<number>(0);
+  const [isTrialModeAvailable, setIsTrialModeAvailable] =
+    React.useState<boolean>(false);
 
   // It may seem weird to do this when the UI loads, not the app, but it's okay
   // because this component is loaded when the app starts but isn't shown. And
@@ -149,6 +157,16 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
 
       // If an API key was set, continue to remember it
       setSaveApiKey(value.apiKey !== undefined);
+
+      // Load trial mode status
+      try {
+        const remaining = await getRemainingTrialUses();
+        setRemainingTrialUses(remaining);
+        const fallbackKey = getFallbackApiKey();
+        setIsTrialModeAvailable(!!fallbackKey);
+      } catch (error) {
+        console.warn('Error loading trial status:', error);
+      }
     };
     load();
   }, []);
@@ -174,6 +192,17 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
       imageSize: imageSize,
       readToMeVoice: readToMeVoice,
     });
+
+    // Refresh trial status
+    const refreshTrialStatus = async () => {
+      try {
+        const remaining = await getRemainingTrialUses();
+        setRemainingTrialUses(remaining);
+      } catch (error) {
+        console.warn('Error refreshing trial status:', error);
+      }
+    };
+    refreshTrialStatus();
   };
 
   const cancel = () => {
@@ -248,6 +277,34 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             content="https://platform.openai.com/account/api-keys"
             url="https://platform.openai.com/account/api-keys"
           />
+          {isTrialModeAvailable && (
+            <View
+              style={{
+                marginTop: 8,
+                padding: 8,
+                backgroundColor: '#f0f0f0',
+                borderRadius: 4,
+              }}>
+              <Text style={{fontWeight: 'bold', marginBottom: 4}}>
+                Trial Mode
+              </Text>
+              {!apiKey && remainingTrialUses > 0 ? (
+                <Text style={{color: '#008000'}}>
+                  ✓ Active: {remainingTrialUses} of {getTrialLimit()} free uses
+                  remaining
+                </Text>
+              ) : !apiKey && remainingTrialUses === 0 ? (
+                <Text style={{color: '#cc0000'}}>
+                  ✗ Expired: Trial period has ended. Add your API key above.
+                </Text>
+              ) : (
+                <Text style={{color: '#666'}}>
+                  Using your API key. Trial: {remainingTrialUses} of{' '}
+                  {getTrialLimit()} uses remaining
+                </Text>
+              )}
+            </View>
+          )}
         </DialogSection>
         <DialogSection header="Image Generation">
           <Checkbox

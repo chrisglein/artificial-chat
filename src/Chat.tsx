@@ -101,7 +101,8 @@ function ChatEntry({
         }}
         iconOnly={true}
         tooltip="Clear conversation"
-        onClick={clearConversation} />
+        onClick={clearConversation}
+      />
     </View>
   );
 }
@@ -139,7 +140,7 @@ function Chat({
       setShowFeedbackPopup(true);
       setFeedbackTargetResponse(response);
     },
-  }
+  };
 
   const scrollToEnd = () => {
     // Wait for the new entry to be rendered, then scroll it into view
@@ -240,7 +241,7 @@ function Chat({
                   title: 'Settings',
                   icon: 0xe713,
                   onPress: () => popups.setShowSettings(true),
-                }
+                },
               ]}>
               <ChatEntry
                 defaultText={humanText}

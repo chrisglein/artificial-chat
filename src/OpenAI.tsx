@@ -1,3 +1,10 @@
+import {
+  incrementTrialUsage,
+  isTrialAvailable,
+  getFallbackApiKey,
+  getRemainingTrialUses,
+} from './TrialMode';
+
 enum OpenAiApi {
   Completion,
   ChatCompletion,
@@ -123,6 +130,33 @@ const CallOpenAi = async ({
 }: CallOpenAiType) => {
   const DefaultApiKey = undefined; // During development you can paste your API key here, but DO NOT CHECK IN
   let effectiveApiKey = apiKey ?? DefaultApiKey;
+  let isUsingTrialMode = false;
+
+  // If no API key provided, try to use trial mode
+  if (!effectiveApiKey) {
+    const fallbackKey = getFallbackApiKey();
+    const trialAvailable = await isTrialAvailable();
+
+    if (fallbackKey && trialAvailable) {
+      effectiveApiKey = fallbackKey;
+      isUsingTrialMode = true;
+    } else if (!trialAvailable) {
+      const remainingUses = await getRemainingTrialUses();
+      onError(
+        `Trial mode has expired (${remainingUses} free uses remaining). ` +
+          'Please get your own API key from https://platform.openai.com/account/api-keys',
+      );
+      onComplete();
+      return;
+    } else {
+      onError(
+        'No API key provided. Please configure your OpenAI API key in Settings, ' +
+          'or get one from https://platform.openai.com/account/api-keys',
+      );
+      onComplete();
+      return;
+    }
+  }
 
   if (!effectiveApiKey) {
     onError('No API key provided');
@@ -172,6 +206,18 @@ const CallOpenAi = async ({
         if (json.error) {
           onError(json.error.message);
         } else {
+          // If using trial mode, increment usage count on successful API call
+          if (isUsingTrialMode) {
+            try {
+              await incrementTrialUsage();
+              const remaining = await getRemainingTrialUses();
+              console.debug(
+                `Trial API call successful. ${remaining} uses remaining.`,
+              );
+            } catch (error) {
+              console.warn('Error updating trial usage count:', error);
+            }
+          }
           onResult(apiHandler.response(json));
         }
       } catch (error) {
