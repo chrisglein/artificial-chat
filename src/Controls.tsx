@@ -181,7 +181,7 @@ function FlyoutMenu({items, maxWidth, maxHeight}: FlyoutMenuProps): JSX.Element 
         setShowMenu={setIsOpen}/>
       <Modal
         visible={isOpen}
-        onDismiss={() => setIsOpen(false)}
+        onRequestClose={() => setIsOpen(false)}
         placement='bottom-edge-aligned-right'
         target={placementRef.current}>
         <View style={[{maxWidth: maxWidth, maxHeight: maxHeight}, styles.flyoutBackground]}>
