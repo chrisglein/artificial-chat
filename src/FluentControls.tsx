@@ -30,7 +30,109 @@ type FluentButtonProps = {
   children?: React.ReactNode;
 }
 
+const baseButtonStyle = {
+  paddingHorizontal: 4,
+  paddingVertical: 4,
+  borderWidth: 1,
+  borderRadius: 4,
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+};
+
+const getButtonStyle = (appearance: string | undefined, hovered: boolean, pressed: boolean) => {
+  switch (appearance) {
+    case 'primary':
+      return {
+        minWidth: 140,
+        backgroundColor: (hovered || pressed)
+          ? PlatformColor('AccentFillColorSecondary')
+          : PlatformColor('AccentFillColorDefault'),
+        borderColor: (hovered || pressed)
+          ? PlatformColor('ControlStrokeColorSecondary')
+          : PlatformColor('ControlStrokeColorDefault'),
+      };
+    case 'subtle':
+      return {
+        backgroundColor: (hovered || pressed)
+          ? PlatformColor('SubtleFillColorSecondary')
+          : 'transparent',
+        borderColor: (hovered || pressed)
+          ? PlatformColor('ControlStrokeColorDefault')
+          : 'transparent',
+      };
+    case 'icon':
+      return {
+        minWidth: 44,
+        backgroundColor: (hovered || pressed)
+          ? PlatformColor('ControlFillColorSecondary')
+          : PlatformColor('ControlFillColorDefault'),
+        borderColor: (hovered || pressed)
+          ? PlatformColor('ControlStrokeColorSecondary')
+          : PlatformColor('ControlStrokeColorDefault'),
+      };
+    default:
+      return {
+        backgroundColor: (hovered || pressed)
+          ? PlatformColor('ControlFillColorSecondary')
+          : PlatformColor('ControlFillColorDefault'),
+        borderColor: (hovered || pressed)
+          ? PlatformColor('ControlStrokeColorSecondary')
+          : PlatformColor('ControlStrokeColorDefault'),
+      };
+  }
+};
+
+const baseTextStyle = {
+  textAlign: 'center',
+  color: PlatformColor('TextControlForeground'),
+};
+
+const getTextStyle = (appearance: string | undefined, pressed: boolean) => {
+  switch (appearance) {
+    case 'primary':
+      return {
+        opacity: pressed ? 0.75 : 1,
+        color: PlatformColor('TextOnAccentFillColorPrimary'),
+      };
+    case 'subtle':
+      return {
+        color: pressed
+          ? PlatformColor('TextFillColorPrimary')
+          : PlatformColor('TextControlForeground'),
+      };
+    default:
+      return {};
+  }
+};
+
+const baseIconStyle = {
+  fontFamily: 'Segoe MDL2 Assets',
+  fontSize: 16,
+  color: PlatformColor('TextControlForeground'),
+};
+
+const getIconStyle = (appearance: string | undefined, pressed: boolean) => {
+  switch (appearance) {
+    case 'primary':
+      return {
+        color: PlatformColor('TextOnAccentFillColorPrimary'),
+      };
+    case 'subtle':
+      return {
+        color: pressed
+          ? PlatformColor('TextFillColorPrimary')
+          : PlatformColor('TextControlForeground'),
+      };
+    default:
+      return {};
+  }
+};
+
 const FluentButton = (props: FluentButtonProps) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [isPressed, setIsPressed] = useState(false);
+
   const handlePress = () => {
     if (props.onClick) {
       props.onClick();
@@ -40,42 +142,37 @@ const FluentButton = (props: FluentButtonProps) => {
     }
   };
 
-  const renderIcon = () => {
-    if (!props.icon?.fontSource) {
-      return null;
-    }
-    
-    const { fontFamily = 'Segoe MDL2 Assets', codepoint, fontSize = 16 } = props.icon.fontSource;
-    const iconChar = codepoint ? String.fromCharCode(codepoint) : '';
-    
-    return (
-      <Text style={{
-        fontFamily,
-        fontSize,
-        color: props.appearance === 'primary' ? PlatformColor("TextOnAccentFillColorPrimary") : PlatformColor("TextControlForeground"),
-        marginRight: props.iconOnly ? 0 : 4,
-      }}>
-        {iconChar}
-      </Text>
-    );
-  };
-
   const renderContent = () => {
-    const icon = renderIcon();
+    const customStyle = {
+      fontFamily: props.icon?.fontSource?.fontFamily,
+      fontSize: props.icon?.fontSource?.fontSize,
+      marginRight: props.iconOnly ? 0 : 4,
+    };
+
+    const icon = props.icon?.fontSource ? (
+      <Text style={[
+        baseIconStyle,
+        getIconStyle(
+          props.appearance,
+          isPressed,
+        ),
+        customStyle,
+      ]}>
+        {props.icon.fontSource.codepoint ? String.fromCharCode(props.icon.fontSource.codepoint) : ''}
+      </Text>
+    ) : null;
+
     const text = props.title || props.children;
-    
+
     if (props.iconOnly) {
       return icon;
     }
-    
+
     return (
       <>
         {icon}
         {text && (
-          <Text style={{
-            color: props.appearance === 'primary' ? PlatformColor("TextOnAccentFillColorPrimary") : PlatformColor("TextControlForeground"),
-            textAlign: 'center',
-          }}>
+          <Text style={[baseTextStyle, getTextStyle(props.appearance, isPressed)]}>
             {text}
           </Text>
         )}
@@ -86,22 +183,18 @@ const FluentButton = (props: FluentButtonProps) => {
   return (
     <Pressable
       onPress={handlePress}
+      onPressIn={() => setIsPressed(true)}
+      onPressOut={() => setIsPressed(false)}
+      onHoverIn={() => setIsHovered(true)}
+      onHoverOut={() => setIsHovered(false)}
       disabled={props.enabled === false}
       accessibilityLabel={props.accessibilityLabel}
       accessibilityRole="button"
-      style={({ pressed }) => ({
-        paddingHorizontal: 4,
-        paddingVertical: 4,
-        minWidth: props.appearance === 'primary' ? 140 : props.appearance === 'icon' ? 44 : undefined,
-        backgroundColor: props.appearance === 'subtle' ? 'transparent' : props.appearance === 'primary' ? PlatformColor("AccentFillColorDefault") : PlatformColor("ControlFillColorDefault"),
-        borderColor: props.appearance === 'subtle' ? 'transparent' : PlatformColor("ControlStrokeColorDefault"),
-        borderWidth: 1,
-        borderRadius: 4,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-      })}>
-      {renderContent()}
+      style={[
+        baseButtonStyle,
+        getButtonStyle(props.appearance, isHovered, isPressed),
+      ]}>
+        {renderContent()}
     </Pressable>
   );
 };
@@ -115,7 +208,7 @@ type CheckboxProps = {
 
 const FluentCheckbox = (props: CheckboxProps) => {
   const [checked, setChecked] = useState(props.checked);
-  
+
   const handlePress = () => {
     const newValue = !checked;
     setChecked(newValue);
