@@ -13,7 +13,7 @@ import {
 
 type FluentButtonProps = {
   title?: string;
-  appearance?: 'primary' | 'subtle' | string;
+  appearance?: 'primary' | 'subtle' | 'icon' | string;
   accessibilityLabel?: string;
   icon?: {
     fontSource?: {
@@ -90,11 +90,13 @@ const FluentButton = (props: FluentButtonProps) => {
       accessibilityLabel={props.accessibilityLabel}
       accessibilityRole="button"
       style={({ pressed }) => ({
-        padding: 8,
+        paddingHorizontal: 4,
+        paddingVertical: 4,
+        minWidth: props.appearance === 'primary' ? 140 : props.appearance === 'icon' ? 44 : undefined,
         backgroundColor: props.appearance === 'subtle' ? 'transparent' : props.appearance === 'primary' ? PlatformColor("AccentFillColorDefault") : PlatformColor("ControlFillColorDefault"),
         borderColor: props.appearance === 'subtle' ? 'transparent' : PlatformColor("ControlStrokeColorDefault"),
         borderWidth: 1,
-        borderRadius: 8,
+        borderRadius: 4,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
