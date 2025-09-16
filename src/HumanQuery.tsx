@@ -50,7 +50,7 @@ function HumanSection({children, id, content, disableCopy, moreMenu}: HumanSecti
           style={[styles.sectionTitle, {flexGrow: 1}]}>
             Prompt
         </Text>
-        <FlyoutMenu items={menuItems}/>
+        <FlyoutMenu items={menuItems} maxWidth={300} maxHeight={400}/>
       </View>
       {content ? <MarkdownWithRules content={content}/> : null}
       {children}

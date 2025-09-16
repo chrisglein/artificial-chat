@@ -154,8 +154,10 @@ function FlyoutMenuButton({icon, onClick, children}: FlyoutMenuButtonProps): JSX
 
 type FlyoutMenuProps = {
   items: FlyoutMenuButtonType[];
+  maxWidth?: number;
+  maxHeight?: number;
 };
-function FlyoutMenu({items}: FlyoutMenuProps): JSX.Element {
+function FlyoutMenu({items, maxWidth, maxHeight}: FlyoutMenuProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const [isOpen, setIsOpen] = React.useState(false);
   const placementRef = React.useRef(null);
@@ -181,7 +183,7 @@ function FlyoutMenu({items}: FlyoutMenuProps): JSX.Element {
         onDismiss={() => setIsOpen(false)}
         placement='bottom-edge-aligned-right'
         target={placementRef.current}>
-        <View style={styles.flyoutBackground}>
+        <View style={[{maxWidth: maxWidth, maxHeight: maxHeight}, styles.flyoutBackground]}>
           {buttonList}
         </View>
       </Modal>

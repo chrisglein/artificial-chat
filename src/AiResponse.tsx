@@ -119,7 +119,7 @@ function AiSection({children, id, isLoading, copyValue, moreMenu}: AiSectionProp
           style={[styles.sectionTitle, {flexGrow: 1}]}>
             OpenAI
         </Text>
-        <FlyoutMenu items={menuItems}/>
+        <FlyoutMenu items={menuItems} maxWidth={300} maxHeight={400}/>
       </View>
       {isLoading && 
         <ActivityIndicator/>
