@@ -4,6 +4,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import { FluentTextInput } from './Controls';
 import { HumanSection } from './HumanQuery';
 import { AiSectionContent } from './AiResponse';
 import { AiSectionWithQuery } from './AiQuery';
@@ -77,11 +78,10 @@ function ChatEntry({submit, defaultText, clearConversation}: ChatEntryProps): JS
 
   return (
     <View style={styles.horizontalContainer}>
-      <TextInput
+      <FluentTextInput
         accessibilityLabel="Prompt input"
         multiline={true}
         placeholder="Ask me anything"
-        style={styles.textBox}
         onChangeText={newValue => setValue(newValue)}
         submitKeyEvents={[{code: 'Enter', shiftKey: false}]}
         onSubmitEditing={submitValue}

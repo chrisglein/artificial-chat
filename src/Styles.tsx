@@ -29,6 +29,7 @@ const StylesContext = React.createContext<{
   hyperlinkHovering: StyleProp<TextStyle>;
   hyperlinkDisabled: StyleProp<TextStyle>;
   textBox: StyleProp<ViewStyle>;
+  textBoxFocused: StyleProp<ViewStyle>;
   flyoutBackground: StyleProp<ViewStyle>;
 }>({});
 
@@ -122,17 +123,21 @@ const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
     textBox: {
       flexGrow: 1,
       flexShrink: 1,
-      backgroundColor: isDarkMode ? '#FFFFFFFF' : '#FFFFFFFF', // TextBoxBackgroundThemeBrush
+      fontSize: 14,
+      backgroundColor: PlatformColor("ControlFillColorDefault"),
       borderRadius: 4, // ControlCornerRadius
       borderWidth: 1, // TextControlBorderThemeThickness
       borderBottomWidth: 2,
-      borderColor: isDarkMode ? '#FFFFFFFF' : '#A3000000', // TextBoxBorderThemeBrush
-      borderBottomColor: isDarkMode ? '#8BFFFFFF' : '#72000000', // ControlStrongStrokeColorDefault
-      paddingLeft: 10, // TextControlThemePadding
+      borderColor: PlatformColor("ControlStrokeColorDefault"),
+      borderBottomColor: PlatformColor("ControlStrokeColorSecondary"),
+      paddingLeft: 14,
       paddingTop: 6,
       paddingRight: 6,
-      paddingBottom: 5,
+      paddingBottom: 2,
       minHeight: 32, // TextControlThemeMinHeight
+    },
+    textBoxFocused: {
+      borderBottomColor: PlatformColor("AccentFillColorDefault"),
     },
     flyoutBackground: {
           backgroundColor: isDarkMode ? 'black' : 'white',

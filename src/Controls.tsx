@@ -10,6 +10,7 @@ import {
   Modal,
   Pressable,
   Text,
+  TextInput,
   Switch,
   View,
 } from 'react-native';
@@ -210,6 +211,36 @@ function MarkdownWithRules({content} : MarkdownWithRulesProps): JSX.Element {
     <Markdown rules={rules}>{content}</Markdown>
   );
 }
+function FluentTextInput(props: React.ComponentProps<typeof TextInput>): JSX.Element {
+  const styles = React.useContext(StylesContext);
+  const [isFocused, setIsFocused] = React.useState(false);
 
-export { HoverButton, Attribution, ConsentSwitch, ImageSelection, CodeBlock, SwitchWithLabel, FlyoutMenu, MarkdownWithRules };
+  const { style, onFocus, onBlur, ...rest } = props;
+
+  const handleFocus: React.ComponentProps<typeof TextInput>['onFocus'] = (e) => {
+    setIsFocused(true);
+    if (onFocus) {
+      onFocus(e);
+    }
+  };
+  const handleBlur: React.ComponentProps<typeof TextInput>['onBlur'] = (e) => {
+    setIsFocused(false);
+    if (onBlur) {
+      onBlur(e);
+    }
+  };
+
+  return (
+    <TextInput
+      // keep internal focus styling, but allow the consumer to pass additional style which is merged
+      style={[styles.textBox, isFocused && styles.textBoxFocused, style]}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
+      // everything else passed straight through
+      {...rest}
+    />
+  );
+}
+
+export { HoverButton, Attribution, ConsentSwitch, ImageSelection, CodeBlock, SwitchWithLabel, FlyoutMenu, MarkdownWithRules, FluentTextInput };
 export type { FlyoutMenuButtonType };
