@@ -91,8 +91,8 @@ const FluentButton = (props: FluentButtonProps) => {
       accessibilityRole="button"
       style={({ pressed }) => ({
         padding: 8,
-        backgroundColor: props.appearance === 'primary' ? PlatformColor("AccentFillColorDefault") : PlatformColor("ControlFillColorDefault"),
-        borderColor: PlatformColor("ControlStrokeColorDefault"),
+        backgroundColor: props.appearance === 'subtle' ? 'transparent' : props.appearance === 'primary' ? PlatformColor("AccentFillColorDefault") : PlatformColor("ControlFillColorDefault"),
+        borderColor: props.appearance === 'subtle' ? 'transparent' : PlatformColor("ControlStrokeColorDefault"),
         borderWidth: 1,
         borderRadius: 8,
         flexDirection: 'row',
