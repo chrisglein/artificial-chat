@@ -75,3 +75,6 @@ yarn-error.log
 
 # Build logs
 *.binlog
+
+# Trial mode verification (temp files)
+verify_trial_mode.js

@@ -76,7 +76,7 @@ const runDinosaurScript = (index: number, styles, goToNext) => {
             </View>
             <Attribution source="DALL-E, 14 monthly credits remaining" />
           </>,
-    };
+    },
     case 3:
       return {
         prompt: 'Variations of 3',
