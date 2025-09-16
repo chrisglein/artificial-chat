@@ -22,12 +22,6 @@
     <UseExperimentalNuget>true</UseExperimentalNuget>
 
     <ReactExperimentalFeaturesSet>true</ReactExperimentalFeaturesSet>
-
-    <RnWinRTParameters>
-    -include Windows.Media.SpeechSynthesis
-    -include Windows.Media.Playback
-    -include Windows.Media.Core
-    </RnWinRTParameters>
   
   </PropertyGroup>
 

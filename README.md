@@ -106,4 +106,3 @@ The app's settings are handled by a `SettingsContext` object, which has dialog U
 - Storage via [react-native-async-storage](https://github.com/react-native-async-storage/async-storage)
 - Markdown rendering via [react-native-markdown-display-updated](https://github.com/willmac321/react-native-markdown-display)
 - Dialogs via [react-native-content-dialog](https://github.com/chrisglein/react-native-content-dialog)
-- Speech Synthesis via [react-native-winrt](https://github.com/microsoft/react-native-winrt)

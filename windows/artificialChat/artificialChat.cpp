@@ -6,6 +6,7 @@
 
 #include "AutolinkedNativeModules.g.h"
 #include "VersionInfo.h"
+#include "Speech.h"
 
 #include "NativeModules.h"
 
@@ -16,6 +17,7 @@ struct CompReactPackageProvider
   void CreatePackage(winrt::Microsoft::ReactNative::IReactPackageBuilder const &packageBuilder) noexcept {
     AddAttributedModules(packageBuilder, true);
     packageBuilder.AddModule(L"VersionInfo", winrt::Microsoft::ReactNative::MakeTurboModuleProvider<ArtificialChatModules::VersionInfo>());
+    packageBuilder.AddModule(L"Speech", winrt::Microsoft::ReactNative::MakeTurboModuleProvider<ArtificialChatModules::Speech>());
   }
 };
 
