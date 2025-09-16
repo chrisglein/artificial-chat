@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {DialogFrame} from './Popups';
 import { StylesContext } from './Styles';
-import { VersionInfo } from './Dependencies'
+import VersionInfo from './NativeVersionInfo';
 
 const FeedbackContext = React.createContext<{
   showFeedback : (positive: boolean, response?: string) => void;
