@@ -1,5 +1,7 @@
 import React, { PropsWithChildren, useState, useEffect } from 'react';
 import {
+  Appearance,
+  PlatformColor,
   Pressable,
   Text,
   View,
@@ -18,9 +20,10 @@ type PickerListItemProps = {
   child: React.ReactElement<any>;
   selectedValue: string;
   onSelectItem: (value: string) => void;
+  styles: any;
 }
 
-const PickerListItem: React.FC<PickerListItemProps> = ({ child, selectedValue, onSelectItem }) => {
+const PickerListItem: React.FC<PickerListItemProps> = ({ child, selectedValue, onSelectItem, styles }) => {
   const { value, label } = child.props;
   const isSelected = selectedValue === value;
   const displayText = label || value || 'Unknown option';
@@ -63,13 +66,18 @@ type PickerProps = PropsWithChildren<{
 // Static Item component for the Picker
 const PickerItem = (props: PickerItemProps) => {
   return (
-    <Text style={styles.pickerItemText}>{props.label}</Text>
+    <Text>{props.label}</Text>
   );
 };
 
 const Picker = (props: PickerProps) => {
+  const [currentTheme] = React.useState(Appearance.getColorScheme());
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState(props.selectedValue);
+
+  const isDarkMode = currentTheme === 'dark';
+  const isHighContrast = false;
+  const styles = CreateStyles(isDarkMode, isHighContrast);
 
   // Update selectedValue when props.selectedValue changes
   useEffect(() => {
@@ -102,14 +110,14 @@ const Picker = (props: PickerProps) => {
 
   let children = props.children as React.ReactNode;
   const selectedLabel = findSelectedChild(children as any);
-  
+
   // Filter out invalid children before mapping
   const validChildren = Array.from(children as any).filter((child: any) =>
     child?.props && (child.props.value !== undefined || child.props.label !== undefined)
   );
-  
+
   const itemHeight = 44; // minHeight from styles.pickerItem
-  const calculatedHeight = Math.min(validChildren.length * itemHeight, 300); // Max height of 300
+  const calculatedHeight = Math.min(validChildren.length * itemHeight, 300);
 
   return (
     <View style={styles.container}>
@@ -151,6 +159,7 @@ const Picker = (props: PickerProps) => {
                     child={child}
                     selectedValue={selectedValue}
                     onSelectItem={selectItem}
+                    styles={styles}
                   />
                 ))}
             </View>
@@ -164,76 +173,74 @@ const Picker = (props: PickerProps) => {
 // Attach the Item component as a static property for compatibility
 Picker.Item = PickerItem;
 
-const styles = StyleSheet.create({
-  container: {
-    position: 'relative',
-  },
-  pickerButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#FFFFFFFF', // Match textBox background from Styles.tsx
-    borderWidth: 1, // Match TextControlBorderThemeThickness
-    borderBottomWidth: 2,
-    borderColor: '#A3000000', // Match TextBoxBorderThemeBrush
-    borderBottomColor: '#72000000', // Match ControlStrongStrokeColorDefault
-    paddingLeft: 10, // Match TextControlThemePadding
-    paddingTop: 6,
-    paddingRight: 10,
-    paddingBottom: 5,
-    minHeight: 32, // Match TextControlThemeMinHeight
-  },
-  pickerButtonPressed: {
-    backgroundColor: '#F0F0F0',
-    borderColor: '#666666',
-    borderBottomColor: '#555555',
-  },
-  pickerButtonOpen: {
-    borderColor: '#0066CC',
-    borderBottomColor: '#0066CC',
-  },
-  pickerButtonText: {
-    flex: 1,
-    fontSize: 14,
-    color: '#000000',
-    marginRight: 8,
-  },
-  dropdownArrow: {
-    fontSize: 12,
-    color: '#666666',
-    fontWeight: 'bold',
-  },
-  dropdown: {
-    backgroundColor: '#FFFFFF',
-    minWidth: 200,
-  },
-  pickerItem: {
-    paddingVertical: 12,
-    minHeight: 44, // Better touch target size
-    justifyContent: 'flex-start',
-    flexDirection: 'row',
-    paddingHorizontal: 12,
-  },
-  pickerItemSelected: {
-    backgroundColor: '#E8F4FD',
-  },
-  pickerItemPressed: {
-    backgroundColor: '#D0D0D0',
-  },
-  pickerItemText: {
-    fontSize: 14,
-    color: '#000000',
-    lineHeight: 20,
-  },
-  pickerItemTextSelected: {
-    color: '#0066CC',
-  },
-  selectedIndicator: {
-    fontSize: 16,
-    color: '#0066CC',
-    fontWeight: 'bold',
-    marginRight: 8,
-  },
-});
+const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
+  return StyleSheet.create({
+    container: {
+      position: 'relative',
+    },
+    pickerButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      backgroundColor: PlatformColor("ControlFillColorDefault"),
+      borderWidth: 1, // Match TextControlBorderThemeThickness
+      borderBottomWidth: 2,
+      borderColor: PlatformColor("ControlStrokeColorDefault"),
+      paddingLeft: 10, // Match TextControlThemePadding
+      paddingTop: 6,
+      paddingRight: 10,
+      paddingBottom: 5,
+      minHeight: 32, // Match TextControlThemeMinHeight
+    },
+    pickerButtonPressed: {
+      backgroundColor: PlatformColor("ControlFillColorSecondary"),
+      borderBottomColor: PlatformColor("ControlStrokeColorSecondary"),
+    },
+    pickerButtonOpen: {
+      borderBottomColor: PlatformColor("AccentFillColorDefault"),
+    },
+    pickerButtonText: {
+      flex: 1,
+      fontSize: 14,
+      color: PlatformColor("TextControlForeground"),
+      marginRight: 8,
+    },
+    dropdownArrow: {
+      fontSize: 12,
+      color: PlatformColor("TextFillColorSecondary"),
+      fontWeight: 'bold',
+    },
+    dropdown: {
+      backgroundColor: PlatformColor("ControlFillColorDefault"),
+      minWidth: 200,
+    },
+    pickerItem: {
+      paddingVertical: 12,
+      minHeight: 44, // Better touch target size
+      justifyContent: 'flex-start',
+      flexDirection: 'row',
+      paddingHorizontal: 12,
+    },
+    pickerItemSelected: {
+      backgroundColor: PlatformColor("ControlAltFillColorTertiary"),
+    },
+    pickerItemPressed: {
+      backgroundColor: PlatformColor("ControlAltFillColorQuarternary"),
+    },
+    pickerItemText: {
+      fontSize: 14,
+      color: PlatformColor("TextControlForeground"),
+      lineHeight: 20,
+    },
+    pickerItemTextSelected: {
+    },
+    selectedIndicator: {
+      fontSize: 16,
+      color: PlatformColor("AccentFillColorDefault"),
+      fontWeight: 'bold',
+      marginRight: 8,
+    },
+  });
+}
 
 export { Picker };
