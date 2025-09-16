@@ -44,7 +44,7 @@ const PickerListItem: React.FC<PickerListItemProps> = ({ child, selectedValue, o
       }}
       accessibilityHint="Double tap to select this option">
       {isSelected && (
-        <Text style={styles.selectedIndicator} accessibilityLabel="selected">✓</Text>
+        <Text style={styles.selectedIndicator} accessibilityLabel="selected">|</Text>
       )}
       <Text style={[
         styles.pickerItemText,
@@ -183,6 +183,7 @@ const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
       alignItems: 'center',
       justifyContent: 'space-between',
       backgroundColor: PlatformColor("ControlFillColorDefault"),
+      borderRadius: 4,
       borderWidth: 1, // Match TextControlBorderThemeThickness
       borderBottomWidth: 2,
       borderColor: PlatformColor("ControlStrokeColorDefault"),
@@ -211,7 +212,7 @@ const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
       fontWeight: 'bold',
     },
     dropdown: {
-      backgroundColor: PlatformColor("ControlFillColorDefault"),
+      backgroundColor: PlatformColor("SolidBackgroundFillColorBase"),
       minWidth: 200,
     },
     pickerItem: {
@@ -219,9 +220,11 @@ const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
       minHeight: 44, // Better touch target size
       justifyContent: 'flex-start',
       flexDirection: 'row',
-      paddingHorizontal: 12,
+      paddingRight: 12,
+      paddingLeft: 24,
     },
     pickerItemSelected: {
+      paddingLeft: 12,
       backgroundColor: PlatformColor("ControlAltFillColorTertiary"),
     },
     pickerItemPressed: {
@@ -238,7 +241,7 @@ const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
       fontSize: 16,
       color: PlatformColor("AccentFillColorDefault"),
       fontWeight: 'bold',
-      marginRight: 8,
+      minWidth: 12,
     },
   });
 }
