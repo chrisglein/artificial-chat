@@ -7561,10 +7561,10 @@ react-native-windows@0.74.0:
     ws "^6.2.2"
     yargs "^17.6.2"
 
-react-native-winrt@^0.72.1:
-  version "0.72.1"
-  resolved "https://registry.yarnpkg.com/react-native-winrt/-/react-native-winrt-0.72.1.tgz#d5b2bc0fe27080c03a85c33bd477b6da3e70f0f9"
-  integrity sha512-uhUAzKjOFpsfeoByBBA1FTgsCZuwLYN9y9C/Zg+StZRUYVBcqpOT46avwxHKkgWHN1ixoDc/jUFdE5lmV4DuoQ==
+react-native-winrt@^0.72.2:
+  version "0.72.2"
+  resolved "https://registry.yarnpkg.com/react-native-winrt/-/react-native-winrt-0.72.2.tgz#474de81a2988255df53bb8fb5e41f91d92a7d5ee"
+  integrity sha512-LNSSBIfLteOHABKmIrlDtPeZ2lrRpZy5NbieVvFNFiIk/EoNCKDIlHWL1u0h14aUUJq/GPJ5sQQil2l4usq/Dw==
 
 react-native@0.74.0-rc.9:
   version "0.74.0-rc.9"
