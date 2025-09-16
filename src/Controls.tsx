@@ -1,16 +1,24 @@
 import React from 'react';
+import type {
+  PropsWithChildren,
+  Dispatch,
+  SetStateAction
+} from 'react';
 import {
-  Button,
   Image,
   ImageSourcePropType,
-  Linking,
+  Modal,
   Pressable,
   Text,
   Switch,
   View,
 } from 'react-native';
+import {
+  FluentButton as Button,
+} from './FluentControls';
 import { StylesContext } from './Styles';
 import { CodeBlock } from './CodeBlock';
+import Markdown from 'react-native-markdown-display-updated';
 
 type HoverButtonProps = {
   content: string;
@@ -85,42 +93,10 @@ function ImageSelection({image}: ImageSelectionProps): JSX.Element {
     <View>
       <Image style={styles.dalleImage} source={image}/>
       <View style={[styles.horizontalContainer, {marginTop: 4, justifyContent: 'space-between'}]}>
-        <Button title="Variations"/>
-        <Button title="Select"/>
+        <Button>Variations</Button>
+        <Button>Select</Button>
       </View>
     </View>
-  );
-}
-
-type HyperlinkProps = {
-  url: string,
-  text?: string,
-};
-function Hyperlink({url, text}: HyperlinkProps): JSX.Element {
-  const styles = React.useContext(StylesContext);
-  const [hovering, setHovering] = React.useState(false);
-  const [pressing, setPressing] = React.useState(false);
-
-  let displayText = text ?? url;
-
-  return (
-    <Pressable
-      tooltip={url}
-      accessibilityRole="link"
-      accessibilityLabel={displayText}
-      onPress={() => Linking.openURL(url)}
-      onPressIn={() => setPressing(true)}
-      onPressOut={() => setPressing(false)}
-      onHoverIn={() => setHovering(true)}
-      onHoverOut={() => setHovering(false)}>
-      <Text
-        style={
-          pressing ? styles.hyperlinkPressing : 
-          hovering ? styles.hyperlinkHovering : 
-          styles.hyperlinkIdle}>
-        {displayText}
-      </Text>
-    </Pressable>
   );
 }
 
@@ -137,4 +113,101 @@ function SwitchWithLabel({label, value, onValueChange}: {label: string, value: b
   );
 }
 
-export { HoverButton, Attribution, ConsentSwitch, ImageSelection, Hyperlink, CodeBlock, SwitchWithLabel };
+type MoreMenuButtonProps = PropsWithChildren<{
+  showMenu: boolean,
+  setShowMenu: Dispatch<SetStateAction<boolean>>;
+}>;
+const MoreMenuButton = React.forwardRef(function MoreMenuButton({showMenu, setShowMenu}: MoreMenuButtonProps, ref): JSX.Element {
+  return (
+    <View
+      ref={ref}>
+      <Button
+        enabled={!showMenu}
+        appearance='subtle'
+        accessibilityLabel='More options'
+        icon={{ fontSource: { fontFamily: 'Segoe MDL2 Assets', codepoint: 0xE712 } }}
+        iconOnly={true}
+        tooltip='More options'
+        onClick={() => setShowMenu(true)}></Button>
+    </View>
+  );
+});
+
+type FlyoutMenuButtonType = {
+  title: string,
+  icon?: number,
+  onPress: () => void,
+}
+
+type FlyoutMenuButtonProps = PropsWithChildren<{
+  icon?: number;
+  onClick: () => void;
+}>;
+function FlyoutMenuButton({icon, onClick, children}: FlyoutMenuButtonProps): JSX.Element {
+  return (
+    <Button
+      appearance='subtle'
+      icon={icon ? { fontSource: { fontFamily: 'Segoe MDL2 Assets', codepoint: icon } } : undefined}
+      onClick={onClick}>{children}</Button>
+  );
+}
+
+type FlyoutMenuProps = {
+  items: FlyoutMenuButtonType[];
+};
+function FlyoutMenu({items}: FlyoutMenuProps): JSX.Element {
+  const styles = React.useContext(StylesContext);
+  const [isOpen, setIsOpen] = React.useState(false);
+  const placementRef = React.useRef(null);
+
+  const buttonList = items.map((button, index) =>
+    <FlyoutMenuButton
+      key={index}
+      icon={button.icon}
+      onClick={() => {
+        button.onPress();
+        setIsOpen(false);
+      }}>{button.title}</FlyoutMenuButton>
+  );
+
+  return (
+    <>
+      <MoreMenuButton
+        ref={placementRef}
+        showMenu={isOpen}
+        setShowMenu={setIsOpen}/>
+      <Modal
+        visible={isOpen}
+        onDismiss={() => setIsOpen(false)}
+        placement='bottom-edge-aligned-right'
+        target={placementRef.current}>
+        <View style={styles.flyoutBackground}>
+          {buttonList}
+        </View>
+      </Modal>
+    </>
+  );
+}
+
+type MarkdownWithRulesProps = {
+  content?: string;
+};
+function MarkdownWithRules({content} : MarkdownWithRulesProps): JSX.Element {
+  const rules = {
+    fence: (node, children, parent, styles) => {
+      return (
+        <CodeBlock
+          key={node.key}
+          language={node.sourceInfo}
+          content={node.content}/>
+        )
+      },
+  }
+
+  return (
+    <Markdown rules={rules}>{content}</Markdown>
+  );
+}
+
+export { HoverButton, Attribution, ConsentSwitch, ImageSelection, CodeBlock, SwitchWithLabel, FlyoutMenu, MarkdownWithRules };
+export type { FlyoutMenuButtonType };

@@ -1,0 +1,34 @@
+diff --git a/node_modules/react-native-content-dialog/src/DialogHost.windows.tsx b/node_modules/react-native-content-dialog/src/DialogHost.windows.tsx
+index b2ea1f3..50792f6 100644
+--- a/node_modules/react-native-content-dialog/src/DialogHost.windows.tsx
++++ b/node_modules/react-native-content-dialog/src/DialogHost.windows.tsx
+@@ -1,5 +1,7 @@
+ import React, { PropsWithChildren } from 'react';
+-import {Popup} from 'react-native-windows';
++import {
++  Modal,
++} from 'react-native';
+ 
+ type ContentDialogHostProps = PropsWithChildren<{
+   show: boolean,
+@@ -7,15 +9,14 @@ type ContentDialogHostProps = PropsWithChildren<{
+   isLightDismissEnabled?: boolean,
+   title: string,
+ }>;
+-function ContentDialogHost({children, show, close, isLightDismissEnabled, title}: ContentDialogHostProps): JSX.Element {
++function ContentDialogHost({children, show, close, title}: ContentDialogHostProps): JSX.Element {
+   return (
+-    <Popup
++    <Modal
+       accessibilityLabel={title}
+-      isOpen={show}
+-      isLightDismissEnabled={isLightDismissEnabled}
+-      onDismiss={() => close()}>
++      visible={show}
++      onRequestClose={() => close()}>
+       {children}
+-    </Popup>
++    </Modal>
+   );
+ }
+ 

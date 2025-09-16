@@ -7,6 +7,7 @@ import { ChatSession } from './ChatSession';
 import {
   StylesContext,
   CreateStyles,
+  createWindowsTheme,
 } from './Styles';
 import {
   SettingsContext,
@@ -27,6 +28,7 @@ function App(): JSX.Element {
   const [imageSize, setImageSize] = React.useState<number>(256);
   const [showSettingsPopup, setShowSettingsPopup] = React.useState(false);
   const [showAboutPopup, setShowAboutPopup] = React.useState(false);
+  const [readToMeVoice, setReadToMeVoice] = React.useState<string>('');
     
   const isDarkMode = currentTheme === 'dark';
   const isHighContrast = false;
@@ -49,6 +51,8 @@ function App(): JSX.Element {
     setAiEndpoint: setAiEndpoint,
     chatModel: chatModel,
     setChatModel: setChatModel,
+    readToMeVoice: readToMeVoice,
+    setReadToMeVoice: setReadToMeVoice,
   };
 
   const popups = {

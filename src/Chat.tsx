@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  Button,
   ScrollView,
   TextInput,
   View,
@@ -14,7 +13,9 @@ import {
   FeedbackPopup,
 } from './Feedback';
 import { PopupsContext } from './Popups';
-import { HoverButton } from './Controls';
+import { SettingsContext } from './Settings';
+import { FluentButton as Button } from './FluentControls';
+import { Speak } from './Speech';
 
 enum ChatSource {
   Human,
@@ -86,13 +87,15 @@ function ChatEntry({submit, defaultText, clearConversation}: ChatEntryProps): JS
         onSubmitEditing={submitValue}
         value={defaultText ?? value}/>
       <Button
+        appearance='primary'
         accessibilityLabel='Submit prompt'
-        title="Submit"
-        onPress={submitValue}/>
+        onClick={submitValue}>Submit</Button>
       <Button
         accessibilityLabel='Clear conversation'
-        title="💣"
-        onPress={clearConversation}/>
+        icon={{ fontSource: { fontFamily: 'Segoe MDL2 Assets', codepoint: 0xE74D, fontSize: 20 } }}
+        iconOnly={true}
+        tooltip='Clear conversation'
+        onClick={clearConversation}></Button>
     </View>
   );
 }
@@ -108,6 +111,7 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
   const styles = React.useContext(StylesContext);
   const chatHistory = React.useContext(ChatHistoryContext);
   const popups = React.useContext(PopupsContext);
+  const settings = React.useContext(SettingsContext);
   const [showFeedbackPopup, setShowFeedbackPopup] = React.useState(false);
   const [feedbackTargetResponse, setFeedbackTargetResponse] = React.useState<string | undefined>(undefined);
   const [feedbackIsPositive, setFeedbackIsPositive] = React.useState(false);
@@ -128,6 +132,15 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
     setTimeout(() => {
       scrollViewRef.current?.scrollToEnd({animated: true});
     }, 100);
+  }
+
+  const onQueryResponse = (id: number, prompt: string, responses: string[], contentType: ChatContent) => {
+    chatHistory.modifyResponse(id, {prompt: prompt, responses: responses, contentType: contentType});
+    
+    // As the responses come in, speak them aloud (if enabled)
+    if (contentType == ChatContent.Text && settings.readToMeVoice) {
+      Speak(responses[0]);
+    }
   }
 
   return (
@@ -162,7 +175,7 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
                             prompt={entry.prompt ?? ""}
                             intent={entry.intent}
                             onResponse={({prompt, responses, contentType}) => 
-                              chatHistory.modifyResponse(entry.id, {prompt: prompt, responses: responses, contentType: contentType})}/>
+                              onQueryResponse(entry.id, prompt, responses, contentType)}/>
                   }
                 </View>
               ))}
@@ -170,11 +183,10 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
                 <View style={{alignSelf: 'center'}}>
                   <Button
                     accessibilityLabel="Regenerate response"
-                    title="🔁 Regenerate response"
-                    onPress={() => {
+                    onClick={() => {
                       // Clear the response for the last entry
                       chatHistory.modifyResponse(entries.length - 1, {responses: undefined});
-                    }}/>
+                    }}>🔁 Regenerate response</Button>
                 </View>
               }
             </View>
@@ -184,12 +196,18 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
             <HumanSection
               id={undefined}
               disableCopy={true}
-              contentShownOnHover={
-                <>
-                  <HoverButton content="❔" tooltip="About" onPress={() => popups.setShowAbout(true)}/>
-                  <HoverButton content="⚙️" tooltip="Settings" onPress={() => popups.setShowSettings(true)}/>
-                </>
-              }>
+              moreMenu={[
+                {
+                  title: "About",
+                  icon: 0xE897,
+                  onPress: () => popups.setShowAbout(true)
+                },
+                {
+                  title: "Settings",
+                  icon: 0xE713,
+                  onPress: () => popups.setShowSettings(true)
+                }
+              ]}>
               <ChatEntry
                 defaultText={humanText}
                 submit={(newEntry) => {

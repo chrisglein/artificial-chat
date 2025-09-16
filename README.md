@@ -1,3 +1,7 @@
+Artifical Chat is an app to explore the wonders of conversational AI using React Native for Windows to build the user experience. The goal is to handle not just plain text but rich markdown documents, code, and faciliate image generation as well.
+
+![image](https://user-images.githubusercontent.com/26607885/233441056-39033d3c-3420-4c31-b7db-ca39944fc00e.png)
+
 # Setup
 1. Install all dependencies per [RNW Dependencies](https://microsoft.github.io/react-native-windows/docs/rnw-dependencies)
 1. `yarn`
@@ -96,9 +100,10 @@ The app's settings are handled by a `SettingsContext` object, which has dialog U
 | CodeBlock.tsx | `CodeBlock` | Displays code with syntax highlighting and copy support |
 
 # Dependencies
-- Picker via [@react-native-clipboard/clipboard](https://github.com/react-native-clipboard/clipboard)
-- Clipboard via [@react-native-picker/picker](https://github.com/react-native-picker/picker)
+- Clipboard via [@react-native-clipboard/clipboard](https://github.com/react-native-clipboard/clipboard)
 - Syntax Highlighting via [react-native-syntax-highlighter](https://github.com/conorhastings/react-native-syntax-highlighter)
 - Dependency patching via [patch-package](https://github.com/ds300/patch-package)
 - Storage via [react-native-async-storage](https://github.com/react-native-async-storage/async-storage)
-- Markdown rendering via [react-native-markdown-display](https://github.com/iamacup/react-native-markdown-display)
+- Markdown rendering via [react-native-markdown-display-updated](https://github.com/willmac321/react-native-markdown-display)
+- Dialogs via [react-native-content-dialog](https://github.com/chrisglein/react-native-content-dialog)
+- Speech Synthesis via [react-native-winrt](https://github.com/microsoft/react-native-winrt)

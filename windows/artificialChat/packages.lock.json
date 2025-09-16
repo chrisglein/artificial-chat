@@ -80,6 +80,14 @@
           "Microsoft.WindowsAppSDK": "[1.7.250401001, )",
           "boost": "[1.83.0, )"
         }
+      },
+      "winrtturbomodule": {
+        "type": "Project",
+        "dependencies": {
+          "Microsoft.ReactNative": "[0.79.0, )",
+          "Microsoft.ReactNative.Cxx": "[0.79.0, )",
+          "Microsoft.WindowsAppSDK": "[1.7.250401001, )"
+        }
       }
     },
     "native,Version=v0.0/win": {

@@ -7,7 +7,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import {DialogFrame} from './Popups';
+import { ContentDialog } from './Popups';
 import { StylesContext } from './Styles';
 import VersionInfo from './NativeVersionInfo';
 
@@ -29,29 +29,32 @@ function FeedbackPopup({show, close, isPositive, response}: FeedbackPopupProps):
   const [thisIsNotHelpful, setThisIsNotHelpful] = React.useState(false);
 
   const buttons = [
-    <Button
-      accessibilityLabel="Submit feedback"
-      title="Submit feedback"
-      onPress={() => {
+    {
+      title: "Submit feedback",
+      onPress: () => {
         const version = VersionInfo?.getConstants().appVersion;
         if (isPositive) {
           Linking.openURL(`https://github.com/chrisglein/artificial-chat/issues/new?template=feedback-positive.yaml&version=${version}&expected=${feedbackText}&response=${response}`);
         } else {
           Linking.openURL(`https://github.com/chrisglein/artificial-chat/issues/new?template=feedback-negative.yaml&version=${version}&expected=${feedbackText}&response=${response}`);
         }              
-        close();
-      }}/>
-    ];
+      }
+    },
+    {
+      title: "Cancel",
+      onPress: () => { }
+    }
+  ];
 
   return (
-    <DialogFrame
+    <ContentDialog
       show={show}
       close={close}
-      titleIcon={isPositive ? "👍" : "👎"}
-      titleIconStyle={{backgroundColor: isPositive ? 'green' : 'red'}}
       title="Provide additional feedback"
       buttons={buttons}
+      defaultButtonIndex={1}
       maxHeight={300}>
+      <Text>{"Your feedback: " + (isPositive ? "👍" : "👎")}</Text>
       <TextInput
         multiline={true}
         placeholder="What would the ideal answer have been?"
@@ -82,7 +85,7 @@ function FeedbackPopup({show, close, isPositive, response}: FeedbackPopupProps):
             <Text>This isn't helpful</Text>
           </View>
         </View>)}
-    </DialogFrame>
+    </ContentDialog>
   );
 }
 

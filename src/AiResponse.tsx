@@ -10,9 +10,10 @@ import {
   View,
 } from 'react-native';
 import {
-  HoverButton,
-  CodeBlock
+  FlyoutMenu,
+  MarkdownWithRules,
 } from './Controls';
+import type { FlyoutMenuButtonType } from './Controls';
 import {
   ChatElement,
   ChatContent,
@@ -22,7 +23,7 @@ import {
 import { StylesContext } from './Styles';
 import { FeedbackContext } from './Feedback';
 import Clipboard from '@react-native-clipboard/clipboard';
-import Markdown from 'react-native-markdown-display';
+import { Speak } from './Speech';
 
 type AiImageResponseProps = {
   imageUrls?: string[];
@@ -68,37 +69,16 @@ function AiImageResponse({imageUrls, prompt, rejectImage, requestMore}: AiImageR
   );
 }
 
-type AiTextResponseProps = {
-  text?: string;
-};
-function AiTextResponse({text}: AiTextResponseProps): JSX.Element {
-  const rules = {
-    fence: (node, children, parent, styles) => {
-      return (
-        <CodeBlock
-          key={node.key}
-          language={node.sourceInfo}
-          content={node.content}/>
-        )
-      },
-  }
-
-  return (
-    <Markdown rules={rules}>{text}</Markdown>
-  );
-}
-
 type AiSectionProps = PropsWithChildren<{
   id: number,
   isLoading?: boolean;
   copyValue?: string;
-  contentShownOnHover?: JSX.Element;
+  moreMenu?: FlyoutMenuButtonType[];
 }>;
-function AiSection({children, id, isLoading, copyValue, contentShownOnHover}: AiSectionProps): JSX.Element {
+function AiSection({children, id, isLoading, copyValue, moreMenu}: AiSectionProps): JSX.Element {
   const feedbackContext = React.useContext(FeedbackContext);
   const styles = React.useContext(StylesContext);
   const chatHistory = React.useContext(ChatHistoryContext);
-  const [hovering, setHovering] = React.useState(false);
 
   const showFeedbackPopup = (positive: boolean) => {
     if (feedbackContext) {
@@ -106,24 +86,40 @@ function AiSection({children, id, isLoading, copyValue, contentShownOnHover}: Ai
     }
   }
 
+  const menuItems = [];
+  if (moreMenu) {
+    menuItems.push(...moreMenu);
+  }
+  if (id !== undefined) {
+    menuItems.push(
+      {title: "Delete this response", icon: 0xE74D, onPress: () => chatHistory.deleteResponse(id)}
+    );
+  }
+  if (copyValue) {
+    menuItems.push(
+      {title: "Copy to clipboard", icon: 0xE8C8, onPress: () => Clipboard.setString(copyValue)}
+    );
+    menuItems.push(
+      {title: "Read to me", icon: 0xE995, onPress: () => { Speak(copyValue) } }
+    )
+  }
+  menuItems.push(
+    {title: "👍 Give positive feedback", onPress: () => { showFeedbackPopup(true); }},
+    {title: "👎 Give negative feedback", onPress: () => { showFeedbackPopup(false); }},
+  );
+
   return (
     <Pressable
       accessibilityRole="none"
       accessibilityLabel="AI response"
-      style={[styles.sectionContainer, styles.AiSection]}
-      onHoverIn={() => setHovering(true)}
-      onHoverOut={() => setHovering(false)}>
+      style={[styles.sectionContainer, styles.AiSection]}>
       <View style={{flexDirection: 'row'}}>
         <Text
           accessibilityRole="header"
           style={[styles.sectionTitle, {flexGrow: 1}]}>
             OpenAI
         </Text>
-        {hovering && contentShownOnHover}
-        {hovering && id !== undefined && <HoverButton content="❌" tooltip="Delete this response" onPress={() => chatHistory.deleteResponse(id)}/>}
-        {hovering && copyValue && <HoverButton content="📋" tooltip="Copy to clipboard" onPress={() => Clipboard.setString(copyValue)}/>}
-        <HoverButton content="👍" tooltip="Give positive feedback" onPress={() => { showFeedbackPopup(true); }}/>
-        <HoverButton content="👎" tooltip="Give negative feedback" onPress={() => { showFeedbackPopup(false); }}/>
+        <FlyoutMenu items={menuItems}/>
       </View>
       {isLoading && 
         <ActivityIndicator/>
@@ -162,11 +158,11 @@ function AiSectionContent({id, content}: AiSectionContentProps): JSX.Element {
               })}/>;
           default:
           case ChatContent.Text:
-            return <AiTextResponse text={firstResult}/>
+            return <MarkdownWithRules content={firstResult}/>
         }
       })()}
     </AiSection>
   )
 }
 
-export { AiSectionContent, AiSection, AiImageResponse, AiTextResponse }
+export { AiSectionContent, AiSection, AiImageResponse }
