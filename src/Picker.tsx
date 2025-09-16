@@ -20,7 +20,7 @@ type PickerListItemProps = {
   child: React.ReactElement<any>;
   selectedValue: string;
   onSelectItem: (value: string) => void;
-  styles: any;
+  styles: ReturnType<typeof StyleSheet.create>;
 }
 
 const PickerListItem: React.FC<PickerListItemProps> = ({ child, selectedValue, onSelectItem, styles }) => {
@@ -109,10 +109,10 @@ const Picker = (props: PickerProps) => {
   };
 
   let children = props.children as React.ReactNode;
-  const selectedLabel = findSelectedChild(children as any);
+  const selectedLabel = findSelectedChild(children as Iterable<React.ReactNode>);
 
   // Filter out invalid children before mapping
-  const validChildren = Array.from(children as any).filter((child: any) =>
+  const validChildren = Array.from(children as React.ReactNode[]).filter((child: any) =>
     child?.props && (child.props.value !== undefined || child.props.label !== undefined)
   );
 
@@ -148,22 +148,20 @@ const Picker = (props: PickerProps) => {
         visible={isOpen}
         onRequestClose={closeDropdown}>
         <View style={{ height: calculatedHeight }}>
-          <Pressable onPress={() => {}}>
-            <View
-              style={styles.dropdown}
-              accessibilityRole="menu"
-              accessibilityLabel={`${props.accessibilityLabel} options`}>
-                {validChildren.map((child: any) => (
-                  <PickerListItem
-                    key={child.props.value}
-                    child={child}
-                    selectedValue={selectedValue}
-                    onSelectItem={selectItem}
-                    styles={styles}
-                  />
-                ))}
-            </View>
-          </Pressable>
+          <View
+            style={styles.dropdown}
+            accessibilityRole="menu"
+            accessibilityLabel={`${props.accessibilityLabel} options`}>
+              {validChildren.map((child: any) => (
+                <PickerListItem
+                  key={child.props.value}
+                  child={child}
+                  selectedValue={selectedValue}
+                  onSelectItem={selectItem}
+                  styles={styles}
+                />
+              ))}
+          </View>
         </View>
       </Modal>
     </View>
