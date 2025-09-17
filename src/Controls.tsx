@@ -21,34 +21,6 @@ import { StylesContext } from './Styles';
 import { CodeBlock } from './CodeBlock';
 import Markdown from 'react-native-markdown-display-updated';
 
-type HoverButtonProps = {
-  content: string;
-  tooltip: string,
-  onPress: () => void;
-};
-function HoverButton({content, tooltip, onPress}: HoverButtonProps): JSX.Element {
-  const [hovering, setHovering] = React.useState(false);
-
-  const backgroundBaseStyle = {padding: 2, borderRadius: 8, borderWidth: 1, borderColor: 'transparent'};
-  const backgroundPressedStyle = {borderColor: 'white', backgroundColor: 'black'};
-  const backgroundHoverStyle = {borderColor: 'white', backgroundColor: 'gray'};
-  return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={tooltip}
-      tooltip={tooltip}
-      onPress={onPress}
-      onHoverIn={() => setHovering(true)}
-      onHoverOut={() => setHovering(false)}>
-      {({pressed}) => (
-        <View style={[backgroundBaseStyle, pressed ? backgroundPressedStyle : hovering ? backgroundHoverStyle : null]}>
-          <Text style={{minWidth: 20, textAlign: 'center'}}>{content}</Text>
-        </View>        
-      )}
-    </Pressable>
-  );
-}
-
 type AttributionProps = {
   source: string;
 };
@@ -242,5 +214,5 @@ function FluentTextInput(props: React.ComponentProps<typeof TextInput>): JSX.Ele
   );
 }
 
-export { HoverButton, Attribution, ConsentSwitch, ImageSelection, CodeBlock, SwitchWithLabel, FlyoutMenu, MarkdownWithRules, FluentTextInput };
+export { Attribution, ConsentSwitch, ImageSelection, CodeBlock, SwitchWithLabel, FlyoutMenu, MarkdownWithRules, FluentTextInput };
 export type { FlyoutMenuButtonType };
