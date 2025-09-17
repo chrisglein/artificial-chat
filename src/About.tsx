@@ -10,7 +10,6 @@ import {
 import {
   ContentDialog,
 } from './Popups';
-import {StylesContext} from './Styles';
 import VersionInfo from './NativeVersionInfo';
 import Clipboard from '@react-native-clipboard/clipboard';
 
@@ -19,8 +18,6 @@ type AboutPopupProps = {
   close: () => void;
 };
 function AboutPopup({show, close}: AboutPopupProps): JSX.Element {
-  const styles = React.useContext(StylesContext);
-
   const version = VersionInfo.getConstants().appVersion;
   const copyVersion = () => {
     Clipboard.setString(version);

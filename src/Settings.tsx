@@ -6,7 +6,6 @@ import {Picker} from './Picker';
 import {ChatScriptNames} from './ChatScript';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
-  FluentButton as Button,
   Link,
   FluentCheckbox as Checkbox,
 } from './FluentControls';

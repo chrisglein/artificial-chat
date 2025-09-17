@@ -7,7 +7,6 @@ import { ChatSession } from './ChatSession';
 import {
   StylesContext,
   CreateStyles,
-  createWindowsTheme,
 } from './Styles';
 import {
   SettingsContext,

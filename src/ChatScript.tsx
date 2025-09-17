@@ -388,7 +388,7 @@ export default ParticipantList;
   }
 };
 
-function AdaptiveCard(props) {
+function AdaptiveCard() {
   return (
     <View>
       <Button title="Placeholder" />

@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   ScrollView,
-  TextInput,
   View,
 } from 'react-native';
 import { FluentTextInput } from './Controls';

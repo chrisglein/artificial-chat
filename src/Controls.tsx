@@ -8,7 +8,6 @@ import {
   Image,
   ImageSourcePropType,
   Modal,
-  Pressable,
   Text,
   TextInput,
   Switch,
