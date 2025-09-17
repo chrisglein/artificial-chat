@@ -107,7 +107,6 @@ The app's settings are handled by a `SettingsContext` object, which has dialog U
 
 # Dependencies
 - Clipboard via [@react-native-clipboard/clipboard](https://github.com/react-native-clipboard/clipboard)
-- Syntax Highlighting via [react-native-syntax-highlighter](https://github.com/conorhastings/react-native-syntax-highlighter)
 - Dependency patching via [patch-package](https://github.com/ds300/patch-package)
 - Storage via [react-native-async-storage](https://github.com/react-native-async-storage/async-storage)
 - Markdown rendering via [react-native-markdown-display-updated](https://github.com/PopBot/react-native-markdown-display-updated)
