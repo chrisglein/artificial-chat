@@ -72,12 +72,12 @@ const SaveSettingsData = async (value: SettingsData) => {
   console.debug('Saving settings data...');
   try {
     const valueAsString = JSON.stringify(value);
-    await AsyncStorage.setItem(settingsKey, valueAsString)
+    await AsyncStorage.setItem(settingsKey, valueAsString);
     console.debug('Done saving settings data');
   } catch (e) {
     console.error(e);
   }
-}
+};
 
 // Write settings to app storage
 const LoadSettingsData = async () => {
@@ -87,7 +87,7 @@ const LoadSettingsData = async () => {
     const valueAsString = await AsyncStorage.getItem(settingsKey);
     if (valueAsString != null) {
       const value = JSON.parse(valueAsString);
-      
+
       if (value.hasOwnProperty('apiKey')) { valueToSave.apiKey = value.apiKey; }
       if (value.hasOwnProperty('imageSize')) { valueToSave.imageSize = parseInt(value.imageSize); }
       if (value.hasOwnProperty('readToMeVoice')) { valueToSave.readToMeVoice = value.readToMeVoice; }
@@ -96,7 +96,7 @@ const LoadSettingsData = async () => {
     console.error(e);
   }
   return valueToSave;
-}
+};
 
 type SettingsPopupProps = {
   show: boolean;
@@ -109,7 +109,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   const [chatModel, setChatModel] = React.useState<string>(settings.chatModel);
   const [apiKey, setApiKey] = React.useState<string | undefined>(settings.apiKey);
   const [saveApiKey, setSaveApiKey] = React.useState<boolean>(false);
-  const [scriptName, setScriptName] = React.useState<string>(settings.scriptName ?? "");
+  const [scriptName, setScriptName] = React.useState<string>(settings.scriptName ?? '');
   const [delayForArtificialResponse, setDelayForArtificialResponse] = React.useState<number>(settings.delayForArtificialResponse ?? 0);
   const [detectImageIntent, setDetectImageIntent] = React.useState<boolean>(settings.detectImageIntent);
   const [imageResponseCount, setImageResponseCount] = React.useState<number>(settings.imageResponseCount);
@@ -118,7 +118,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
 
   // It may seem weird to do this when the UI loads, not the app, but it's okay
   // because this component is loaded when the app starts but isn't shown. And
-  // this popup needs to directly know when the settings change (which won't 
+  // this popup needs to directly know when the settings change (which won't
   // happen directly if you just consume settings.apiKey inside the component.
   React.useEffect(() => {
     const load = async () => {
@@ -137,7 +137,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
 
       // If an API key was set, continue to remember it
       setSaveApiKey(value.apiKey !== undefined);
-    }
+    };
     load();
   }, []);
 
@@ -151,9 +151,9 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
     settings.setImageResponseCount(imageResponseCount);
     settings.setImageSize(imageSize);
     settings.setReadToMeVoice(readToMeVoice);
-    
+
     close();
-    
+
     // Need to apply to the speech engine
     SetVoice(readToMeVoice);
 
@@ -162,44 +162,44 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
       imageSize: imageSize,
       readToMeVoice: readToMeVoice,
     });
-  }
+  };
 
   const cancel = () => {
     setAiEndpoint(settings.aiEndpoint);
     setChatModel(settings.chatModel);
     setApiKey(settings.apiKey);
-    setScriptName(settings.scriptName ?? "");
+    setScriptName(settings.scriptName ?? '');
     setDelayForArtificialResponse(settings.delayForArtificialResponse ?? 0);
     setDetectImageIntent(settings.detectImageIntent);
     setImageResponseCount(settings.imageResponseCount);
     setImageSize(settings.imageSize);
     setReadToMeVoice(settings.readToMeVoice);
     close();
-  }
+  };
 
   const buttons = [
     {
-      title: "OK",
+      title: 'OK',
       onPress: () => {
         save();
-      }
+      },
     },
     {
-      title: "Cancel",
+      title: 'Cancel',
       onPress: () => {
         cancel();
-      }
-    }
+      },
+    },
   ];
 
   return (
     <ContentDialog
       show={show}
-      close={() => {cancel()}}
+      close={() => {cancel();}}
       isLightDismissEnabled={false}
       title="OpenAI Settings"
       buttons={buttons}
-      defaultButtonIndex={0}      
+      defaultButtonIndex={0}
       maxWidth={400}
       maxHeight={800}>
       <View style={styles.dialogSectionsContainer}>
@@ -215,18 +215,18 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             accessibilityLabel="Chat Model"
             selectedValue={chatModel}
             onValueChange={value => setChatModel(value)}>
-            {["gpt-3.5-turbo", "gpt-4", "gpt-4-turbo-preview"].map(value => <Picker.Item label={value} value={value} key={value}/>)}
+            {['gpt-3.5-turbo', 'gpt-4', 'gpt-4-turbo-preview'].map(value => <Picker.Item label={value} value={value} key={value}/>)}
           </Picker>
           <Text>API key</Text>
           <TextInput
-            accessibilityLabel='API key'
+            accessibilityLabel="API key"
             secureTextEntry={true}
             style={{flexGrow: 1, minHeight: 32}}
             onChangeText={value => setApiKey(value)}
             value={apiKey}/>
             <Checkbox
               label="Remember this"
-              size='large'
+              size="large"
               checked={saveApiKey}
               onChange={(event, value) => setSaveApiKey(value)}/>
           <Link
@@ -236,7 +236,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
         <DialogSection header="Image Generation">
           <Checkbox
             label="Infer image intent from prompt"
-            size='large'
+            size="large"
             checked={detectImageIntent}
             onChange={(event, value) => setDetectImageIntent(value)}/>
           <Text>Image Count</Text>
@@ -286,4 +286,4 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   );
 }
 
-export { SettingsContext, SettingsPopup }
+export { SettingsContext, SettingsPopup };

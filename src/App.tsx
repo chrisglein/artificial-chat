@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Appearance,
-  View
+  View,
 } from 'react-native';
 import { ChatSession } from './ChatSession';
 import {
@@ -18,10 +18,10 @@ import { PopupsContext } from './Popups';
 
 function App(): JSX.Element {
   const [currentTheme, setCurrentTheme] = React.useState(Appearance.getColorScheme());
-  const [aiEndpoint, setAiEndpoint] = React.useState<string>("https://api.openai.com/v1");
-  const [chatModel, setChatModel] = React.useState<string>("gpt-3.5-turbo");
+  const [aiEndpoint, setAiEndpoint] = React.useState<string>('https://api.openai.com/v1');
+  const [chatModel, setChatModel] = React.useState<string>('gpt-3.5-turbo');
   const [apiKey, setApiKey] = React.useState<string | undefined>(undefined);
-  const [scriptName, setScriptName] = React.useState<string | undefined>("");
+  const [scriptName, setScriptName] = React.useState<string | undefined>('');
   const [delayForArtificialResponse, setDelayForArtificialResponse] = React.useState<number>(1500);
   const [detectImageIntent, setDetectImageIntent] = React.useState<boolean>(true);
   const [imageResponseCount, setImageResponseCount] = React.useState<number>(1);
@@ -29,7 +29,7 @@ function App(): JSX.Element {
   const [showSettingsPopup, setShowSettingsPopup] = React.useState(false);
   const [showAboutPopup, setShowAboutPopup] = React.useState(false);
   const [readToMeVoice, setReadToMeVoice] = React.useState<string>('');
-    
+
   const isDarkMode = currentTheme === 'dark';
   const isHighContrast = false;
   const styles = CreateStyles(isDarkMode, isHighContrast);
@@ -60,7 +60,7 @@ function App(): JSX.Element {
     setShowSettings: setShowSettingsPopup,
     showAbout: showAboutPopup,
     setShowAbout: setShowAboutPopup,
-  }
+  };
 
   const onAppThemeChanged = () => {
     setCurrentTheme(Appearance.getColorScheme());

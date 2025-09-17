@@ -24,7 +24,7 @@ function AiSectionWithFakeResponse({children, id}: AiSectionWithFakeResponseProp
     <AiSection id={id} isLoading={isLoading}>
       {!isLoading && children}
     </AiSection>
-  )
+  );
 }
 
-export { AiSectionWithFakeResponse }
+export { AiSectionWithFakeResponse };

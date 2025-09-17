@@ -15,15 +15,15 @@ function CodeBlock({content, language} : {content: string, language: string}): J
       <View style={[styles.codeBlockTitle, {flexDirection: 'row', borderTopLeftRadius: 8, borderTopRightRadius: 8, paddingHorizontal: 12}]}>
         <Text
           accessibilityLabel="Language"
-          style={[styles.codeBlockTitleText, {flexGrow: 1, alignSelf: "center"}]}>
+          style={[styles.codeBlockTitleText, {flexGrow: 1, alignSelf: 'center'}]}>
           {language}
         </Text>
         <Button
-          appearance='subtle'
+          appearance="subtle"
           accessibilityLabel="Copy Code"
           icon={{ fontSource: { fontFamily: 'Segoe MDL2 Assets', codepoint: 0xE8C8, color: styles.codeBlockTitleText.color } }}
           iconOnly={true}
-          tooltip='Copy Code'
+          tooltip="Copy Code"
           onClick={() => {
             Clipboard.setString(content);
           }}/>
@@ -32,7 +32,7 @@ function CodeBlock({content, language} : {content: string, language: string}): J
           {content}
       </Text>
     </View>
-  )
+  );
 }
 
 export { CodeBlock };

@@ -3,7 +3,7 @@ import type {
   StyleProp,
   ImageStyle,
   TextStyle,
-  ViewStyle
+  ViewStyle,
 } from 'react-native';
 import { PlatformColor } from 'react-native';
 import { StyleSheet } from 'react-native';
@@ -106,30 +106,30 @@ const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
       color: isDarkMode ? 'black' : 'white',
     },
     hyperlinkIdle: {
-      color: isHighContrast ? PlatformColor("SystemColorWindowTextColor") : isDarkMode ? PlatformColor("SystemAccentColorDark2") : PlatformColor("SystemAccentColorLight3"),
+      color: isHighContrast ? PlatformColor('SystemColorWindowTextColor') : isDarkMode ? PlatformColor('SystemAccentColorDark2') : PlatformColor('SystemAccentColorLight3'),
       textDecorationLine: 'underline',
     },
     hyperlinkPressing: {
-      color: isHighContrast ? PlatformColor("SystemColorWindowTextColor") : isDarkMode ? PlatformColor("SystemAccentColorDark2") : PlatformColor("SystemAccentColorLight2"),
+      color: isHighContrast ? PlatformColor('SystemColorWindowTextColor') : isDarkMode ? PlatformColor('SystemAccentColorDark2') : PlatformColor('SystemAccentColorLight2'),
     },
     hyperlinkHovering: {
-      color: isHighContrast ? PlatformColor("SystemColorWindowTextColor") : isDarkMode ? PlatformColor("SystemAccentColorDark3") : PlatformColor("SystemAccentColorLight3"),
+      color: isHighContrast ? PlatformColor('SystemColorWindowTextColor') : isDarkMode ? PlatformColor('SystemAccentColorDark3') : PlatformColor('SystemAccentColorLight3'),
       textDecorationLine: 'underline',
     },
     hyperlinkDisabled: {
-      color: isHighContrast ? PlatformColor("SystemColorGrayTextColor") : PlatformColor("AccentTextFillColorDisabled"),
+      color: isHighContrast ? PlatformColor('SystemColorGrayTextColor') : PlatformColor('AccentTextFillColorDisabled'),
       textDecorationLine: 'underline',
     },
     textBox: {
       flexGrow: 1,
       flexShrink: 1,
       fontSize: 14,
-      backgroundColor: PlatformColor("ControlFillColorDefault"),
+      backgroundColor: PlatformColor('ControlFillColorDefault'),
       borderRadius: 4, // ControlCornerRadius
       borderWidth: 1, // TextControlBorderThemeThickness
       borderBottomWidth: 2,
-      borderColor: PlatformColor("ControlStrokeColorDefault"),
-      borderBottomColor: PlatformColor("ControlStrokeColorSecondary"),
+      borderColor: PlatformColor('ControlStrokeColorDefault'),
+      borderBottomColor: PlatformColor('ControlStrokeColorSecondary'),
       paddingLeft: 14,
       paddingTop: 6,
       paddingRight: 6,
@@ -137,7 +137,7 @@ const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
       minHeight: 32, // TextControlThemeMinHeight
     },
     textBoxFocused: {
-      borderBottomColor: PlatformColor("AccentFillColorDefault"),
+      borderBottomColor: PlatformColor('AccentFillColorDefault'),
     },
     flyoutBackground: {
           backgroundColor: isDarkMode ? 'black' : 'white',
@@ -146,6 +146,6 @@ const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
           alignItems: 'flex-start',
     },
   });
-}
+};
 
 export { StylesContext, CreateStyles };

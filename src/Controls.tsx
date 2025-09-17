@@ -2,7 +2,7 @@ import React from 'react';
 import type {
   PropsWithChildren,
   Dispatch,
-  SetStateAction
+  SetStateAction,
 } from 'react';
 import {
   Image,
@@ -96,12 +96,12 @@ const MoreMenuButton = React.forwardRef(function MoreMenuButton({showMenu, setSh
       ref={ref}>
       <Button
         enabled={!showMenu}
-        appearance='subtle'
-        accessibilityLabel='More options'
+        appearance="subtle"
+        accessibilityLabel="More options"
         icon={{ fontSource: { fontFamily: 'Segoe MDL2 Assets', codepoint: 0xE712 } }}
         iconOnly={true}
-        tooltip='More options'
-        onClick={() => setShowMenu(true)}></Button>
+        tooltip="More options"
+        onClick={() => setShowMenu(true)} />
     </View>
   );
 });
@@ -119,7 +119,7 @@ type FlyoutMenuButtonProps = PropsWithChildren<{
 function FlyoutMenuButton({icon, onClick, children}: FlyoutMenuButtonProps): JSX.Element {
   return (
     <Button
-      appearance='subtle'
+      appearance="subtle"
       icon={icon ? { fontSource: { fontFamily: 'Segoe MDL2 Assets', codepoint: icon } } : undefined}
       onClick={onClick}>{children}</Button>
   );
@@ -154,7 +154,7 @@ function FlyoutMenu({items, maxWidth, maxHeight}: FlyoutMenuProps): JSX.Element 
       <Modal
         visible={isOpen}
         onRequestClose={() => setIsOpen(false)}
-        placement='bottom-edge-aligned-right'
+        placement="bottom-edge-aligned-right"
         target={placementRef.current}>
         <View style={[{maxWidth: maxWidth, maxHeight: maxHeight}, styles.flyoutBackground]}>
           {buttonList}
@@ -175,9 +175,9 @@ function MarkdownWithRules({content} : MarkdownWithRulesProps): JSX.Element {
           key={node.key}
           language={node.sourceInfo}
           content={node.content}/>
-        )
+        );
       },
-  }
+  };
 
   return (
     <Markdown rules={rules}>{content}</Markdown>

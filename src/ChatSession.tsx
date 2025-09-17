@@ -32,7 +32,7 @@ function AutomatedChatSession({entries, appendEntry, clearConversation}: Automat
     } = {
       aiResponse: undefined,
       humanResponse: undefined,
-    }
+    };
 
     let response = handleAIResponse({
       scriptName: settings.scriptName,
@@ -48,14 +48,14 @@ function AutomatedChatSession({entries, appendEntry, clearConversation}: Automat
     });
 
     // Give the AI's response
-    result.aiResponse = response.aiResponse ? response.aiResponse() : undefined; 
+    result.aiResponse = response.aiResponse ? response.aiResponse() : undefined;
 
     // Preopulate the text box with the human's next prompt
-    result.humanResponse = nextResponse.prompt; 
+    result.humanResponse = nextResponse.prompt;
 
     return result;
-  }
-  
+  };
+
   const onPrompt = (text: string, index: number) => {
     const followScript = settings.scriptName;
 
@@ -63,7 +63,7 @@ function AutomatedChatSession({entries, appendEntry, clearConversation}: Automat
       console.log(`Following script with prompt of '${text}', index is ${index}`);
 
       // Get the AI's response to the prompt
-      let {aiResponse} = advanceChatScript(index, () => onPrompt("", index + 1));
+      let {aiResponse} = advanceChatScript(index, () => onPrompt('', index + 1));
       setChatScriptIndex(index + 1);
       console.log(aiResponse);
 
@@ -82,7 +82,7 @@ function AutomatedChatSession({entries, appendEntry, clearConversation}: Automat
             type: ChatSource.Ai,
             contentType: ChatContent.Text,
             responses: [text],
-            content: 
+            content:
               <AiSectionWithFakeResponse id={entries.length + 1}>
                 {aiResponse}
               </AiSectionWithFakeResponse>,
@@ -94,7 +94,7 @@ function AutomatedChatSession({entries, appendEntry, clearConversation}: Automat
             type: ChatSource.Ai,
             contentType: ChatContent.Error,
             responses: [''],
-            content: 
+            content:
               <AiSectionWithFakeResponse id={entries.length}>
                 {aiResponse}
               </AiSectionWithFakeResponse>,
@@ -102,7 +102,7 @@ function AutomatedChatSession({entries, appendEntry, clearConversation}: Automat
       }
     } else {
       console.log(`Prompt: "${text}"`);
-      
+
       appendEntry([
         {
           id: entries.length,
@@ -115,10 +115,10 @@ function AutomatedChatSession({entries, appendEntry, clearConversation}: Automat
           contentType: ChatContent.Error,
           type: ChatSource.Ai,
           prompt: text,
-        }
+        },
       ]);
     }
-  }
+  };
 
   // Anticipate the next human response
   let humanText = handleAIResponse({
@@ -161,10 +161,10 @@ function ChatSession(): JSX.Element {
     } else {
       let entry = modifiedEntries[index];
 
-      if (delta.hasOwnProperty('responses')) entry.responses = delta.responses;
-      if (delta.hasOwnProperty('contentType')) entry.contentType = delta.contentType;
-      if (delta.hasOwnProperty('prompt')) entry.prompt = delta.prompt;
-      if (delta.hasOwnProperty('intent')) entry.intent = delta.intent;
+      if (delta.hasOwnProperty('responses')) {entry.responses = delta.responses;}
+      if (delta.hasOwnProperty('contentType')) {entry.contentType = delta.contentType;}
+      if (delta.hasOwnProperty('prompt')) {entry.prompt = delta.prompt;}
+      if (delta.hasOwnProperty('intent')) {entry.intent = delta.intent;}
 
       modifiedEntries[index] = entry;
       setEntries(modifiedEntries);
@@ -182,7 +182,7 @@ function ChatSession(): JSX.Element {
   }, [entries]);
 
   const clearConversation = () => setEntries([]);
-  
+
   return (
     <ChatHistoryContext.Provider value={{
         entries: entries,

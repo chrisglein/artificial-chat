@@ -84,7 +84,7 @@ function AiSection({children, id, isLoading, copyValue, moreMenu}: AiSectionProp
     if (feedbackContext) {
       feedbackContext.showFeedback(positive, copyValue);
     }
-  }
+  };
 
   const menuItems = [];
   if (moreMenu) {
@@ -92,20 +92,20 @@ function AiSection({children, id, isLoading, copyValue, moreMenu}: AiSectionProp
   }
   if (id !== undefined) {
     menuItems.push(
-      {title: "Delete this response", icon: 0xE74D, onPress: () => chatHistory.deleteResponse(id)}
+      {title: 'Delete this response', icon: 0xE74D, onPress: () => chatHistory.deleteResponse(id)}
     );
   }
   if (copyValue) {
     menuItems.push(
-      {title: "Copy to clipboard", icon: 0xE8C8, onPress: () => Clipboard.setString(copyValue)}
+      {title: 'Copy to clipboard', icon: 0xE8C8, onPress: () => Clipboard.setString(copyValue)}
     );
     menuItems.push(
-      {title: "Read to me", icon: 0xE995, onPress: () => { Speak(copyValue) } }
-    )
+      {title: 'Read to me', icon: 0xE995, onPress: () => { Speak(copyValue); } }
+    );
   }
   menuItems.push(
-    {title: "👍 Give positive feedback", onPress: () => { showFeedbackPopup(true); }},
-    {title: "👎 Give negative feedback", onPress: () => { showFeedbackPopup(false); }},
+    {title: '👍 Give positive feedback', onPress: () => { showFeedbackPopup(true); }},
+    {title: '👎 Give negative feedback', onPress: () => { showFeedbackPopup(false); }},
   );
 
   return (
@@ -121,7 +121,7 @@ function AiSection({children, id, isLoading, copyValue, moreMenu}: AiSectionProp
         </Text>
         <FlyoutMenu items={menuItems} maxWidth={300} maxHeight={400}/>
       </View>
-      {isLoading && 
+      {isLoading &&
         <ActivityIndicator/>
       }
       <View style={{gap: 8}}>
@@ -137,13 +137,13 @@ type AiSectionContentProps = {
 }
 function AiSectionContent({id, content}: AiSectionContentProps): JSX.Element {
   const chatHistory = React.useContext(ChatHistoryContext);
-  const firstResult = content.responses ? content.responses[0] : "";
+  const firstResult = content.responses ? content.responses[0] : '';
   return (
     <AiSection copyValue={firstResult} id={id}>
       {(() => {
         switch (content.contentType) {
           case ChatContent.Error:
-            return <Text style={{color: 'red'}}>{firstResult}</Text>
+            return <Text style={{color: 'red'}}>{firstResult}</Text>;
           case ChatContent.Image:
             return <AiImageResponse
               imageUrls={content.responses}
@@ -158,11 +158,11 @@ function AiSectionContent({id, content}: AiSectionContentProps): JSX.Element {
               })}/>;
           default:
           case ChatContent.Text:
-            return <MarkdownWithRules content={firstResult}/>
+            return <MarkdownWithRules content={firstResult}/>;
         }
       })()}
     </AiSection>
-  )
+  );
 }
 
-export { AiSectionContent, AiSection, AiImageResponse }
+export { AiSectionContent, AiSection, AiImageResponse };

@@ -23,27 +23,27 @@ type FeedbackPopupProps = {
 }
 function FeedbackPopup({show, close, isPositive, response}: FeedbackPopupProps): JSX.Element {
   const styles = React.useContext(StylesContext);
-  const [feedbackText, setFeedbackText] = React.useState("");
+  const [feedbackText, setFeedbackText] = React.useState('');
   const [thisIsHarmful, setThisIsHarmful] = React.useState(false);
   const [thisIsNotTrue, setThisIsNotTrue] = React.useState(false);
   const [thisIsNotHelpful, setThisIsNotHelpful] = React.useState(false);
 
   const buttons = [
     {
-      title: "Submit feedback",
+      title: 'Submit feedback',
       onPress: () => {
         const version = VersionInfo?.getConstants().appVersion;
         if (isPositive) {
           Linking.openURL(`https://github.com/chrisglein/artificial-chat/issues/new?template=feedback-positive.yaml&version=${version}&expected=${feedbackText}&response=${response}`);
         } else {
           Linking.openURL(`https://github.com/chrisglein/artificial-chat/issues/new?template=feedback-negative.yaml&version=${version}&expected=${feedbackText}&response=${response}`);
-        }              
-      }
+        }
+      },
     },
     {
-      title: "Cancel",
-      onPress: () => { }
-    }
+      title: 'Cancel',
+      onPress: () => { },
+    },
   ];
 
   return (
@@ -54,7 +54,7 @@ function FeedbackPopup({show, close, isPositive, response}: FeedbackPopupProps):
       buttons={buttons}
       defaultButtonIndex={1}
       maxHeight={300}>
-      <Text>{"Your feedback: " + (isPositive ? "👍" : "👎")}</Text>
+      <Text>{'Your feedback: ' + (isPositive ? '👍' : '👎')}</Text>
       <TextInput
         multiline={true}
         placeholder="What would the ideal answer have been?"
@@ -89,4 +89,4 @@ function FeedbackPopup({show, close, isPositive, response}: FeedbackPopupProps):
   );
 }
 
-export { FeedbackContext, FeedbackPopup }
+export { FeedbackContext, FeedbackPopup };

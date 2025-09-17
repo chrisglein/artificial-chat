@@ -65,14 +65,14 @@ function ChatEntry({submit, defaultText, clearConversation}: ChatEntryProps): JS
   const styles = React.useContext(StylesContext);
 
   // Allow a chat script to default populate the text box
-  const [value, setValue] = React.useState(defaultText ?? "");
+  const [value, setValue] = React.useState(defaultText ?? '');
 
   const submitValue = () => {
     // If the user hits submit but the text is empty, don't carry that forward
-    if (value !== "") {
+    if (value !== '') {
       submit(value);
       // Reset to a blank prompt
-      setValue("");
+      setValue('');
     }
   };
 
@@ -87,15 +87,15 @@ function ChatEntry({submit, defaultText, clearConversation}: ChatEntryProps): JS
         onSubmitEditing={submitValue}
         value={defaultText ?? value}/>
       <Button
-        appearance='primary'
-        accessibilityLabel='Submit prompt'
+        appearance="primary"
+        accessibilityLabel="Submit prompt"
         onClick={submitValue}>Submit</Button>
       <Button
-        accessibilityLabel='Clear conversation'
+        accessibilityLabel="Clear conversation"
         icon={{ fontSource: { fontFamily: 'Segoe MDL2 Assets', codepoint: 0xE74D, fontSize: 20 } }}
         iconOnly={true}
-        tooltip='Clear conversation'
-        onClick={clearConversation}></Button>
+        tooltip="Clear conversation"
+        onClick={clearConversation} />
     </View>
   );
 }
@@ -124,24 +124,24 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
       setFeedbackIsPositive(positive);
       setShowFeedbackPopup(true);
       setFeedbackTargetResponse(response);
-    }
-  }
+    },
+  };
 
   const scrollToEnd = () => {
     // Wait for the new entry to be rendered, then scroll it into view
     setTimeout(() => {
       scrollViewRef.current?.scrollToEnd({animated: true});
     }, 100);
-  }
+  };
 
   const onQueryResponse = (id: number, prompt: string, responses: string[], contentType: ChatContent) => {
     chatHistory.modifyResponse(id, {prompt: prompt, responses: responses, contentType: contentType});
-    
+
     // As the responses come in, speak them aloud (if enabled)
     if (contentType == ChatContent.Text && settings.readToMeVoice) {
       Speak(responses[0]);
     }
-  }
+  };
 
   return (
     <FeedbackContext.Provider value={feedbackContext}>
@@ -157,11 +157,11 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
               entries.map((entry) => (
                 <View key={entry.id}>
                   {
-                    entry.type === ChatSource.Human ? 
+                    entry.type === ChatSource.Human ?
                       // Human inputs are always plain text
                       <HumanSection
                         id={entry.id}
-                        content={entry.responses ? entry.responses[0] : ""}/> :
+                        content={entry.responses ? entry.responses[0] : ''}/> :
                       entry.content ?
                         // The element may have provided its own UI
                         entry.content :
@@ -169,12 +169,12 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
                         entry.responses ?
                           <AiSectionContent
                             id={entry.id}
-                            content={entry}/> : 
+                            content={entry}/> :
                           <AiSectionWithQuery
                             id={entry.id}
-                            prompt={entry.prompt ?? ""}
+                            prompt={entry.prompt ?? ''}
                             intent={entry.intent}
-                            onResponse={({prompt, responses, contentType}) => 
+                            onResponse={({prompt, responses, contentType}) =>
                               onQueryResponse(entry.id, prompt, responses, contentType)}/>
                   }
                 </View>
@@ -198,15 +198,15 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
               disableCopy={true}
               moreMenu={[
                 {
-                  title: "About",
+                  title: 'About',
                   icon: 0xE897,
-                  onPress: () => popups.setShowAbout(true)
+                  onPress: () => popups.setShowAbout(true),
                 },
                 {
-                  title: "Settings",
+                  title: 'Settings',
                   icon: 0xE713,
-                  onPress: () => popups.setShowSettings(true)
-                }
+                  onPress: () => popups.setShowSettings(true),
+                },
               ]}>
               <ChatEntry
                 defaultText={humanText}
@@ -229,5 +229,5 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
   );
 }
 
-export type { ChatElement }
+export type { ChatElement };
 export { Chat, ChatScrollContext, ChatSource, ChatContent, ChatHistoryContext };

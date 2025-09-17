@@ -5,11 +5,11 @@ import {
   CallOpenAi,
 } from './OpenAI';
 import { AiSection } from './AiResponse';
-import { 
+import {
   ChatSource,
   ChatContent,
   ChatScrollContext,
-  ChatHistoryContext
+  ChatHistoryContext,
 } from './Chat';
 import { SettingsContext } from './Settings';
 
@@ -29,7 +29,7 @@ function AiSectionWithQuery({prompt, intent, id, onResponse}: AiSectionWithQuery
   const [imagePrompt, setImagePrompt] = React.useState<string | undefined>(undefined);
 
   // First determine the intent of the prompt
-  const imageIntentSentinel = "[IMAGE]";
+  const imageIntentSentinel = '[IMAGE]';
   React.useEffect(() => {
     setIsLoading(true);
     setIsRequestForImage(undefined);
@@ -52,7 +52,7 @@ function AiSectionWithQuery({prompt, intent, id, onResponse}: AiSectionWithQuery
       },
       instructions: `You are an intuitive assistant helping the user with a project. Your only job is need to determine the primary intent of the user's last prompt.
 If and only if you are absolutely certain the user's primary intent is to see an image, respond with exactly the string "${imageIntentSentinel}". Otherwise, respond with your description of their intent.`,
-      identifier: "INTENT:",
+      identifier: 'INTENT:',
       prompt: prompt,
       onError: () => {
         setIsRequestForImage(false);
@@ -64,7 +64,7 @@ If and only if you are absolutely certain the user's primary intent is to see an
       onComplete: () => {
     }});
   }, [prompt]);
-    
+
 
   // If the intent is to request an image, then we need to create keywords for the image prompt
   React.useEffect(() => {
@@ -92,7 +92,7 @@ If and only if you are absolutely certain the user's primary intent is to see an
 - [style of the image]
 Where items enclosed in brackets ([]) would be replaced with an appropriate suggestion.
 Respond with the image prompt string in the required format. Do not respond conversationally.`,
-        identifier: "KEYWORDS:",
+        identifier: 'KEYWORDS:',
         prompt: prompt,
         onError: () => {
           setIsRequestForImage(false);
@@ -111,26 +111,26 @@ Respond with the image prompt string in the required format. Do not respond conv
       CallOpenAi({
         api: OpenAiApi.ChatCompletion,
         apiKey: settingsContext.apiKey,
-        instructions: `The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly. If the response involves code, use markdown format for that with \`\`\`(language) blocks.`,
-        identifier: "TEXT-ANSWER:",
+        instructions: 'The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly. If the response involves code, use markdown format for that with ```(language) blocks.',
+        identifier: 'TEXT-ANSWER:',
         prompt: prompt,
         options: {
           endpoint: settingsContext.aiEndpoint,
           chatModel: settingsContext.chatModel,
           promptHistory: chatHistory.entries.
             filter((entry) => { return entry.responses !== undefined && entry.id < id; }).
-            map((entry) => { return {role: entry.type == ChatSource.Human ? "user" : "assistant", "content": entry.responses ? entry.responses[0] : ""} }),
+            map((entry) => { return {role: entry.type == ChatSource.Human ? 'user' : 'assistant', 'content': entry.responses ? entry.responses[0] : ''}; }),
         },
         onError: (error) => {
           onResponse({
             prompt: prompt,
-            responses: [error] ?? [""],
+            responses: [error] ?? [''],
             contentType: ChatContent.Error});
         },
         onResult: (result) => {
           onResponse({
             prompt: prompt,
-            responses: result ?? [""], 
+            responses: result ?? [''],
             contentType: ChatContent.Text});
         },
         onComplete: () => {
@@ -143,7 +143,7 @@ Respond with the image prompt string in the required format. Do not respond conv
         CallOpenAi({
           api: OpenAiApi.Generations,
           apiKey: settingsContext.apiKey,
-          identifier: "IMAGE-ANSWER:",
+          identifier: 'IMAGE-ANSWER:',
           prompt: imagePrompt,
           options: {
             endpoint: settingsContext.aiEndpoint,
@@ -153,13 +153,13 @@ Respond with the image prompt string in the required format. Do not respond conv
           onError: (error) => {
             onResponse({
               prompt: imagePrompt,
-              responses: [error] ?? [""],
+              responses: [error] ?? [''],
               contentType: ChatContent.Error});
           },
           onResult: (result) => {
             onResponse({
               prompt: imagePrompt,
-              responses: result ?? [""],
+              responses: result ?? [''],
               contentType: ChatContent.Image});
           },
           onComplete: () => {
@@ -185,7 +185,7 @@ Respond with the image prompt string in the required format. Do not respond conv
           <Text>Done loading</Text>)
       }
     </AiSection>
-  )
+  );
 }
 
-export { AiSectionWithQuery }
+export { AiSectionWithQuery };

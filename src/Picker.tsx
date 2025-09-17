@@ -180,11 +180,11 @@ const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      backgroundColor: PlatformColor("ControlFillColorDefault"),
+      backgroundColor: PlatformColor('ControlFillColorDefault'),
       borderRadius: 4,
       borderWidth: 1, // Match TextControlBorderThemeThickness
       borderBottomWidth: 2,
-      borderColor: PlatformColor("ControlStrokeColorDefault"),
+      borderColor: PlatformColor('ControlStrokeColorDefault'),
       paddingLeft: 10, // Match TextControlThemePadding
       paddingTop: 6,
       paddingRight: 10,
@@ -192,25 +192,25 @@ const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
       minHeight: 32, // Match TextControlThemeMinHeight
     },
     pickerButtonPressed: {
-      backgroundColor: PlatformColor("ControlFillColorSecondary"),
-      borderBottomColor: PlatformColor("ControlStrokeColorSecondary"),
+      backgroundColor: PlatformColor('ControlFillColorSecondary'),
+      borderBottomColor: PlatformColor('ControlStrokeColorSecondary'),
     },
     pickerButtonOpen: {
-      borderBottomColor: PlatformColor("AccentFillColorDefault"),
+      borderBottomColor: PlatformColor('AccentFillColorDefault'),
     },
     pickerButtonText: {
       flex: 1,
       fontSize: 14,
-      color: PlatformColor("TextControlForeground"),
+      color: PlatformColor('TextControlForeground'),
       marginRight: 8,
     },
     dropdownArrow: {
       fontSize: 12,
-      color: PlatformColor("TextFillColorSecondary"),
+      color: PlatformColor('TextFillColorSecondary'),
       fontWeight: 'bold',
     },
     dropdown: {
-      backgroundColor: PlatformColor("SolidBackgroundFillColorBase"),
+      backgroundColor: PlatformColor('SolidBackgroundFillColorBase'),
       minWidth: 200,
     },
     pickerItem: {
@@ -223,25 +223,25 @@ const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
     },
     pickerItemSelected: {
       paddingLeft: 12,
-      backgroundColor: PlatformColor("ControlAltFillColorTertiary"),
+      backgroundColor: PlatformColor('ControlAltFillColorTertiary'),
     },
     pickerItemPressed: {
-      backgroundColor: PlatformColor("ControlAltFillColorQuarternary"),
+      backgroundColor: PlatformColor('ControlAltFillColorQuarternary'),
     },
     pickerItemText: {
       fontSize: 14,
-      color: PlatformColor("TextControlForeground"),
+      color: PlatformColor('TextControlForeground'),
       lineHeight: 20,
     },
     pickerItemTextSelected: {
     },
     selectedIndicator: {
       fontSize: 16,
-      color: PlatformColor("AccentFillColorDefault"),
+      color: PlatformColor('AccentFillColorDefault'),
       fontWeight: 'bold',
       minWidth: 12,
     },
   });
-}
+};
 
 export { Picker };

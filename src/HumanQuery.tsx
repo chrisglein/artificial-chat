@@ -30,12 +30,12 @@ function HumanSection({children, id, content, disableCopy, moreMenu}: HumanSecti
   }
   if (id !== undefined) {
     menuItems.push(
-      {title: "Delete this response", icon: 0xE74D, onPress: () => chatHistory.deleteResponse(id)}
+      {title: 'Delete this response', icon: 0xE74D, onPress: () => chatHistory.deleteResponse(id)}
     );
   }
   if (!disableCopy) {
     menuItems.push(
-      {title: "Copy to clipboard", icon: 0xE8C8, onPress: () => Clipboard.setString(content ?? "")}
+      {title: 'Copy to clipboard', icon: 0xE8C8, onPress: () => Clipboard.setString(content ?? '')}
     );
   }
 
@@ -58,4 +58,4 @@ function HumanSection({children, id, content, disableCopy, moreMenu}: HumanSecti
   );
 }
 
-export { HumanSection }
+export { HumanSection };

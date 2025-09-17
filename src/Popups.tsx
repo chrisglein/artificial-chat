@@ -37,7 +37,7 @@ function DialogFrame({children, show, close, isLightDismissEnabled, titleIcon, t
   const styles = React.useContext(StylesContext);
 
   const populatedButtons = buttons ?? [<Button
-    accessibilityLabel='OK'
+    accessibilityLabel="OK"
     title="OK"
     onPress={() => {
       close();
@@ -70,7 +70,7 @@ function DialogFrame({children, show, close, isLightDismissEnabled, titleIcon, t
         </View>
       </View>
     </Modal>
-  )
+  );
 }
 
 type DialogSectionProps = PropsWithChildren<{
@@ -88,4 +88,4 @@ function DialogSection({children, header}: DialogSectionProps): JSX.Element {
   );
 }
 
-export { PopupsContext, ContentDialog, DialogSection }
+export { PopupsContext, ContentDialog, DialogSection };
