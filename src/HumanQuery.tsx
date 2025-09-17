@@ -1,26 +1,25 @@
 import React from 'react';
 import type {PropsWithChildren} from 'react';
-import {
-  Pressable,
-  Text,
-  View,
-} from 'react-native';
-import {
-  FlyoutMenu,
-  MarkdownWithRules,
-} from './Controls';
-import type { FlyoutMenuButtonType } from './Controls';
-import { StylesContext } from './Styles';
-import { ChatHistoryContext } from './Chat';
+import {Pressable, Text, View} from 'react-native';
+import {FlyoutMenu, MarkdownWithRules} from './Controls';
+import type {FlyoutMenuButtonType} from './Controls';
+import {StylesContext} from './Styles';
+import {ChatHistoryContext} from './Chat';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 type HumanSectionProps = PropsWithChildren<{
-  id?: number,
+  id?: number;
   content?: string;
   disableCopy?: boolean;
   moreMenu?: FlyoutMenuButtonType[];
 }>;
-function HumanSection({children, id, content, disableCopy, moreMenu}: HumanSectionProps): JSX.Element {
+function HumanSection({
+  children,
+  id,
+  content,
+  disableCopy,
+  moreMenu,
+}: HumanSectionProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const chatHistory = React.useContext(ChatHistoryContext);
 
@@ -48,11 +47,11 @@ function HumanSection({children, id, content, disableCopy, moreMenu}: HumanSecti
         <Text
           accessibilityRole="header"
           style={[styles.sectionTitle, {flexGrow: 1}]}>
-            Prompt
+          Prompt
         </Text>
         <FlyoutMenu items={menuItems} maxWidth={300} maxHeight={400}/>
       </View>
-      {content ? <MarkdownWithRules content={content}/> : null}
+      {content ? <MarkdownWithRules content={content} /> : null}
       {children}
     </Pressable>
   );

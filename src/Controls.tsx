@@ -40,7 +40,12 @@ type ConsentSwitchProps = {
   details: string;
   defaultValue?: boolean;
 };
-function ConsentSwitch({title, source, defaultValue, details}: ConsentSwitchProps): JSX.Element {
+function ConsentSwitch({
+  title,
+  source,
+  defaultValue,
+  details,
+}: ConsentSwitchProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const [value, onValueChange] = React.useState(defaultValue);
 
@@ -48,10 +53,10 @@ function ConsentSwitch({title, source, defaultValue, details}: ConsentSwitchProp
     <View
       style={[styles.horizontalContainer, {marginBottom: 8}]}
       tooltip={details}>
-      <Switch value={value} onValueChange={onValueChange}/>
+      <Switch value={value} onValueChange={onValueChange} />
       <View>
         <Text>{title}</Text>
-        <Attribution source={source}/>
+        <Attribution source={source} />
       </View>
     </View>
   );
@@ -64,8 +69,12 @@ function ImageSelection({image}: ImageSelectionProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   return (
     <View>
-      <Image style={styles.dalleImage} source={image}/>
-      <View style={[styles.horizontalContainer, {marginTop: 4, justifyContent: 'space-between'}]}>
+      <Image style={styles.dalleImage} source={image} />
+      <View
+        style={[
+          styles.horizontalContainer,
+          {marginTop: 4, justifyContent: 'space-between'},
+        ]}>
         <Button>Variations</Button>
         <Button>Select</Button>
       </View>
@@ -73,27 +82,38 @@ function ImageSelection({image}: ImageSelectionProps): JSX.Element {
   );
 }
 
-function SwitchWithLabel({label, value, onValueChange}: {label: string, value: boolean, onValueChange: (value: boolean) => void}): JSX.Element {
+function SwitchWithLabel({
+  label,
+  value,
+  onValueChange,
+}: {
+  label: string;
+  value: boolean;
+  onValueChange: (value: boolean) => void;
+}): JSX.Element {
   return (
     <View style={{flexDirection: 'row', alignItems: 'flex-start'}}>
       <Switch
         style={{marginTop: -6}}
         accessibilityLabel={label}
         value={value}
-        onValueChange={onValueChange}/>
+        onValueChange={onValueChange}
+      />
       <Text style={{marginTop: 4}}>{label}</Text>
     </View>
   );
 }
 
 type MoreMenuButtonProps = PropsWithChildren<{
-  showMenu: boolean,
+  showMenu: boolean;
   setShowMenu: Dispatch<SetStateAction<boolean>>;
 }>;
-const MoreMenuButton = React.forwardRef(function MoreMenuButton({showMenu, setShowMenu}: MoreMenuButtonProps, ref): JSX.Element {
+const MoreMenuButton = React.forwardRef(function MoreMenuButton(
+  {showMenu, setShowMenu}: MoreMenuButtonProps,
+  ref,
+): JSX.Element {
   return (
-    <View
-      ref={ref}>
+    <View ref={ref}>
       <Button
         enabled={!showMenu}
         appearance="subtle"
@@ -107,16 +127,20 @@ const MoreMenuButton = React.forwardRef(function MoreMenuButton({showMenu, setSh
 });
 
 type FlyoutMenuButtonType = {
-  title: string,
-  icon?: number,
-  onPress: () => void,
-}
+  title: string;
+  icon?: number;
+  onPress: () => void;
+};
 
 type FlyoutMenuButtonProps = PropsWithChildren<{
   icon?: number;
   onClick: () => void;
 }>;
-function FlyoutMenuButton({icon, onClick, children}: FlyoutMenuButtonProps): JSX.Element {
+function FlyoutMenuButton({
+  icon,
+  onClick,
+  children,
+}: FlyoutMenuButtonProps): JSX.Element {
   return (
     <Button
       appearance="subtle"
@@ -135,15 +159,17 @@ function FlyoutMenu({items, maxWidth, maxHeight}: FlyoutMenuProps): JSX.Element 
   const [isOpen, setIsOpen] = React.useState(false);
   const placementRef = React.useRef(null);
 
-  const buttonList = items.map((button, index) =>
+  const buttonList = items.map((button, index) => (
     <FlyoutMenuButton
       key={index}
       icon={button.icon}
       onClick={() => {
         button.onPress();
         setIsOpen(false);
-      }}>{button.title}</FlyoutMenuButton>
-  );
+      }}>
+      {button.title}
+    </FlyoutMenuButton>
+  ));
 
   return (
     <>
@@ -167,7 +193,7 @@ function FlyoutMenu({items, maxWidth, maxHeight}: FlyoutMenuProps): JSX.Element 
 type MarkdownWithRulesProps = {
   content?: string;
 };
-function MarkdownWithRules({content} : MarkdownWithRulesProps): JSX.Element {
+function MarkdownWithRules({content}: MarkdownWithRulesProps): JSX.Element {
   const rules = {
     fence: (node, children, parent, styles) => {
       return (
@@ -179,9 +205,7 @@ function MarkdownWithRules({content} : MarkdownWithRulesProps): JSX.Element {
       },
   };
 
-  return (
-    <Markdown rules={rules}>{content}</Markdown>
-  );
+  return <Markdown rules={rules}>{content}</Markdown>;
 }
 function FluentTextInput(props: React.ComponentProps<typeof TextInput>): JSX.Element {
   const styles = React.useContext(StylesContext);

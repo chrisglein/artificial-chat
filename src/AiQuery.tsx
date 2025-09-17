@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from 'react-native';
+import {Text} from 'react-native';
 import {
   OpenAiApi,
   CallOpenAi,
@@ -11,22 +11,41 @@ import {
   ChatScrollContext,
   ChatHistoryContext,
 } from './Chat';
-import { SettingsContext } from './Settings';
+import {SettingsContext} from './Settings';
 
 // Component that drives the queries to OpenAi to respond to a prompt
 type AiSectionWithQueryProps = {
   prompt: string;
   intent?: string;
   id: number;
-  onResponse: ({prompt, intent, responses, contentType} : { prompt: string, intent?: string, responses: string[], contentType: ChatContent} ) => void;
+  onResponse: ({
+    prompt,
+    intent,
+    responses,
+    contentType,
+  }: {
+    prompt: string;
+    intent?: string;
+    responses: string[];
+    contentType: ChatContent;
+  }) => void;
 };
-function AiSectionWithQuery({prompt, intent, id, onResponse}: AiSectionWithQueryProps): JSX.Element {
+function AiSectionWithQuery({
+  prompt,
+  intent,
+  id,
+  onResponse,
+}: AiSectionWithQueryProps): JSX.Element {
   const settingsContext = React.useContext(SettingsContext);
   const chatScroll = React.useContext(ChatScrollContext);
   const chatHistory = React.useContext(ChatHistoryContext);
   const [isLoading, setIsLoading] = React.useState(true);
-  const [isRequestForImage, setIsRequestForImage] = React.useState<boolean | undefined>(undefined);
-  const [imagePrompt, setImagePrompt] = React.useState<string | undefined>(undefined);
+  const [isRequestForImage, setIsRequestForImage] = React.useState<
+    boolean | undefined
+  >(undefined);
+  const [imagePrompt, setImagePrompt] = React.useState<string | undefined>(
+    undefined,
+  );
 
   // First determine the intent of the prompt
   const imageIntentSentinel = '[IMAGE]';
@@ -57,14 +76,13 @@ If and only if you are absolutely certain the user's primary intent is to see an
       onError: () => {
         setIsRequestForImage(false);
       },
-      onResult: (result) => {
+      onResult: result => {
         const isImage = result[0] == imageIntentSentinel;
         setIsRequestForImage(isImage);
       },
-      onComplete: () => {
-    }});
+      onComplete: () => {},
+    });
   }, [prompt]);
-
 
   // If the intent is to request an image, then we need to create keywords for the image prompt
   React.useEffect(() => {
@@ -97,11 +115,11 @@ Respond with the image prompt string in the required format. Do not respond conv
         onError: () => {
           setIsRequestForImage(false);
         },
-        onResult: (result) => {
+        onResult: result => {
           setImagePrompt(result[0]);
         },
-        onComplete: () => {
-      }});
+        onComplete: () => {},
+      });
     }
   }, [isRequestForImage]);
 
@@ -121,13 +139,13 @@ Respond with the image prompt string in the required format. Do not respond conv
             filter((entry) => { return entry.responses !== undefined && entry.id < id; }).
             map((entry) => { return {role: entry.type == ChatSource.Human ? 'user' : 'assistant', 'content': entry.responses ? entry.responses[0] : ''}; }),
         },
-        onError: (error) => {
+        onError: error => {
           onResponse({
             prompt: prompt,
             responses: [error] ?? [''],
             contentType: ChatContent.Error});
         },
-        onResult: (result) => {
+        onResult: result => {
           onResponse({
             prompt: prompt,
             responses: result ?? [''],
@@ -136,7 +154,8 @@ Respond with the image prompt string in the required format. Do not respond conv
         onComplete: () => {
           setIsLoading(false);
           chatScroll.scrollToEnd();
-      }});
+        },
+      });
     } else {
       if (isRequestForImage == true && imagePrompt !== undefined) {
         setIsLoading(true);
@@ -150,13 +169,13 @@ Respond with the image prompt string in the required format. Do not respond conv
             responseCount: settingsContext.imageResponseCount,
             imageSize: settingsContext.imageSize,
           },
-          onError: (error) => {
+          onError: error => {
             onResponse({
               prompt: imagePrompt,
               responses: [error] ?? [''],
               contentType: ChatContent.Error});
           },
-          onResult: (result) => {
+          onResult: result => {
             onResponse({
               prompt: imagePrompt,
               responses: result ?? [''],
@@ -165,25 +184,29 @@ Respond with the image prompt string in the required format. Do not respond conv
           onComplete: () => {
             setIsLoading(false);
             chatScroll.scrollToEnd();
-        }});
+          },
+        });
       }
     }
   }, [imagePrompt, isRequestForImage]);
 
   return (
     <AiSection id={id} isLoading={isLoading}>
-      {
-        (isLoading ?
-          isRequestForImage === undefined ?
-            <Text>Identifying intent...</Text> :
-            isRequestForImage === true ?
-              imagePrompt === undefined ?
-                <Text>Generating keywords for an image...</Text> :
-                <Text>Generating image...</Text> :
-              <Text>Generating text...</Text>
-            :
-          <Text>Done loading</Text>)
-      }
+      {isLoading ? (
+        isRequestForImage === undefined ? (
+          <Text>Identifying intent...</Text>
+        ) : isRequestForImage === true ? (
+          imagePrompt === undefined ? (
+            <Text>Generating keywords for an image...</Text>
+          ) : (
+            <Text>Generating image...</Text>
+          )
+        ) : (
+          <Text>Generating text...</Text>
+        )
+      ) : (
+        <Text>Done loading</Text>
+      )}
     </AiSection>
   );
 }

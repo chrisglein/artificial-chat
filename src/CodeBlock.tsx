@@ -12,7 +12,16 @@ function CodeBlock({content, language} : {content: string, language: string}): J
 
   return (
     <View>
-      <View style={[styles.codeBlockTitle, {flexDirection: 'row', borderTopLeftRadius: 8, borderTopRightRadius: 8, paddingHorizontal: 12}]}>
+      <View
+        style={[
+          styles.codeBlockTitle,
+          {
+            flexDirection: 'row',
+            borderTopLeftRadius: 8,
+            borderTopRightRadius: 8,
+            paddingHorizontal: 12,
+          },
+        ]}>
         <Text
           accessibilityLabel="Language"
           style={[styles.codeBlockTitleText, {flexGrow: 1, alignSelf: 'center'}]}>
@@ -26,7 +35,8 @@ function CodeBlock({content, language} : {content: string, language: string}): J
           tooltip="Copy Code"
           onClick={() => {
             Clipboard.setString(content);
-          }}/>
+          }}
+        />
       </View>
       <Text style={{padding: 10, borderBottomLeftRadius: 8, borderBottomRightRadius: 8, fontSize: 14, fontFamily: 'Courier New'}}>
           {content}

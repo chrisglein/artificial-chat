@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  Button,
-  Image,
-  Text,
-  View,
-} from 'react-native';
+import {Button, Image, Text, View} from 'react-native';
 import {
   Attribution,
   CodeBlock,
@@ -87,18 +82,18 @@ const runDinosaurScript = (index: number, styles, goToNext) => {
     case 4: return {
       prompt: "I like the original best, let's stick with that. But I'd like my picture on the box, since I'm the designer, can we do that?",
       aiResponse: () =>
-        <>
+          <>
           <Text>Sure, here are some ways we can do that. Please choose one</Text>
-          <View style={styles.horizontalContainer}>
-            <View style={styles.inlineCard}>
+            <View style={styles.horizontalContainer}>
+              <View style={styles.inlineCard}>
               <Button title="Access profile photos" onPress={() => goToNext()}/>
               <Attribution source="OneDrive"/>
-            </View>
-            <View style={styles.inlineCard}>
+              </View>
+              <View style={styles.inlineCard}>
               <Button title="Generate a placeholder image" onPress={() => goToNext()}/>
               <Attribution source="DALL-E"/>
-            </View>
-            <View style={styles.inlineCard}>
+              </View>
+              <View style={styles.inlineCard}>
               <Button title="Take a picture now" onPress={() => goToNext()}/>
             </View>
             <View style={styles.inlineCard}>
@@ -192,7 +187,7 @@ const runDeveloperScript = (index: number, styles, goToNext) => {
       
       I consider myself to have advanced programming experience. Let's make this a React app. Please create the JavaScript for this app.`,
       aiResponse: () =>
-        <>
+          <>
           <Text>Great! Here is an example of how you could create a React app to meet your requirements:</Text>
           <Text>First, you would need to set up your development environment and create a new React app using a tool like Create React App. Once you have your app set up, you could create a component to represent each gift:</Text>
           <CodeBlock language="jsx" content={`import React, { useState } from 'react';
@@ -251,9 +246,9 @@ const GiftQueue = ({ participants, onGiftOpened }) => {
   );
 };
 `}/>
-          <Text>This component takes in an array of participant objects and a function to call when a gift is opened. It uses the currentParticipantIndex state variable to keep track of whose turn it is, and includes functions for advancing to the next participant and for opening a gift.</Text>
-          <Text>Finally, you could create a component to represent the entire app and to manage the state of the gifts and the participants:</Text>
-          <CodeBlock language="jsx" content={`import React, { useState } from 'react';
+            <Text>This component takes in an array of participant objects and a function to call when a gift is opened. It uses the currentParticipantIndex state variable to keep track of whose turn it is, and includes functions for advancing to the next participant and for opening a gift.</Text>
+            <Text>Finally, you could create a component to represent the entire app and to manage the state of the gifts and the participants:</Text>
+            <CodeBlock language="jsx" content={`import React, { useState } from 'react';
 import Gift from './Gift';
 import GiftQueue from './GiftQueue';
 
@@ -396,8 +391,8 @@ export default ParticipantList;
 function AdaptiveCard(props) {
   return (
     <View>
-      <Button title="Placeholder"/>
-      <Attribution source="AdaptiveCard"/>
+      <Button title="Placeholder" />
+      <Attribution source="AdaptiveCard" />
     </View>
   );
 }
@@ -474,7 +469,9 @@ const runAdaptiveCardScript = (index: number, styles, goToNext) => {
         aiResponse: () => (
           <>
             <Text>Certainly! Here is the JSON:</Text>
-            <CodeBlock language="json" content={`{
+            <CodeBlock
+              language="json"
+              content={`{
   type: 'AdaptiveCard',
   version: '1.0',
   body: [
@@ -487,8 +484,8 @@ const runAdaptiveCardScript = (index: number, styles, goToNext) => {
       text: 'This is an Adaptive Card',
     },
   ],
-}`
-            }/>
+}`}
+            />
           </>
         ),
       };
@@ -546,12 +543,17 @@ const runAdaptiveCardScript = (index: number, styles, goToNext) => {
 };
 
 type HandleAIResponseType = {
-  index: number,
-  styles: any,
-  goToNext: () => void,
-  scriptName: string | undefined,
-}
-const handleAIResponse = ({index, styles, goToNext, scriptName} : HandleAIResponseType) => {
+  index: number;
+  styles: any;
+  goToNext: () => void;
+  scriptName: string | undefined;
+};
+const handleAIResponse = ({
+  index,
+  styles,
+  goToNext,
+  scriptName,
+}: HandleAIResponseType) => {
   switch (scriptName) {
     case ChatScriptNames[0]:
       return runDinosaurScript(index, styles, goToNext);

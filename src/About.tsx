@@ -17,7 +17,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 type AboutPopupProps = {
   show: boolean;
   close: () => void;
-}
+};
 function AboutPopup({show, close}: AboutPopupProps): JSX.Element {
   const styles = React.useContext(StylesContext);
 
@@ -35,7 +35,9 @@ function AboutPopup({show, close}: AboutPopupProps): JSX.Element {
       maxWidth={300}
       maxHeight={240}>
       <View style={{flexDirection: 'row', alignItems: 'center', gap: 4}}>
-        <Text>Version: <Text style={{fontWeight: 'bold'}}>{version}</Text></Text>
+        <Text>
+          Version: <Text style={{fontWeight: 'bold'}}>{version}</Text>
+        </Text>
         <Button
           appearance="subtle"
           accessibilityLabel="Copy version"

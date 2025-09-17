@@ -1,13 +1,6 @@
 import React from 'react';
-import {
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
-import {
-  ContentDialog,
-  DialogSection,
-} from './Popups';
+import {Text, TextInput, View} from 'react-native';
+import {ContentDialog, DialogSection} from './Popups';
 import {StylesContext} from './Styles';
 import {Picker} from './Picker';
 import {ChatScriptNames} from './ChatScript';
@@ -23,25 +16,25 @@ const settingsKey = 'settings';
 
 // App-wide settings that can be modified from a menu, some of which are saved between app sessions
 type SettingsContextType = {
-  apiKey?: string,
-  setApiKey: (value?: string) => void,
-  scriptName?: string,
-  setScriptName: (value: string) => void,
-  delayForArtificialResponse?: number,
-  setDelayForArtificialResponse: (value: number) => void,
-  detectImageIntent: boolean,
-  setDetectImageIntent: (value: boolean) => void,
-  imageResponseCount: number,
-  setImageResponseCount: (value: number) => void,
-  imageSize: number,
-  setImageSize: (value: number) => void,
-  aiEndpoint: string,
-  setAiEndpoint: (value: string) => void,
-  chatModel: string,
-  setChatModel: (value: string) => void,
-  readToMeVoice: string,
-  setReadToMeVoice: (value: string) => void,
-}
+  apiKey?: string;
+  setApiKey: (value?: string) => void;
+  scriptName?: string;
+  setScriptName: (value: string) => void;
+  delayForArtificialResponse?: number;
+  setDelayForArtificialResponse: (value: number) => void;
+  detectImageIntent: boolean;
+  setDetectImageIntent: (value: boolean) => void;
+  imageResponseCount: number;
+  setImageResponseCount: (value: number) => void;
+  imageSize: number;
+  setImageSize: (value: number) => void;
+  aiEndpoint: string;
+  setAiEndpoint: (value: string) => void;
+  chatModel: string;
+  setChatModel: (value: string) => void;
+  readToMeVoice: string;
+  setReadToMeVoice: (value: string) => void;
+};
 const SettingsContext = React.createContext<SettingsContextType>({
   setApiKey: () => {},
   setScriptName: () => {},
@@ -62,10 +55,10 @@ const SettingsContext = React.createContext<SettingsContextType>({
 
 // Settings that are saved between app sessions
 type SettingsData = {
-  apiKey?: string,
-  imageSize?: number,
-  readToMeVoice?: string,
-}
+  apiKey?: string;
+  imageSize?: number;
+  readToMeVoice?: string;
+};
 
 // Read settings from app storage
 const SaveSettingsData = async (value: SettingsData) => {
@@ -82,7 +75,7 @@ const SaveSettingsData = async (value: SettingsData) => {
 // Write settings to app storage
 const LoadSettingsData = async () => {
   console.debug('Loading settings data...');
-  let valueToSave : SettingsData = {};
+  let valueToSave: SettingsData = {};
   try {
     const valueAsString = await AsyncStorage.getItem(settingsKey);
     if (valueAsString != null) {
@@ -92,7 +85,7 @@ const LoadSettingsData = async () => {
       if (value.hasOwnProperty('imageSize')) { valueToSave.imageSize = parseInt(value.imageSize); }
       if (value.hasOwnProperty('readToMeVoice')) { valueToSave.readToMeVoice = value.readToMeVoice; }
     }
-  } catch(e) {
+  } catch (e) {
     console.error(e);
   }
   return valueToSave;
@@ -101,20 +94,26 @@ const LoadSettingsData = async () => {
 type SettingsPopupProps = {
   show: boolean;
   close: () => void;
-}
+};
 function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const settings = React.useContext(SettingsContext);
-  const [aiEndpoint, setAiEndpoint] = React.useState<string>(settings.aiEndpoint);
+  const [aiEndpoint, setAiEndpoint] = React.useState<string>(
+    settings.aiEndpoint,
+  );
   const [chatModel, setChatModel] = React.useState<string>(settings.chatModel);
-  const [apiKey, setApiKey] = React.useState<string | undefined>(settings.apiKey);
+  const [apiKey, setApiKey] = React.useState<string | undefined>(
+    settings.apiKey,
+  );
   const [saveApiKey, setSaveApiKey] = React.useState<boolean>(false);
   const [scriptName, setScriptName] = React.useState<string>(settings.scriptName ?? '');
   const [delayForArtificialResponse, setDelayForArtificialResponse] = React.useState<number>(settings.delayForArtificialResponse ?? 0);
   const [detectImageIntent, setDetectImageIntent] = React.useState<boolean>(settings.detectImageIntent);
   const [imageResponseCount, setImageResponseCount] = React.useState<number>(settings.imageResponseCount);
   const [imageSize, setImageSize] = React.useState<number>(256);
-  const [readToMeVoice, setReadToMeVoice] = React.useState<string>(settings.readToMeVoice);
+  const [readToMeVoice, setReadToMeVoice] = React.useState<string>(
+    settings.readToMeVoice,
+  );
 
   // It may seem weird to do this when the UI loads, not the app, but it's okay
   // because this component is loaded when the app starts but isn't shown. And
@@ -209,7 +208,8 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             accessibilityLabel="AI Endpoint"
             style={{flexGrow: 1, minHeight: 32}}
             value={aiEndpoint}
-            onChangeText={value => setAiEndpoint(value)}/>
+            onChangeText={value => setAiEndpoint(value)}
+          />
           <Text>Chat Model</Text>
           <Picker
             accessibilityLabel="Chat Model"
@@ -231,27 +231,43 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
               onChange={(event, value) => setSaveApiKey(value)}/>
           <Link
             content="https://platform.openai.com/account/api-keys"
-            url="https://platform.openai.com/account/api-keys"/>
+            url="https://platform.openai.com/account/api-keys"
+          />
         </DialogSection>
         <DialogSection header="Image Generation">
           <Checkbox
             label="Infer image intent from prompt"
             size="large"
             checked={detectImageIntent}
-            onChange={(event, value) => setDetectImageIntent(value)}/>
+            onChange={(event, value) => setDetectImageIntent(value)}
+          />
           <Text>Image Count</Text>
           <Picker
             accessibilityLabel="Image Count"
             selectedValue={imageResponseCount}
-            onValueChange={value => setImageResponseCount(typeof value === 'number' ? value : parseInt(value))}>
-            {[1, 2, 3, 4].map(number => <Picker.Item label={number.toString()} value={number} key={number}/>)}
+            onValueChange={value =>
+              setImageResponseCount(
+                typeof value === 'number' ? value : parseInt(value),
+              )
+            }>
+            {[1, 2, 3, 4].map(number => (
+              <Picker.Item
+                label={number.toString()}
+                value={number}
+                key={number}
+              />
+            ))}
           </Picker>
           <Text>Image Size</Text>
           <Picker
             accessibilityLabel="Image Size"
             selectedValue={imageSize}
-            onValueChange={value => setImageSize(typeof value === 'number' ? value : parseInt(value))}>
-            {[256, 512, 1024].map(size => <Picker.Item label={size.toString()} value={size} key={size}/>)}
+            onValueChange={value =>
+              setImageSize(typeof value === 'number' ? value : parseInt(value))
+            }>
+            {[256, 512, 1024].map(size => (
+              <Picker.Item label={size.toString()} value={size} key={size} />
+            ))}
           </Picker>
         </DialogSection>
         <DialogSection header="Read to Me">
@@ -260,8 +276,14 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             accessibilityLabel="Read to me"
             selectedValue={readToMeVoice}
             onValueChange={value => setReadToMeVoice(value)}>
-            {GetVoices().map(voice => <Picker.Item label={voice.displayName} value={voice.id} key={voice.id}/>)}
-            <Picker.Item label="None" value=""/>
+            {GetVoices().map(voice => (
+              <Picker.Item
+                label={voice.displayName}
+                value={voice.id}
+                key={voice.id}
+              />
+            ))}
+            <Picker.Item label="None" value="" />
           </Picker>
         </DialogSection>
         <DialogSection header="AI Scripts">
@@ -270,16 +292,21 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             accessibilityLabel="Script"
             selectedValue={scriptName}
             onValueChange={value => setScriptName(value)}>
-            {ChatScriptNames.map(name => <Picker.Item label={name} value={name} key={name}/>)}
-            <Picker.Item label="None" value=""/>
+            {ChatScriptNames.map(name => (
+              <Picker.Item label={name} value={name} key={name} />
+            ))}
+            <Picker.Item label="None" value="" />
           </Picker>
           <Text>Artificial Delay in Script Response</Text>
           <TextInput
             accessibilityLabel="Artificial Delay in Script Response"
             keyboardType="numeric"
             style={{flexGrow: 1, minHeight: 32}}
-            onChangeText={value => setDelayForArtificialResponse(parseInt(value))}
-            value={delayForArtificialResponse.toString()}/>
+            onChangeText={value =>
+              setDelayForArtificialResponse(parseInt(value))
+            }
+            value={delayForArtificialResponse.toString()}
+          />
         </DialogSection>
       </View>
     </ContentDialog>

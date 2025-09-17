@@ -35,7 +35,7 @@ type ChatElement = {
   prompt?: string;
   responses?: string[];
   content?: JSX.Element;
-}
+};
 
 // Context for read-only access to the chat log
 const ChatHistoryContext = React.createContext<{
@@ -52,16 +52,20 @@ const ChatHistoryContext = React.createContext<{
 
 // Context for being able to drive the chat scroller
 const ChatScrollContext = React.createContext<{
-  scrollToEnd : () => void;
+  scrollToEnd: () => void;
 }>({scrollToEnd: () => {}});
 
 // Component for taking user input to drive the chat
 type ChatEntryProps = {
   defaultText?: string;
-  submit: (text : string) => void;
+  submit: (text: string) => void;
   clearConversation: () => void;
 };
-function ChatEntry({submit, defaultText, clearConversation}: ChatEntryProps): JSX.Element {
+function ChatEntry({
+  submit,
+  defaultText,
+  clearConversation,
+}: ChatEntryProps): JSX.Element {
   const styles = React.useContext(StylesContext);
 
   // Allow a chat script to default populate the text box
@@ -85,7 +89,8 @@ function ChatEntry({submit, defaultText, clearConversation}: ChatEntryProps): JS
         onChangeText={newValue => setValue(newValue)}
         submitKeyEvents={[{code: 'Enter', shiftKey: false}]}
         onSubmitEditing={submitValue}
-        value={defaultText ?? value}/>
+        value={defaultText ?? value}
+      />
       <Button
         appearance="primary"
         accessibilityLabel="Submit prompt"
@@ -103,21 +108,29 @@ function ChatEntry({submit, defaultText, clearConversation}: ChatEntryProps): JS
 // A scrolling list of ChatElements
 type ChatProps = {
   entries: ChatElement[];
-  humanText? : string;
+  humanText?: string;
   onPrompt: (prompt: string) => void;
   clearConversation: () => void;
 };
-function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX.Element {
+function Chat({
+  entries,
+  humanText,
+  onPrompt,
+  clearConversation,
+}: ChatProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const chatHistory = React.useContext(ChatHistoryContext);
   const popups = React.useContext(PopupsContext);
   const settings = React.useContext(SettingsContext);
   const [showFeedbackPopup, setShowFeedbackPopup] = React.useState(false);
-  const [feedbackTargetResponse, setFeedbackTargetResponse] = React.useState<string | undefined>(undefined);
+  const [feedbackTargetResponse, setFeedbackTargetResponse] = React.useState<
+    string | undefined
+  >(undefined);
   const [feedbackIsPositive, setFeedbackIsPositive] = React.useState(false);
-  const scrollViewRef : React.RefObject<ScrollView> = React.useRef(null);
+  const scrollViewRef: React.RefObject<ScrollView> = React.useRef(null);
 
-  let showingAnyPopups = (showFeedbackPopup || popups.showSettings || popups.showAbout);
+  let showingAnyPopups =
+    showFeedbackPopup || popups.showSettings || popups.showAbout;
 
   const feedbackContext = {
     showFeedback: (positive: boolean, response?: string) => {
@@ -191,8 +204,7 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
               }
             </View>
           </ScrollView>
-          <View
-            style={{flexShrink: 0, marginBottom: 12}}>
+          <View style={{flexShrink: 0, marginBottom: 12}}>
             <HumanSection
               id={undefined}
               disableCopy={true}
@@ -210,19 +222,21 @@ function Chat({entries, humanText, onPrompt, clearConversation}: ChatProps): JSX
               ]}>
               <ChatEntry
                 defaultText={humanText}
-                submit={(newEntry) => {
+                submit={newEntry => {
                   onPrompt(newEntry);
                   scrollToEnd();
                 }}
-                clearConversation={clearConversation}/>
+                clearConversation={clearConversation}
+              />
             </HumanSection>
           </View>
-          { showingAnyPopups && <View style={styles.popupBackground}/> }
+          {showingAnyPopups && <View style={styles.popupBackground} />}
           <FeedbackPopup
             show={showFeedbackPopup}
             isPositive={feedbackIsPositive}
             response={feedbackTargetResponse}
-            close={() => setShowFeedbackPopup(false)}/>
+            close={() => setShowFeedbackPopup(false)}
+          />
         </View>
       </ChatScrollContext.Provider>
     </FeedbackContext.Provider>

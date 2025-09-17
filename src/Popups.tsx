@@ -10,11 +10,11 @@ import {StylesContext} from './Styles';
 import {ContentDialog} from 'react-native-content-dialog';
 
 type PopupsContextType = {
-    showAbout: boolean,
-    setShowAbout: (value: boolean) => void,
-    showSettings: boolean,
-    setShowSettings: (value: boolean) => void,
-  }
+  showAbout: boolean;
+  setShowAbout: (value: boolean) => void;
+  showSettings: boolean;
+  setShowSettings: (value: boolean) => void;
+};
 const PopupsContext = React.createContext<PopupsContextType>({
   showAbout: false,
   setShowAbout: () => {},
@@ -74,16 +74,16 @@ function DialogFrame({children, show, close, isLightDismissEnabled, titleIcon, t
 }
 
 type DialogSectionProps = PropsWithChildren<{
-  header: string,
+  header: string;
 }>;
 function DialogSection({children, header}: DialogSectionProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   return (
     <View>
-      <Text accessibilityRole="header" style={styles.dialogSectionHeader}>{header}</Text>
-      <View style={styles.dialogSection}>
-        {children}
-      </View>
+      <Text accessibilityRole="header" style={styles.dialogSectionHeader}>
+        {header}
+      </Text>
+      <View style={styles.dialogSection}>{children}</View>
     </View>
   );
 }

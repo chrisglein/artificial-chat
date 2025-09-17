@@ -5,13 +5,13 @@ enum OpenAiApi {
 }
 
 type OpenAiHandlerOptions = {
-  endpoint?: string,
-  engine?: string,
-  chatModel?: string,
-  promptHistory?: ConversationEntry[],
-  responseCount?: number,
-  imageSize?: number,
-}
+  endpoint?: string;
+  engine?: string;
+  chatModel?: string;
+  promptHistory?: ConversationEntry[];
+  responseCount?: number;
+  imageSize?: number;
+};
 
 type ConversationEntry = {
   role: 'user' | 'system' | 'assistant',
@@ -19,14 +19,16 @@ type ConversationEntry = {
 }
 
 type OpenAiHandlerType = {
-  api: OpenAiApi,
-  options?: OpenAiHandlerOptions,
-  instructions?: string,
-}
+  api: OpenAiApi;
+  options?: OpenAiHandlerOptions;
+  instructions?: string;
+};
 const OpenAiHandler = ({api, options, instructions}: OpenAiHandlerType) => {
   const OpenAIUrl = options?.endpoint ?? 'https://api.openai.com/v1';
 
-  let actualInstructions = instructions ?? 'The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly.';
+  let actualInstructions =
+    instructions ??
+    'The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly.';
 
   switch (api) {
     case OpenAiApi.Completion:
@@ -89,7 +91,7 @@ const OpenAiHandler = ({api, options, instructions}: OpenAiHandlerType) => {
         },
         response: (json: any) => {
           console.log(`AI response: "${json.data[0].url}"`);
-          return json.data.map((item : any) => item.url);
+          return json.data.map((item: any) => item.url);
         },
       };
     default:
@@ -98,17 +100,27 @@ const OpenAiHandler = ({api, options, instructions}: OpenAiHandlerType) => {
 };
 
 type CallOpenAiType = {
-  api: OpenAiApi,
-  apiKey?: string,
-  instructions?: string,
-  identifier?: string,
-  prompt: string,
-  options?: OpenAiHandlerOptions,
-  onError: (error: string) => void,
-  onResult: (results: string[]) => void,
-  onComplete: () => void
-}
-const CallOpenAi = async ({api, apiKey, instructions, identifier, prompt, options, onError, onResult, onComplete}: CallOpenAiType) => {
+  api: OpenAiApi;
+  apiKey?: string;
+  instructions?: string;
+  identifier?: string;
+  prompt: string;
+  options?: OpenAiHandlerOptions;
+  onError: (error: string) => void;
+  onResult: (results: string[]) => void;
+  onComplete: () => void;
+};
+const CallOpenAi = async ({
+  api,
+  apiKey,
+  instructions,
+  identifier,
+  prompt,
+  options,
+  onError,
+  onResult,
+  onComplete,
+}: CallOpenAiType) => {
   const DefaultApiKey = undefined; // During development you can paste your API key here, but DO NOT CHECK IN
   let effectiveApiKey = apiKey ?? DefaultApiKey;
 
@@ -121,7 +133,11 @@ const CallOpenAi = async ({api, apiKey, instructions, identifier, prompt, option
   try {
     console.debug(`Start ${identifier}"${prompt}"`);
 
-    let apiHandler = OpenAiHandler({api: api, options: options, instructions: instructions});
+    let apiHandler = OpenAiHandler({
+      api: api,
+      options: options,
+      instructions: instructions,
+    });
 
     let url = apiHandler.url;
     let body = apiHandler.body(prompt);

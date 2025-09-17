@@ -9,21 +9,13 @@ import {
   Text,
   View,
 } from 'react-native';
-import {
-  FlyoutMenu,
-  MarkdownWithRules,
-} from './Controls';
-import type { FlyoutMenuButtonType } from './Controls';
-import {
-  ChatElement,
-  ChatContent,
-  ChatHistoryContext,
-  ChatSource,
-} from './Chat';
-import { StylesContext } from './Styles';
-import { FeedbackContext } from './Feedback';
+import {FlyoutMenu, MarkdownWithRules} from './Controls';
+import type {FlyoutMenuButtonType} from './Controls';
+import {ChatElement, ChatContent, ChatHistoryContext, ChatSource} from './Chat';
+import {StylesContext} from './Styles';
+import {FeedbackContext} from './Feedback';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { Speak } from './Speech';
+import {Speak} from './Speech';
 
 type AiImageResponseProps = {
   imageUrls?: string[];
@@ -31,11 +23,19 @@ type AiImageResponseProps = {
   rejectImage?: () => void;
   requestMore: () => void;
 };
-function AiImageResponse({imageUrls, prompt, rejectImage, requestMore}: AiImageResponseProps): JSX.Element {
+function AiImageResponse({
+  imageUrls,
+  prompt,
+  rejectImage,
+  requestMore,
+}: AiImageResponseProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   return (
     <View
-      style={[styles.horizontalContainer, {flexWrap: 'nowrap', alignItems: 'flex-start'}]}>
+      style={[
+        styles.horizontalContainer,
+        {flexWrap: 'nowrap', alignItems: 'flex-start'},
+      ]}>
       {imageUrls?.map((imageUrl, index) => (
         <Pressable
           key={index}
@@ -49,20 +49,27 @@ function AiImageResponse({imageUrls, prompt, rejectImage, requestMore}: AiImageR
             accessibilityLabel={prompt}
             source={{uri: imageUrl}}
             alt={prompt}
-            style={styles.dalleImage}/>
-        </Pressable>))}
-      <View
-        style={{flexShrink: 1, gap: 8}}>
-        <Text>Here is an image created using the following requirements "{prompt}"</Text>
+            style={styles.dalleImage}
+          />
+        </Pressable>
+      ))}
+      <View style={{flexShrink: 1, gap: 8}}>
+        <Text>
+          Here is an image created using the following requirements "{prompt}"
+        </Text>
         <View style={{alignSelf: 'flex-end', alignItems: 'flex-end'}}>
-          {rejectImage && <Button
-            accessibilityLabel="I didn't want to see an image"
-            title="I didn't want to see an image"
-            onPress={() => rejectImage()}/>}
+          {rejectImage && (
+            <Button
+              accessibilityLabel="I didn't want to see an image"
+              title="I didn't want to see an image"
+              onPress={() => rejectImage()}
+            />
+          )}
           <Button
             accessibilityLabel="Show me more"
             title="Show me more"
-            onPress={() => requestMore()}/>
+            onPress={() => requestMore()}
+          />
         </View>
       </View>
     </View>
@@ -70,12 +77,18 @@ function AiImageResponse({imageUrls, prompt, rejectImage, requestMore}: AiImageR
 }
 
 type AiSectionProps = PropsWithChildren<{
-  id: number,
+  id: number;
   isLoading?: boolean;
   copyValue?: string;
   moreMenu?: FlyoutMenuButtonType[];
 }>;
-function AiSection({children, id, isLoading, copyValue, moreMenu}: AiSectionProps): JSX.Element {
+function AiSection({
+  children,
+  id,
+  isLoading,
+  copyValue,
+  moreMenu,
+}: AiSectionProps): JSX.Element {
   const feedbackContext = React.useContext(FeedbackContext);
   const styles = React.useContext(StylesContext);
   const chatHistory = React.useContext(ChatHistoryContext);
@@ -117,7 +130,7 @@ function AiSection({children, id, isLoading, copyValue, moreMenu}: AiSectionProp
         <Text
           accessibilityRole="header"
           style={[styles.sectionTitle, {flexGrow: 1}]}>
-            OpenAI
+          OpenAI
         </Text>
         <FlyoutMenu items={menuItems} maxWidth={300} maxHeight={400}/>
       </View>
@@ -132,9 +145,9 @@ function AiSection({children, id, isLoading, copyValue, moreMenu}: AiSectionProp
 }
 
 type AiSectionContentProps = {
-  id: number,
+  id: number;
   content: ChatElement;
-}
+};
 function AiSectionContent({id, content}: AiSectionContentProps): JSX.Element {
   const chatHistory = React.useContext(ChatHistoryContext);
   const firstResult = content.responses ? content.responses[0] : '';
@@ -145,17 +158,30 @@ function AiSectionContent({id, content}: AiSectionContentProps): JSX.Element {
           case ChatContent.Error:
             return <Text style={{color: 'red'}}>{firstResult}</Text>;
           case ChatContent.Image:
-            return <AiImageResponse
-              imageUrls={content.responses}
-              prompt={content.prompt}
-              rejectImage={content.intent ? undefined : () => chatHistory.modifyResponse(id, {intent: 'text', responses: undefined})}
-              requestMore={() => chatHistory.add({
-                type: ChatSource.Ai,
-                id: -1,
-                contentType: ChatContent.Error,
-                intent: 'image',
-                prompt: content.prompt,
-              })}/>;
+            return (
+              <AiImageResponse
+                imageUrls={content.responses}
+                prompt={content.prompt}
+                rejectImage={
+                  content.intent
+                    ? undefined
+                    : () =>
+                        chatHistory.modifyResponse(id, {
+                          intent: 'text',
+                          responses: undefined,
+                        })
+                }
+                requestMore={() =>
+                  chatHistory.add({
+                    type: ChatSource.Ai,
+                    id: -1,
+                    contentType: ChatContent.Error,
+                    intent: 'image',
+                    prompt: content.prompt,
+                  })
+                }
+              />
+            );
           default:
           case ChatContent.Text:
             return <MarkdownWithRules content={firstResult}/>;
