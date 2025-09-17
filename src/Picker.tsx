@@ -75,9 +75,7 @@ const Picker = (props: PickerProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState(props.selectedValue);
 
-  const isDarkMode = currentTheme === 'dark';
-  const isHighContrast = false;
-  const styles = CreateStyles(isDarkMode, isHighContrast);
+  const styles = CreateStyles();
 
   // Update selectedValue when props.selectedValue changes
   useEffect(() => {
@@ -171,7 +169,7 @@ const Picker = (props: PickerProps) => {
 // Attach the Item component as a static property for compatibility
 Picker.Item = PickerItem;
 
-const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
+const CreateStyles = () => {
   return StyleSheet.create({
     container: {
       position: 'relative',

@@ -150,7 +150,7 @@ function Chat({
     chatHistory.modifyResponse(id, {prompt: prompt, responses: responses, contentType: contentType});
 
     // As the responses come in, speak them aloud (if enabled)
-    if (contentType == ChatContent.Text && settings.readToMeVoice) {
+    if (contentType === ChatContent.Text && settings.readToMeVoice) {
       Speak(responses[0]);
     }
   };

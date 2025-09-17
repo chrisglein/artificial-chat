@@ -126,7 +126,7 @@ const formatTextAsBullets = (styles : StylesContext, text: string[]) => {
     </View>);
 };
 
-const runDeveloperScript = (index: number, styles, goToNext) => {
+const runDeveloperScript = (index: number, styles) => {
   switch (index) {
     case -3: return {
       prompt: "I'd like to run a white elephant gift exchange. Are you familiar with the rules?",
@@ -397,7 +397,7 @@ function AdaptiveCard() {
   );
 }
 
-const runAdaptiveCardScript = (index: number, styles, goToNext) => {
+const runAdaptiveCardScript = (index: number) => {
   switch (index) {
     case 0:
       return {

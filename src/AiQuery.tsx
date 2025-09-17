@@ -77,7 +77,7 @@ If and only if you are absolutely certain the user's primary intent is to see an
         setIsRequestForImage(false);
       },
       onResult: result => {
-        const isImage = result[0] == imageIntentSentinel;
+        const isImage = result[0] === imageIntentSentinel;
         setIsRequestForImage(isImage);
       },
       onComplete: () => {},

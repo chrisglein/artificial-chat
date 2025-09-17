@@ -1,8 +1,6 @@
 import React from 'react';
 import type { PropsWithChildren } from 'react';
 import {
-  Button,
-  Modal,
   Text,
   View,
 } from 'react-native';

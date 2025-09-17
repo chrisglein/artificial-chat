@@ -194,7 +194,7 @@ type MarkdownWithRulesProps = {
 };
 function MarkdownWithRules({content}: MarkdownWithRulesProps): JSX.Element {
   const rules = {
-    fence: (node, children, parent, styles) => {
+    fence: (node) => {
       return (
         <CodeBlock
           key={node.key}
