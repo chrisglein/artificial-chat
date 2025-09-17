@@ -58,7 +58,7 @@ index b2ea1f3..50792f6 100644
  }
  
 diff --git a/node_modules/react-native-content-dialog/src/Styles.windows.tsx b/node_modules/react-native-content-dialog/src/Styles.windows.tsx
-index 48d47c8..3aa56f5 100644
+index 48d47c8..f894bb7 100644
 --- a/node_modules/react-native-content-dialog/src/Styles.windows.tsx
 +++ b/node_modules/react-native-content-dialog/src/Styles.windows.tsx
 @@ -22,12 +22,12 @@ const styles = StyleSheet.create({
@@ -68,7 +68,8 @@ index 48d47c8..3aa56f5 100644
 -    borderColor: PlatformColor('ContentDialogBorderBrush'),
 +    borderColor: PlatformColor('ControlAltFillColorTertiary'),
      // Technically this is adding overdraw, but it's the way the XAML brushes are set up and is required for dark mode
-     backgroundColor: PlatformColor('ContentDialogBackground'),
+-    backgroundColor: PlatformColor('ContentDialogBackground'),
++    backgroundColor: PlatformColor('SolidBackgroundFillColorBase'),
    },
    dialogTopArea: {
 -    backgroundColor: PlatformColor('ContentDialogTopOverlay'),
