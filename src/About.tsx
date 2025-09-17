@@ -31,7 +31,9 @@ function AboutPopup({show, close}: AboutPopupProps): JSX.Element {
       show={show}
       close={close}
       title="About"
-      defaultButtonIndex={0}>
+      defaultButtonIndex={0}
+      maxWidth={300}
+      maxHeight={240}>
       <View style={{flexDirection: 'row', alignItems: 'center', gap: 4}}>
         <Text>Version: <Text style={{fontWeight: 'bold'}}>{version}</Text></Text>
         <Button
