@@ -2,6 +2,10 @@ Artifical Chat is an app to explore the wonders of conversational AI using React
 
 ![image](https://user-images.githubusercontent.com/26607885/233441056-39033d3c-3420-4c31-b7db-ca39944fc00e.png)
 
+Artifical Chat is an app to explore the wonders of conversational AI using React Native for Windows to build the user experience. The goal is to handle not just plain text but rich markdown documents, code, and faciliate image generation as well.
+
+![image](https://user-images.githubusercontent.com/26607885/233441056-39033d3c-3420-4c31-b7db-ca39944fc00e.png)
+
 # Setup
 1. Install all dependencies per [RNW Dependencies](https://microsoft.github.io/react-native-windows/docs/rnw-dependencies)
 1. `yarn`
