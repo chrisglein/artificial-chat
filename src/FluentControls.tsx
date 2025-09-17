@@ -20,6 +20,7 @@ type FluentButtonProps = {
       fontFamily?: string;
       codepoint?: number;
       fontSize?: number;
+      color?: string;
     };
   };
   iconOnly?: boolean;
@@ -146,6 +147,7 @@ const FluentButton = (props: FluentButtonProps) => {
     const customStyle = {
       fontFamily: props.icon?.fontSource?.fontFamily,
       fontSize: props.icon?.fontSource?.fontSize,
+      color: props.icon?.fontSource?.color,
       marginRight: props.iconOnly ? 0 : 4,
     };
 
