@@ -92,11 +92,13 @@ The app's settings are handled by a `SettingsContext` object, which has dialog U
 ## Helper Controls
 | File | Type | Information |
 | --- | --- | --- |
-| Controls.tsx | `HoverButton` | Button that changes style on mouse over |
 | Controls.tsx | `Attribution` | Visual indicator for the provider of a skill |
 | Controls.tsx | `ConsentSwitch` | Toggle for the user to enable/disable sharing information to a skill |
 | Controls.tsx | `ImageSelection` | Image choice from a multi-image generation query |
-| Controls.tsx | `Hyperlink` | Text that when clicked navigates to a url |
+| Controls.tsx | 'FluentTextInput' | TextInput that displays a styled background, like WinUI's `TextBox` |
+| Controls.tsx | 'FlyoutMenu' | Ellipses button that spawns a flyout menu when clicked |
+| Controls.tsx | 'MarkdownWithRules' | A markdown block configured to display rich code blocks |
+| Controls.tsx | 'SwitchWithLabel' | A `ToggleSwitch` that also has a label |
 | CodeBlock.tsx | `CodeBlock` | Displays code with syntax highlighting and copy support |
 
 # Dependencies
@@ -104,5 +106,5 @@ The app's settings are handled by a `SettingsContext` object, which has dialog U
 - Syntax Highlighting via [react-native-syntax-highlighter](https://github.com/conorhastings/react-native-syntax-highlighter)
 - Dependency patching via [patch-package](https://github.com/ds300/patch-package)
 - Storage via [react-native-async-storage](https://github.com/react-native-async-storage/async-storage)
-- Markdown rendering via [react-native-markdown-display-updated](https://github.com/willmac321/react-native-markdown-display)
+- Markdown rendering via [react-native-markdown-display-updated](https://github.com/PopBot/react-native-markdown-display-updated)
 - Dialogs via [react-native-content-dialog](https://github.com/chrisglein/react-native-content-dialog)
