@@ -81,7 +81,7 @@ const LoadSettingsData = async () => {
       const value = JSON.parse(valueAsString);
 
       if (value.hasOwnProperty('apiKey')) { valueToSave.apiKey = value.apiKey; }
-      if (value.hasOwnProperty('imageSize')) { valueToSave.imageSize = parseInt(value.imageSize); }
+      if (value.hasOwnProperty('imageSize')) { valueToSave.imageSize = parseInt(value.imageSize, 10); }
       if (value.hasOwnProperty('readToMeVoice')) { valueToSave.readToMeVoice = value.readToMeVoice; }
     }
   } catch (e) {
@@ -246,7 +246,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             selectedValue={imageResponseCount}
             onValueChange={value =>
               setImageResponseCount(
-                typeof value === 'number' ? value : parseInt(value),
+                typeof value === 'number' ? value : parseInt(value, 10),
               )
             }>
             {[1, 2, 3, 4].map(number => (
@@ -262,7 +262,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             accessibilityLabel="Image Size"
             selectedValue={imageSize}
             onValueChange={value =>
-              setImageSize(typeof value === 'number' ? value : parseInt(value))
+              setImageSize(typeof value === 'number' ? value : parseInt(value, 10))
             }>
             {[256, 512, 1024].map(size => (
               <Picker.Item label={size.toString()} value={size} key={size} />
@@ -302,7 +302,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             keyboardType="numeric"
             style={{flexGrow: 1, minHeight: 32}}
             onChangeText={value =>
-              setDelayForArtificialResponse(parseInt(value))
+              setDelayForArtificialResponse(parseInt(value, 10))
             }
             value={delayForArtificialResponse.toString()}
           />
