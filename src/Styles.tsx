@@ -19,13 +19,9 @@ const StylesContext = React.createContext<{
   horizontalContainer: StyleProp<ViewStyle>;
   dalleImage: StyleProp<ImageStyle>;
   inlineCard: StyleProp<ViewStyle>;
-  dialogTitleIcon: StyleProp<TextStyle>;
-  dialogTitle: StyleProp<TextStyle>;
   dialogSectionsContainer: StyleProp<ViewStyle>;
   dialogSection: StyleProp<ViewStyle>;
   dialogSectionHeader: StyleProp<TextStyle>;
-  dialogBackground: StyleProp<ViewStyle>;
-  dialogButtons: StyleProp<ViewStyle>;
   codeBlockTitle: StyleProp<TextStyle>;
   codeBlockTitleText: StyleProp<TextStyle>;
   hyperlinkIdle: StyleProp<TextStyle>;
@@ -33,6 +29,8 @@ const StylesContext = React.createContext<{
   hyperlinkHovering: StyleProp<TextStyle>;
   hyperlinkDisabled: StyleProp<TextStyle>;
   textBox: StyleProp<ViewStyle>;
+  textBoxFocused: StyleProp<ViewStyle>;
+  flyoutBackground: StyleProp<ViewStyle>;
 }>({});
 
 const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
@@ -53,14 +51,16 @@ const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
       marginHorizontal: 12,
       paddingHorizontal: 24,
       paddingVertical: 12,
-      borderRadius: 8,
+      borderRadius: 12,
     },
     humanSection: {
       backgroundColor: isDarkMode ? '#2F2F4A' : '#E8EBFA',
+      borderBottomLeftRadius: 0,
       marginRight: 64,
     },
     AiSection: {
       backgroundColor: isDarkMode ? '#292929' : '#FFFFFF',
+      borderBottomRightRadius: 0,
       marginLeft: 64,
     },
     sectionTitle: {
@@ -86,15 +86,6 @@ const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
       borderRadius: 8,
       padding: 8,
     },
-    dialogTitleIcon: {
-      backgroundColor: 'gray',
-      borderRadius: 4,
-      alignSelf: 'center',
-      padding: 2,
-    },
-    dialogTitle: {
-      fontSize: 20,
-    },
     dialogSectionsContainer: {
       gap: 12,
     },
@@ -107,20 +98,6 @@ const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
       fontSize: 16,
       fontWeight: '600',
       marginBottom: 4,
-    },
-    dialogBackground: {
-      backgroundColor: isDarkMode ? '#292929' : '#FFFFFF',
-      padding: 12,
-      borderRadius: 8,
-      minWidth: 300
-    },
-    dialogButtons: {
-      marginTop: 12,
-      alignSelf: 'flex-end',
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      alignItems: 'center',
-      gap: 4,
     },
     codeBlockTitle: {
       backgroundColor: isDarkMode ? 'white' : '#444',
@@ -146,19 +123,28 @@ const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
     textBox: {
       flexGrow: 1,
       flexShrink: 1,
-      backgroundColor: isDarkMode ? '#FFFFFFFF' : '#FFFFFFFF', // TextBoxBackgroundThemeBrush
+      fontSize: 14,
+      backgroundColor: PlatformColor("ControlFillColorDefault"),
       borderRadius: 4, // ControlCornerRadius
       borderWidth: 1, // TextControlBorderThemeThickness
       borderBottomWidth: 2,
-      borderColor: isDarkMode ? '#FFFFFFFF' : '#A3000000', // TextBoxBorderThemeBrush
-      borderBottomColor: isDarkMode ? '#8BFFFFFF' : '#72000000', // ControlStrongStrokeColorDefault
-      paddingLeft: 10, // TextControlThemePadding
+      borderColor: PlatformColor("ControlStrokeColorDefault"),
+      borderBottomColor: PlatformColor("ControlStrokeColorSecondary"),
+      paddingLeft: 14,
       paddingTop: 6,
       paddingRight: 6,
-      paddingBottom: 5,
+      paddingBottom: 2,
       minHeight: 32, // TextControlThemeMinHeight
-    }
-
+    },
+    textBoxFocused: {
+      borderBottomColor: PlatformColor("AccentFillColorDefault"),
+    },
+    flyoutBackground: {
+          backgroundColor: isDarkMode ? 'black' : 'white',
+          borderRadius: 4,
+          padding: 8,
+          alignItems: 'flex-start',
+    },
   });
 }
 

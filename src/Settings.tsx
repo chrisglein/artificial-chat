@@ -1,22 +1,23 @@
 import React from 'react';
 import {
-  Button,
   Text,
   TextInput,
   View,
 } from 'react-native';
 import {
-  DialogFrame,
+  ContentDialog,
   DialogSection,
 } from './Popups';
-import {
-  Hyperlink,
-  SwitchWithLabel,
-} from './Controls';
 import {StylesContext} from './Styles';
 import {Picker} from './Picker';
 import {ChatScriptNames} from './ChatScript';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  FluentButton as Button,
+  Link,
+  FluentCheckbox as Checkbox,
+} from './FluentControls';
+import { GetVoices, SetVoice } from './Speech';
 
 const settingsKey = 'settings';
 
@@ -38,6 +39,8 @@ type SettingsContextType = {
   setAiEndpoint: (value: string) => void,
   chatModel: string,
   setChatModel: (value: string) => void,
+  readToMeVoice: string,
+  setReadToMeVoice: (value: string) => void,
 }
 const SettingsContext = React.createContext<SettingsContextType>({
   setApiKey: () => {},
@@ -53,12 +56,15 @@ const SettingsContext = React.createContext<SettingsContextType>({
   setAiEndpoint: () => {},
   chatModel: '',
   setChatModel: () => {},
+  readToMeVoice: '',
+  setReadToMeVoice: () => {},
 });
 
 // Settings that are saved between app sessions
 type SettingsData = {
   apiKey?: string,
   imageSize?: number,
+  readToMeVoice?: string,
 }
 
 // Read settings from app storage
@@ -84,6 +90,7 @@ const LoadSettingsData = async () => {
       
       if (value.hasOwnProperty('apiKey')) { valueToSave.apiKey = value.apiKey; }
       if (value.hasOwnProperty('imageSize')) { valueToSave.imageSize = parseInt(value.imageSize); }
+      if (value.hasOwnProperty('readToMeVoice')) { valueToSave.readToMeVoice = value.readToMeVoice; }
     }
   } catch(e) {
     console.error(e);
@@ -107,6 +114,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   const [detectImageIntent, setDetectImageIntent] = React.useState<boolean>(settings.detectImageIntent);
   const [imageResponseCount, setImageResponseCount] = React.useState<number>(settings.imageResponseCount);
   const [imageSize, setImageSize] = React.useState<number>(256);
+  const [readToMeVoice, setReadToMeVoice] = React.useState<string>(settings.readToMeVoice);
 
   // It may seem weird to do this when the UI loads, not the app, but it's okay
   // because this component is loaded when the app starts but isn't shown. And
@@ -123,6 +131,10 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
       setImageSize(resolvedImageSize);
       settings.setImageSize(resolvedImageSize);
 
+      let resolvedReadToMeVoice = value.readToMeVoice ?? '';
+      settings.setReadToMeVoice(resolvedReadToMeVoice);
+      SetVoice(resolvedReadToMeVoice);
+
       // If an API key was set, continue to remember it
       setSaveApiKey(value.apiKey !== undefined);
     }
@@ -138,12 +150,17 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
     settings.setDetectImageIntent(detectImageIntent);
     settings.setImageResponseCount(imageResponseCount);
     settings.setImageSize(imageSize);
-
+    settings.setReadToMeVoice(readToMeVoice);
+    
     close();
+    
+    // Need to apply to the speech engine
+    SetVoice(readToMeVoice);
 
     SaveSettingsData({
       apiKey: saveApiKey ? apiKey : undefined,
       imageSize: imageSize,
+      readToMeVoice: readToMeVoice,
     });
   }
 
@@ -156,32 +173,33 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
     setDetectImageIntent(settings.detectImageIntent);
     setImageResponseCount(settings.imageResponseCount);
     setImageSize(settings.imageSize);
+    setReadToMeVoice(settings.readToMeVoice);
     close();
   }
 
   const buttons = [
-    <Button
-      accessibilityLabel="OK"
-      title="OK"
-      onPress={() => {
+    {
+      title: "OK",
+      onPress: () => {
         save();
-      }}/>,
-    <Button
-      accessibilityLabel="Cancel"
-      title="Cancel"
-      onPress={() => {
+      }
+    },
+    {
+      title: "Cancel",
+      onPress: () => {
         cancel();
-      }}/>
-    ];
+      }
+    }
+  ];
 
   return (
-    <DialogFrame
+    <ContentDialog
       show={show}
-      close={cancel}
+      close={() => {}}
       isLightDismissEnabled={false}
-      titleIcon="⚙️"
       title="OpenAI Settings"
       buttons={buttons}
+      defaultButtonIndex={0}      
       maxWidth={400}
       maxHeight={800}>
       <View style={styles.dialogSectionsContainer}>
@@ -206,18 +224,21 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             style={{flexGrow: 1, minHeight: 32}}
             onChangeText={value => setApiKey(value)}
             value={apiKey}/>
-            <SwitchWithLabel
+            <Checkbox
               label="Remember this"
-              value={saveApiKey}
-              onValueChange={value => setSaveApiKey(value)}/>
-          <Hyperlink
+              size='large'
+              checked={saveApiKey}
+              onChange={(event, value) => setSaveApiKey(value)}/>
+          <Link
+            content="https://platform.openai.com/account/api-keys"
             url="https://platform.openai.com/account/api-keys"/>
         </DialogSection>
         <DialogSection header="Image Generation">
-          <SwitchWithLabel
+          <Checkbox
             label="Infer image intent from prompt"
-            value={detectImageIntent}
-            onValueChange={value => setDetectImageIntent(value)}/>
+            size='large'
+            checked={detectImageIntent}
+            onChange={(event, value) => setDetectImageIntent(value)}/>
           <Text>Image Count</Text>
           <Picker
             accessibilityLabel="Image Count"
@@ -229,8 +250,18 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
           <Picker
             accessibilityLabel="Image Size"
             selectedValue={imageSize}
-            onValueChange={value => setImageSize(value)}>
+            onValueChange={value => setImageSize(typeof value === 'number' ? value : parseInt(value))}>
             {[256, 512, 1024].map(size => <Picker.Item label={size.toString()} value={size} key={size}/>)}
+          </Picker>
+        </DialogSection>
+        <DialogSection header="Read to Me">
+          <Text>Read to me</Text>
+          <Picker
+            accessibilityLabel="Read to me"
+            selectedValue={readToMeVoice}
+            onValueChange={value => setReadToMeVoice(value)}>
+            {GetVoices().map(voice => <Picker.Item label={voice.displayName} value={voice.id} key={voice.id}/>)}
+            <Picker.Item label="None" value=""/>
           </Picker>
         </DialogSection>
         <DialogSection header="AI Scripts">
@@ -251,7 +282,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             value={delayForArtificialResponse.toString()}/>
         </DialogSection>
       </View>
-    </DialogFrame>
+    </ContentDialog>
   );
 }
 

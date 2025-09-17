@@ -1,0 +1,31 @@
+name: Windows CI
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  run-windows-tests:
+    name: Build & run tests
+    runs-on: windows-2022
+    strategy:
+      matrix:
+        configuration: ['debug', 'release']
+        platform: ['x86', 'x64']
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '^18'
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Install node modules
+        run: yarn --frozen-lockfile
+
+      - name: Run Windows ${{ matrix.platform }} ${{ matrix.configuration }}
+        run: npx react-native run-windows --arch ${{ matrix.platform }} ${{ matrix.configuration == 'release' && '--release' || '' }} --logging --no-packager --no-deploy
