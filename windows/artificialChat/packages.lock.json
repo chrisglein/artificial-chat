@@ -10,7 +10,7 @@
       },
       "Microsoft.UI.Xaml": {
         "type": "Direct",
-        "requested": "[2.8.0, 2.8.0]",
+        "requested": "[2.8.0, )",
         "resolved": "2.8.0",
         "contentHash": "vxdHxTr63s5KVtNddMFpgvjBjUH50z7seq/5jLWmmSuf8poxg+sXrywkofUdE8ZstbpO9y3FL/IXXUcPYbeesA=="
       }
