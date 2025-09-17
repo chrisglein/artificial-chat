@@ -1,10 +1,15 @@
 import React from 'react';
-import {Chat, ChatContent, ChatHistoryContext, ChatSource} from './Chat';
-import type {ChatElement} from './Chat';
-import {StylesContext} from './Styles';
-import {SettingsContext} from './Settings';
-import {handleAIResponse} from './ChatScript';
-import {AiSectionWithFakeResponse} from './AiFake';
+import {
+  Chat,
+  ChatContent,
+  ChatHistoryContext,
+  ChatSource,
+} from './Chat';
+import type { ChatElement } from './Chat';
+import { StylesContext } from './Styles';
+import { SettingsContext } from './Settings';
+import { handleAIResponse } from './ChatScript';
+import { AiSectionWithFakeResponse } from './AiFake';
 
 // Automated ChatSession drives a ChatSession in one of two ways:
 // 1. If a script is specified, the user's inputs are fake responses are driven by that script.
@@ -14,24 +19,20 @@ type AutomatedChatSessionProps = {
   appendEntry: (entry: ChatElement | ChatElement[]) => void;
   clearConversation: () => void;
 };
-function AutomatedChatSession({
-  entries,
-  appendEntry,
-  clearConversation,
-}: AutomatedChatSessionProps): JSX.Element {
+function AutomatedChatSession({entries, appendEntry, clearConversation}: AutomatedChatSessionProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const settings = React.useContext(SettingsContext);
 
   const [chatScriptIndex, setChatScriptIndex] = React.useState(0);
 
   const advanceChatScript = (index: number, goToNext: () => void) => {
-    let result: {
+    let result : {
       aiResponse?: JSX.Element;
       humanResponse?: string;
     } = {
       aiResponse: undefined,
       humanResponse: undefined,
-    };
+    }
 
     let response = handleAIResponse({
       scriptName: settings.scriptName,
@@ -47,26 +48,22 @@ function AutomatedChatSession({
     });
 
     // Give the AI's response
-    result.aiResponse = response.aiResponse ? response.aiResponse() : undefined;
+    result.aiResponse = response.aiResponse ? response.aiResponse() : undefined; 
 
     // Preopulate the text box with the human's next prompt
-    result.humanResponse = nextResponse.prompt;
+    result.humanResponse = nextResponse.prompt; 
 
     return result;
-  };
-
+  }
+  
   const onPrompt = (text: string, index: number) => {
     const followScript = settings.scriptName;
 
     if (followScript) {
-      console.log(
-        `Following script with prompt of '${text}', index is ${index}`,
-      );
+      console.log(`Following script with prompt of '${text}', index is ${index}`);
 
       // Get the AI's response to the prompt
-      let {aiResponse} = advanceChatScript(index, () =>
-        onPrompt('', index + 1),
-      );
+      let {aiResponse} = advanceChatScript(index, () => onPrompt("", index + 1));
       setChatScriptIndex(index + 1);
       console.log(aiResponse);
 
@@ -85,29 +82,27 @@ function AutomatedChatSession({
             type: ChatSource.Ai,
             contentType: ChatContent.Text,
             responses: [text],
-            content:
+            content: 
               <AiSectionWithFakeResponse id={entries.length + 1}>
                 {aiResponse}
-              </AiSectionWithFakeResponse>
-            ),
-          },
-        ]);
+              </AiSectionWithFakeResponse>,
+          }]);
       } else {
-        appendEntry({
-          id: entries.length,
-          type: ChatSource.Ai,
-          contentType: ChatContent.Error,
-          responses: [''],
-          content: (
-            <AiSectionWithFakeResponse id={entries.length}>
-              {aiResponse}
-            </AiSectionWithFakeResponse>
-          ),
-        });
+        appendEntry(
+          {
+            id: entries.length,
+            type: ChatSource.Ai,
+            contentType: ChatContent.Error,
+            responses: [''],
+            content: 
+              <AiSectionWithFakeResponse id={entries.length}>
+                {aiResponse}
+              </AiSectionWithFakeResponse>,
+          });
       }
     } else {
       console.log(`Prompt: "${text}"`);
-
+      
       appendEntry([
         {
           id: entries.length,
@@ -120,10 +115,10 @@ function AutomatedChatSession({
           contentType: ChatContent.Error,
           type: ChatSource.Ai,
           prompt: text,
-        },
+        }
       ]);
     }
-  };
+  }
 
   // Anticipate the next human response
   let humanText = handleAIResponse({
@@ -137,87 +132,72 @@ function AutomatedChatSession({
     <Chat
       entries={entries}
       humanText={humanText}
-      onPrompt={text => onPrompt(text, chatScriptIndex)}
+      onPrompt={(text) => onPrompt(text, chatScriptIndex)}
       clearConversation={() => {
         setChatScriptIndex(0);
         clearConversation();
-      }}
-    />
+      }}/>
   );
 }
 
 // Owns the list of chat entries
 function ChatSession(): JSX.Element {
-  const [entries, setEntries] = React.useState<ChatElement[]>([]);
+  const [entries, setEntries] = React.useState<ChatElement []>([]);
 
-  const appendEntry = React.useCallback(
-    (newEntry: ChatElement | ChatElement[]) => {
-      let modifiedEntries;
-      if (Array.isArray(newEntry)) {
-        modifiedEntries = [...entries, ...newEntry];
-      } else {
-        modifiedEntries = [...entries, newEntry];
-      }
+  const appendEntry = React.useCallback((newEntry: ChatElement | ChatElement[]) => {
+    let modifiedEntries;
+    if (Array.isArray(newEntry)) {
+      modifiedEntries = [...entries, ...newEntry];
+    } else {
+      modifiedEntries = [...entries, newEntry];
+    }
+    setEntries(modifiedEntries);
+  }, [entries]);
+
+  const modifyEntry = React.useCallback((index: number, delta: any) => {
+    let modifiedEntries = [...entries];
+    if (index >= entries.length) {
+      console.error(`Index ${index} is out of bounds`);
+    } else {
+      let entry = modifiedEntries[index];
+
+      if (delta.hasOwnProperty('responses')) entry.responses = delta.responses;
+      if (delta.hasOwnProperty('contentType')) entry.contentType = delta.contentType;
+      if (delta.hasOwnProperty('prompt')) entry.prompt = delta.prompt;
+      if (delta.hasOwnProperty('intent')) entry.intent = delta.intent;
+
+      modifiedEntries[index] = entry;
       setEntries(modifiedEntries);
-    },
-    [entries],
-  );
+    }
+  }, [entries]);
 
-  const modifyEntry = React.useCallback(
-    (index: number, delta: any) => {
-      let modifiedEntries = [...entries];
-      if (index >= entries.length) {
-        console.error(`Index ${index} is out of bounds`);
-      } else {
-        let entry = modifiedEntries[index];
-
-        if (delta.hasOwnProperty('responses'))
-          {entry.responses = delta.responses;}
-        if (delta.hasOwnProperty('contentType'))
-          {entry.contentType = delta.contentType;}
-        if (delta.hasOwnProperty('prompt')) {entry.prompt = delta.prompt;}
-        if (delta.hasOwnProperty('intent')) {entry.intent = delta.intent;}
-
-        modifiedEntries[index] = entry;
-        setEntries(modifiedEntries);
-      }
-    },
-    [entries],
-  );
-
-  const deleteEntry = React.useCallback(
-    (index: number) => {
-      let modifiedEntries = [...entries];
-      if (index >= entries.length) {
-        console.error(`Index ${index} is out of bounds`);
-      } else {
-        modifiedEntries.splice(index, 1);
-        setEntries(modifiedEntries);
-      }
-    },
-    [entries],
-  );
+  const deleteEntry = React.useCallback((index: number) => {
+    let modifiedEntries = [...entries];
+    if (index >= entries.length) {
+      console.error(`Index ${index} is out of bounds`);
+    } else {
+      modifiedEntries.splice(index, 1);
+      setEntries(modifiedEntries);
+    }
+  }, [entries]);
 
   const clearConversation = () => setEntries([]);
-
+  
   return (
-    <ChatHistoryContext.Provider
-      value={{
+    <ChatHistoryContext.Provider value={{
         entries: entries,
         modifyResponse: modifyEntry,
         deleteResponse: deleteEntry,
         add: element => {
           element.id = entries.length;
           appendEntry(element);
-        },
-      }}>
+        }}}>
       <AutomatedChatSession
         entries={entries}
         appendEntry={appendEntry}
-        clearConversation={clearConversation}
-      />
+        clearConversation={clearConversation}/>
     </ChatHistoryContext.Provider>
   );
 }
 
-export {ChatSession};
+export { ChatSession };

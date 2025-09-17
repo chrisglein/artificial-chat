@@ -1,25 +1,26 @@
 import React from 'react';
 import type {PropsWithChildren} from 'react';
-import {Pressable, Text, View} from 'react-native';
-import {FlyoutMenu, MarkdownWithRules} from './Controls';
-import type {FlyoutMenuButtonType} from './Controls';
-import {StylesContext} from './Styles';
-import {ChatHistoryContext} from './Chat';
+import {
+  Pressable,
+  Text,
+  View,
+} from 'react-native';
+import {
+  FlyoutMenu,
+  MarkdownWithRules,
+} from './Controls';
+import type { FlyoutMenuButtonType } from './Controls';
+import { StylesContext } from './Styles';
+import { ChatHistoryContext } from './Chat';
 import Clipboard from '@react-native-clipboard/clipboard';
 
 type HumanSectionProps = PropsWithChildren<{
-  id?: number;
+  id?: number,
   content?: string;
   disableCopy?: boolean;
   moreMenu?: FlyoutMenuButtonType[];
 }>;
-function HumanSection({
-  children,
-  id,
-  content,
-  disableCopy,
-  moreMenu,
-}: HumanSectionProps): JSX.Element {
+function HumanSection({children, id, content, disableCopy, moreMenu}: HumanSectionProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const chatHistory = React.useContext(ChatHistoryContext);
 
@@ -28,18 +29,14 @@ function HumanSection({
     menuItems.push(...moreMenu);
   }
   if (id !== undefined) {
-    menuItems.push({
-      title: 'Delete this response',
-      icon: 0xe74d,
-      onPress: () => chatHistory.deleteResponse(id),
-    });
+    menuItems.push(
+      {title: "Delete this response", icon: 0xE74D, onPress: () => chatHistory.deleteResponse(id)}
+    );
   }
   if (!disableCopy) {
-    menuItems.push({
-      title: 'Copy to clipboard',
-      icon: 0xe8c8,
-      onPress: () => Clipboard.setString(content ?? ''),
-    });
+    menuItems.push(
+      {title: "Copy to clipboard", icon: 0xE8C8, onPress: () => Clipboard.setString(content ?? "")}
+    );
   }
 
   return (
@@ -51,14 +48,14 @@ function HumanSection({
         <Text
           accessibilityRole="header"
           style={[styles.sectionTitle, {flexGrow: 1}]}>
-          Prompt
+            Prompt
         </Text>
-        <FlyoutMenu items={menuItems} />
+        <FlyoutMenu items={menuItems}/>
       </View>
-      {content ? <MarkdownWithRules content={content} /> : null}
+      {content ? <MarkdownWithRules content={content}/> : null}
       {children}
     </Pressable>
   );
 }
 
-export {HumanSection};
+export { HumanSection }

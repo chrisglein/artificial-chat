@@ -1,5 +1,9 @@
 import React from 'react';
-import type {PropsWithChildren, Dispatch, SetStateAction} from 'react';
+import type {
+  PropsWithChildren,
+  Dispatch,
+  SetStateAction
+} from 'react';
 import {
   Image,
   ImageSourcePropType,
@@ -8,34 +12,24 @@ import {
   Switch,
   View,
 } from 'react-native';
-import {Flyout} from 'react-native-windows';
-import {ButtonV1 as Button} from '@fluentui/react-native';
-import {StylesContext} from './Styles';
-import {CodeBlock} from './CodeBlock';
+import { Flyout } from 'react-native-windows';
+import {
+  ButtonV1 as Button
+} from '@fluentui/react-native';
+import { StylesContext } from './Styles';
+import { CodeBlock } from './CodeBlock';
 import Markdown from 'react-native-markdown-display-updated';
 
 type HoverButtonProps = {
   content: string;
-  tooltip: string;
+  tooltip: string,
   onPress: () => void;
 };
-function HoverButton({
-  content,
-  tooltip,
-  onPress,
-}: HoverButtonProps): JSX.Element {
+function HoverButton({content, tooltip, onPress}: HoverButtonProps): JSX.Element {
   const [hovering, setHovering] = React.useState(false);
 
-  const backgroundBaseStyle = {
-    padding: 2,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: 'transparent',
-  };
-  const backgroundPressedStyle = {
-    borderColor: 'white',
-    backgroundColor: 'black',
-  };
+  const backgroundBaseStyle = {padding: 2, borderRadius: 8, borderWidth: 1, borderColor: 'transparent'};
+  const backgroundPressedStyle = {borderColor: 'white', backgroundColor: 'black'};
   const backgroundHoverStyle = {borderColor: 'white', backgroundColor: 'gray'};
   return (
     <Pressable
@@ -46,17 +40,9 @@ function HoverButton({
       onHoverIn={() => setHovering(true)}
       onHoverOut={() => setHovering(false)}>
       {({pressed}) => (
-        <View
-          style={[
-            backgroundBaseStyle,
-            pressed
-              ? backgroundPressedStyle
-              : hovering
-              ? backgroundHoverStyle
-              : null,
-          ]}>
+        <View style={[backgroundBaseStyle, pressed ? backgroundPressedStyle : hovering ? backgroundHoverStyle : null]}>
           <Text style={{minWidth: 20, textAlign: 'center'}}>{content}</Text>
-        </View>
+        </View>        
       )}
     </Pressable>
   );
@@ -81,12 +67,7 @@ type ConsentSwitchProps = {
   details: string;
   defaultValue?: boolean;
 };
-function ConsentSwitch({
-  title,
-  source,
-  defaultValue,
-  details,
-}: ConsentSwitchProps): JSX.Element {
+function ConsentSwitch({title, source, defaultValue, details}: ConsentSwitchProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const [value, onValueChange] = React.useState(defaultValue);
 
@@ -94,10 +75,10 @@ function ConsentSwitch({
     <View
       style={[styles.horizontalContainer, {marginBottom: 8}]}
       tooltip={details}>
-      <Switch value={value} onValueChange={onValueChange} />
+      <Switch value={value} onValueChange={onValueChange}/>
       <View>
         <Text>{title}</Text>
-        <Attribution source={source} />
+        <Attribution source={source}/>
       </View>
     </View>
   );
@@ -110,12 +91,8 @@ function ImageSelection({image}: ImageSelectionProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   return (
     <View>
-      <Image style={styles.dalleImage} source={image} />
-      <View
-        style={[
-          styles.horizontalContainer,
-          {marginTop: 4, justifyContent: 'space-between'},
-        ]}>
+      <Image style={styles.dalleImage} source={image}/>
+      <View style={[styles.horizontalContainer, {marginTop: 4, justifyContent: 'space-between'}]}>
         <Button>Variations</Button>
         <Button>Select</Button>
       </View>
@@ -123,79 +100,55 @@ function ImageSelection({image}: ImageSelectionProps): JSX.Element {
   );
 }
 
-function SwitchWithLabel({
-  label,
-  value,
-  onValueChange,
-}: {
-  label: string;
-  value: boolean;
-  onValueChange: (value: boolean) => void;
-}): JSX.Element {
+function SwitchWithLabel({label, value, onValueChange}: {label: string, value: boolean, onValueChange: (value: boolean) => void}): JSX.Element {
   return (
     <View style={{flexDirection: 'row', alignItems: 'flex-start'}}>
       <Switch
         style={{marginTop: -6}}
         accessibilityLabel={label}
         value={value}
-        onValueChange={onValueChange}
-      />
+        onValueChange={onValueChange}/>
       <Text style={{marginTop: 4}}>{label}</Text>
     </View>
   );
 }
 
 type MoreMenuButtonProps = PropsWithChildren<{
-  showMenu: boolean;
+  showMenu: boolean,
   setShowMenu: Dispatch<SetStateAction<boolean>>;
 }>;
-const MoreMenuButton = React.forwardRef(function MoreMenuButton(
-  {showMenu, setShowMenu}: MoreMenuButtonProps,
-  ref,
-): JSX.Element {
+const MoreMenuButton = React.forwardRef(function MoreMenuButton({showMenu, setShowMenu}: MoreMenuButtonProps, ref): JSX.Element {
   return (
-    <View ref={ref}>
+    <View
+      ref={ref}>
       <Button
         enabled={!showMenu}
-        appearance="subtle"
-        accessibilityLabel="More options"
-        icon={{
-          fontSource: {fontFamily: 'Segoe MDL2 Assets', codepoint: 0xe712},
-        }}
+        appearance='subtle'
+        accessibilityLabel='More options'
+        icon={{ fontSource: { fontFamily: 'Segoe MDL2 Assets', codepoint: 0xE712 } }}
         iconOnly={true}
-        tooltip="More options"
-        onClick={() => setShowMenu(true)}
-      />
+        tooltip='More options'
+        onClick={() => setShowMenu(true)}></Button>
     </View>
   );
 });
 
 type FlyoutMenuButtonType = {
-  title: string;
-  icon?: number;
-  onPress: () => void;
-};
+  title: string,
+  icon?: number,
+  onPress: () => void,
+}
 
 type FlyoutMenuButtonProps = PropsWithChildren<{
   icon?: number;
   onClick: () => void;
 }>;
-function FlyoutMenuButton({
-  icon,
-  onClick,
-  children,
-}: FlyoutMenuButtonProps): JSX.Element {
+function FlyoutMenuButton({icon, onClick, children}: FlyoutMenuButtonProps): JSX.Element {
   return (
     <Button
-      appearance="subtle"
-      icon={
-        icon
-          ? {fontSource: {fontFamily: 'Segoe MDL2 Assets', codepoint: icon}}
-          : undefined
-      }
-      onClick={onClick}>
-      {children}
-    </Button>
+      appearance='subtle'
+      icon={icon ? { fontSource: { fontFamily: 'Segoe MDL2 Assets', codepoint: icon } } : undefined}
+      onClick={onClick}>{children}</Button>
   );
 }
 
@@ -207,31 +160,30 @@ function FlyoutMenu({items}: FlyoutMenuProps): JSX.Element {
   const [isOpen, setIsOpen] = React.useState(false);
   const placementRef = React.useRef(null);
 
-  const buttonList = items.map((button, index) => (
+  const buttonList = items.map((button, index) =>
     <FlyoutMenuButton
       key={index}
       icon={button.icon}
       onClick={() => {
         button.onPress();
         setIsOpen(false);
-      }}>
-      {button.title}
-    </FlyoutMenuButton>
-  ));
+      }}>{button.title}</FlyoutMenuButton>
+  );
 
   return (
     <>
       <MoreMenuButton
         ref={placementRef}
         showMenu={isOpen}
-        setShowMenu={setIsOpen}
-      />
+        setShowMenu={setIsOpen}/>
       <Flyout
         isOpen={isOpen}
         onDismiss={() => setIsOpen(false)}
-        placement="bottom-edge-aligned-right"
+        placement='bottom-edge-aligned-right'
         target={placementRef.current}>
-        <View style={styles.flyoutBackground}>{buttonList}</View>
+        <View style={styles.flyoutBackground}>
+          {buttonList}
+        </View>
       </Flyout>
     </>
   );
@@ -240,30 +192,22 @@ function FlyoutMenu({items}: FlyoutMenuProps): JSX.Element {
 type MarkdownWithRulesProps = {
   content?: string;
 };
-function MarkdownWithRules({content}: MarkdownWithRulesProps): JSX.Element {
+function MarkdownWithRules({content} : MarkdownWithRulesProps): JSX.Element {
   const rules = {
     fence: (node, children, parent, styles) => {
       return (
         <CodeBlock
           key={node.key}
           language={node.sourceInfo}
-          content={node.content}
-        />
-      );
-    },
-  };
+          content={node.content}/>
+        )
+      },
+  }
 
-  return <Markdown rules={rules}>{content}</Markdown>;
+  return (
+    <Markdown rules={rules}>{content}</Markdown>
+  );
 }
 
-export {
-  HoverButton,
-  Attribution,
-  ConsentSwitch,
-  ImageSelection,
-  CodeBlock,
-  SwitchWithLabel,
-  FlyoutMenu,
-  MarkdownWithRules,
-};
-export type {FlyoutMenuButtonType};
+export { HoverButton, Attribution, ConsentSwitch, ImageSelection, CodeBlock, SwitchWithLabel, FlyoutMenu, MarkdownWithRules };
+export type { FlyoutMenuButtonType };

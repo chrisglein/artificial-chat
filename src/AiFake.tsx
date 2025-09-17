@@ -1,17 +1,14 @@
 import React from 'react';
 import type {PropsWithChildren} from 'react';
-import {AiSection} from './AiResponse';
+import { AiSection } from './AiResponse';
 
-import {ChatScrollContext} from './Chat';
-import {SettingsContext} from './Settings';
+import { ChatScrollContext } from './Chat';
+import { SettingsContext } from './Settings';
 
 type AiSectionWithFakeResponseProps = PropsWithChildren<{
   id: number;
 }>;
-function AiSectionWithFakeResponse({
-  children,
-  id,
-}: AiSectionWithFakeResponseProps): JSX.Element {
+function AiSectionWithFakeResponse({children, id}: AiSectionWithFakeResponseProps): JSX.Element {
   const settingsContext = React.useContext(SettingsContext);
   const [isLoading, setIsLoading] = React.useState(true);
   const chatScroll = React.useContext(ChatScrollContext);
@@ -27,7 +24,7 @@ function AiSectionWithFakeResponse({
     <AiSection id={id} isLoading={isLoading}>
       {!isLoading && children}
     </AiSection>
-  );
+  )
 }
 
-export {AiSectionWithFakeResponse};
+export { AiSectionWithFakeResponse }
