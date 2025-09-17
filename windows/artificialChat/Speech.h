@@ -47,6 +47,10 @@ namespace ArtificialChatModules
         // Create media player and play
         auto player = winrt::Windows::Media::Playback::MediaPlayer();
         winrt::hstring contentType = L"audio/wav"; // Default content type for speech synthesis
+        if (!stream.ContentType().empty())
+        {
+          contentType = stream.ContentType();
+        }
         
         auto mediaSource = winrt::Windows::Media::Core::MediaSource::CreateFromStream(stream, contentType);
         player.Source(mediaSource);
