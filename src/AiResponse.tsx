@@ -57,7 +57,7 @@ function AiImageResponse({
         <Text style={styles.text}>
           Here is an image created using the following requirements "{prompt}"
         </Text>
-        <View style={{alignSelf: 'flex-end', alignItems: 'flex-end'}}>
+        <View style={[styles.text, {alignSelf: 'flex-end', alignItems: 'flex-end'}]}>
           {rejectImage && (
             <Button
               title="I didn't want to see an image"

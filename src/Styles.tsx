@@ -27,8 +27,8 @@ const StylesContext = React.createContext<{
   hyperlinkPressing: StyleProp<TextStyle>;
   hyperlinkHovering: StyleProp<TextStyle>;
   hyperlinkDisabled: StyleProp<TextStyle>;
-  textBox: StyleProp<ViewStyle>;
-  textBoxFocused: StyleProp<ViewStyle>;
+  textBox: StyleProp<TextStyle>;
+  textBoxFocused: StyleProp<TextStyle>;
   flyoutBackground: StyleProp<ViewStyle>;
   text: StyleProp<TextStyle>;
 }>({});
@@ -137,6 +137,9 @@ const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
       paddingRight: 6,
       paddingBottom: 2,
       minHeight: 32, // TextControlThemeMinHeight
+      color: isDarkMode ? 'white' : 'black', // PlatformColor('TextFillColorPrimary') does not appear to work here
+      placeholderColor: PlatformColor('TextFillColorSecondary'),
+      selectionColor: 'lightblue', // PlatformColor('AccentFillColorDefault') does not appear to work here
     },
     textBoxFocused: {
       borderBottomColor: PlatformColor('AccentFillColorDefault'),
@@ -149,7 +152,7 @@ const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
     },
     text: {
       color: PlatformColor('TextFillColorPrimary'),
-    }
+    },
   });
 };
 

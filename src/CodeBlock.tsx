@@ -38,7 +38,7 @@ function CodeBlock({content, language} : {content: string, language: string}): J
           }}
         />
       </View>
-      <Text style={{padding: 10, borderBottomLeftRadius: 8, borderBottomRightRadius: 8, fontSize: 14, fontFamily: 'Courier New'}}>
+      <Text style={[styles.text, {padding: 10, borderBottomLeftRadius: 8, borderBottomRightRadius: 8, fontSize: 14, fontFamily: 'Courier New'}]}>
           {content}
       </Text>
     </View>

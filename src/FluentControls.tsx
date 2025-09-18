@@ -230,7 +230,7 @@ const FluentCheckbox = (props: CheckboxProps) => {
         padding: 4,
         opacity: pressed ? 0.8 : 1,
       })}>
-      <Text style={{ fontSize: 18, marginRight: 8 }}>
+      <Text style={[styles.text, { fontSize: 18, marginRight: 4, minWidth: 26 }]}>
         {checked ? '☑' : '☐'}
       </Text>
       <Text style={styles.text}>{props.label}</Text>
