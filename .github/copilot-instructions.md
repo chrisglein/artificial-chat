@@ -93,7 +93,6 @@ yarn lint
 
 ### Key Dependencies
 - React Native for Windows 0.74.x
-- FluentUI React Native (UI components)
 - OpenAI integration for chat and image generation
 - Syntax highlighting and markdown rendering
 
