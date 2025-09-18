@@ -86,7 +86,7 @@ yarn lint
 - `windows/` - Windows-specific native code and project files
 
 ### Key Dependencies
-- React Native for Windows 0.74.x
+- React Native for Windows (check package.json for current version)
 - OpenAI integration for chat and image generation
 - Syntax highlighting and markdown rendering
 
