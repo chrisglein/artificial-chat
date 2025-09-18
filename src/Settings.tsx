@@ -239,16 +239,16 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
           </Picker>
           {/* Trial mode status */}
           {remainingTrialUses > 0 && !apiKey && (
-            <View style={{backgroundColor: '#e6f3ff', padding: 8, borderRadius: 4, marginVertical: 8}}>
-              <Text style={{fontSize: 14, color: '#0078d4'}}>
+            <View style={styles.trialModeActive}>
+              <Text style={[styles.trialModeText, {color: '#0078d4'}]}>
                 🎉 Trial Mode: {remainingTrialUses} of {MAX_TRIAL_USES} free uses remaining
               </Text>
             </View>
           )}
 
           {remainingTrialUses === 0 && !apiKey && (
-            <View style={{backgroundColor: '#fef0e6', padding: 8, borderRadius: 4, marginVertical: 8}}>
-              <Text style={{fontSize: 14, color: '#d83b01'}}>
+            <View style={styles.trialModeExpired}>
+              <Text style={[styles.trialModeText, {color: '#d83b01'}]}>
                 Trial expired. Please add your API key below to continue.
               </Text>
             </View>
