@@ -3,8 +3,14 @@ import {Chat, ChatContent, ChatHistoryContext, ChatSource} from './Chat';
 import type {ChatElement} from './Chat';
 import {StylesContext} from './Styles';
 import {SettingsContext} from './Settings';
-import {handleAIResponse} from './ChatScript';
-import {AiSectionWithFakeResponse} from './AiFake';
+
+// Development-only imports for mock scripts
+let handleAIResponse: any;
+let AiSectionWithFakeResponse: any;
+if (__DEV__) {
+  handleAIResponse = require('./ChatScript').handleAIResponse;
+  AiSectionWithFakeResponse = require('./AiFake').AiSectionWithFakeResponse;
+}
 
 // Automated ChatSession drives a ChatSession in one of two ways:
 // 1. If a script is specified, the user's inputs are fake responses are driven by that script.
@@ -33,6 +39,10 @@ function AutomatedChatSession({
       humanResponse: undefined,
     };
 
+    if (!__DEV__ || !handleAIResponse) {
+      return result;
+    }
+
     let response = handleAIResponse({
       scriptName: settings.scriptName,
       index: index,
@@ -56,7 +66,7 @@ function AutomatedChatSession({
   };
 
   const onPrompt = (text: string, index: number) => {
-    const followScript = settings.scriptName;
+    const followScript = __DEV__ && settings.scriptName;
 
     if (followScript) {
       console.log(
@@ -84,9 +94,11 @@ function AutomatedChatSession({
             contentType: ChatContent.Text,
             responses: [text],
             content:
-              <AiSectionWithFakeResponse id={entries.length + 1}>
-                {aiResponse}
-              </AiSectionWithFakeResponse>,
+              AiSectionWithFakeResponse ? (
+                <AiSectionWithFakeResponse id={entries.length + 1}>
+                  {aiResponse}
+                </AiSectionWithFakeResponse>
+              ) : <>{aiResponse}</>,
           }]);
       } else {
         appendEntry(
@@ -96,9 +108,11 @@ function AutomatedChatSession({
             contentType: ChatContent.Error,
             responses: [''],
             content:
-              <AiSectionWithFakeResponse id={entries.length}>
-                {aiResponse}
-              </AiSectionWithFakeResponse>,
+              AiSectionWithFakeResponse ? (
+                <AiSectionWithFakeResponse id={entries.length}>
+                  {aiResponse}
+                </AiSectionWithFakeResponse>
+              ) : <>{aiResponse}</>,
           });
       }
     } else {
@@ -122,12 +136,15 @@ function AutomatedChatSession({
   };
 
   // Anticipate the next human response
-  let humanText = handleAIResponse({
-    scriptName: settings.scriptName,
-    index: chatScriptIndex,
-    styles: styles,
-    goToNext: () => {},
-  }).prompt;
+  let humanText: string | undefined;
+  if (__DEV__ && handleAIResponse) {
+    humanText = handleAIResponse({
+      scriptName: settings.scriptName,
+      index: chatScriptIndex,
+      styles: styles,
+      goToNext: () => {},
+    }).prompt;
+  }
 
   return (
     <Chat
