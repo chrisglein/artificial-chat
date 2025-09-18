@@ -142,10 +142,12 @@ const FluentButton = (props: FluentButtonProps) => {
   const text = props.title || props.children as string;
 
   const renderContent = () => {
+    const customColor = props.icon?.fontSource?.color;
+    
     const customStyle = {
       fontFamily: props.icon?.fontSource?.fontFamily,
       fontSize: props.icon?.fontSource?.fontSize,
-      color: props.icon?.fontSource?.color,
+      ...(customColor ? { color: customColor } : {}),
       marginRight: props.iconOnly ? 0 : 4,
     };
 
