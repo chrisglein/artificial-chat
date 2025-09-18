@@ -73,7 +73,6 @@ const PickerItem = (props: PickerItemProps) => {
 };
 
 const Picker = (props: PickerProps) => {
-  const [currentTheme] = React.useState(Appearance.getColorScheme());
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState(props.selectedValue);
 
