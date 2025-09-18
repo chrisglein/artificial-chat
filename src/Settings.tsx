@@ -10,7 +10,7 @@ import {
   FluentCheckbox as Checkbox,
 } from './FluentControls';
 import { GetVoices, SetVoice } from './Speech';
-import { getRemainingTrialUses, isUsingTrialMode, MAX_TRIAL_USES } from './TrialMode';
+import { getRemainingTrialUses, MAX_TRIAL_USES } from './TrialMode';
 
 const settingsKey = 'settings';
 
@@ -114,22 +114,18 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   const [readToMeVoice, setReadToMeVoice] = React.useState<string>(
     settings.readToMeVoice,
   );
-  
   // Trial mode state
   const [remainingTrialUses, setRemainingTrialUses] = React.useState<number>(0);
-  const [isInTrialMode, setIsInTrialMode] = React.useState<boolean>(false);
 
   // Load trial status
-  const loadTrialStatus = async () => {
+  const loadTrialStatus = React.useCallback(async () => {
     try {
       const remaining = await getRemainingTrialUses();
-      const usingTrial = await isUsingTrialMode(apiKey);
       setRemainingTrialUses(remaining);
-      setIsInTrialMode(usingTrial);
     } catch (error) {
       console.error('Failed to load trial status:', error);
     }
-  };
+  }, []);
 
   // It may seem weird to do this when the UI loads, not the app, but it's okay
   // because this component is loaded when the app starts but isn't shown. And
@@ -152,17 +148,17 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
 
       // If an API key was set, continue to remember it
       setSaveApiKey(value.apiKey !== undefined);
-      
+
       // Load trial status
       await loadTrialStatus();
     };
     load();
-  }, []);
+  }, [loadTrialStatus, settings]);
 
   // Reload trial status when API key changes
   React.useEffect(() => {
     loadTrialStatus();
-  }, [apiKey]);
+  }, [apiKey, loadTrialStatus]);
 
   const save = () => {
     settings.setAiEndpoint(aiEndpoint);
@@ -241,7 +237,6 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             onValueChange={value => setChatModel(value)}>
             {['gpt-3.5-turbo', 'gpt-4', 'gpt-4-turbo-preview'].map(value => <Picker.Item label={value} value={value} key={value}/>)}
           </Picker>
-          
           {/* Trial mode status */}
           {remainingTrialUses > 0 && !apiKey && (
             <View style={{backgroundColor: '#e6f3ff', padding: 8, borderRadius: 4, marginVertical: 8}}>
@@ -250,7 +245,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
               </Text>
             </View>
           )}
-          
+
           {remainingTrialUses === 0 && !apiKey && (
             <View style={{backgroundColor: '#fef0e6', padding: 8, borderRadius: 4, marginVertical: 8}}>
               <Text style={{fontSize: 14, color: '#d83b01'}}>
@@ -258,7 +253,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
               </Text>
             </View>
           )}
-          
+
           <Text>API key</Text>
           <TextInput
             accessibilityLabel="API key"

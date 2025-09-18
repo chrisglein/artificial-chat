@@ -41,7 +41,7 @@ export const isTrialAvailable = async (): Promise<boolean> => {
   if (!trialKey) {
     return false;
   }
-  
+
   const usageCount = await getTrialUsageCount();
   return usageCount < MAX_TRIAL_USES;
 };
@@ -51,12 +51,12 @@ export const getEffectiveApiKey = async (userApiKey?: string): Promise<string | 
   if (userApiKey) {
     return userApiKey;
   }
-  
+
   const trialAvailable = await isTrialAvailable();
   if (trialAvailable) {
     return getTrialApiKey();
   }
-  
+
   return undefined;
 };
 
@@ -71,7 +71,7 @@ export const isUsingTrialMode = async (userApiKey?: string): Promise<boolean> =>
   if (userApiKey) {
     return false;
   }
-  
+
   return await isTrialAvailable();
 };
 
