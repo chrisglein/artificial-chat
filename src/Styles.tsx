@@ -137,9 +137,9 @@ const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
       paddingRight: 6,
       paddingBottom: 2,
       minHeight: 32, // TextControlThemeMinHeight
-      color: isDarkMode ? 'white' : 'black', // PlatformColor('TextFillColorPrimary') does not appear to work here
+      color: isDarkMode ? 'white' : 'black', // PlatformColor('TextFillColorPrimary') does not appear to work here: https://github.com/microsoft/react-native-windows/issues/15159
       placeholderColor: PlatformColor('TextFillColorSecondary'),
-      selectionColor: 'lightblue', // PlatformColor('AccentFillColorDefault') does not appear to work here
+      selectionColor: 'lightblue', // PlatformColor('AccentFillColorDefault') does not appear to work here: https://github.com/microsoft/react-native-windows/issues/15159
     },
     textBoxFocused: {
       borderBottomColor: PlatformColor('AccentFillColorDefault'),
