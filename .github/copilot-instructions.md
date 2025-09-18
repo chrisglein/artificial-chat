@@ -116,7 +116,6 @@ yarn lint
 - **Port conflicts** - Metro bundler uses port 8081, ensure it's available
 
 ### Dependency Warnings
-- FluentUI React Native peer dependency warnings are expected and safe
 - Patch-package warnings about version mismatches are expected
 
 ## Development Workflow Best Practices
