@@ -54,7 +54,7 @@ function ConsentSwitch({
       tooltip={details}>
       <Switch value={value} onValueChange={onValueChange} />
       <View>
-        <Text>{title}</Text>
+        <Text style={styles.text}>{title}</Text>
         <Attribution source={source} />
       </View>
     </View>

@@ -228,7 +228,7 @@ const CreateStyles = () => {
     },
     pickerItemText: {
       fontSize: 14,
-      color: PlatformColor('TextControlForeground'),
+      color: PlatformColor('TextFillColorPrimary'),
       lineHeight: 20,
     },
     pickerItemTextSelected: {

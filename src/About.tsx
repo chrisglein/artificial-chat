@@ -3,6 +3,7 @@ import {
   Text,
   View,
 } from 'react-native';
+import { StylesContext } from './Styles';
 import {
   FluentButton as Button,
   Link,
@@ -18,6 +19,7 @@ type AboutPopupProps = {
   close: () => void;
 };
 function AboutPopup({show, close}: AboutPopupProps): JSX.Element {
+  const styles = React.useContext(StylesContext);
   const version = VersionInfo.getConstants().appVersion;
   const copyVersion = () => {
     Clipboard.setString(version);
@@ -32,7 +34,7 @@ function AboutPopup({show, close}: AboutPopupProps): JSX.Element {
       maxWidth={300}
       maxHeight={240}>
       <View style={{flexDirection: 'row', alignItems: 'center', gap: 4}}>
-        <Text>
+        <Text style={styles.text}>
           Version: <Text style={{fontWeight: 'bold'}}>{version}</Text>
         </Text>
         <Button
@@ -44,13 +46,13 @@ function AboutPopup({show, close}: AboutPopupProps): JSX.Element {
           onClick={copyVersion} />
       </View>
       <View style={{flexDirection: 'row', gap: 4}}>
-        <Text>Source code:</Text>
+        <Text style={styles.text}>Source code:</Text>
         <Link
           content="GitHub"
           url="https://github.com/chrisglein/artificial-chat/"/>
       </View>
       <View style={{flexDirection: 'row', gap: 4}}>
-        <Text>React Native: </Text>
+        <Text style={styles.text}>React Native: </Text>
         <Link
           content="0.79.0"
           url="https://github.com/microsoft/react-native-windows/releases/tag/react-native-windows_v0.79.0/"/>

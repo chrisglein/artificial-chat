@@ -202,21 +202,21 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
       maxHeight={800}>
       <View style={styles.dialogSectionsContainer}>
         <DialogSection header="Chat">
-          <Text>AI Endpoint</Text>
+          <Text style={styles.text}>AI Endpoint</Text>
           <TextInput
             accessibilityLabel="AI Endpoint"
             style={{flexGrow: 1, minHeight: 32}}
             value={aiEndpoint}
             onChangeText={value => setAiEndpoint(value)}
           />
-          <Text>Chat Model</Text>
+          <Text style={styles.text}>Chat Model</Text>
           <Picker
             accessibilityLabel="Chat Model"
             selectedValue={chatModel}
             onValueChange={value => setChatModel(value)}>
             {['gpt-3.5-turbo', 'gpt-4', 'gpt-4-turbo-preview'].map(value => <Picker.Item label={value} value={value} key={value}/>)}
           </Picker>
-          <Text>API key</Text>
+          <Text style={styles.text}>API key</Text>
           <TextInput
             accessibilityLabel="API key"
             secureTextEntry={true}
@@ -240,7 +240,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             checked={detectImageIntent}
             onChange={(event, value) => setDetectImageIntent(value)}
           />
-          <Text>Image Count</Text>
+          <Text style={styles.text}>Image Count</Text>
           <Picker
             accessibilityLabel="Image Count"
             selectedValue={imageResponseCount}
@@ -257,7 +257,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
               />
             ))}
           </Picker>
-          <Text>Image Size</Text>
+          <Text style={styles.text}>Image Size</Text>
           <Picker
             accessibilityLabel="Image Size"
             selectedValue={imageSize}
@@ -270,7 +270,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
           </Picker>
         </DialogSection>
         <DialogSection header="Read to Me">
-          <Text>Read to me</Text>
+          <Text style={styles.text}>Read to me</Text>
           <Picker
             accessibilityLabel="Read to me"
             selectedValue={readToMeVoice}
@@ -286,7 +286,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
           </Picker>
         </DialogSection>
         <DialogSection header="AI Scripts">
-          <Text>Script</Text>
+          <Text style={styles.text}>Script</Text>
           <Picker
             accessibilityLabel="Script"
             selectedValue={scriptName}
@@ -296,7 +296,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             ))}
             <Picker.Item label="None" value="" />
           </Picker>
-          <Text>Artificial Delay in Script Response</Text>
+          <Text style={styles.text}>Artificial Delay in Script Response</Text>
           <TextInput
             accessibilityLabel="Artificial Delay in Script Response"
             keyboardType="numeric"

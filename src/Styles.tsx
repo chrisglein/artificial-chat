@@ -5,8 +5,7 @@ import type {
   TextStyle,
   ViewStyle,
 } from 'react-native';
-import { PlatformColor } from 'react-native';
-import { StyleSheet } from 'react-native';
+import { PlatformColor, StyleSheet } from 'react-native';
 
 const StylesContext = React.createContext<{
   appContent: StyleProp<ViewStyle>;
@@ -31,6 +30,7 @@ const StylesContext = React.createContext<{
   textBox: StyleProp<ViewStyle>;
   textBoxFocused: StyleProp<ViewStyle>;
   flyoutBackground: StyleProp<ViewStyle>;
+  text: StyleProp<TextStyle>;
 }>({});
 
 const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
@@ -64,6 +64,7 @@ const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
       marginLeft: 64,
     },
     sectionTitle: {
+      color: PlatformColor('TextFillColorPrimary'),
       fontSize: 12,
       fontWeight: '600',
     },
@@ -95,6 +96,7 @@ const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
       padding: 12,
     },
     dialogSectionHeader: {
+      color: PlatformColor('TextFillColorPrimary'),
       fontSize: 16,
       fontWeight: '600',
       marginBottom: 4,
@@ -145,6 +147,9 @@ const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
           padding: 8,
           alignItems: 'flex-start',
     },
+    text: {
+      color: PlatformColor('TextFillColorPrimary'),
+    }
   });
 };
 
