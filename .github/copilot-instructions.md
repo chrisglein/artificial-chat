@@ -35,8 +35,7 @@ Artificial Chat is a React Native for Windows application that explores conversa
 - Android builds may fail without proper emulator configuration
 
 ### Testing and Quality
-- `yarn test` - Run Jest tests. **NOTE**: Tests currently fail on Linux due to React Native Windows module imports
-- Tests are designed to run in Windows environment with proper RNW dependencies
+- `yarn test` - Run Jest tests. **NOTE**: Tests will fail on Linux due to React Native Windows module imports. Tests are designed to run in Windows environment with proper RNW dependencies
 - `yarn lint` - Run ESLint. Shows ~50+ issues that need manual fixes
 - `yarn lint --fix` - Auto-fix some linting issues (reduces issues but doesn't fix all)
 
