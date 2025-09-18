@@ -28,15 +28,11 @@ Artificial Chat is a React Native for Windows application that explores conversa
 - `yarn windows` - Build and run Windows application. Takes 5-15 minutes on first build. NEVER CANCEL. Set timeout to 30+ minutes.
 - `yarn windows --release` - Release build (takes longer)
 
-### Android Build (Development only)
-- Requires Android Studio and emulator setup
-- `yarn android` - Build and run Android version (experimental support)
-- Android builds may fail without proper emulator configuration
-
 ### Testing and Quality
 - `yarn test` - Run Jest tests. **NOTE**: Tests will fail on Linux due to React Native Windows module imports. Tests are designed to run in Windows environment with proper RNW dependencies
-- `yarn lint` - Run ESLint. Shows ~50+ issues that need manual fixes
-- `yarn lint --fix` - Auto-fix some linting issues (reduces issues but doesn't fix all)
+- `yarn lint` - Run ESLint to check code quality
+- `yarn lint --fix` - Auto-fix some linting issues
+- **CRITICAL**: Only fix linting issues on lines you are modifying. Do not make linting changes to unrelated files or lines unless the PR is specifically for linting fixes.
 
 ## Validation and Manual Testing
 
@@ -97,9 +93,11 @@ yarn lint
 ## Common Issues and Solutions
 
 ### Linting Errors
-- **53+ linting issues exist in current codebase** (14 errors, 39 warnings)
+- **Multiple linting issues may exist in the codebase** 
 - Many are style issues (inline styles, missing semicolons)
 - **Always run `yarn lint` before completing work** - CI requires clean lint
+- **CRITICAL**: Only fix linting issues on lines you are modifying for your changes
+- **Exception**: PRs specifically dedicated to linting fixes can touch multiple unrelated files
 - Some issues require manual fixes (React hooks dependencies, unused variables)
 
 ### Test Failures on Linux
@@ -113,7 +111,8 @@ yarn lint
 - **Port conflicts** - Metro bundler uses port 8081, ensure it's available
 
 ### Dependency Warnings
-- Patch-package warnings about version mismatches are expected
+- Patch-package warnings about version mismatches may occur and are generally expected
+- Most dependency warnings should be addressed in recent commits
 
 ## Development Workflow Best Practices
 
