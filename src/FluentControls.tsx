@@ -26,7 +26,6 @@ type FluentButtonProps = {
   iconOnly?: boolean;
   tooltip?: string;
   onClick?: () => void;
-  onPress?: () => void;
   enabled?: boolean;
   children?: React.ReactNode;
 }
@@ -138,10 +137,9 @@ const FluentButton = (props: FluentButtonProps) => {
     if (props.onClick) {
       props.onClick();
     }
-    if (props.onPress) {
-      props.onPress();
-    }
   };
+
+  const text = props.title || props.children as string;
 
   const renderContent = () => {
     const customStyle = {
@@ -152,7 +150,7 @@ const FluentButton = (props: FluentButtonProps) => {
     };
 
     const icon = props.icon?.fontSource ? (
-      <Text style={[
+      <Text accessible={false} style={[
         baseIconStyle,
         getIconStyle(
           props.appearance,
@@ -164,8 +162,6 @@ const FluentButton = (props: FluentButtonProps) => {
       </Text>
     ) : null;
 
-    const text = props.title || props.children;
-
     if (props.iconOnly) {
       return icon;
     }
@@ -174,7 +170,7 @@ const FluentButton = (props: FluentButtonProps) => {
       <>
         {icon}
         {text && (
-          <Text style={[baseTextStyle, getTextStyle(props.appearance, isPressed)]}>
+          <Text accessible={false} style={[baseTextStyle, getTextStyle(props.appearance, isPressed)]}>
             {text}
           </Text>
         )}
@@ -190,8 +186,10 @@ const FluentButton = (props: FluentButtonProps) => {
       onHoverIn={() => setIsHovered(true)}
       onHoverOut={() => setIsHovered(false)}
       disabled={props.enabled === false}
-      accessibilityLabel={props.accessibilityLabel}
       accessibilityRole="button"
+      accessibilityLabel={props.accessibilityLabel ?? text}
+      onAccessibilityTap={handlePress}
+      tooltip={props.tooltip}
       style={[
         baseButtonStyle,
         getButtonStyle(props.appearance, isHovered, isPressed),

@@ -2,7 +2,6 @@ import React from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   ActivityIndicator,
-  Button,
   Image,
   Linking,
   Pressable,
@@ -11,6 +10,7 @@ import {
 } from 'react-native';
 import {FlyoutMenu, MarkdownWithRules} from './Controls';
 import type {FlyoutMenuButtonType} from './Controls';
+import {FluentButton as Button} from './FluentControls';
 import {ChatElement, ChatContent, ChatHistoryContext, ChatSource} from './Chat';
 import {StylesContext} from './Styles';
 import {FeedbackContext} from './Feedback';
@@ -60,15 +60,13 @@ function AiImageResponse({
         <View style={{alignSelf: 'flex-end', alignItems: 'flex-end'}}>
           {rejectImage && (
             <Button
-              accessibilityLabel="I didn't want to see an image"
               title="I didn't want to see an image"
-              onPress={() => rejectImage()}
+              onClick={() => rejectImage()}
             />
           )}
           <Button
-            accessibilityLabel="Show me more"
             title="Show me more"
-            onPress={() => requestMore()}
+            onClick={() => requestMore()}
           />
         </View>
       </View>
