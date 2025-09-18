@@ -82,7 +82,7 @@ yarn lint
 - `Styles.tsx` - Theme and styling system
 
 ### Tests (`__tests__/`)
-- `App.test.tsx` - Basic component rendering test (currently fails on Linux)
+- `App.test.tsx` - Basic component rendering test
 
 ### Configuration
 - `package.json` - Dependencies and scripts
