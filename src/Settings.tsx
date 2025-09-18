@@ -3,7 +3,6 @@ import {Text, TextInput, View} from 'react-native';
 import {ContentDialog, DialogSection} from './Popups';
 import {StylesContext} from './Styles';
 import {Picker} from './Picker';
-import {ChatScriptNames} from './ChatScript';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   Link,
@@ -105,8 +104,6 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
     settings.apiKey,
   );
   const [saveApiKey, setSaveApiKey] = React.useState<boolean>(false);
-  const [scriptName, setScriptName] = React.useState<string>(settings.scriptName ?? '');
-  const [delayForArtificialResponse, setDelayForArtificialResponse] = React.useState<number>(settings.delayForArtificialResponse ?? 0);
   const [detectImageIntent, setDetectImageIntent] = React.useState<boolean>(settings.detectImageIntent);
   const [imageResponseCount, setImageResponseCount] = React.useState<number>(settings.imageResponseCount);
   const [imageSize, setImageSize] = React.useState<number>(256);
@@ -143,8 +140,6 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
     settings.setAiEndpoint(aiEndpoint);
     settings.setChatModel(chatModel);
     settings.setApiKey(apiKey);
-    settings.setScriptName(scriptName);
-    settings.setDelayForArtificialResponse(delayForArtificialResponse);
     settings.setDetectImageIntent(detectImageIntent);
     settings.setImageResponseCount(imageResponseCount);
     settings.setImageSize(imageSize);
@@ -166,8 +161,6 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
     setAiEndpoint(settings.aiEndpoint);
     setChatModel(settings.chatModel);
     setApiKey(settings.apiKey);
-    setScriptName(settings.scriptName ?? '');
-    setDelayForArtificialResponse(settings.delayForArtificialResponse ?? 0);
     setDetectImageIntent(settings.detectImageIntent);
     setImageResponseCount(settings.imageResponseCount);
     setImageSize(settings.imageSize);
@@ -284,28 +277,6 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             ))}
             <Picker.Item label="None" value="" />
           </Picker>
-        </DialogSection>
-        <DialogSection header="AI Scripts">
-          <Text>Script</Text>
-          <Picker
-            accessibilityLabel="Script"
-            selectedValue={scriptName}
-            onValueChange={value => setScriptName(value)}>
-            {ChatScriptNames.map(name => (
-              <Picker.Item label={name} value={name} key={name} />
-            ))}
-            <Picker.Item label="None" value="" />
-          </Picker>
-          <Text>Artificial Delay in Script Response</Text>
-          <TextInput
-            accessibilityLabel="Artificial Delay in Script Response"
-            keyboardType="numeric"
-            style={{flexGrow: 1, minHeight: 32}}
-            onChangeText={value =>
-              setDelayForArtificialResponse(parseInt(value, 10))
-            }
-            value={delayForArtificialResponse.toString()}
-          />
         </DialogSection>
       </View>
     </ContentDialog>

@@ -20,7 +20,7 @@ function App(): JSX.Element {
   const [aiEndpoint, setAiEndpoint] = React.useState<string>('https://api.openai.com/v1');
   const [chatModel, setChatModel] = React.useState<string>('gpt-3.5-turbo');
   const [apiKey, setApiKey] = React.useState<string | undefined>(undefined);
-  const [scriptName, setScriptName] = React.useState<string | undefined>('');
+  const [scriptName, setScriptName] = React.useState<string | undefined>(undefined);
   const [delayForArtificialResponse, setDelayForArtificialResponse] = React.useState<number>(1500);
   const [detectImageIntent, setDetectImageIntent] = React.useState<boolean>(true);
   const [imageResponseCount, setImageResponseCount] = React.useState<number>(1);
