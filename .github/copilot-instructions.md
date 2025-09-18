@@ -14,7 +14,6 @@ Artificial Chat is a React Native for Windows application that explores conversa
 
 ### Bootstrap and Dependencies
 - `yarn install` - Install all dependencies. Takes ~60 seconds. NEVER CANCEL.
-- Dependency installation will show peer dependency warnings for FluentUI React Native - these are expected and safe to ignore
 - `patch-package` runs automatically post-install to apply required patches
 
 ### JavaScript Development (Cross-platform)
