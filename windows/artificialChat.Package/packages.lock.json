@@ -19,20 +19,20 @@
       },
       "Microsoft.JavaScript.Hermes": {
         "type": "Transitive",
-        "resolved": "0.0.0-2505.2001-0e4bc3b9",
-        "contentHash": "VNSUBgaGzJ/KkK3Br0b9FORkCgKqke54hi48vG42xRACIlxN+uLFMz0hRo+KHogz+Fsn+ltXicGwQsDVpmaCMg=="
+        "resolved": "0.0.0-2507.21007-eda7aef6",
+        "contentHash": "3oyJXoPaayrtWSjBgnLFfVBrNcnvB3EJ1r2/K0yz9exmmESTTzWaCh8JlhX7fsjtMv/LpQxJOctHP0Ng2k8spQ=="
       },
       "Microsoft.ReactNative": {
         "type": "Transitive",
-        "resolved": "0.79.0",
-        "contentHash": "6+8MUOyEhqvfbW/8HfhBV7bJopCFO6d7+DSuR6PMrB6HTf2/ewMUC5Mx14nfHW5iUJr989EwzXBe5tTzroyMvw=="
+        "resolved": "0.80.0-preview.6",
+        "contentHash": "/MhEG5TntDf+eFr6qdM8ZSV1LAoAkimrxLYpaQoBQTN26i4Hz+3eNLS4v79xSACNCdYaYoAI0fvRZluf9rw1EQ=="
       },
       "Microsoft.ReactNative.Cxx": {
         "type": "Transitive",
-        "resolved": "0.79.0",
-        "contentHash": "SgqS70L8JKB9UId7JMLCp1EEs8LztAXVGYIIrFRzEZtKqN37weP2ndDW6+v0I+gJqNWdV/UThq9cJXHwVM0cZw==",
+        "resolved": "0.80.0-preview.6",
+        "contentHash": "j3z5avS/wrCCRhYlwsMjgzXNuDvUAQr838/LcV6W1uanzgunZYfYVGVsU56o508RRJc8oYT8e+YLxGVZSPsRQw==",
         "dependencies": {
-          "Microsoft.ReactNative": "0.79.0"
+          "Microsoft.ReactNative": "0.80.0-preview.6"
         }
       },
       "Microsoft.VCRTForwarders.140": {
@@ -54,9 +54,9 @@
         "type": "Project",
         "dependencies": {
           "Clipboard": "[1.0.0, )",
-          "Microsoft.JavaScript.Hermes": "[0.0.0-2505.2001-0e4bc3b9, )",
-          "Microsoft.ReactNative": "[0.79.0, )",
-          "Microsoft.ReactNative.Cxx": "[0.79.0, )",
+          "Microsoft.JavaScript.Hermes": "[0.0.0-2507.21007-eda7aef6, )",
+          "Microsoft.ReactNative": "[0.80.0-preview.6, )",
+          "Microsoft.ReactNative.Cxx": "[0.80.0-preview.6, )",
           "Microsoft.VCRTForwarders.140": "[1.0.2-rc, )",
           "Microsoft.WindowsAppSDK": "[1.7.250401001, )",
           "ReactNativeAsyncStorage": "[1.0.0, )",
@@ -66,8 +66,8 @@
       "clipboard": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.ReactNative": "[0.79.0, )",
-          "Microsoft.ReactNative.Cxx": "[0.79.0, )",
+          "Microsoft.ReactNative": "[0.80.0-preview.6, )",
+          "Microsoft.ReactNative.Cxx": "[0.80.0-preview.6, )",
           "Microsoft.VCRTForwarders.140": "[1.0.2-rc, )",
           "Microsoft.WindowsAppSDK": "[1.7.250401001, )",
           "boost": "[1.83.0, )"
@@ -76,8 +76,8 @@
       "reactnativeasyncstorage": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.ReactNative": "[0.79.0, )",
-          "Microsoft.ReactNative.Cxx": "[0.79.0, )",
+          "Microsoft.ReactNative": "[0.80.0-preview.6, )",
+          "Microsoft.ReactNative.Cxx": "[0.80.0-preview.6, )",
           "Microsoft.VCRTForwarders.140": "[1.0.2-rc, )",
           "Microsoft.WindowsAppSDK": "[1.7.250401001, )",
           "boost": "[1.83.0, )"
@@ -97,8 +97,8 @@
       },
       "Microsoft.ReactNative": {
         "type": "Transitive",
-        "resolved": "0.79.0",
-        "contentHash": "6+8MUOyEhqvfbW/8HfhBV7bJopCFO6d7+DSuR6PMrB6HTf2/ewMUC5Mx14nfHW5iUJr989EwzXBe5tTzroyMvw=="
+        "resolved": "0.80.0-preview.6",
+        "contentHash": "/MhEG5TntDf+eFr6qdM8ZSV1LAoAkimrxLYpaQoBQTN26i4Hz+3eNLS4v79xSACNCdYaYoAI0fvRZluf9rw1EQ=="
       },
       "Microsoft.VCRTForwarders.140": {
         "type": "Transitive",
@@ -124,8 +124,8 @@
       },
       "Microsoft.ReactNative": {
         "type": "Transitive",
-        "resolved": "0.79.0",
-        "contentHash": "6+8MUOyEhqvfbW/8HfhBV7bJopCFO6d7+DSuR6PMrB6HTf2/ewMUC5Mx14nfHW5iUJr989EwzXBe5tTzroyMvw=="
+        "resolved": "0.80.0-preview.6",
+        "contentHash": "/MhEG5TntDf+eFr6qdM8ZSV1LAoAkimrxLYpaQoBQTN26i4Hz+3eNLS4v79xSACNCdYaYoAI0fvRZluf9rw1EQ=="
       },
       "Microsoft.VCRTForwarders.140": {
         "type": "Transitive",
@@ -151,8 +151,8 @@
       },
       "Microsoft.ReactNative": {
         "type": "Transitive",
-        "resolved": "0.79.0",
-        "contentHash": "6+8MUOyEhqvfbW/8HfhBV7bJopCFO6d7+DSuR6PMrB6HTf2/ewMUC5Mx14nfHW5iUJr989EwzXBe5tTzroyMvw=="
+        "resolved": "0.80.0-preview.6",
+        "contentHash": "/MhEG5TntDf+eFr6qdM8ZSV1LAoAkimrxLYpaQoBQTN26i4Hz+3eNLS4v79xSACNCdYaYoAI0fvRZluf9rw1EQ=="
       },
       "Microsoft.VCRTForwarders.140": {
         "type": "Transitive",
@@ -178,8 +178,8 @@
       },
       "Microsoft.ReactNative": {
         "type": "Transitive",
-        "resolved": "0.79.0",
-        "contentHash": "6+8MUOyEhqvfbW/8HfhBV7bJopCFO6d7+DSuR6PMrB6HTf2/ewMUC5Mx14nfHW5iUJr989EwzXBe5tTzroyMvw=="
+        "resolved": "0.80.0-preview.6",
+        "contentHash": "/MhEG5TntDf+eFr6qdM8ZSV1LAoAkimrxLYpaQoBQTN26i4Hz+3eNLS4v79xSACNCdYaYoAI0fvRZluf9rw1EQ=="
       },
       "Microsoft.VCRTForwarders.140": {
         "type": "Transitive",
@@ -205,8 +205,8 @@
       },
       "Microsoft.ReactNative": {
         "type": "Transitive",
-        "resolved": "0.79.0",
-        "contentHash": "6+8MUOyEhqvfbW/8HfhBV7bJopCFO6d7+DSuR6PMrB6HTf2/ewMUC5Mx14nfHW5iUJr989EwzXBe5tTzroyMvw=="
+        "resolved": "0.80.0-preview.6",
+        "contentHash": "/MhEG5TntDf+eFr6qdM8ZSV1LAoAkimrxLYpaQoBQTN26i4Hz+3eNLS4v79xSACNCdYaYoAI0fvRZluf9rw1EQ=="
       },
       "Microsoft.VCRTForwarders.140": {
         "type": "Transitive",
@@ -232,8 +232,8 @@
       },
       "Microsoft.ReactNative": {
         "type": "Transitive",
-        "resolved": "0.79.0",
-        "contentHash": "6+8MUOyEhqvfbW/8HfhBV7bJopCFO6d7+DSuR6PMrB6HTf2/ewMUC5Mx14nfHW5iUJr989EwzXBe5tTzroyMvw=="
+        "resolved": "0.80.0-preview.6",
+        "contentHash": "/MhEG5TntDf+eFr6qdM8ZSV1LAoAkimrxLYpaQoBQTN26i4Hz+3eNLS4v79xSACNCdYaYoAI0fvRZluf9rw1EQ=="
       },
       "Microsoft.VCRTForwarders.140": {
         "type": "Transitive",
@@ -259,8 +259,8 @@
       },
       "Microsoft.ReactNative": {
         "type": "Transitive",
-        "resolved": "0.79.0",
-        "contentHash": "6+8MUOyEhqvfbW/8HfhBV7bJopCFO6d7+DSuR6PMrB6HTf2/ewMUC5Mx14nfHW5iUJr989EwzXBe5tTzroyMvw=="
+        "resolved": "0.80.0-preview.6",
+        "contentHash": "/MhEG5TntDf+eFr6qdM8ZSV1LAoAkimrxLYpaQoBQTN26i4Hz+3eNLS4v79xSACNCdYaYoAI0fvRZluf9rw1EQ=="
       },
       "Microsoft.VCRTForwarders.140": {
         "type": "Transitive",
