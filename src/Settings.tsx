@@ -16,10 +16,6 @@ const settingsKey = 'settings';
 type SettingsContextType = {
   apiKey?: string;
   setApiKey: (value?: string) => void;
-  scriptName?: string;
-  setScriptName: (value: string) => void;
-  delayForArtificialResponse?: number;
-  setDelayForArtificialResponse: (value: number) => void;
   detectImageIntent: boolean;
   setDetectImageIntent: (value: boolean) => void;
   imageResponseCount: number;
@@ -35,8 +31,6 @@ type SettingsContextType = {
 };
 const SettingsContext = React.createContext<SettingsContextType>({
   setApiKey: () => {},
-  setScriptName: () => {},
-  setDelayForArtificialResponse: () => {},
   detectImageIntent: false,
   setDetectImageIntent: () => {},
   imageResponseCount: 1,
