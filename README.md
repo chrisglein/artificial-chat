@@ -2,6 +2,10 @@ Artifical Chat is an app to explore the wonders of conversational AI using React
 
 ![image](https://user-images.githubusercontent.com/26607885/233441056-39033d3c-3420-4c31-b7db-ca39944fc00e.png)
 
+Artifical Chat is an app to explore the wonders of conversational AI using React Native for Windows to build the user experience. The goal is to handle not just plain text but rich markdown documents, code, and faciliate image generation as well.
+
+![image](https://user-images.githubusercontent.com/26607885/233441056-39033d3c-3420-4c31-b7db-ca39944fc00e.png)
+
 # Setup
 1. Install all dependencies per [RNW Dependencies](https://microsoft.github.io/react-native-windows/docs/rnw-dependencies)
 1. `yarn`
@@ -92,20 +96,18 @@ The app's settings are handled by a `SettingsContext` object, which has dialog U
 ## Helper Controls
 | File | Type | Information |
 | --- | --- | --- |
-| Controls.tsx | `HoverButton` | Button that changes style on mouse over |
 | Controls.tsx | `Attribution` | Visual indicator for the provider of a skill |
 | Controls.tsx | `ConsentSwitch` | Toggle for the user to enable/disable sharing information to a skill |
 | Controls.tsx | `ImageSelection` | Image choice from a multi-image generation query |
-| Controls.tsx | `Hyperlink` | Text that when clicked navigates to a url |
+| Controls.tsx | 'FluentTextInput' | TextInput that displays a styled background, like WinUI's `TextBox` |
+| Controls.tsx | 'FlyoutMenu' | Ellipses button that spawns a flyout menu when clicked |
+| Controls.tsx | 'MarkdownWithRules' | A markdown block configured to display rich code blocks |
+| Controls.tsx | 'SwitchWithLabel' | A `ToggleSwitch` that also has a label |
 | CodeBlock.tsx | `CodeBlock` | Displays code with syntax highlighting and copy support |
 
 # Dependencies
-- Picker via [@react-native-clipboard/clipboard](https://github.com/react-native-clipboard/clipboard)
-- Clipboard via [@react-native-picker/picker](https://github.com/react-native-picker/picker)
-- Syntax Highlighting via [react-native-syntax-highlighter](https://github.com/conorhastings/react-native-syntax-highlighter)
+- Clipboard via [@react-native-clipboard/clipboard](https://github.com/react-native-clipboard/clipboard)
 - Dependency patching via [patch-package](https://github.com/ds300/patch-package)
 - Storage via [react-native-async-storage](https://github.com/react-native-async-storage/async-storage)
-- Markdown rendering via [react-native-markdown-display-updated](https://github.com/willmac321/react-native-markdown-display)
+- Markdown rendering via [react-native-markdown-display-updated](https://github.com/PopBot/react-native-markdown-display-updated)
 - Dialogs via [react-native-content-dialog](https://github.com/chrisglein/react-native-content-dialog)
-- Button, Checkbox, Link via [@fluentui/react-native](https://github.com/microsoft/fluentui-react-native)
-- Speech Synthesis via [react-native-winrt](https://github.com/microsoft/react-native-winrt)

@@ -14,9 +14,9 @@ type OpenAiHandlerOptions = {
 };
 
 type ConversationEntry = {
-  role: 'user' | 'system' | 'assistant';
-  content: string;
-};
+  role: 'user' | 'system' | 'assistant',
+  content: string,
+}
 
 type OpenAiHandlerType = {
   api: OpenAiApi;
@@ -66,9 +66,9 @@ const OpenAiHandler = ({api, options, instructions}: OpenAiHandlerType) => {
           return {
             model: options?.chatModel ?? 'gpt-3.5-turbo',
             messages: [
-              {role: 'system', content: actualInstructions},
-              ...(options?.promptHistory ?? []),
-              {role: 'user', content: prompt},
+              {'role': 'system', 'content': actualInstructions},
+              ...options?.promptHistory ?? [],
+              {'role': 'user', 'content': prompt},
             ],
           };
         },
@@ -143,17 +143,18 @@ const CallOpenAi = async ({
     let body = apiHandler.body(prompt);
     console.debug(body);
 
-    let response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${effectiveApiKey}`,
-        'Content-Type': 'application/json',
-        // Azure endpoint seems to want this instead of Bearer, despite docs https://learn.microsoft.com/en-us/azure/cognitive-services/openai/how-to/managed-identity#assign-yourself-to-the-cognitive-services-user-role
-        'Ocp-Apim-Subscription-Key': `${effectiveApiKey}`,
-      },
-      body: JSON.stringify(body),
-    });
+    let response = await fetch(
+      url, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Authorization': `Bearer ${effectiveApiKey}`,
+          'Content-Type': 'application/json',
+          // Azure endpoint seems to want this instead of Bearer, despite docs https://learn.microsoft.com/en-us/azure/cognitive-services/openai/how-to/managed-identity#assign-yourself-to-the-cognitive-services-user-role
+          'Ocp-Apim-Subscription-Key': `${effectiveApiKey}`,
+        },
+        body: JSON.stringify(body),
+      });
 
     try {
       let json = await response.json();
@@ -188,4 +189,4 @@ const CallOpenAi = async ({
   }
 };
 
-export {CallOpenAi, OpenAiApi};
+export { CallOpenAi, OpenAiApi };

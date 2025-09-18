@@ -2,15 +2,14 @@ import React from 'react';
 import {Text, TextInput, View} from 'react-native';
 import {ContentDialog, DialogSection} from './Popups';
 import {StylesContext} from './Styles';
-import {Picker} from '@react-native-picker/picker';
+import {Picker} from './Picker';
 import {ChatScriptNames} from './ChatScript';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
-  ButtonV1 as Button,
   Link,
-  CheckboxV1 as Checkbox,
-} from '@fluentui/react-native';
-import {GetVoices, SetVoice} from './Speech';
+  FluentCheckbox as Checkbox,
+} from './FluentControls';
+import { GetVoices, SetVoice } from './Speech';
 
 const settingsKey = 'settings';
 
@@ -81,15 +80,9 @@ const LoadSettingsData = async () => {
     if (valueAsString != null) {
       const value = JSON.parse(valueAsString);
 
-      if (value.hasOwnProperty('apiKey')) {
-        valueToSave.apiKey = value.apiKey;
-      }
-      if (value.hasOwnProperty('imageSize')) {
-        valueToSave.imageSize = parseInt(value.imageSize);
-      }
-      if (value.hasOwnProperty('readToMeVoice')) {
-        valueToSave.readToMeVoice = value.readToMeVoice;
-      }
+      if (value.hasOwnProperty('apiKey')) { valueToSave.apiKey = value.apiKey; }
+      if (value.hasOwnProperty('imageSize')) { valueToSave.imageSize = parseInt(value.imageSize, 10); }
+      if (value.hasOwnProperty('readToMeVoice')) { valueToSave.readToMeVoice = value.readToMeVoice; }
     }
   } catch (e) {
     console.error(e);
@@ -112,17 +105,10 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
     settings.apiKey,
   );
   const [saveApiKey, setSaveApiKey] = React.useState<boolean>(false);
-  const [scriptName, setScriptName] = React.useState<string>(
-    settings.scriptName ?? '',
-  );
-  const [delayForArtificialResponse, setDelayForArtificialResponse] =
-    React.useState<number>(settings.delayForArtificialResponse ?? 0);
-  const [detectImageIntent, setDetectImageIntent] = React.useState<boolean>(
-    settings.detectImageIntent,
-  );
-  const [imageResponseCount, setImageResponseCount] = React.useState<number>(
-    settings.imageResponseCount,
-  );
+  const [scriptName, setScriptName] = React.useState<string>(settings.scriptName ?? '');
+  const [delayForArtificialResponse, setDelayForArtificialResponse] = React.useState<number>(settings.delayForArtificialResponse ?? 0);
+  const [detectImageIntent, setDetectImageIntent] = React.useState<boolean>(settings.detectImageIntent);
+  const [imageResponseCount, setImageResponseCount] = React.useState<number>(settings.imageResponseCount);
   const [imageSize, setImageSize] = React.useState<number>(256);
   const [readToMeVoice, setReadToMeVoice] = React.useState<string>(
     settings.readToMeVoice,
@@ -207,11 +193,13 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   return (
     <ContentDialog
       show={show}
-      close={() => {}}
+      close={() => {cancel();}}
       isLightDismissEnabled={false}
       title="OpenAI Settings"
       buttons={buttons}
-      defaultButtonIndex={0}>
+      defaultButtonIndex={0}
+      maxWidth={400}
+      maxHeight={800}>
       <View style={styles.dialogSectionsContainer}>
         <DialogSection header="Chat">
           <Text>AI Endpoint</Text>
@@ -226,9 +214,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             accessibilityLabel="Chat Model"
             selectedValue={chatModel}
             onValueChange={value => setChatModel(value)}>
-            {['gpt-3.5-turbo', 'gpt-4'].map(value => (
-              <Picker.Item label={value} value={value} key={value} />
-            ))}
+            {['gpt-3.5-turbo', 'gpt-4', 'gpt-4-turbo-preview'].map(value => <Picker.Item label={value} value={value} key={value}/>)}
           </Picker>
           <Text>API key</Text>
           <TextInput
@@ -236,14 +222,12 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             secureTextEntry={true}
             style={{flexGrow: 1, minHeight: 32}}
             onChangeText={value => setApiKey(value)}
-            value={apiKey}
-          />
-          <Checkbox
-            label="Remember this"
-            size="large"
-            checked={saveApiKey}
-            onChange={(event, value) => setSaveApiKey(value)}
-          />
+            value={apiKey}/>
+            <Checkbox
+              label="Remember this"
+              size="large"
+              checked={saveApiKey}
+              onChange={(event, value) => setSaveApiKey(value)}/>
           <Link
             content="https://platform.openai.com/account/api-keys"
             url="https://platform.openai.com/account/api-keys"
@@ -262,7 +246,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             selectedValue={imageResponseCount}
             onValueChange={value =>
               setImageResponseCount(
-                typeof value === 'number' ? value : parseInt(value),
+                typeof value === 'number' ? value : parseInt(value, 10),
               )
             }>
             {[1, 2, 3, 4].map(number => (
@@ -278,7 +262,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             accessibilityLabel="Image Size"
             selectedValue={imageSize}
             onValueChange={value =>
-              setImageSize(typeof value === 'number' ? value : parseInt(value))
+              setImageSize(typeof value === 'number' ? value : parseInt(value, 10))
             }>
             {[256, 512, 1024].map(size => (
               <Picker.Item label={size.toString()} value={size} key={size} />
@@ -318,7 +302,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             keyboardType="numeric"
             style={{flexGrow: 1, minHeight: 32}}
             onChangeText={value =>
-              setDelayForArtificialResponse(parseInt(value))
+              setDelayForArtificialResponse(parseInt(value, 10))
             }
             value={delayForArtificialResponse.toString()}
           />
@@ -328,4 +312,4 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   );
 }
 
-export {SettingsContext, SettingsPopup};
+export { SettingsContext, SettingsPopup };

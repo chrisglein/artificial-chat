@@ -1,10 +1,12 @@
 import React from 'react';
-import type {StyleProp, ImageStyle, TextStyle, ViewStyle} from 'react-native';
-import {PlatformColor} from 'react-native';
-import {StyleSheet} from 'react-native';
-import {ThemeReference} from '@fluentui-react-native/theme';
-import {createDefaultTheme} from '@fluentui-react-native/default-theme';
-import {globalTokens} from '@fluentui-react-native/theme-tokens';
+import type {
+  StyleProp,
+  ImageStyle,
+  TextStyle,
+  ViewStyle,
+} from 'react-native';
+import { PlatformColor } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 const StylesContext = React.createContext<{
   appContent: StyleProp<ViewStyle>;
@@ -22,10 +24,16 @@ const StylesContext = React.createContext<{
   dialogSectionHeader: StyleProp<TextStyle>;
   codeBlockTitle: StyleProp<TextStyle>;
   codeBlockTitleText: StyleProp<TextStyle>;
+  hyperlinkIdle: StyleProp<TextStyle>;
+  hyperlinkPressing: StyleProp<TextStyle>;
+  hyperlinkHovering: StyleProp<TextStyle>;
+  hyperlinkDisabled: StyleProp<TextStyle>;
+  textBox: StyleProp<ViewStyle>;
+  textBoxFocused: StyleProp<ViewStyle>;
   flyoutBackground: StyleProp<ViewStyle>;
 }>({});
 
-const CreateStyles = (isDarkMode: boolean) => {
+const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
   return StyleSheet.create({
     appContent: {
       backgroundColor: isDarkMode ? '#1F1F1F' : '#F5F5F5',
@@ -97,102 +105,47 @@ const CreateStyles = (isDarkMode: boolean) => {
     codeBlockTitleText: {
       color: isDarkMode ? 'black' : 'white',
     },
+    hyperlinkIdle: {
+      color: isHighContrast ? PlatformColor('SystemColorWindowTextColor') : isDarkMode ? PlatformColor('SystemAccentColorDark2') : PlatformColor('SystemAccentColorLight3'),
+      textDecorationLine: 'underline',
+    },
+    hyperlinkPressing: {
+      color: isHighContrast ? PlatformColor('SystemColorWindowTextColor') : isDarkMode ? PlatformColor('SystemAccentColorDark2') : PlatformColor('SystemAccentColorLight2'),
+    },
+    hyperlinkHovering: {
+      color: isHighContrast ? PlatformColor('SystemColorWindowTextColor') : isDarkMode ? PlatformColor('SystemAccentColorDark3') : PlatformColor('SystemAccentColorLight3'),
+      textDecorationLine: 'underline',
+    },
+    hyperlinkDisabled: {
+      color: isHighContrast ? PlatformColor('SystemColorGrayTextColor') : PlatformColor('AccentTextFillColorDisabled'),
+      textDecorationLine: 'underline',
+    },
+    textBox: {
+      flexGrow: 1,
+      flexShrink: 1,
+      fontSize: 14,
+      backgroundColor: PlatformColor('ControlFillColorDefault'),
+      borderRadius: 4, // ControlCornerRadius
+      borderWidth: 1, // TextControlBorderThemeThickness
+      borderBottomWidth: 2,
+      borderColor: PlatformColor('ControlStrokeColorDefault'),
+      borderBottomColor: PlatformColor('ControlStrokeColorSecondary'),
+      paddingLeft: 14,
+      paddingTop: 6,
+      paddingRight: 6,
+      paddingBottom: 2,
+      minHeight: 32, // TextControlThemeMinHeight
+    },
+    textBoxFocused: {
+      borderBottomColor: PlatformColor('AccentFillColorDefault'),
+    },
     flyoutBackground: {
-      backgroundColor: isDarkMode ? 'black' : 'white',
-      borderRadius: 4,
-      padding: 8,
-      alignItems: 'flex-start',
+          backgroundColor: isDarkMode ? 'black' : 'white',
+          borderRadius: 4,
+          padding: 8,
+          alignItems: 'flex-start',
     },
   });
 };
 
-let windowsThemeReference: ThemeReference;
-
-function createWindowsTheme(): ThemeReference {
-  windowsThemeReference = new ThemeReference(createDefaultTheme(), t => {
-    return {
-      components: {
-        Checkbox: {
-          large: {
-            borderRadius: globalTokens.corner.radius40,
-            checkboxBorderRadius: globalTokens.corner.radius40,
-            checkmarkSize: 12,
-          },
-          checkboxBackgroundColor: PlatformColor(
-            'ControlAltFillColorSecondaryBrush',
-          ),
-          hovered: {
-            checkboxBackgroundColor: PlatformColor(
-              'ControlAltFillColorTertiaryBrush',
-            ),
-          },
-          pressed: {
-            checkboxBackgroundColor: PlatformColor(
-              'ControlAltFillColorQuarternaryBrush',
-            ),
-          },
-        },
-      },
-      colors: {
-        link: PlatformColor('AccentTextFillColorPrimaryBrush'),
-        linkHovered: PlatformColor('AccentTextFillColorSecondaryBrush'),
-        linkPressed: PlatformColor('AccentTextFillColorTertiaryBrush'),
-
-        neutralStrokeAccessible: PlatformColor(
-          'ControlStrongStrokeColorDefaultBrush',
-        ), // border for unchecked checkbox (idle)
-        neutralStrokeAccessibleHover: PlatformColor(
-          'ControlStrongStrokeColorDefaultBrush',
-        ), // border for unchecked checkbox (hover)
-        neutralStrokeAccessiblePressed: PlatformColor(
-          'ControlStrongStrokeColorDisabledBrush',
-        ), // border for unchecked checkbox (pressed)
-        neutralStrokeDisabled: PlatformColor(
-          'ControlStrongStrokeColorDisabledBrush',
-        ), // border for unchecked checkbox (disabled)
-
-        neutralForeground1: PlatformColor('TextFillColorPrimaryBrush'), // foreground for unchecked checkbox (pressed)
-        neutralForeground1Hover: PlatformColor('TextFillColorPrimaryBrush'),
-        neutralForeground1Pressed: PlatformColor('TextFillColorPrimaryBrush'),
-        neutralForegroundDisabled: PlatformColor('TextFillColorDisabledBrush'), // check color for checked/unchecked checkbox (disabled)
-        neutralForeground2: PlatformColor('TextFillColorPrimaryBrush'), // foreground for unchecked checkbox (hover)
-        neutralForeground3: PlatformColor('TextFillColorPrimaryBrush'), // foreground for unchecked checkbox (idle)
-
-        // Used for Button
-        neutralForegroundOnBrand: PlatformColor(
-          'TextOnAccentFillColorPrimaryBrush',
-        ), // check color for checked checkbox (hover/pressed/idle)
-
-        // Used for Button
-        neutralBackground1: PlatformColor('ControlFillColorDefaultBrush'), // fill for unchecked checkbox (idle/hover/pressed)
-        neutralBackground1Hover: PlatformColor(
-          'ControlFillColorSecondaryBrush',
-        ),
-        neutralBackground1Pressed: PlatformColor(
-          'ControlFillColorTertiaryBrush',
-        ),
-        neutralBackgroundDisabled: PlatformColor(
-          'ControlFillColorDisabledBrush',
-        ), // fill for unchecked checkbox (disabled)
-
-        // Used for Button
-        brandBackground: PlatformColor('AccentFillColorDefaultBrush'),
-        brandBackgroundHover: PlatformColor('AccentFillColorSecondaryBrush'),
-        brandBackgroundPressed: PlatformColor('AccentFillColorTertiaryBrush'),
-        brandBackgroundDisabled: PlatformColor('AccentFillColorDisabledBrush'),
-
-        compoundBrandBackground1: PlatformColor('AccentFillColorDefaultBrush'), // fill and border for checked checkbox (idle)
-        compoundBrandBackground1Pressed: PlatformColor(
-          'AccentFillColorTertiaryBrush',
-        ), // fill and border for checked checkbox (pressed)
-        compoundBrandBackground1Hover: PlatformColor(
-          'AccentFillColorSecondaryBrush',
-        ), // fill and border for checked checkbox (hover)
-      },
-    };
-  });
-
-  return windowsThemeReference;
-}
-
-export {StylesContext, CreateStyles, createWindowsTheme};
+export { StylesContext, CreateStyles };

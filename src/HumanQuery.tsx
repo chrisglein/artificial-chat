@@ -28,18 +28,14 @@ function HumanSection({
     menuItems.push(...moreMenu);
   }
   if (id !== undefined) {
-    menuItems.push({
-      title: 'Delete this response',
-      icon: 0xe74d,
-      onPress: () => chatHistory.deleteResponse(id),
-    });
+    menuItems.push(
+      {title: 'Delete this response', icon: 0xE74D, onPress: () => chatHistory.deleteResponse(id)}
+    );
   }
   if (!disableCopy) {
-    menuItems.push({
-      title: 'Copy to clipboard',
-      icon: 0xe8c8,
-      onPress: () => Clipboard.setString(content ?? ''),
-    });
+    menuItems.push(
+      {title: 'Copy to clipboard', icon: 0xE8C8, onPress: () => Clipboard.setString(content ?? '')}
+    );
   }
 
   return (
@@ -53,7 +49,7 @@ function HumanSection({
           style={[styles.sectionTitle, {flexGrow: 1}]}>
           Prompt
         </Text>
-        <FlyoutMenu items={menuItems} />
+        <FlyoutMenu items={menuItems} maxWidth={300} maxHeight={400}/>
       </View>
       {content ? <MarkdownWithRules content={content} /> : null}
       {children}
@@ -61,4 +57,4 @@ function HumanSection({
   );
 }
 
-export {HumanSection};
+export { HumanSection };

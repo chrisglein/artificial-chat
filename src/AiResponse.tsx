@@ -2,7 +2,6 @@ import React from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   ActivityIndicator,
-  Button,
   Image,
   Linking,
   Pressable,
@@ -11,6 +10,7 @@ import {
 } from 'react-native';
 import {FlyoutMenu, MarkdownWithRules} from './Controls';
 import type {FlyoutMenuButtonType} from './Controls';
+import {FluentButton as Button} from './FluentControls';
 import {ChatElement, ChatContent, ChatHistoryContext, ChatSource} from './Chat';
 import {StylesContext} from './Styles';
 import {FeedbackContext} from './Feedback';
@@ -60,15 +60,13 @@ function AiImageResponse({
         <View style={{alignSelf: 'flex-end', alignItems: 'flex-end'}}>
           {rejectImage && (
             <Button
-              accessibilityLabel="I didn't want to see an image"
               title="I didn't want to see an image"
-              onPress={() => rejectImage()}
+              onClick={() => rejectImage()}
             />
           )}
           <Button
-            accessibilityLabel="Show me more"
             title="Show me more"
-            onPress={() => requestMore()}
+            onClick={() => requestMore()}
           />
         </View>
       </View>
@@ -104,39 +102,21 @@ function AiSection({
     menuItems.push(...moreMenu);
   }
   if (id !== undefined) {
-    menuItems.push({
-      title: 'Delete this response',
-      icon: 0xe74d,
-      onPress: () => chatHistory.deleteResponse(id),
-    });
+    menuItems.push(
+      {title: 'Delete this response', icon: 0xE74D, onPress: () => chatHistory.deleteResponse(id)}
+    );
   }
   if (copyValue) {
-    menuItems.push({
-      title: 'Copy to clipboard',
-      icon: 0xe8c8,
-      onPress: () => Clipboard.setString(copyValue),
-    });
-    menuItems.push({
-      title: 'Read to me',
-      icon: 0xe995,
-      onPress: () => {
-        Speak(copyValue);
-      },
-    });
+    menuItems.push(
+      {title: 'Copy to clipboard', icon: 0xE8C8, onPress: () => Clipboard.setString(copyValue)}
+    );
+    menuItems.push(
+      {title: 'Read to me', icon: 0xE995, onPress: () => { Speak(copyValue); } }
+    );
   }
   menuItems.push(
-    {
-      title: '👍 Give positive feedback',
-      onPress: () => {
-        showFeedbackPopup(true);
-      },
-    },
-    {
-      title: '👎 Give negative feedback',
-      onPress: () => {
-        showFeedbackPopup(false);
-      },
-    },
+    {title: '👍 Give positive feedback', onPress: () => { showFeedbackPopup(true); }},
+    {title: '👎 Give negative feedback', onPress: () => { showFeedbackPopup(false); }},
   );
 
   return (
@@ -150,10 +130,14 @@ function AiSection({
           style={[styles.sectionTitle, {flexGrow: 1}]}>
           OpenAI
         </Text>
-        <FlyoutMenu items={menuItems} />
+        <FlyoutMenu items={menuItems} maxWidth={300} maxHeight={400}/>
       </View>
-      {isLoading && <ActivityIndicator />}
-      <View style={{gap: 8}}>{children}</View>
+      {isLoading &&
+        <ActivityIndicator/>
+      }
+      <View style={{gap: 8}}>
+        {children}
+      </View>
     </Pressable>
   );
 }
@@ -198,11 +182,11 @@ function AiSectionContent({id, content}: AiSectionContentProps): JSX.Element {
             );
           default:
           case ChatContent.Text:
-            return <MarkdownWithRules content={firstResult} />;
+            return <MarkdownWithRules content={firstResult}/>;
         }
       })()}
     </AiSection>
   );
 }
 
-export {AiSectionContent, AiSection, AiImageResponse};
+export { AiSectionContent, AiSection, AiImageResponse };

@@ -30,4 +30,4 @@ function AiSectionWithFakeResponse({
   );
 }
 
-export {AiSectionWithFakeResponse};
+export { AiSectionWithFakeResponse };

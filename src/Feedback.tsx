@@ -1,7 +1,13 @@
 import React from 'react';
-import {Button, Linking, Switch, Text, TextInput, View} from 'react-native';
-import {ContentDialog} from './Popups';
-import {StylesContext} from './Styles';
+import {
+  Linking,
+  Switch,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
+import { ContentDialog } from './Popups';
+import { StylesContext } from './Styles';
 import VersionInfo from './NativeVersionInfo';
 
 const FeedbackContext = React.createContext<{
@@ -36,15 +42,13 @@ function FeedbackPopup({
             `https://github.com/chrisglein/artificial-chat/issues/new?template=feedback-positive.yaml&version=${version}&expected=${feedbackText}&response=${response}`,
           );
         } else {
-          Linking.openURL(
-            `https://github.com/chrisglein/artificial-chat/issues/new?template=feedback-negative.yaml&version=${version}&expected=${feedbackText}&response=${response}`,
-          );
+          Linking.openURL(`https://github.com/chrisglein/artificial-chat/issues/new?template=feedback-negative.yaml&version=${version}&expected=${feedbackText}&response=${response}`);
         }
       },
     },
     {
       title: 'Cancel',
-      onPress: () => {},
+      onPress: () => { },
     },
   ];
 
@@ -54,7 +58,8 @@ function FeedbackPopup({
       close={close}
       title="Provide additional feedback"
       buttons={buttons}
-      defaultButtonIndex={1}>
+      defaultButtonIndex={1}
+      maxHeight={300}>
       <Text>{'Your feedback: ' + (isPositive ? '👍' : '👎')}</Text>
       <TextInput
         multiline={true}
@@ -95,4 +100,4 @@ function FeedbackPopup({
   );
 }
 
-export {FeedbackContext, FeedbackPopup};
+export { FeedbackContext, FeedbackPopup };

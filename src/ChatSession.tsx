@@ -64,9 +64,7 @@ function AutomatedChatSession({
       );
 
       // Get the AI's response to the prompt
-      let {aiResponse} = advanceChatScript(index, () =>
-        onPrompt('', index + 1),
-      );
+      let {aiResponse} = advanceChatScript(index, () => onPrompt('', index + 1));
       setChatScriptIndex(index + 1);
       console.log(aiResponse);
 
@@ -91,16 +89,17 @@ function AutomatedChatSession({
               </AiSectionWithFakeResponse>,
           }]);
       } else {
-        appendEntry({
-          id: entries.length,
-          type: ChatSource.Ai,
-          contentType: ChatContent.Error,
-          responses: [''],
-          content:
-            <AiSectionWithFakeResponse id={entries.length}>
-              {aiResponse}
-            </AiSectionWithFakeResponse>,
-        });
+        appendEntry(
+          {
+            id: entries.length,
+            type: ChatSource.Ai,
+            contentType: ChatContent.Error,
+            responses: [''],
+            content:
+              <AiSectionWithFakeResponse id={entries.length}>
+                {aiResponse}
+              </AiSectionWithFakeResponse>,
+          });
       }
     } else {
       console.log(`Prompt: "${text}"`);
@@ -117,7 +116,7 @@ function AutomatedChatSession({
           contentType: ChatContent.Error,
           type: ChatSource.Ai,
           prompt: text,
-        }
+        },
       ]);
     }
   };
@@ -147,33 +146,27 @@ function AutomatedChatSession({
 function ChatSession(): JSX.Element {
   const [entries, setEntries] = React.useState<ChatElement[]>([]);
 
-  const appendEntry = React.useCallback(
-    (newEntry: ChatElement | ChatElement[]) => {
-      let modifiedEntries;
-      if (Array.isArray(newEntry)) {
-        modifiedEntries = [...entries, ...newEntry];
-      } else {
-        modifiedEntries = [...entries, newEntry];
-      }
-      setEntries(modifiedEntries);
-    },
-    [entries],
-  );
+  const appendEntry = React.useCallback((newEntry: ChatElement | ChatElement[]) => {
+    let modifiedEntries;
+    if (Array.isArray(newEntry)) {
+      modifiedEntries = [...entries, ...newEntry];
+    } else {
+      modifiedEntries = [...entries, newEntry];
+    }
+    setEntries(modifiedEntries);
+  }, [entries]);
 
-  const modifyEntry = React.useCallback(
-    (index: number, delta: any) => {
-      let modifiedEntries = [...entries];
-      if (index >= entries.length) {
-        console.error(`Index ${index} is out of bounds`);
-      } else {
-        let entry = modifiedEntries[index];
+  const modifyEntry = React.useCallback((index: number, delta: any) => {
+    let modifiedEntries = [...entries];
+    if (index >= entries.length) {
+      console.error(`Index ${index} is out of bounds`);
+    } else {
+      let entry = modifiedEntries[index];
 
-        if (delta.hasOwnProperty('responses'))
-          entry.responses = delta.responses;
-        if (delta.hasOwnProperty('contentType'))
-          entry.contentType = delta.contentType;
-        if (delta.hasOwnProperty('prompt')) entry.prompt = delta.prompt;
-        if (delta.hasOwnProperty('intent')) entry.intent = delta.intent;
+      if (delta.hasOwnProperty('responses')) {entry.responses = delta.responses;}
+      if (delta.hasOwnProperty('contentType')) {entry.contentType = delta.contentType;}
+      if (delta.hasOwnProperty('prompt')) {entry.prompt = delta.prompt;}
+      if (delta.hasOwnProperty('intent')) {entry.intent = delta.intent;}
 
         modifiedEntries[index] = entry;
         setEntries(modifiedEntries);
@@ -217,4 +210,4 @@ function ChatSession(): JSX.Element {
   );
 }
 
-export {ChatSession};
+export { ChatSession };

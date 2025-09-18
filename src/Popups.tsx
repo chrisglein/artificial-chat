@@ -1,6 +1,9 @@
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {Text, View} from 'react-native';
+import type { PropsWithChildren } from 'react';
+import {
+  Text,
+  View,
+} from 'react-native';
 import {StylesContext} from './Styles';
 import {ContentDialog} from 'react-native-content-dialog';
 
@@ -32,4 +35,4 @@ function DialogSection({children, header}: DialogSectionProps): JSX.Element {
   );
 }
 
-export {PopupsContext, ContentDialog, DialogSection};
+export { PopupsContext, ContentDialog, DialogSection };

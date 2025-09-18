@@ -1,7 +1,10 @@
 import React from 'react';
 import {Text} from 'react-native';
-import {OpenAiApi, CallOpenAi} from './OpenAI';
-import {AiSection} from './AiResponse';
+import {
+  OpenAiApi,
+  CallOpenAi,
+} from './OpenAI';
+import { AiSection } from './AiResponse';
 import {
   ChatSource,
   ChatContent,
@@ -74,7 +77,7 @@ If and only if you are absolutely certain the user's primary intent is to see an
         setIsRequestForImage(false);
       },
       onResult: result => {
-        const isImage = result[0] == imageIntentSentinel;
+        const isImage = result[0] === imageIntentSentinel;
         setIsRequestForImage(isImage);
       },
       onComplete: () => {},
@@ -126,37 +129,27 @@ Respond with the image prompt string in the required format. Do not respond conv
       CallOpenAi({
         api: OpenAiApi.ChatCompletion,
         apiKey: settingsContext.apiKey,
-        instructions:
-          'The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly. If the response involves code, use markdown format for that with ```(language) blocks.',
+        instructions: 'The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly. If the response involves code, use markdown format for that with ```(language) blocks.',
         identifier: 'TEXT-ANSWER:',
         prompt: prompt,
         options: {
           endpoint: settingsContext.aiEndpoint,
           chatModel: settingsContext.chatModel,
-          promptHistory: chatHistory.entries
-            .filter(entry => {
-              return entry.responses !== undefined && entry.id < id;
-            })
-            .map(entry => {
-              return {
-                role: entry.type == ChatSource.Human ? 'user' : 'assistant',
-                content: entry.responses ? entry.responses[0] : '',
-              };
-            }),
+          promptHistory: chatHistory.entries.
+            filter((entry) => { return entry.responses !== undefined && entry.id < id; }).
+            map((entry) => { return {role: entry.type == ChatSource.Human ? 'user' : 'assistant', 'content': entry.responses ? entry.responses[0] : ''}; }),
         },
         onError: error => {
           onResponse({
             prompt: prompt,
             responses: [error] ?? [''],
-            contentType: ChatContent.Error,
-          });
+            contentType: ChatContent.Error});
         },
         onResult: result => {
           onResponse({
             prompt: prompt,
             responses: result ?? [''],
-            contentType: ChatContent.Text,
-          });
+            contentType: ChatContent.Text});
         },
         onComplete: () => {
           setIsLoading(false);
@@ -180,15 +173,13 @@ Respond with the image prompt string in the required format. Do not respond conv
             onResponse({
               prompt: imagePrompt,
               responses: [error] ?? [''],
-              contentType: ChatContent.Error,
-            });
+              contentType: ChatContent.Error});
           },
           onResult: result => {
             onResponse({
               prompt: imagePrompt,
               responses: result ?? [''],
-              contentType: ChatContent.Image,
-            });
+              contentType: ChatContent.Image});
           },
           onComplete: () => {
             setIsLoading(false);
@@ -220,4 +211,4 @@ Respond with the image prompt string in the required format. Do not respond conv
   );
 }
 
-export {AiSectionWithQuery};
+export { AiSectionWithQuery };

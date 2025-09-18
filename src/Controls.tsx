@@ -1,66 +1,24 @@
 import React from 'react';
-import type {PropsWithChildren, Dispatch, SetStateAction} from 'react';
+import type {
+  PropsWithChildren,
+  Dispatch,
+  SetStateAction,
+} from 'react';
 import {
   Image,
   ImageSourcePropType,
-  Pressable,
+  Modal,
   Text,
+  TextInput,
   Switch,
   View,
 } from 'react-native';
-import {Flyout} from 'react-native-windows';
-import {ButtonV1 as Button} from '@fluentui/react-native';
-import {StylesContext} from './Styles';
-import {CodeBlock} from './CodeBlock';
+import {
+  FluentButton as Button,
+} from './FluentControls';
+import { StylesContext } from './Styles';
+import { CodeBlock } from './CodeBlock';
 import Markdown from 'react-native-markdown-display-updated';
-
-type HoverButtonProps = {
-  content: string;
-  tooltip: string;
-  onPress: () => void;
-};
-function HoverButton({
-  content,
-  tooltip,
-  onPress,
-}: HoverButtonProps): JSX.Element {
-  const [hovering, setHovering] = React.useState(false);
-
-  const backgroundBaseStyle = {
-    padding: 2,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: 'transparent',
-  };
-  const backgroundPressedStyle = {
-    borderColor: 'white',
-    backgroundColor: 'black',
-  };
-  const backgroundHoverStyle = {borderColor: 'white', backgroundColor: 'gray'};
-  return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={tooltip}
-      tooltip={tooltip}
-      onPress={onPress}
-      onHoverIn={() => setHovering(true)}
-      onHoverOut={() => setHovering(false)}>
-      {({pressed}) => (
-        <View
-          style={[
-            backgroundBaseStyle,
-            pressed
-              ? backgroundPressedStyle
-              : hovering
-              ? backgroundHoverStyle
-              : null,
-          ]}>
-          <Text style={{minWidth: 20, textAlign: 'center'}}>{content}</Text>
-        </View>
-      )}
-    </Pressable>
-  );
-}
 
 type AttributionProps = {
   source: string;
@@ -159,13 +117,10 @@ const MoreMenuButton = React.forwardRef(function MoreMenuButton(
         enabled={!showMenu}
         appearance="subtle"
         accessibilityLabel="More options"
-        icon={{
-          fontSource: {fontFamily: 'Segoe MDL2 Assets', codepoint: 0xe712},
-        }}
+        icon={{ fontSource: { fontFamily: 'Segoe MDL2 Assets', codepoint: 0xE712 } }}
         iconOnly={true}
         tooltip="More options"
-        onClick={() => setShowMenu(true)}
-      />
+        onClick={() => setShowMenu(true)} />
     </View>
   );
 });
@@ -188,21 +143,17 @@ function FlyoutMenuButton({
   return (
     <Button
       appearance="subtle"
-      icon={
-        icon
-          ? {fontSource: {fontFamily: 'Segoe MDL2 Assets', codepoint: icon}}
-          : undefined
-      }
-      onClick={onClick}>
-      {children}
-    </Button>
+      icon={icon ? { fontSource: { fontFamily: 'Segoe MDL2 Assets', codepoint: icon } } : undefined}
+      onClick={onClick}>{children}</Button>
   );
 }
 
 type FlyoutMenuProps = {
   items: FlyoutMenuButtonType[];
+  maxWidth?: number;
+  maxHeight?: number;
 };
-function FlyoutMenu({items}: FlyoutMenuProps): JSX.Element {
+function FlyoutMenu({items, maxWidth, maxHeight}: FlyoutMenuProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const [isOpen, setIsOpen] = React.useState(false);
   const placementRef = React.useRef(null);
@@ -224,15 +175,16 @@ function FlyoutMenu({items}: FlyoutMenuProps): JSX.Element {
       <MoreMenuButton
         ref={placementRef}
         showMenu={isOpen}
-        setShowMenu={setIsOpen}
-      />
-      <Flyout
-        isOpen={isOpen}
-        onDismiss={() => setIsOpen(false)}
+        setShowMenu={setIsOpen}/>
+      <Modal
+        visible={isOpen}
+        onRequestClose={() => setIsOpen(false)}
         placement="bottom-edge-aligned-right"
         target={placementRef.current}>
-        <View style={styles.flyoutBackground}>{buttonList}</View>
-      </Flyout>
+        <View style={[{maxWidth: maxWidth, maxHeight: maxHeight}, styles.flyoutBackground]}>
+          {buttonList}
+        </View>
+      </Modal>
     </>
   );
 }
@@ -242,28 +194,48 @@ type MarkdownWithRulesProps = {
 };
 function MarkdownWithRules({content}: MarkdownWithRulesProps): JSX.Element {
   const rules = {
-    fence: (node, children, parent, styles) => {
+    fence: (node) => {
       return (
         <CodeBlock
           key={node.key}
           language={node.sourceInfo}
-          content={node.content}
-        />
-      );
-    },
+          content={node.content}/>
+        );
+      },
   };
 
   return <Markdown rules={rules}>{content}</Markdown>;
 }
+function FluentTextInput(props: React.ComponentProps<typeof TextInput>): JSX.Element {
+  const styles = React.useContext(StylesContext);
+  const [isFocused, setIsFocused] = React.useState(false);
 
-export {
-  HoverButton,
-  Attribution,
-  ConsentSwitch,
-  ImageSelection,
-  CodeBlock,
-  SwitchWithLabel,
-  FlyoutMenu,
-  MarkdownWithRules,
-};
-export type {FlyoutMenuButtonType};
+  const { style, onFocus, onBlur, ...rest } = props;
+
+  const handleFocus: React.ComponentProps<typeof TextInput>['onFocus'] = (e) => {
+    setIsFocused(true);
+    if (onFocus) {
+      onFocus(e);
+    }
+  };
+  const handleBlur: React.ComponentProps<typeof TextInput>['onBlur'] = (e) => {
+    setIsFocused(false);
+    if (onBlur) {
+      onBlur(e);
+    }
+  };
+
+  return (
+    <TextInput
+      // keep internal focus styling, but allow the consumer to pass additional style which is merged
+      style={[styles.textBox, isFocused && styles.textBoxFocused, style]}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
+      // everything else passed straight through
+      {...rest}
+    />
+  );
+}
+
+export { Attribution, ConsentSwitch, ImageSelection, CodeBlock, SwitchWithLabel, FlyoutMenu, MarkdownWithRules, FluentTextInput };
+export type { FlyoutMenuButtonType };

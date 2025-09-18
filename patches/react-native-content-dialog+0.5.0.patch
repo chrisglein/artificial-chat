@@ -1,0 +1,146 @@
+diff --git a/node_modules/react-native-content-dialog/src/Dialog.tsx b/node_modules/react-native-content-dialog/src/Dialog.tsx
+index ac70002..4fc5d82 100644
+--- a/node_modules/react-native-content-dialog/src/Dialog.tsx
++++ b/node_modules/react-native-content-dialog/src/Dialog.tsx
+@@ -20,8 +20,10 @@ type ContentDialogProps = PropsWithChildren<{
+   title: string,
+   buttons?: DialogButtonType[],
+   defaultButtonIndex?: number,
++  maxWidth?: number,
++  maxHeight?: number,
+ }>;
+-function ContentDialog({children, show, close, isLightDismissEnabled, title, buttons, defaultButtonIndex}: ContentDialogProps): JSX.Element {
++function ContentDialog({children, show, close, isLightDismissEnabled, title, buttons, defaultButtonIndex, maxWidth, maxHeight}: ContentDialogProps): JSX.Element {
+   const [hidden, setHidden] = React.useState(!show);
+   const opacityAnimation = React.useRef(new Animated.Value(0)).current;
+   const scaleAnimation = React.useRef(new Animated.Value(1.0)).current;
+@@ -100,6 +102,8 @@ function ContentDialog({children, show, close, isLightDismissEnabled, title, but
+           // This isn't correct because if the window is resized we don't re-run this, but it's close enough for now.
+           width: Dimensions.get('window').width,
+           height: Dimensions.get('window').height,
++          maxWidth: maxWidth,
++          maxHeight: maxHeight,
+           justifyContent: 'center',
+           alignItems: 'center',
+         }}>
+diff --git a/node_modules/react-native-content-dialog/src/DialogHost.windows.tsx b/node_modules/react-native-content-dialog/src/DialogHost.windows.tsx
+index b2ea1f3..50792f6 100644
+--- a/node_modules/react-native-content-dialog/src/DialogHost.windows.tsx
++++ b/node_modules/react-native-content-dialog/src/DialogHost.windows.tsx
+@@ -1,5 +1,7 @@
+ import React, { PropsWithChildren } from 'react';
+-import {Popup} from 'react-native-windows';
++import {
++  Modal,
++} from 'react-native';
+ 
+ type ContentDialogHostProps = PropsWithChildren<{
+   show: boolean,
+@@ -7,15 +9,14 @@ type ContentDialogHostProps = PropsWithChildren<{
+   isLightDismissEnabled?: boolean,
+   title: string,
+ }>;
+-function ContentDialogHost({children, show, close, isLightDismissEnabled, title}: ContentDialogHostProps): JSX.Element {
++function ContentDialogHost({children, show, close, title}: ContentDialogHostProps): JSX.Element {
+   return (
+-    <Popup
++    <Modal
+       accessibilityLabel={title}
+-      isOpen={show}
+-      isLightDismissEnabled={isLightDismissEnabled}
+-      onDismiss={() => close()}>
++      visible={show}
++      onRequestClose={() => close()}>
+       {children}
+-    </Popup>
++    </Modal>
+   );
+ }
+ 
+diff --git a/node_modules/react-native-content-dialog/src/Styles.windows.tsx b/node_modules/react-native-content-dialog/src/Styles.windows.tsx
+index 48d47c8..f894bb7 100644
+--- a/node_modules/react-native-content-dialog/src/Styles.windows.tsx
++++ b/node_modules/react-native-content-dialog/src/Styles.windows.tsx
+@@ -22,12 +22,12 @@ const styles = StyleSheet.create({
+     maxHeight: 756, // ContentDialogMaxHeight
+     borderRadius: 8, // OverlayCornerRadius
+     borderWidth: 1, // ContentDialogBorderWidth
+-    borderColor: PlatformColor('ContentDialogBorderBrush'),
++    borderColor: PlatformColor('ControlAltFillColorTertiary'),
+     // Technically this is adding overdraw, but it's the way the XAML brushes are set up and is required for dark mode
+-    backgroundColor: PlatformColor('ContentDialogBackground'),
++    backgroundColor: PlatformColor('SolidBackgroundFillColorBase'),
+   },
+   dialogTopArea: {
+-    backgroundColor: PlatformColor('ContentDialogTopOverlay'),
++    backgroundColor: PlatformColor('ControlFillColorDefault'),
+     paddingLeft: 24, // ContentDialogPadding
+     paddingRight: 24, // ContentDialogPadding
+     borderTopLeftRadius: 8, // OverlayCornerRadius
+@@ -37,9 +37,9 @@ const styles = StyleSheet.create({
+     marginVertical: 24, // ContentDialogPadding
+   },
+   dialogCommandArea: {
+-    borderColor: PlatformColor('ContentDialogSeparatorBorderBrush'),
++    borderColor: PlatformColor('ControlStrokeColorDefault'),
+     borderTopWidth: 1,
+-    backgroundColor: PlatformColor('ContentDialogBackground'),
++    backgroundColor: PlatformColor('SolidBackgroundFillColorBase'),
+     borderBottomLeftRadius: 8, // OverlayCornerRadius
+     borderBottomRightRadius: 8, // OverlayCornerRadius
+     padding: 24, // ContentDialogPadding
+@@ -58,38 +58,39 @@ const styles = StyleSheet.create({
+     paddingVertical: 5, // ButtonPadding
+     alignItems: 'center',
+     borderWidth: 1, // ButtonBorderThemeThickness
+-    borderColor: PlatformColor('AccentButtonBorderBrush'),
++    borderColor: PlatformColor('ControlStrokeColorDefault'),
+     borderRadius: 4, // ControlCornerRadius
+-    backgroundColor: PlatformColor('ButtonBackground'),
++    backgroundColor: PlatformColor('ControlFillColorDefault'),
++    color: PlatformColor('TextControlForeground'),
+   },
+ });
+ 
+ const getButtonBackground = (isDefault: boolean, pressing: boolean, hovering: boolean) => {
+   return isDefault ? 
+     pressing ? 
+-      PlatformColor('AccentButtonBackgroundPressed') :
++      PlatformColor('AccentFillColorSecondary') :
+       hovering ? 
+-        PlatformColor('AccentButtonBackgroundPointerOver') : 
+-        PlatformColor('AccentButtonBackground') :
++        PlatformColor('AccentFillColorSecondary') : 
++        PlatformColor('AccentFillColorDefault') :
+     pressing ? 
+-      PlatformColor('ButtonBackgroundPressed') :
++      PlatformColor('ControlFillColorSecondary') :
+       hovering ? 
+-        PlatformColor('ButtonBackgroundPointerOver') :
+-        PlatformColor('ButtonBackground');
++        PlatformColor('ControlFillColorSecondary') :
++        PlatformColor('ControlFillColorDefault');
+ };
+ 
+ const getButtonForeground = (isDefault: boolean, pressing: boolean, hovering: boolean) => {
+   return isDefault ?
+     pressing ? 
+-      PlatformColor('AccentButtonForegroundPressed') :
++      PlatformColor('TextOnAccentFillColorPrimary') :
+       hovering ? 
+-        PlatformColor('AccentButtonForegroundPointerOver') :
+-        PlatformColor('AccentButtonForeground') :
++        PlatformColor('TextOnAccentFillColorPrimary') :
++        PlatformColor('TextOnAccentFillColorPrimary') :
+     pressing ?
+-      PlatformColor('ButtonForegroundPressed') :
++      PlatformColor('TextFillColorPrimary') :
+       hovering ?
+-        PlatformColor('ButtonForegroundPointerOver') :
+-        PlatformColor('ButtonForeground');
++        PlatformColor('TextControlForeground') :
++        PlatformColor('TextControlForeground');
+ };
+ 
+ export { styles, getButtonBackground, getButtonForeground };
+\ No newline at end of file

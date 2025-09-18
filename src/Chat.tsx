@@ -1,14 +1,21 @@
 import React from 'react';
-import {ScrollView, TextInput, View} from 'react-native';
-import {HumanSection} from './HumanQuery';
-import {AiSectionContent} from './AiResponse';
-import {AiSectionWithQuery} from './AiQuery';
-import {StylesContext} from './Styles';
-import {FeedbackContext, FeedbackPopup} from './Feedback';
-import {PopupsContext} from './Popups';
-import {SettingsContext} from './Settings';
-import {ButtonV1 as Button} from '@fluentui/react-native';
-import {Speak} from './Speech';
+import {
+  ScrollView,
+  View,
+} from 'react-native';
+import { FluentTextInput } from './Controls';
+import { HumanSection } from './HumanQuery';
+import { AiSectionContent } from './AiResponse';
+import { AiSectionWithQuery } from './AiQuery';
+import { StylesContext } from './Styles';
+import {
+  FeedbackContext,
+  FeedbackPopup,
+} from './Feedback';
+import { PopupsContext } from './Popups';
+import { SettingsContext } from './Settings';
+import { FluentButton as Button } from './FluentControls';
+import { Speak } from './Speech';
 
 enum ChatSource {
   Human,
@@ -74,11 +81,10 @@ function ChatEntry({
 
   return (
     <View style={styles.horizontalContainer}>
-      <TextInput
+      <FluentTextInput
         accessibilityLabel="Prompt input"
         multiline={true}
         placeholder="Ask me anything"
-        style={{flexGrow: 1, flexShrink: 1}}
         onChangeText={newValue => setValue(newValue)}
         submitKeyEvents={[{code: 'Enter', shiftKey: false}]}
         onSubmitEditing={submitValue}
@@ -87,18 +93,10 @@ function ChatEntry({
       <Button
         appearance="primary"
         accessibilityLabel="Submit prompt"
-        onClick={submitValue}>
-        Submit
-      </Button>
+        onClick={submitValue}>Submit</Button>
       <Button
         accessibilityLabel="Clear conversation"
-        icon={{
-          fontSource: {
-            fontFamily: 'Segoe MDL2 Assets',
-            codepoint: 0xe74d,
-            fontSize: 20,
-          },
-        }}
+        icon={{ fontSource: { fontFamily: 'Segoe MDL2 Assets', codepoint: 0xE74D, fontSize: 20 } }}
         iconOnly={true}
         tooltip="Clear conversation"
         onClick={clearConversation} />
@@ -139,7 +137,7 @@ function Chat({
       setShowFeedbackPopup(true);
       setFeedbackTargetResponse(response);
     },
-  }
+  };
 
   const scrollToEnd = () => {
     // Wait for the new entry to be rendered, then scroll it into view
@@ -148,19 +146,11 @@ function Chat({
     }, 100);
   };
 
-  const onQueryResponse = (
-    id: number,
-    prompt: string,
-    responses: string[],
-    contentType: ChatContent,
-  ) => {
-    chatHistory.modifyResponse(id, {
-      prompt: prompt,
-      responses: responses,
-      contentType: contentType});
+  const onQueryResponse = (id: number, prompt: string, responses: string[], contentType: ChatContent) => {
+    chatHistory.modifyResponse(id, {prompt: prompt, responses: responses, contentType: contentType});
 
     // As the responses come in, speak them aloud (if enabled)
-    if (contentType == ChatContent.Text && settings.readToMeVoice) {
+    if (contentType === ChatContent.Text && settings.readToMeVoice) {
       Speak(responses[0]);
     }
   };
@@ -173,55 +163,44 @@ function Chat({
             accessibilityLabel="Chat log"
             ref={scrollViewRef}
             style={{flexShrink: 1}}>
-            <View style={{gap: 12}}>
-              {
-                // For each item in the chat log, render the appropriate component
-                entries.map(entry => (
-                  <View key={entry.id}>
-                    {entry.type === ChatSource.Human ?
+            <View
+              style={{gap: 12}}>
+              {// For each item in the chat log, render the appropriate component
+              entries.map((entry) => (
+                <View key={entry.id}>
+                  {
+                    entry.type === ChatSource.Human ?
                       // Human inputs are always plain text
                       <HumanSection
                         id={entry.id}
                         content={entry.responses ? entry.responses[0] : ''}/> :
-                    entry.content ?
-                      // The element may have provided its own UI
-                      entry.content :
-                    // Otherwise, either render the completed query or start a query to get the resolved text
-                      entry.responses ?
-                        <AiSectionContent id={entry.id} content={entry} />
-                      :
-                        <AiSectionWithQuery
-                          id={entry.id}
-                          prompt={entry.prompt ?? ''}
-                          intent={entry.intent}
-                          onResponse={({prompt, responses, contentType}) =>
-                            onQueryResponse(
-                              entry.id,
-                              prompt,
-                              responses,
-                              contentType,
-                            )
-                          }
-                        />
-                      }
-                  </View>
-                ))
+                      entry.content ?
+                        // The element may have provided its own UI
+                        entry.content :
+                        // Otherwise, either render the completed query or start a query to get the resolved text
+                        entry.responses ?
+                          <AiSectionContent
+                            id={entry.id}
+                            content={entry}/> :
+                          <AiSectionWithQuery
+                            id={entry.id}
+                            prompt={entry.prompt ?? ''}
+                            intent={entry.intent}
+                            onResponse={({prompt, responses, contentType}) =>
+                              onQueryResponse(entry.id, prompt, responses, contentType)}/>
+                  }
+                </View>
+              ))}
+              {(entries.length > 0 &&  entries[entries.length - 1].type === ChatSource.Ai) &&
+                <View style={{alignSelf: 'center'}}>
+                  <Button
+                    accessibilityLabel="Regenerate response"
+                    onClick={() => {
+                      // Clear the response for the last entry
+                      chatHistory.modifyResponse(entries.length - 1, {responses: undefined});
+                    }}>🔁 Regenerate response</Button>
+                </View>
               }
-              {entries.length > 0 &&
-                entries[entries.length - 1].type === ChatSource.Ai && (
-                  <View style={{alignSelf: 'center'}}>
-                    <Button
-                      accessibilityLabel="Regenerate response"
-                      onClick={() => {
-                        // Clear the response for the last entry
-                        chatHistory.modifyResponse(entries.length - 1, {
-                          responses: undefined,
-                        });
-                      }}>
-                      🔁 Regenerate response
-                    </Button>
-                  </View>
-                )}
             </View>
           </ScrollView>
           <View style={{flexShrink: 0, marginBottom: 12}}>
@@ -231,14 +210,14 @@ function Chat({
               moreMenu={[
                 {
                   title: 'About',
-                  icon: 0xe897,
+                  icon: 0xE897,
                   onPress: () => popups.setShowAbout(true),
                 },
                 {
                   title: 'Settings',
-                  icon: 0xe713,
+                  icon: 0xE713,
                   onPress: () => popups.setShowSettings(true),
-                }
+                },
               ]}>
               <ChatEntry
                 defaultText={humanText}
@@ -263,5 +242,5 @@ function Chat({
   );
 }
 
-export type {ChatElement};
-export {Chat, ChatScrollContext, ChatSource, ChatContent, ChatHistoryContext};
+export type { ChatElement };
+export { Chat, ChatScrollContext, ChatSource, ChatContent, ChatHistoryContext };

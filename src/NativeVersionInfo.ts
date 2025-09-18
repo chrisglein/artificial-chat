@@ -8,4 +8,6 @@ export interface Spec extends TurboModule {
   };
 }
 
-export default TurboModuleRegistry.get<Spec>('VersionInfo') as Spec | null;
+export default TurboModuleRegistry.get<Spec>(
+  'VersionInfo'
+) as Spec | null;

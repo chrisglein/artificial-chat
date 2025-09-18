@@ -1,26 +1,28 @@
 import React from 'react';
-import {Appearance, View} from 'react-native';
-import {ChatSession} from './ChatSession';
-import {StylesContext, CreateStyles, createWindowsTheme} from './Styles';
-import {SettingsContext, SettingsPopup} from './Settings';
-import {AboutPopup} from './About';
-import {PopupsContext} from './Popups';
-import {ThemeProvider} from '@fluentui-react-native/theme';
+import {
+  Appearance,
+  View,
+} from 'react-native';
+import { ChatSession } from './ChatSession';
+import {
+  StylesContext,
+  CreateStyles,
+} from './Styles';
+import {
+  SettingsContext,
+  SettingsPopup,
+} from './Settings';
+import { AboutPopup } from './About';
+import { PopupsContext } from './Popups';
 
 function App(): JSX.Element {
-  const [currentTheme, setCurrentTheme] = React.useState(
-    Appearance.getColorScheme(),
-  );
-  const [aiEndpoint, setAiEndpoint] = React.useState<string>(
-    'https://api.openai.com/v1',
-  );
+  const [currentTheme, setCurrentTheme] = React.useState(Appearance.getColorScheme());
+  const [aiEndpoint, setAiEndpoint] = React.useState<string>('https://api.openai.com/v1');
   const [chatModel, setChatModel] = React.useState<string>('gpt-3.5-turbo');
   const [apiKey, setApiKey] = React.useState<string | undefined>(undefined);
   const [scriptName, setScriptName] = React.useState<string | undefined>('');
-  const [delayForArtificialResponse, setDelayForArtificialResponse] =
-    React.useState<number>(1500);
-  const [detectImageIntent, setDetectImageIntent] =
-    React.useState<boolean>(true);
+  const [delayForArtificialResponse, setDelayForArtificialResponse] = React.useState<number>(1500);
+  const [detectImageIntent, setDetectImageIntent] = React.useState<boolean>(true);
   const [imageResponseCount, setImageResponseCount] = React.useState<number>(1);
   const [imageSize, setImageSize] = React.useState<number>(256);
   const [showSettingsPopup, setShowSettingsPopup] = React.useState(false);
@@ -28,7 +30,8 @@ function App(): JSX.Element {
   const [readToMeVoice, setReadToMeVoice] = React.useState<string>('');
 
   const isDarkMode = currentTheme === 'dark';
-  const styles = CreateStyles(isDarkMode);
+  const isHighContrast = false;
+  const styles = CreateStyles(isDarkMode, isHighContrast);
 
   const settings = {
     scriptName: scriptName,
@@ -68,23 +71,19 @@ function App(): JSX.Element {
 
   return (
     <StylesContext.Provider value={styles}>
-      <ThemeProvider theme={createWindowsTheme()}>
-        <SettingsContext.Provider value={settings}>
-          <PopupsContext.Provider value={popups}>
-            <View>
-              <ChatSession />
-              <SettingsPopup
-                show={showSettingsPopup}
-                close={() => popups.setShowSettings(false)}
-              />
-              <AboutPopup
-                show={popups.showAbout}
-                close={() => popups.setShowAbout(false)}
-              />
-            </View>
-          </PopupsContext.Provider>
-        </SettingsContext.Provider>
-      </ThemeProvider>
+      <SettingsContext.Provider value={settings}>
+        <PopupsContext.Provider value={popups}>
+          <View>
+            <ChatSession/>
+            <SettingsPopup
+              show={showSettingsPopup}
+              close={() => popups.setShowSettings(false)}/>
+            <AboutPopup
+              show={popups.showAbout}
+              close={() => popups.setShowAbout(false)}/>
+          </View>
+        </PopupsContext.Provider>
+      </SettingsContext.Provider>
     </StylesContext.Provider>
   );
 }
