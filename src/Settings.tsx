@@ -1,10 +1,11 @@
 import React from 'react';
-import {Text, TextInput, View} from 'react-native';
+import {Text, View} from 'react-native';
 import {ContentDialog, DialogSection} from './Popups';
 import {StylesContext} from './Styles';
 import {Picker} from './Picker';
 import {ChatScriptNames} from './ChatScript';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { FluentTextInput } from './Controls';
 import {
   Link,
   FluentCheckbox as Checkbox,
@@ -203,7 +204,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
       <View style={styles.dialogSectionsContainer}>
         <DialogSection header="Chat">
           <Text style={styles.text}>AI Endpoint</Text>
-          <TextInput
+          <FluentTextInput
             accessibilityLabel="AI Endpoint"
             style={{flexGrow: 1, minHeight: 32}}
             value={aiEndpoint}
@@ -217,7 +218,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             {['gpt-3.5-turbo', 'gpt-4', 'gpt-4-turbo-preview'].map(value => <Picker.Item label={value} value={value} key={value}/>)}
           </Picker>
           <Text style={styles.text}>API key</Text>
-          <TextInput
+          <FluentTextInput
             accessibilityLabel="API key"
             secureTextEntry={true}
             style={{flexGrow: 1, minHeight: 32}}
@@ -297,15 +298,15 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             <Picker.Item label="None" value="" />
           </Picker>
           <Text style={styles.text}>Artificial Delay in Script Response</Text>
-          <TextInput
-            accessibilityLabel="Artificial Delay in Script Response"
-            keyboardType="numeric"
-            style={{flexGrow: 1, minHeight: 32}}
-            onChangeText={value =>
-              setDelayForArtificialResponse(parseInt(value, 10))
-            }
-            value={delayForArtificialResponse.toString()}
-          />
+          <FluentTextInput
+             accessibilityLabel="Artificial Delay in Script Response"
+             keyboardType="numeric"
+             style={{flexGrow: 1, minHeight: 32}}
+             onChangeText={value =>
+               setDelayForArtificialResponse(parseInt(value, 10))
+             }
+             value={delayForArtificialResponse.toString()}
+           />
         </DialogSection>
       </View>
     </ContentDialog>
