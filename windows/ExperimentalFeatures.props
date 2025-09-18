@@ -22,7 +22,6 @@
     <UseExperimentalNuget>true</UseExperimentalNuget>
 
     <ReactExperimentalFeaturesSet>true</ReactExperimentalFeaturesSet>
-
   </PropertyGroup>
 
 </Project>
