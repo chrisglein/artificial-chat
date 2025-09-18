@@ -299,14 +299,13 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
           </Picker>
           <Text style={styles.text}>Artificial Delay in Script Response</Text>
           <FluentTextInput
-             accessibilityLabel="Artificial Delay in Script Response"
-             keyboardType="numeric"
-             style={{flexGrow: 1, minHeight: 32}}
-             onChangeText={value =>
-               setDelayForArtificialResponse(parseInt(value, 10))
-             }
-             value={delayForArtificialResponse.toString()}
-           />
+            accessibilityLabel="Artificial Delay in Script Response"
+            keyboardType="numeric"
+            style={{flexGrow: 1, minHeight: 32}}
+            onChangeText={value =>
+              setDelayForArtificialResponse(parseInt(value, 10))
+            }
+            value={delayForArtificialResponse.toString()} />
         </DialogSection>
       </View>
     </ContentDialog>
