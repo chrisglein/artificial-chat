@@ -121,13 +121,22 @@ const CallOpenAi = async ({
   onResult,
   onComplete,
 }: CallOpenAiType) => {
+  const { getEffectiveApiKey, incrementTrialUsage, isUsingTrialMode } = require('./TrialMode');
+
   const DefaultApiKey = undefined; // During development you can paste your API key here, but DO NOT CHECK IN
-  let effectiveApiKey = apiKey ?? DefaultApiKey;
+  let effectiveApiKey = await getEffectiveApiKey(apiKey ?? DefaultApiKey);
 
   if (!effectiveApiKey) {
-    onError('No API key provided');
+    const errorMessage = 'To use this app, you need an OpenAI API key. Get one at https://platform.openai.com/account/api-keys and enter it in Settings.';
+    onError(errorMessage);
     onComplete();
     return;
+  }
+
+  // Track trial usage if using trial mode
+  const usingTrial = await isUsingTrialMode(apiKey ?? DefaultApiKey);
+  if (usingTrial) {
+    await incrementTrialUsage();
   }
 
   try {
@@ -171,7 +180,20 @@ const CallOpenAi = async ({
         console.debug(json);
 
         if (json.error) {
-          onError(json.error.message);
+          let errorMessage = json.error.message;
+
+          // Check for common trial/quota-related errors and provide helpful messages
+          if (errorMessage.includes('quota') || errorMessage.includes('billing') || errorMessage.includes('exceeded')) {
+            if (usingTrial) {
+              errorMessage = 'Trial quota exceeded. Please add your own OpenAI API key in Settings to continue. Get one at https://platform.openai.com/account/api-keys';
+            } else {
+              errorMessage = `${errorMessage}\n\nGet help managing your OpenAI quota at https://platform.openai.com/account/usage`;
+            }
+          } else if (errorMessage.includes('invalid') && errorMessage.includes('api')) {
+            errorMessage = `${errorMessage}\n\nCheck your API key in Settings or get a new one at https://platform.openai.com/account/api-keys`;
+          }
+
+          onError(errorMessage);
         } else {
           onResult(apiHandler.response(json));
         }
