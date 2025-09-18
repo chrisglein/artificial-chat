@@ -110,10 +110,6 @@ yarn lint
 - **Missing MSBuild/Visual Studio** - Run RNW dependencies script
 - **Port conflicts** - Metro bundler uses port 8081, ensure it's available
 
-### Dependency Warnings
-- Patch-package warnings about version mismatches may occur and are generally expected
-- Most dependency warnings should be addressed in recent commits
-
 ## Development Workflow Best Practices
 
 ### Before Making Changes
