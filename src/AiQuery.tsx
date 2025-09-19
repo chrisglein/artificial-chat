@@ -73,6 +73,7 @@ function AiSectionWithQuery({
 If and only if you are absolutely certain the user's primary intent is to see an image, respond with exactly the string "${imageIntentSentinel}". Otherwise, respond with your description of their intent.`,
       identifier: 'INTENT:',
       prompt: prompt,
+      countTowardsTrial: false, // Intent detection should not count against trial
       onError: () => {
         setIsRequestForImage(false);
       },
@@ -112,6 +113,7 @@ Where items enclosed in brackets ([]) would be replaced with an appropriate sugg
 Respond with the image prompt string in the required format. Do not respond conversationally.`,
         identifier: 'KEYWORDS:',
         prompt: prompt,
+        countTowardsTrial: false, // Image keyword generation should not count against trial
         onError: () => {
           setIsRequestForImage(false);
         },

@@ -31,6 +31,9 @@ const StylesContext = React.createContext<{
   textBox: StyleProp<ViewStyle>;
   textBoxFocused: StyleProp<ViewStyle>;
   flyoutBackground: StyleProp<ViewStyle>;
+  trialModeActive: StyleProp<ViewStyle>;
+  trialModeExpired: StyleProp<ViewStyle>;
+  trialModeText: StyleProp<TextStyle>;
 }>({});
 
 const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
@@ -144,6 +147,21 @@ const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
           borderRadius: 4,
           padding: 8,
           alignItems: 'flex-start',
+    },
+    trialModeActive: {
+      backgroundColor: '#e6f3ff',
+      padding: 8,
+      borderRadius: 4,
+      marginVertical: 8,
+    },
+    trialModeExpired: {
+      backgroundColor: '#fef0e6',
+      padding: 8,
+      borderRadius: 4,
+      marginVertical: 8,
+    },
+    trialModeText: {
+      fontSize: 14,
     },
   });
 };
