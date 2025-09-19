@@ -54,7 +54,7 @@ function ConsentSwitch({
       tooltip={details}>
       <Switch value={value} onValueChange={onValueChange} />
       <View>
-        <Text>{title}</Text>
+        <Text style={styles.text}>{title}</Text>
         <Attribution source={source} />
       </View>
     </View>
@@ -193,6 +193,8 @@ type MarkdownWithRulesProps = {
   content?: string;
 };
 function MarkdownWithRules({content}: MarkdownWithRulesProps): JSX.Element {
+  const styles = React.useContext(StylesContext);
+
   const rules = {
     fence: (node) => {
       return (
@@ -204,7 +206,7 @@ function MarkdownWithRules({content}: MarkdownWithRulesProps): JSX.Element {
       },
   };
 
-  return <Markdown rules={rules}>{content}</Markdown>;
+  return <Markdown rules={rules} style={{body: styles.text}}>{content}</Markdown>;
 }
 function FluentTextInput(props: React.ComponentProps<typeof TextInput>): JSX.Element {
   const styles = React.useContext(StylesContext);
@@ -229,6 +231,8 @@ function FluentTextInput(props: React.ComponentProps<typeof TextInput>): JSX.Ele
     <TextInput
       // keep internal focus styling, but allow the consumer to pass additional style which is merged
       style={[styles.textBox, isFocused && styles.textBoxFocused, style]}
+      placeholderTextColor={styles.textBox.placeholderColor}
+      selectionColor={styles.textBox.selectionColor}
       onFocus={handleFocus}
       onBlur={handleBlur}
       // everything else passed straight through

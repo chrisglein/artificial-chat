@@ -5,6 +5,7 @@ import {
   Pressable,
   Linking,
 } from 'react-native';
+import { StylesContext } from './Styles';
 // import {
 //   ButtonV1 as Button,
 //   CheckboxV1 as Checkbox,
@@ -142,10 +143,12 @@ const FluentButton = (props: FluentButtonProps) => {
   const text = props.title || props.children as string;
 
   const renderContent = () => {
+    const customColor = props.icon?.fontSource?.color;
+    
     const customStyle = {
       fontFamily: props.icon?.fontSource?.fontFamily,
       fontSize: props.icon?.fontSource?.fontSize,
-      color: props.icon?.fontSource?.color,
+      ...(customColor ? { color: customColor } : {}),
       marginRight: props.iconOnly ? 0 : 4,
     };
 
@@ -208,6 +211,7 @@ type CheckboxProps = {
 
 const FluentCheckbox = (props: CheckboxProps) => {
   const [checked, setChecked] = useState(props.checked);
+  const styles = React.useContext(StylesContext);
 
   const handlePress = () => {
     const newValue = !checked;
@@ -226,10 +230,10 @@ const FluentCheckbox = (props: CheckboxProps) => {
         padding: 4,
         opacity: pressed ? 0.8 : 1,
       })}>
-      <Text style={{ fontSize: 18, marginRight: 8 }}>
+      <Text style={[styles.text, { fontSize: 18, marginRight: 4, minWidth: 26 }]}>
         {checked ? '☑' : '☐'}
       </Text>
-      <Text>{props.label}</Text>
+      <Text style={styles.text}>{props.label}</Text>
     </Pressable>
   );
 };

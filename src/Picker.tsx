@@ -1,4 +1,5 @@
 import React, { PropsWithChildren, useState, useEffect } from 'react';
+import { StylesContext } from './Styles';
 import {
   Appearance,
   PlatformColor,
@@ -65,13 +66,13 @@ type PickerProps = PropsWithChildren<{
 
 // Static Item component for the Picker
 const PickerItem = (props: PickerItemProps) => {
+  const styles = React.useContext(StylesContext);
   return (
-    <Text>{props.label}</Text>
+    <Text style={styles.text}>{props.label}</Text>
   );
 };
 
 const Picker = (props: PickerProps) => {
-  const [currentTheme] = React.useState(Appearance.getColorScheme());
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState(props.selectedValue);
 
@@ -228,7 +229,7 @@ const CreateStyles = () => {
     },
     pickerItemText: {
       fontSize: 14,
-      color: PlatformColor('TextControlForeground'),
+      color: PlatformColor('TextFillColorPrimary'),
       lineHeight: 20,
     },
     pickerItemTextSelected: {

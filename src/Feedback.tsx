@@ -3,12 +3,12 @@ import {
   Linking,
   Switch,
   Text,
-  TextInput,
   View,
 } from 'react-native';
 import { ContentDialog } from './Popups';
 import { StylesContext } from './Styles';
 import VersionInfo from './NativeVersionInfo';
+import { FluentTextInput } from './Controls';
 
 const FeedbackContext = React.createContext<{
   showFeedback: (positive: boolean, response?: string) => void;
@@ -60,8 +60,8 @@ function FeedbackPopup({
       buttons={buttons}
       defaultButtonIndex={1}
       maxHeight={300}>
-      <Text>{'Your feedback: ' + (isPositive ? '👍' : '👎')}</Text>
-      <TextInput
+      <Text style={styles.text}>{'Your feedback: ' + (isPositive ? '👍' : '👎')}</Text>
+      <FluentTextInput
         multiline={true}
         placeholder="What would the ideal answer have been?"
         style={{flexGrow: 1, minHeight: 32}}
@@ -76,7 +76,7 @@ function FeedbackPopup({
               value={thisIsHarmful}
               onValueChange={value => setThisIsHarmful(value)}
             />
-            <Text>This is harmful / unsafe</Text>
+            <Text style={styles.text}>This is harmful / unsafe</Text>
           </View>
           <View style={styles.horizontalContainer}>
             <Switch
@@ -84,7 +84,7 @@ function FeedbackPopup({
               value={thisIsNotTrue}
               onValueChange={value => setThisIsNotTrue(value)}
             />
-            <Text>This isn't true</Text>
+            <Text style={styles.text}>This isn't true</Text>
           </View>
           <View style={styles.horizontalContainer}>
             <Switch
@@ -92,7 +92,7 @@ function FeedbackPopup({
               value={thisIsNotHelpful}
               onValueChange={value => setThisIsNotHelpful(value)}
             />
-            <Text>This isn't helpful</Text>
+            <Text style={styles.text}>This isn't helpful</Text>
           </View>
         </View>
       )}

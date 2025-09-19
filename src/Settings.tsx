@@ -1,9 +1,10 @@
 import React from 'react';
-import {Text, TextInput, View} from 'react-native';
+import {Text, View} from 'react-native';
 import {ContentDialog, DialogSection} from './Popups';
 import {StylesContext} from './Styles';
 import {Picker} from './Picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { FluentTextInput } from './Controls';
 import {
   Link,
   FluentCheckbox as Checkbox,
@@ -210,14 +211,14 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
       maxHeight={800}>
       <View style={styles.dialogSectionsContainer}>
         <DialogSection header="Chat">
-          <Text>AI Endpoint</Text>
-          <TextInput
+          <Text style={styles.text}>AI Endpoint</Text>
+          <FluentTextInput
             accessibilityLabel="AI Endpoint"
             style={{flexGrow: 1, minHeight: 32}}
             value={aiEndpoint}
             onChangeText={value => setAiEndpoint(value)}
           />
-          <Text>Chat Model</Text>
+          <Text style={styles.text}>Chat Model</Text>
           <Picker
             accessibilityLabel="Chat Model"
             selectedValue={chatModel}
@@ -241,8 +242,8 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             </View>
           )}
 
-          <Text>API key</Text>
-          <TextInput
+          <Text style={styles.text}>API key</Text>
+          <FluentTextInput
             accessibilityLabel="API key"
             secureTextEntry={true}
             style={{flexGrow: 1, minHeight: 32}}
@@ -265,7 +266,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             checked={detectImageIntent}
             onChange={(event, value) => setDetectImageIntent(value)}
           />
-          <Text>Image Count</Text>
+          <Text style={styles.text}>Image Count</Text>
           <Picker
             accessibilityLabel="Image Count"
             selectedValue={imageResponseCount}
@@ -282,7 +283,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
               />
             ))}
           </Picker>
-          <Text>Image Size</Text>
+          <Text style={styles.text}>Image Size</Text>
           <Picker
             accessibilityLabel="Image Size"
             selectedValue={imageSize}
@@ -295,7 +296,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
           </Picker>
         </DialogSection>
         <DialogSection header="Read to Me">
-          <Text>Read to me</Text>
+          <Text style={styles.text}>Read to me</Text>
           <Picker
             accessibilityLabel="Read to me"
             selectedValue={readToMeVoice}

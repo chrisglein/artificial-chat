@@ -5,8 +5,7 @@ import type {
   TextStyle,
   ViewStyle,
 } from 'react-native';
-import { PlatformColor } from 'react-native';
-import { StyleSheet } from 'react-native';
+import { PlatformColor, StyleSheet } from 'react-native';
 
 const StylesContext = React.createContext<{
   appContent: StyleProp<ViewStyle>;
@@ -28,9 +27,10 @@ const StylesContext = React.createContext<{
   hyperlinkPressing: StyleProp<TextStyle>;
   hyperlinkHovering: StyleProp<TextStyle>;
   hyperlinkDisabled: StyleProp<TextStyle>;
-  textBox: StyleProp<ViewStyle>;
-  textBoxFocused: StyleProp<ViewStyle>;
+  textBox: StyleProp<TextStyle>;
+  textBoxFocused: StyleProp<TextStyle>;
   flyoutBackground: StyleProp<ViewStyle>;
+  text: StyleProp<TextStyle>;
   trialModeActive: StyleProp<ViewStyle>;
   trialModeExpired: StyleProp<ViewStyle>;
   trialModeText: StyleProp<TextStyle>;
@@ -67,6 +67,7 @@ const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
       marginLeft: 64,
     },
     sectionTitle: {
+      color: PlatformColor('TextFillColorPrimary'),
       fontSize: 12,
       fontWeight: '600',
     },
@@ -98,6 +99,7 @@ const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
       padding: 12,
     },
     dialogSectionHeader: {
+      color: PlatformColor('TextFillColorPrimary'),
       fontSize: 16,
       fontWeight: '600',
       marginBottom: 4,
@@ -138,6 +140,9 @@ const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
       paddingRight: 6,
       paddingBottom: 2,
       minHeight: 32, // TextControlThemeMinHeight
+      color: isDarkMode ? 'white' : 'black', // PlatformColor('TextFillColorPrimary') does not appear to work here: https://github.com/microsoft/react-native-windows/issues/15159
+      placeholderColor: PlatformColor('TextFillColorSecondary'),
+      selectionColor: 'lightblue', // PlatformColor('AccentFillColorDefault') does not appear to work here: https://github.com/microsoft/react-native-windows/issues/15159
     },
     textBoxFocused: {
       borderBottomColor: PlatformColor('AccentFillColorDefault'),
@@ -147,6 +152,9 @@ const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
           borderRadius: 4,
           padding: 8,
           alignItems: 'flex-start',
+    },
+    text: {
+      color: PlatformColor('TextFillColorPrimary'),
     },
     trialModeActive: {
       backgroundColor: '#e6f3ff',

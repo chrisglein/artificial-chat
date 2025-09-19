@@ -12,6 +12,7 @@ import {
   ChatHistoryContext,
 } from './Chat';
 import {SettingsContext} from './Settings';
+import { StylesContext } from './Styles';
 
 // Component that drives the queries to OpenAi to respond to a prompt
 type AiSectionWithQueryProps = {
@@ -36,6 +37,7 @@ function AiSectionWithQuery({
   id,
   onResponse,
 }: AiSectionWithQueryProps): JSX.Element {
+  const styles = React.useContext(StylesContext);
   const settingsContext = React.useContext(SettingsContext);
   const chatScroll = React.useContext(ChatScrollContext);
   const chatHistory = React.useContext(ChatHistoryContext);
@@ -196,18 +198,18 @@ Respond with the image prompt string in the required format. Do not respond conv
     <AiSection id={id} isLoading={isLoading}>
       {isLoading ? (
         isRequestForImage === undefined ? (
-          <Text>Identifying intent...</Text>
+          <Text style={styles.text}>Identifying intent...</Text>
         ) : isRequestForImage === true ? (
           imagePrompt === undefined ? (
-            <Text>Generating keywords for an image...</Text>
+            <Text style={styles.text}>Generating keywords for an image...</Text>
           ) : (
-            <Text>Generating image...</Text>
+            <Text style={styles.text}>Generating image...</Text>
           )
         ) : (
-          <Text>Generating text...</Text>
+          <Text style={styles.text}>Generating text...</Text>
         )
       ) : (
-        <Text>Done loading</Text>
+        <Text style={styles.text}>Done loading</Text>
       )}
     </AiSection>
   );
