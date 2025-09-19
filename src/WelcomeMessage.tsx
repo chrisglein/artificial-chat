@@ -11,7 +11,12 @@ import { SettingsContext } from './Settings';
 import { getRemainingTrialUses } from './TrialMode';
 
 function WelcomeMessage(): JSX.Element {
-  const deleteWelcomeMessage = () => { /* No-op */ };
+  const settings = React.useContext(SettingsContext);
+  
+  const deleteWelcomeMessage = () => {
+    settings.setSuppressWelcomeMessage(true);
+  };
+  
   const menuItems = [];
   menuItems.push(
     {title: 'Don\'t show this again', icon: 0xE74D, onPress: deleteWelcomeMessage}

@@ -166,7 +166,7 @@ function Chat({
             style={{flexShrink: 1}}>
             <View
               style={{gap: 12}}>
-              <WelcomeMessage />
+              {entries.length === 0 && !settings.suppressWelcomeMessage && <WelcomeMessage />}
               {// For each item in the chat log, render the appropriate component
               entries.map((entry) => (
                 <View key={entry.id}>
