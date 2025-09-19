@@ -109,6 +109,7 @@ type CallOpenAiType = {
   onError: (error: string) => void;
   onResult: (results: string[]) => void;
   onComplete: () => void;
+  countTowardsTrial?: boolean; // Whether this call should count against trial usage
 };
 const CallOpenAi = async ({
   api,
@@ -120,14 +121,23 @@ const CallOpenAi = async ({
   onError,
   onResult,
   onComplete,
+  countTowardsTrial = true, // Default to true for backward compatibility
 }: CallOpenAiType) => {
-  const DefaultApiKey = undefined; // During development you can paste your API key here, but DO NOT CHECK IN
-  let effectiveApiKey = apiKey ?? DefaultApiKey;
+  const { getEffectiveApiKey, incrementTrialUsage, isUsingTrialMode } = require('./TrialMode');
+
+  let effectiveApiKey = await getEffectiveApiKey(apiKey);
 
   if (!effectiveApiKey) {
-    onError('No API key provided');
+    const errorMessage = 'To use this app, you need an OpenAI API key. Get one at https://platform.openai.com/account/api-keys and enter it in Settings.';
+    onError(errorMessage);
     onComplete();
     return;
+  }
+
+  // Track trial usage if using trial mode and this call should count
+  const usingTrial = await isUsingTrialMode(apiKey);
+  if (usingTrial && countTowardsTrial) {
+    await incrementTrialUsage();
   }
 
   try {

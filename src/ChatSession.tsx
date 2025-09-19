@@ -1,14 +1,8 @@
 import React from 'react';
 import {Chat, ChatContent, ChatHistoryContext, ChatSource} from './Chat';
 import type {ChatElement} from './Chat';
-import {StylesContext} from './Styles';
-import {SettingsContext} from './Settings';
-import {handleAIResponse} from './ChatScript';
-import {AiSectionWithFakeResponse} from './AiFake';
 
-// Automated ChatSession drives a ChatSession in one of two ways:
-// 1. If a script is specified, the user's inputs are fake responses are driven by that script.
-// 2. If no script is specified, the user's inputs are used to drive the chat session by calling OpenAi for responses.
+// ChatSession drives the chat session by creating components that query OpenAI for responses
 type AutomatedChatSessionProps = {
   entries: ChatElement[];
   appendEntry: (entry: ChatElement | ChatElement[]) => void;
@@ -19,123 +13,31 @@ function AutomatedChatSession({
   appendEntry,
   clearConversation,
 }: AutomatedChatSessionProps): JSX.Element {
-  const styles = React.useContext(StylesContext);
-  const settings = React.useContext(SettingsContext);
+  const onPrompt = (text: string) => {
+    console.log(`Prompt: "${text}"`);
 
-  const [chatScriptIndex, setChatScriptIndex] = React.useState(0);
-
-  const advanceChatScript = (index: number, goToNext: () => void) => {
-    let result: {
-      aiResponse?: JSX.Element;
-      humanResponse?: string;
-    } = {
-      aiResponse: undefined,
-      humanResponse: undefined,
-    };
-
-    let response = handleAIResponse({
-      scriptName: settings.scriptName,
-      index: index,
-      styles: styles,
-      goToNext: goToNext,
-    });
-    let nextResponse = handleAIResponse({
-      scriptName: settings.scriptName,
-      index: index + 1,
-      styles: styles,
-      goToNext: goToNext,
-    });
-
-    // Give the AI's response
-    result.aiResponse = response.aiResponse ? response.aiResponse() : undefined;
-
-    // Preopulate the text box with the human's next prompt
-    result.humanResponse = nextResponse.prompt;
-
-    return result;
+    appendEntry([
+      {
+        id: entries.length,
+        type: ChatSource.Human,
+        contentType: ChatContent.Text,
+        responses: [text],
+      },
+      {
+        id: entries.length + 1,
+        contentType: ChatContent.Error,
+        type: ChatSource.Ai,
+        prompt: text,
+      },
+    ]);
   };
-
-  const onPrompt = (text: string, index: number) => {
-    const followScript = settings.scriptName;
-
-    if (followScript) {
-      console.log(
-        `Following script with prompt of '${text}', index is ${index}`,
-      );
-
-      // Get the AI's response to the prompt
-      let {aiResponse} = advanceChatScript(index, () => onPrompt('', index + 1));
-      setChatScriptIndex(index + 1);
-      console.log(aiResponse);
-
-      // Append to the chat log
-      // If the human has a prompt, add it to the chat
-      if (text) {
-        appendEntry([
-          {
-            type: ChatSource.Human,
-            id: entries.length,
-            contentType: ChatContent.Text,
-            responses: [text],
-          },
-          {
-            id: entries.length + 1,
-            type: ChatSource.Ai,
-            contentType: ChatContent.Text,
-            responses: [text],
-            content:
-              <AiSectionWithFakeResponse id={entries.length + 1}>
-                {aiResponse}
-              </AiSectionWithFakeResponse>,
-          }]);
-      } else {
-        appendEntry(
-          {
-            id: entries.length,
-            type: ChatSource.Ai,
-            contentType: ChatContent.Error,
-            responses: [''],
-            content:
-              <AiSectionWithFakeResponse id={entries.length}>
-                {aiResponse}
-              </AiSectionWithFakeResponse>,
-          });
-      }
-    } else {
-      console.log(`Prompt: "${text}"`);
-
-      appendEntry([
-        {
-          id: entries.length,
-          type: ChatSource.Human,
-          contentType: ChatContent.Text,
-          responses: [text],
-        },
-        {
-          id: entries.length + 1,
-          contentType: ChatContent.Error,
-          type: ChatSource.Ai,
-          prompt: text,
-        },
-      ]);
-    }
-  };
-
-  // Anticipate the next human response
-  let humanText = handleAIResponse({
-    scriptName: settings.scriptName,
-    index: chatScriptIndex,
-    styles: styles,
-    goToNext: () => {},
-  }).prompt;
 
   return (
     <Chat
       entries={entries}
-      humanText={humanText}
-      onPrompt={text => onPrompt(text, chatScriptIndex)}
+      humanText={undefined}
+      onPrompt={text => onPrompt(text)}
       clearConversation={() => {
-        setChatScriptIndex(0);
         clearConversation();
       }}
     />

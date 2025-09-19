@@ -3,7 +3,6 @@ import {Text, View} from 'react-native';
 import {ContentDialog, DialogSection} from './Popups';
 import {StylesContext} from './Styles';
 import {Picker} from './Picker';
-import {ChatScriptNames} from './ChatScript';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FluentTextInput } from './Controls';
 import {
@@ -11,6 +10,7 @@ import {
   FluentCheckbox as Checkbox,
 } from './FluentControls';
 import { GetVoices, SetVoice } from './Speech';
+import { getRemainingTrialUses, MAX_TRIAL_USES } from './TrialMode';
 
 const settingsKey = 'settings';
 
@@ -18,10 +18,6 @@ const settingsKey = 'settings';
 type SettingsContextType = {
   apiKey?: string;
   setApiKey: (value?: string) => void;
-  scriptName?: string;
-  setScriptName: (value: string) => void;
-  delayForArtificialResponse?: number;
-  setDelayForArtificialResponse: (value: number) => void;
   detectImageIntent: boolean;
   setDetectImageIntent: (value: boolean) => void;
   imageResponseCount: number;
@@ -37,8 +33,6 @@ type SettingsContextType = {
 };
 const SettingsContext = React.createContext<SettingsContextType>({
   setApiKey: () => {},
-  setScriptName: () => {},
-  setDelayForArtificialResponse: () => {},
   detectImageIntent: false,
   setDetectImageIntent: () => {},
   imageResponseCount: 1,
@@ -106,14 +100,24 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
     settings.apiKey,
   );
   const [saveApiKey, setSaveApiKey] = React.useState<boolean>(false);
-  const [scriptName, setScriptName] = React.useState<string>(settings.scriptName ?? '');
-  const [delayForArtificialResponse, setDelayForArtificialResponse] = React.useState<number>(settings.delayForArtificialResponse ?? 0);
   const [detectImageIntent, setDetectImageIntent] = React.useState<boolean>(settings.detectImageIntent);
   const [imageResponseCount, setImageResponseCount] = React.useState<number>(settings.imageResponseCount);
   const [imageSize, setImageSize] = React.useState<number>(256);
   const [readToMeVoice, setReadToMeVoice] = React.useState<string>(
     settings.readToMeVoice,
   );
+  // Trial mode state
+  const [remainingTrialUses, setRemainingTrialUses] = React.useState<number>(0);
+
+  // Load trial status
+  const loadTrialStatus = React.useCallback(async () => {
+    try {
+      const remaining = await getRemainingTrialUses();
+      setRemainingTrialUses(remaining);
+    } catch (error) {
+      console.error('Failed to load trial status:', error);
+    }
+  }, []);
 
   // It may seem weird to do this when the UI loads, not the app, but it's okay
   // because this component is loaded when the app starts but isn't shown. And
@@ -136,16 +140,22 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
 
       // If an API key was set, continue to remember it
       setSaveApiKey(value.apiKey !== undefined);
+
+      // Load trial status
+      await loadTrialStatus();
     };
     load();
-  }, []);
+  }, [loadTrialStatus, settings]);
+
+  // Reload trial status when API key changes
+  React.useEffect(() => {
+    loadTrialStatus();
+  }, [apiKey, loadTrialStatus]);
 
   const save = () => {
     settings.setAiEndpoint(aiEndpoint);
     settings.setChatModel(chatModel);
     settings.setApiKey(apiKey);
-    settings.setScriptName(scriptName);
-    settings.setDelayForArtificialResponse(delayForArtificialResponse);
     settings.setDetectImageIntent(detectImageIntent);
     settings.setImageResponseCount(imageResponseCount);
     settings.setImageSize(imageSize);
@@ -167,8 +177,6 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
     setAiEndpoint(settings.aiEndpoint);
     setChatModel(settings.chatModel);
     setApiKey(settings.apiKey);
-    setScriptName(settings.scriptName ?? '');
-    setDelayForArtificialResponse(settings.delayForArtificialResponse ?? 0);
     setDetectImageIntent(settings.detectImageIntent);
     setImageResponseCount(settings.imageResponseCount);
     setImageSize(settings.imageSize);
@@ -217,6 +225,23 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             onValueChange={value => setChatModel(value)}>
             {['gpt-3.5-turbo', 'gpt-4', 'gpt-4-turbo-preview'].map(value => <Picker.Item label={value} value={value} key={value}/>)}
           </Picker>
+          {/* Trial mode status */}
+          {remainingTrialUses > 0 && !apiKey && (
+            <View style={styles.trialModeActive}>
+              <Text style={[styles.trialModeText, {color: '#0078d4'}]}>
+                🎉 Trial Mode: {remainingTrialUses} of {MAX_TRIAL_USES} free uses remaining
+              </Text>
+            </View>
+          )}
+
+          {remainingTrialUses === 0 && !apiKey && (
+            <View style={styles.trialModeExpired}>
+              <Text style={[styles.trialModeText, {color: '#d83b01'}]}>
+                Trial expired. Please add your API key below to continue.
+              </Text>
+            </View>
+          )}
+
           <Text style={styles.text}>API key</Text>
           <FluentTextInput
             accessibilityLabel="API key"
@@ -285,27 +310,6 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             ))}
             <Picker.Item label="None" value="" />
           </Picker>
-        </DialogSection>
-        <DialogSection header="AI Scripts">
-          <Text style={styles.text}>Script</Text>
-          <Picker
-            accessibilityLabel="Script"
-            selectedValue={scriptName}
-            onValueChange={value => setScriptName(value)}>
-            {ChatScriptNames.map(name => (
-              <Picker.Item label={name} value={name} key={name} />
-            ))}
-            <Picker.Item label="None" value="" />
-          </Picker>
-          <Text style={styles.text}>Artificial Delay in Script Response</Text>
-          <FluentTextInput
-            accessibilityLabel="Artificial Delay in Script Response"
-            keyboardType="numeric"
-            style={{flexGrow: 1, minHeight: 32}}
-            onChangeText={value =>
-              setDelayForArtificialResponse(parseInt(value, 10))
-            }
-            value={delayForArtificialResponse.toString()} />
         </DialogSection>
       </View>
     </ContentDialog>
