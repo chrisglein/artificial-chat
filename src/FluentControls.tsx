@@ -244,6 +244,8 @@ type LinkProps = {
 }
 
 const Link = (props: LinkProps) => {
+  const styles = React.useContext(StylesContext);
+
   const handlePress = () => {
     Linking.openURL(props.url).catch(err => {
       console.error('Failed to open URL:', err);
@@ -257,10 +259,10 @@ const Link = (props: LinkProps) => {
       style={({ pressed }) => ({
         opacity: pressed ? 0.8 : 1,
       })}>
-      <Text style={{
+      <Text style={[styles.text, {
         color: '#0078d4',
         textDecorationLine: 'underline',
-      }}>
+      }]}>
         {props.content}
       </Text>
     </Pressable>
