@@ -9,13 +9,39 @@ import { Link } from './FluentControls';
 import { StylesContext } from './Styles';
 import { SettingsContext } from './Settings';
 import { getRemainingTrialUses } from './TrialMode';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const SUPPRESS_WELCOME_KEY = 'suppressWelcomeMessage';
 
 function WelcomeMessage(): JSX.Element {
-  const settings = React.useContext(SettingsContext);
+  const [isVisible, setIsVisible] = React.useState(true);
   
-  const deleteWelcomeMessage = () => {
-    settings.setSuppressWelcomeMessage(true);
+  React.useEffect(() => {
+    const checkSuppressed = async () => {
+      try {
+        const suppressed = await AsyncStorage.getItem(SUPPRESS_WELCOME_KEY);
+        if (suppressed === 'true') {
+          setIsVisible(false);
+        }
+      } catch (error) {
+        console.error('Failed to check welcome message suppression:', error);
+      }
+    };
+    checkSuppressed();
+  }, []);
+
+  const deleteWelcomeMessage = async () => {
+    try {
+      await AsyncStorage.setItem(SUPPRESS_WELCOME_KEY, 'true');
+      setIsVisible(false);
+    } catch (error) {
+      console.error('Failed to suppress welcome message:', error);
+    }
   };
+  
+  if (!isVisible) {
+    return <></>;
+  }
   
   const menuItems = [];
   menuItems.push(

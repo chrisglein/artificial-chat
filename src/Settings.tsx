@@ -30,8 +30,6 @@ type SettingsContextType = {
   setChatModel: (value: string) => void;
   readToMeVoice: string;
   setReadToMeVoice: (value: string) => void;
-  suppressWelcomeMessage: boolean;
-  setSuppressWelcomeMessage: (value: boolean) => void;
 };
 const SettingsContext = React.createContext<SettingsContextType>({
   setApiKey: () => {},
@@ -47,8 +45,6 @@ const SettingsContext = React.createContext<SettingsContextType>({
   setChatModel: () => {},
   readToMeVoice: '',
   setReadToMeVoice: () => {},
-  suppressWelcomeMessage: false,
-  setSuppressWelcomeMessage: () => {},
 });
 
 // Settings that are saved between app sessions
@@ -56,7 +52,6 @@ type SettingsData = {
   apiKey?: string;
   imageSize?: number;
   readToMeVoice?: string;
-  suppressWelcomeMessage?: boolean;
 };
 
 // Read settings from app storage
@@ -83,7 +78,6 @@ const LoadSettingsData = async () => {
       if (value.hasOwnProperty('apiKey')) { valueToSave.apiKey = value.apiKey; }
       if (value.hasOwnProperty('imageSize')) { valueToSave.imageSize = parseInt(value.imageSize, 10); }
       if (value.hasOwnProperty('readToMeVoice')) { valueToSave.readToMeVoice = value.readToMeVoice; }
-      if (value.hasOwnProperty('suppressWelcomeMessage')) { valueToSave.suppressWelcomeMessage = value.suppressWelcomeMessage; }
     }
   } catch (e) {
     console.error(e);
@@ -144,9 +138,6 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
       settings.setReadToMeVoice(resolvedReadToMeVoice);
       SetVoice(resolvedReadToMeVoice);
 
-      let resolvedSuppressWelcomeMessage = value.suppressWelcomeMessage ?? false;
-      settings.setSuppressWelcomeMessage(resolvedSuppressWelcomeMessage);
-
       // If an API key was set, continue to remember it
       setSaveApiKey(value.apiKey !== undefined);
 
@@ -179,7 +170,6 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
       apiKey: saveApiKey ? apiKey : undefined,
       imageSize: imageSize,
       readToMeVoice: readToMeVoice,
-      suppressWelcomeMessage: settings.suppressWelcomeMessage,
     });
   };
 

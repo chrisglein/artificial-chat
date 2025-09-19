@@ -26,7 +26,6 @@ function App(): JSX.Element {
   const [showSettingsPopup, setShowSettingsPopup] = React.useState(false);
   const [showAboutPopup, setShowAboutPopup] = React.useState(false);
   const [readToMeVoice, setReadToMeVoice] = React.useState<string>('');
-  const [suppressWelcomeMessage, setSuppressWelcomeMessage] = React.useState<boolean>(false);
 
   const isDarkMode = currentTheme === 'dark';
   const isHighContrast = false;
@@ -47,8 +46,6 @@ function App(): JSX.Element {
     setChatModel: setChatModel,
     readToMeVoice: readToMeVoice,
     setReadToMeVoice: setReadToMeVoice,
-    suppressWelcomeMessage: suppressWelcomeMessage,
-    setSuppressWelcomeMessage: setSuppressWelcomeMessage,
   };
 
   const popups = {
