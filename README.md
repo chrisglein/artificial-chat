@@ -51,7 +51,7 @@ Pressing this button will result in a new OpenAI query for the previous response
 
 
 # Design
-The chat is driven by a list of `ChatElement` objects called `entries`. Each element contains the source `type` (`Human` or `Ai`), the `prompt` string that will drive the eventual content, a content type (`Text`, `Error`, or `Image`), the `text` that describes that content, and `id` for later lookup. Optionally there's also a JSX element `content` for use by chat scripts that may have custom controls. When the OpenAi query completes it updates the `ChatElement` with the resolved `text` and `contentType` values. This readonly list of entries is available in a `ChatHistoryContext`. This enables the OpenAi query to pull in all older `ChatElement` entries (determined by `id`) to pass to the chat completion call.
+The chat is driven by a list of `ChatElement` objects called `entries`. Each element contains the source `type` (`Human` or `Ai`), the `prompt` string that will drive the eventual content, a content type (`Text`, `Error`, or `Image`), the `text` that describes that content, and `id` for later lookup. Optionally there's also a JSX element `content` for custom controls. When the OpenAi query completes it updates the `ChatElement` with the resolved `text` and `contentType` values. This readonly list of entries is available in a `ChatHistoryContext`. This enables the OpenAi query to pull in all older `ChatElement` entries (determined by `id`) to pass to the chat completion call.
 
 ## Query Strategy
 The OpenAi query is driven by a series of tasks.
@@ -72,7 +72,7 @@ The app's settings are handled by a `SettingsContext` object, which has dialog U
 | About.tsx | `AboutPopup` | Popup for basic app information |
 | App.tsx | `App` | Root of the app, publishes the `StylesContext` and `SettingsContext`. Hosts the `SettingsPopup` and `AboutPopup`. |
 | ChatSession.tsx | `ChatSession` | Owns the `ChatElement` list, publishes the `ChatHistoryContext`, and handles any writes to that list |
-| ChatSession.tsx | `AutomatedChatSession` | Populates the `ChatSession` with either scripted responses or by creating components that query OpenAi |
+| ChatSession.tsx | `AutomatedChatSession` | Populates the `ChatSession` by creating components that query OpenAi |
 | Chat.tsx | `Chat` | The scrolling list of chat entries. Publishes the `FeedbackContext`, and `ChatScrollContext` services. Hosts a `ChatEntry` for the user input. Hosts the `FeedbackPopup`.
 | Chat.tsx | `ChatEntry` | Takes in the user's text input | 
 | Feedback.tsx | `FeedbackPopup` | Popup for giving feedback on AI responses | 
@@ -83,13 +83,11 @@ The app's settings are handled by a `SettingsContext` object, which has dialog U
 ## AI Query & Response
 | File | Type | Information |
 | --- | --- | --- |
-| AiFake.tsx | `AiSectionWithFakeResponse` | Component that simulates the visuals of a slow query, used for fake scripted responses | 
 | AiQuery.tsx | `AiSectionWithQuery` | Primary driver of the OpenAi queries to turn a prompt into a text response | 
 | AiResponse.tsx | `AiImageResponse` | Shows an image with controls for going back to a text query or getting variants | 
 | AiResponse.tsx | `AiTextResponse` | Handles parsing text input into multiple sub-components (e.g. code blocks intermixed with plain text) | 
 | AiResponse.tsx | `AiSection` | Component for displaying a received response, adding buttons for feedback | 
 | AiResponse.tsx | `AiSectionContent` | Based on a `ChatElement`'s content type, shows the right child component | 
-| ChatScript.tsx | `handleAIResponse` | Based on a hardcoded script, produces fake responses | 
 | HumanQuery.tsx | `HumanSection` | Component for displaying a posted text query, adding buttons for edit and copy | 
 | OpenAi.tsx | `CallOpenAi` | Handles posting a call to OpenAi and parsing the result | 
 
