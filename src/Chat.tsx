@@ -158,6 +158,17 @@ function Chat({
     }
   };
 
+  const clearConversationPreservingPinned = () => {
+    // Filter to keep only pinned messages
+    const pinnedEntries = entries.filter(entry => entry.pinned);
+    // Clear all messages first
+    clearConversation();
+    // Then add back the pinned messages if any
+    if (pinnedEntries.length > 0) {
+      pinnedEntries.forEach(entry => chatHistory.add(entry));
+    }
+  };
+
   return (
     <FeedbackContext.Provider value={feedbackContext}>
       <ChatScrollContext.Provider value={{scrollToEnd: scrollToEnd}}>
@@ -176,7 +187,8 @@ function Chat({
                       // Human inputs are always plain text
                       <HumanSection
                         id={entry.id}
-                        content={entry.responses ? entry.responses[0] : ''}/> :
+                        content={entry.responses ? entry.responses[0] : ''}
+                        pinned={entry.pinned}/> :
                       entry.content ?
                         // The element may have provided its own UI
                         entry.content :
@@ -228,7 +240,7 @@ function Chat({
                   onPrompt(newEntry);
                   scrollToEnd();
                 }}
-                clearConversation={clearConversation}
+                clearConversation={clearConversationPreservingPinned}
               />
             </HumanSection>
           </View>

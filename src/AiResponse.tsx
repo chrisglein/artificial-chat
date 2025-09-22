@@ -79,6 +79,7 @@ type AiSectionProps = PropsWithChildren<{
   isLoading?: boolean;
   copyValue?: string;
   moreMenu?: FlyoutMenuButtonType[];
+  pinned?: boolean;
 }>;
 function AiSection({
   children,
@@ -86,14 +87,11 @@ function AiSection({
   isLoading,
   copyValue,
   moreMenu,
+  pinned = false,
 }: AiSectionProps): JSX.Element {
   const feedbackContext = React.useContext(FeedbackContext);
   const styles = React.useContext(StylesContext);
   const chatHistory = React.useContext(ChatHistoryContext);
-
-  // Find the entry to check if it's pinned
-  const entry = id !== undefined ? chatHistory.entries.find(e => e.id === id) : undefined;
-  const isPinned = entry?.pinned ?? false;
 
   const showFeedbackPopup = (positive: boolean) => {
     if (feedbackContext) {
@@ -108,7 +106,7 @@ function AiSection({
   if (id !== undefined) {
     // Add pin/unpin option
     menuItems.push({
-      title: isPinned ? '📌 Unpin message' : '📌 Pin message',
+      title: pinned ? '📌 Unpin message' : '📌 Pin message',
       icon: 0xE718, // Pin icon
       onPress: () => chatHistory.togglePin(id)
     });
@@ -138,7 +136,7 @@ function AiSection({
         <Text
           accessibilityRole="header"
           style={[styles.sectionTitle, {flexGrow: 1}]}>
-          {isPinned ? '📌 ' : ''}OpenAI
+          {pinned ? '📌 ' : ''}OpenAI
         </Text>
         <FlyoutMenu items={menuItems} maxWidth={300} maxHeight={400}/>
       </View>
@@ -160,7 +158,7 @@ function AiSectionContent({id, content}: AiSectionContentProps): JSX.Element {
   const chatHistory = React.useContext(ChatHistoryContext);
   const firstResult = content.responses ? content.responses[0] : '';
   return (
-    <AiSection copyValue={firstResult} id={id}>
+    <AiSection copyValue={firstResult} id={id} pinned={content.pinned}>
       {(() => {
         switch (content.contentType) {
           case ChatContent.Error:
