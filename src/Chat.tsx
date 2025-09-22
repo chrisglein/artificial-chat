@@ -2,6 +2,7 @@ import React from 'react';
 import {
   ScrollView,
   View,
+  TextInput,
 } from 'react-native';
 import { FluentTextInput } from './Controls';
 import { HumanSection } from './HumanQuery';
@@ -56,23 +57,29 @@ const ChatScrollContext = React.createContext<{
 
 // Component for taking user input to drive the chat
 type ChatEntryProps = {
+  defaultText?: string;
   submit: (text: string) => void;
   clearConversation: () => void;
 };
 function ChatEntry({
   submit,
+  defaultText,
   clearConversation,
 }: ChatEntryProps): JSX.Element {
   const styles = React.useContext(StylesContext);
 
-  // Text input state for the prompt
-  const [value, setValue] = React.useState('');
+  // Allow a chat script to default populate the text box
+  const [value, setValue] = React.useState(defaultText ?? '');
+  
+  console.log('ChatEntry render - value:', value, 'defaultText:', defaultText);
 
   const submitValue = () => {
+    console.log('submitValue called with value:', value);
     // If the user hits submit but the text is empty, don't carry that forward
     if (value !== '') {
       submit(value);
       // Reset to a blank prompt
+      console.log('Setting value to empty string');
       setValue('');
     }
   };
@@ -81,10 +88,9 @@ function ChatEntry({
     <View style={styles.horizontalContainer}>
       <FluentTextInput
         accessibilityLabel="Prompt input"
-        multiline={true}
+        multiline={false}
         placeholder="Ask me anything"
         onChangeText={newValue => setValue(newValue)}
-        submitKeyEvents={[{code: 'Enter', shiftKey: false}]}
         onSubmitEditing={submitValue}
         value={value}
       />
@@ -105,11 +111,13 @@ function ChatEntry({
 // A scrolling list of ChatElements
 type ChatProps = {
   entries: ChatElement[];
+  humanText?: string;
   onPrompt: (prompt: string) => void;
   clearConversation: () => void;
 };
 function Chat({
   entries,
+  humanText,
   onPrompt,
   clearConversation,
 }: ChatProps): JSX.Element {
@@ -216,6 +224,7 @@ function Chat({
                 },
               ]}>
               <ChatEntry
+                defaultText={humanText}
                 submit={newEntry => {
                   onPrompt(newEntry);
                   scrollToEnd();
