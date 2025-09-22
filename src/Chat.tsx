@@ -70,16 +70,13 @@ function ChatEntry({
 
   // Allow a chat script to default populate the text box
   const [value, setValue] = React.useState(defaultText ?? '');
-  
-  console.log('ChatEntry render - value:', value, 'defaultText:', defaultText);
 
   const submitValue = () => {
-    console.log('submitValue called with value:', value);
     // If the user hits submit but the text is empty, don't carry that forward
     if (value !== '') {
       submit(value);
-      // Reset to a blank prompt
-      console.log('Setting value to empty string');
+      // clearTextOnSubmit will handle clearing the native TextInput automatically
+      // but we need to sync the React state
       setValue('');
     }
   };
@@ -88,10 +85,12 @@ function ChatEntry({
     <View style={styles.horizontalContainer}>
       <FluentTextInput
         accessibilityLabel="Prompt input"
-        multiline={false}
+        multiline={true}
         placeholder="Ask me anything"
         onChangeText={newValue => setValue(newValue)}
+        submitKeyEvents={[{code: 'Enter', shiftKey: false}]}
         onSubmitEditing={submitValue}
+        clearTextOnSubmit={true}
         value={value}
       />
       <Button
