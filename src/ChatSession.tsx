@@ -77,7 +77,6 @@ function AutomatedChatSession({
   return (
     <Chat
       entries={entries}
-      humanText={undefined}
       onPrompt={text => onPrompt(text)}
       clearConversation={() => {
         clearConversation();

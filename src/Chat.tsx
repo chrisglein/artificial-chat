@@ -56,19 +56,17 @@ const ChatScrollContext = React.createContext<{
 
 // Component for taking user input to drive the chat
 type ChatEntryProps = {
-  defaultText?: string;
   submit: (text: string) => void;
   clearConversation: () => void;
 };
 function ChatEntry({
   submit,
-  defaultText,
   clearConversation,
 }: ChatEntryProps): JSX.Element {
   const styles = React.useContext(StylesContext);
 
-  // Allow a chat script to default populate the text box
-  const [value, setValue] = React.useState(defaultText ?? '');
+  // Text input state for the prompt
+  const [value, setValue] = React.useState('');
 
   const submitValue = () => {
     // If the user hits submit but the text is empty, don't carry that forward
@@ -107,13 +105,11 @@ function ChatEntry({
 // A scrolling list of ChatElements
 type ChatProps = {
   entries: ChatElement[];
-  humanText?: string;
   onPrompt: (prompt: string) => void;
   clearConversation: () => void;
 };
 function Chat({
   entries,
-  humanText,
   onPrompt,
   clearConversation,
 }: ChatProps): JSX.Element {
@@ -220,7 +216,6 @@ function Chat({
                 },
               ]}>
               <ChatEntry
-                defaultText={humanText}
                 submit={newEntry => {
                   onPrompt(newEntry);
                   scrollToEnd();
