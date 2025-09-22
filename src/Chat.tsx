@@ -2,7 +2,6 @@ import React from 'react';
 import {
   ScrollView,
   View,
-  TextInput,
 } from 'react-native';
 import { FluentTextInput } from './Controls';
 import { HumanSection } from './HumanQuery';
@@ -75,9 +74,6 @@ function ChatEntry({
     // If the user hits submit but the text is empty, don't carry that forward
     if (value !== '') {
       submit(value);
-      // clearTextOnSubmit will handle clearing the native TextInput automatically
-      // but we need to sync the React state
-      setValue('');
     }
   };
 
@@ -91,7 +87,7 @@ function ChatEntry({
         submitKeyEvents={[{code: 'Enter', shiftKey: false}]}
         onSubmitEditing={submitValue}
         clearTextOnSubmit={true}
-        value={value}
+        value={defaultText ?? value}
       />
       <Button
         appearance="primary"
