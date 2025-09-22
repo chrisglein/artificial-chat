@@ -133,7 +133,7 @@ Respond with the image prompt string in the required format. Do not respond conv
       CallOpenAi({
         api: OpenAiApi.ChatCompletion,
         apiKey: settingsContext.apiKey,
-        instructions: 'The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly. If the response involves code, use markdown format for that with ```(language) blocks.',
+        instructions: settingsContext.systemInstructions,
         identifier: 'TEXT-ANSWER:',
         prompt: prompt,
         options: {

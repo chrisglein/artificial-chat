@@ -28,7 +28,7 @@ const OpenAiHandler = ({api, options, instructions}: OpenAiHandlerType) => {
 
   let actualInstructions =
     instructions ??
-    'The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly.';
+    'The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly. You may use markdown syntax in the response as appropriate.';
 
   switch (api) {
     case OpenAiApi.Completion:
