@@ -88,7 +88,7 @@ function ChatEntry({
         onChangeText={newValue => setValue(newValue)}
         submitKeyEvents={[{code: 'Enter', shiftKey: false}]}
         onSubmitEditing={submitValue}
-        value={defaultText ?? value}
+        value={value}
       />
       <Button
         appearance="primary"
