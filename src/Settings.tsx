@@ -245,7 +245,6 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
           <FluentTextInput
             accessibilityLabel="System Instructions"
             multiline={true}
-            style={{flexGrow: 1, minHeight: 80}}
             value={systemInstructions}
             onChangeText={value => setSystemInstructions(value)}
             placeholder="Instructions that define how the AI assistant should behave and respond..."
