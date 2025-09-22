@@ -14,17 +14,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const SUPPRESS_WELCOME_KEY = 'suppressWelcomeMessage';
 
 function WelcomeMessage(): JSX.Element {
-  const [isVisible, setIsVisible] = React.useState(true);
+  const [isVisible, setIsVisible] = React.useState(false);
   
   React.useEffect(() => {
     const checkSuppressed = async () => {
       try {
         const suppressed = await AsyncStorage.getItem(SUPPRESS_WELCOME_KEY);
-        if (suppressed === 'true') {
-          setIsVisible(false);
+        if (suppressed !== 'true') {
+          setIsVisible(true);
         }
       } catch (error) {
         console.error('Failed to check welcome message suppression:', error);
+        // On error, show the welcome message as a fallback
+        setIsVisible(true);
       }
     };
     checkSuppressed();
