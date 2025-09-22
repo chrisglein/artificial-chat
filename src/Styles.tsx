@@ -34,6 +34,11 @@ const StylesContext = React.createContext<{
   trialModeActive: StyleProp<ViewStyle>;
   trialModeExpired: StyleProp<ViewStyle>;
   trialModeText: StyleProp<TextStyle>;
+  imageZoomModal: StyleProp<ViewStyle>;
+  imageZoomBackground: StyleProp<ViewStyle>;
+  imageZoomContainer: StyleProp<ViewStyle>;
+  imageZoomed: StyleProp<ImageStyle>;
+  imageZoomClose: StyleProp<ViewStyle>;
 }>({});
 
 const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
@@ -170,6 +175,41 @@ const CreateStyles = (isDarkMode: boolean, isHighContrast: boolean) => {
     },
     trialModeText: {
       fontSize: 14,
+    },
+    imageZoomModal: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    imageZoomBackground: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    },
+    imageZoomContainer: {
+      maxWidth: '90%',
+      maxHeight: '90%',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    imageZoomed: {
+      maxWidth: '100%',
+      maxHeight: '100%',
+      resizeMode: 'contain',
+    },
+    imageZoomClose: {
+      position: 'absolute',
+      top: 40,
+      right: 40,
+      backgroundColor: 'rgba(255, 255, 255, 0.9)',
+      borderRadius: 20,
+      width: 40,
+      height: 40,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
   });
 };

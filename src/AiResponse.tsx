@@ -4,6 +4,7 @@ import {
   ActivityIndicator,
   Image,
   Linking,
+  Modal,
   Pressable,
   Text,
   View,
@@ -30,6 +31,22 @@ function AiImageResponse({
   requestMore,
 }: AiImageResponseProps): JSX.Element {
   const styles = React.useContext(StylesContext);
+  const [zoomedImage, setZoomedImage] = React.useState<string | null>(null);
+
+  const downloadImage = async (imageUrl: string) => {
+    try {
+      if (typeof window !== 'undefined' && window.open) {
+        // Web environment - open in new window for download
+        window.open(imageUrl, '_blank');
+      } else {
+        // Mobile/desktop - use Linking to open URL
+        await Linking.openURL(imageUrl);
+      }
+    } catch (error) {
+      console.error('Failed to download image:', error);
+    }
+  };
+
   return (
     <View
       style={[
@@ -37,25 +54,26 @@ function AiImageResponse({
         {flexWrap: 'nowrap', alignItems: 'flex-start'},
       ]}>
       {imageUrls?.map((imageUrl, index) => (
-        <Pressable
-          key={index}
-          onPress={() => {
-            if (imageUrl) {
-              Linking.openURL(imageUrl);
-            }
-          }}>
-          <Image
-            accessibilityRole="imagebutton"
-            accessibilityLabel={prompt}
-            source={{uri: imageUrl}}
-            alt={prompt}
-            style={styles.dalleImage}
-          />
-        </Pressable>
+        <View key={index} style={{position: 'relative'}}>
+          <Pressable
+            onPress={() => setZoomedImage(imageUrl)}
+            onLongPress={() => downloadImage(imageUrl)}>
+            <Image
+              accessibilityRole="imagebutton"
+              accessibilityLabel={`${prompt} - tap to zoom, long press to download`}
+              source={{uri: imageUrl}}
+              alt={prompt}
+              style={styles.dalleImage}
+            />
+          </Pressable>
+        </View>
       ))}
       <View style={{flexShrink: 1, gap: 8}}>
         <Text style={styles.text}>
           Here is an image created using the following requirements "{prompt}"
+        </Text>
+        <Text style={[styles.text, {fontSize: 12, opacity: 0.7}]}>
+          Tap to zoom, long press to download
         </Text>
         <View style={[styles.text, {alignSelf: 'flex-end', alignItems: 'flex-end'}]}>
           {rejectImage && (
@@ -70,6 +88,34 @@ function AiImageResponse({
           />
         </View>
       </View>
+      
+      {/* Zoom Modal */}
+      <Modal
+        visible={zoomedImage !== null}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setZoomedImage(null)}>
+        <View style={styles.imageZoomModal}>
+          <Pressable
+            style={styles.imageZoomBackground}
+            onPress={() => setZoomedImage(null)}
+          />
+          <View style={styles.imageZoomContainer}>
+            {zoomedImage && (
+              <Image
+                source={{uri: zoomedImage}}
+                style={styles.imageZoomed}
+                resizeMode="contain"
+              />
+            )}
+          </View>
+          <Pressable
+            style={styles.imageZoomClose}
+            onPress={() => setZoomedImage(null)}>
+            <Text style={{fontSize: 18, fontWeight: 'bold'}}>×</Text>
+          </Pressable>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -149,8 +195,33 @@ type AiSectionContentProps = {
 function AiSectionContent({id, content}: AiSectionContentProps): JSX.Element {
   const chatHistory = React.useContext(ChatHistoryContext);
   const firstResult = content.responses ? content.responses[0] : '';
+  
+  const createImageMenuItems = (imageUrls: string[]) => {
+    const downloadImage = async (imageUrl: string) => {
+      try {
+        if (typeof window !== 'undefined' && window.open) {
+          window.open(imageUrl, '_blank');
+        } else {
+          await Linking.openURL(imageUrl);
+        }
+      } catch (error) {
+        console.error('Failed to download image:', error);
+      }
+    };
+
+    return imageUrls.map((url, index) => ({
+      title: `Download image ${imageUrls.length > 1 ? index + 1 : ''}`,
+      icon: 0xE896, // Download icon
+      onPress: () => downloadImage(url),
+    }));
+  };
+
+  const moreMenu = content.contentType === ChatContent.Image && content.responses 
+    ? createImageMenuItems(content.responses)
+    : undefined;
+
   return (
-    <AiSection copyValue={firstResult} id={id}>
+    <AiSection copyValue={firstResult} id={id} moreMenu={moreMenu}>
       {(() => {
         switch (content.contentType) {
           case ChatContent.Error:

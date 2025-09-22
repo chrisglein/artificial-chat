@@ -37,7 +37,7 @@ const SettingsContext = React.createContext<SettingsContextType>({
   setDetectImageIntent: () => {},
   imageResponseCount: 1,
   setImageResponseCount: () => {},
-  imageSize: 256,
+  imageSize: 1024,
   setImageSize: () => {},
   aiEndpoint: '',
   setAiEndpoint: () => {},
@@ -102,7 +102,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   const [saveApiKey, setSaveApiKey] = React.useState<boolean>(false);
   const [detectImageIntent, setDetectImageIntent] = React.useState<boolean>(settings.detectImageIntent);
   const [imageResponseCount, setImageResponseCount] = React.useState<number>(settings.imageResponseCount);
-  const [imageSize, setImageSize] = React.useState<number>(256);
+  const [imageSize, setImageSize] = React.useState<number>(settings.imageSize);
   const [readToMeVoice, setReadToMeVoice] = React.useState<string>(
     settings.readToMeVoice,
   );
@@ -130,7 +130,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
       setApiKey(value.apiKey);
       settings.setApiKey(value.apiKey);
 
-      let resolvedImageSize = value.imageSize ?? 256;
+      let resolvedImageSize = value.imageSize ?? 1024;
       setImageSize(resolvedImageSize);
       settings.setImageSize(resolvedImageSize);
 
