@@ -75,8 +75,6 @@ function ChatEntry({
     // If the user hits submit but the text is empty, don't carry that forward
     if (value !== '') {
       submit(value);
-      // Reset to a blank prompt
-      setValue('');
     }
   };
 
@@ -89,6 +87,7 @@ function ChatEntry({
         onChangeText={newValue => setValue(newValue)}
         submitKeyEvents={[{code: 'Enter', shiftKey: false}]}
         onSubmitEditing={submitValue}
+        clearTextOnSubmit={true}
         value={defaultText ?? value}
       />
       <Button
