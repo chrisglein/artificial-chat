@@ -23,11 +23,21 @@ function HumanSection({
   const styles = React.useContext(StylesContext);
   const chatHistory = React.useContext(ChatHistoryContext);
 
+  // Find the entry to check if it's pinned
+  const entry = id !== undefined ? chatHistory.entries.find(e => e.id === id) : undefined;
+  const isPinned = entry?.pinned ?? false;
+
   const menuItems = [];
   if (moreMenu) {
     menuItems.push(...moreMenu);
   }
   if (id !== undefined) {
+    // Add pin/unpin option
+    menuItems.push({
+      title: isPinned ? '📌 Unpin message' : '📌 Pin message',
+      icon: 0xE718, // Pin icon
+      onPress: () => chatHistory.togglePin(id)
+    });
     menuItems.push(
       {title: 'Delete this response', icon: 0xE74D, onPress: () => chatHistory.deleteResponse(id)}
     );
@@ -47,7 +57,7 @@ function HumanSection({
         <Text
           accessibilityRole="header"
           style={[styles.sectionTitle, {flexGrow: 1}]}>
-          Prompt
+          {isPinned ? '📌 ' : ''}Prompt
         </Text>
         <FlyoutMenu items={menuItems} maxWidth={300} maxHeight={400}/>
       </View>

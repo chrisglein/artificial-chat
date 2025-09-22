@@ -34,6 +34,7 @@ type ChatElement = {
   prompt?: string;
   responses?: string[];
   content?: JSX.Element;
+  pinned?: boolean;
 };
 
 // Context for read-only access to the chat log
@@ -42,11 +43,13 @@ const ChatHistoryContext = React.createContext<{
   modifyResponse: (id: number, delta?: any) => void;
   deleteResponse: (id: number) => void;
   add: (response: ChatElement) => void;
+  togglePin: (id: number) => void;
 }>({
   entries: [],
   modifyResponse: () => {},
   deleteResponse: () => {},
   add: () => {},
+  togglePin: () => {},
 });
 
 // Context for being able to drive the chat scroller

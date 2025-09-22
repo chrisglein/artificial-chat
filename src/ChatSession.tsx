@@ -128,6 +128,7 @@ function ChatSession(): JSX.Element {
       if (delta.hasOwnProperty('contentType')) {entry.contentType = delta.contentType;}
       if (delta.hasOwnProperty('prompt')) {entry.prompt = delta.prompt;}
       if (delta.hasOwnProperty('intent')) {entry.intent = delta.intent;}
+      if (delta.hasOwnProperty('pinned')) {entry.pinned = delta.pinned;}
 
         modifiedEntries[index] = entry;
         setEntries(modifiedEntries);
@@ -149,12 +150,35 @@ function ChatSession(): JSX.Element {
     [entries],
   );
 
+  const togglePin = React.useCallback(
+    (index: number) => {
+      let modifiedEntries = [...entries];
+      if (index >= entries.length) {
+        console.error(`Index ${index} is out of bounds`);
+      } else {
+        modifiedEntries[index] = {
+          ...modifiedEntries[index],
+          pinned: !modifiedEntries[index].pinned
+        };
+        setEntries(modifiedEntries);
+      }
+    },
+    [entries],
+  );
+
   const clearConversation = async () => {
-    setEntries([]);
-    // Clear the stored chat data as well
+    // Keep only pinned messages when clearing
+    const pinnedEntries = entries.filter(entry => entry.pinned);
+    setEntries(pinnedEntries);
+    
+    // Update stored chat data with only pinned entries
     try {
-      await AsyncStorage.removeItem(chatLogKey);
-      console.debug('Cleared stored chat data');
+      if (pinnedEntries.length > 0) {
+        await SaveChatData(pinnedEntries);
+      } else {
+        await AsyncStorage.removeItem(chatLogKey);
+      }
+      console.debug('Cleared non-pinned chat data');
     } catch (e) {
       console.error('Error clearing chat data:', e);
     }
@@ -166,6 +190,7 @@ function ChatSession(): JSX.Element {
         entries: entries,
         modifyResponse: modifyEntry,
         deleteResponse: deleteEntry,
+        togglePin: togglePin,
         add: element => {
           element.id = entries.length;
           appendEntry(element);
