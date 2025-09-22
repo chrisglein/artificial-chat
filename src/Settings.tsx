@@ -47,7 +47,7 @@ const SettingsContext = React.createContext<SettingsContextType>({
   setChatModel: () => {},
   readToMeVoice: '',
   setReadToMeVoice: () => {},
-  systemInstructions: 'The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly. You may use markdown syntax in the response as appropriate.',
+  systemInstructions: '',
   setSystemInstructions: () => {},
 });
 
