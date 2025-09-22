@@ -106,7 +106,7 @@ function AiSection({
   if (id !== undefined) {
     // Add pin/unpin option
     menuItems.push({
-      title: pinned ? '📌 Unpin message' : '📌 Pin message',
+      title: pinned ? 'Unpin message' : 'Pin message',
       icon: 0xE718, // Pin icon
       onPress: () => chatHistory.togglePin(id)
     });

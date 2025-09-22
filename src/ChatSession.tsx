@@ -152,18 +152,9 @@ function ChatSession(): JSX.Element {
 
   const togglePin = React.useCallback(
     (index: number) => {
-      let modifiedEntries = [...entries];
-      if (index >= entries.length) {
-        console.error(`Index ${index} is out of bounds`);
-      } else {
-        modifiedEntries[index] = {
-          ...modifiedEntries[index],
-          pinned: !modifiedEntries[index].pinned
-        };
-        setEntries(modifiedEntries);
-      }
+      modifyEntry(index, { pinned: !entries[index]?.pinned });
     },
-    [entries],
+    [entries, modifyEntry],
   );
 
   const clearConversation = async () => {
@@ -177,6 +168,7 @@ function ChatSession(): JSX.Element {
         await SaveChatData(pinnedEntries);
       } else {
         await AsyncStorage.removeItem(chatLogKey);
+        console.debug('Cleared stored chat data');
       }
       console.debug('Cleared non-pinned chat data');
     } catch (e) {
