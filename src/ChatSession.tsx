@@ -160,12 +160,22 @@ function ChatSession(): JSX.Element {
   const clearConversation = async () => {
     // Keep only pinned messages when clearing
     const pinnedEntries = entries.filter(entry => entry.pinned);
-    setEntries(pinnedEntries);
+    // Re-index the pinned entries to maintain ID-to-index consistency
+    const reindexedEntries = pinnedEntries.map((entry, index) => ({
+      ...entry,
+      id: index
+    }));
+    setEntries(reindexedEntries);
     
     // Update stored chat data with only pinned entries
     try {
-      await AsyncStorage.removeItem(chatLogKey);
-      console.debug('Cleared stored chat data');
+      if (reindexedEntries.length > 0) {
+        await SaveChatData(reindexedEntries);
+        console.debug('Cleared non-pinned chat data');
+      } else {
+        await AsyncStorage.removeItem(chatLogKey);
+        console.debug('Cleared stored chat data');
+      }
     } catch (e) {
       console.error('Error clearing chat data:', e);
     }
