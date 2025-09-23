@@ -105,6 +105,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="VersionInfo.h" />
     <ClInclude Include="Speech.h" />
+    <ClInclude Include="LocalAI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="artificialChat.cpp" />

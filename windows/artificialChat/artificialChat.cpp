@@ -7,6 +7,7 @@
 #include "AutolinkedNativeModules.g.h"
 #include "VersionInfo.h"
 #include "Speech.h"
+#include "LocalAI.h"
 
 #include "NativeModules.h"
 
@@ -18,6 +19,7 @@ struct CompReactPackageProvider
     AddAttributedModules(packageBuilder, true);
     packageBuilder.AddModule(L"VersionInfo", winrt::Microsoft::ReactNative::MakeTurboModuleProvider<ArtificialChatModules::VersionInfo>());
     packageBuilder.AddModule(L"Speech", winrt::Microsoft::ReactNative::MakeTurboModuleProvider<ArtificialChatModules::Speech>());
+    packageBuilder.AddModule(L"LocalAI", winrt::Microsoft::ReactNative::MakeTurboModuleProvider<ArtificialChatModules::LocalAI>());
   }
 };
 

@@ -27,6 +27,7 @@ function App(): JSX.Element {
   const [showAboutPopup, setShowAboutPopup] = React.useState(false);
   const [readToMeVoice, setReadToMeVoice] = React.useState<string>('');
   const [systemInstructions, setSystemInstructions] = React.useState<string>('The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly. You may use markdown syntax in the response as appropriate.');
+  const [useLocalAI, setUseLocalAI] = React.useState<boolean>(false);
 
   const isDarkMode = currentTheme === 'dark';
   const isHighContrast = false;
@@ -49,6 +50,8 @@ function App(): JSX.Element {
     setReadToMeVoice: setReadToMeVoice,
     systemInstructions: systemInstructions,
     setSystemInstructions: setSystemInstructions,
+    useLocalAI: useLocalAI,
+    setUseLocalAI: setUseLocalAI,
   };
 
   const popups = {
