@@ -102,7 +102,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   const [saveApiKey, setSaveApiKey] = React.useState<boolean>(false);
   const [detectImageIntent, setDetectImageIntent] = React.useState<boolean>(settings.detectImageIntent);
   const [imageResponseCount, setImageResponseCount] = React.useState<number>(settings.imageResponseCount);
-  const [imageSize, setImageSize] = React.useState<number>(settings.imageSize);
+  const [imageSize, setImageSize] = React.useState<number>(256);
   const [readToMeVoice, setReadToMeVoice] = React.useState<string>(
     settings.readToMeVoice,
   );
