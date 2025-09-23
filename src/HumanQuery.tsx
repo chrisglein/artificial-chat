@@ -12,6 +12,7 @@ type HumanSectionProps = PropsWithChildren<{
   content?: string;
   disableCopy?: boolean;
   moreMenu?: FlyoutMenuButtonType[];
+  pinned?: boolean;
 }>;
 function HumanSection({
   children,
@@ -19,6 +20,7 @@ function HumanSection({
   content,
   disableCopy,
   moreMenu,
+  pinned = false,
 }: HumanSectionProps): JSX.Element {
   const styles = React.useContext(StylesContext);
   const chatHistory = React.useContext(ChatHistoryContext);
@@ -28,6 +30,12 @@ function HumanSection({
     menuItems.push(...moreMenu);
   }
   if (id !== undefined) {
+    // Add pin/unpin option
+    menuItems.push({
+      title: pinned ? 'Unpin message' : 'Pin message',
+      icon: 0xE718, // Pin icon
+      onPress: () => chatHistory.togglePin(id)
+    });
     menuItems.push(
       {title: 'Delete this response', icon: 0xE74D, onPress: () => chatHistory.deleteResponse(id)}
     );
@@ -47,7 +55,7 @@ function HumanSection({
         <Text
           accessibilityRole="header"
           style={[styles.sectionTitle, {flexGrow: 1}]}>
-          Prompt
+          {pinned ? '📌 ' : ''}Prompt
         </Text>
         <FlyoutMenu items={menuItems} maxWidth={300} maxHeight={400}/>
       </View>

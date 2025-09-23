@@ -30,6 +30,8 @@ type SettingsContextType = {
   setChatModel: (value: string) => void;
   readToMeVoice: string;
   setReadToMeVoice: (value: string) => void;
+  systemInstructions: string;
+  setSystemInstructions: (value: string) => void;
 };
 const SettingsContext = React.createContext<SettingsContextType>({
   setApiKey: () => {},
@@ -45,6 +47,8 @@ const SettingsContext = React.createContext<SettingsContextType>({
   setChatModel: () => {},
   readToMeVoice: '',
   setReadToMeVoice: () => {},
+  systemInstructions: '',
+  setSystemInstructions: () => {},
 });
 
 // Settings that are saved between app sessions
@@ -52,6 +56,7 @@ type SettingsData = {
   apiKey?: string;
   imageSize?: number;
   readToMeVoice?: string;
+  systemInstructions?: string;
 };
 
 // Read settings from app storage
@@ -78,6 +83,7 @@ const LoadSettingsData = async () => {
       if (value.hasOwnProperty('apiKey')) { valueToSave.apiKey = value.apiKey; }
       if (value.hasOwnProperty('imageSize')) { valueToSave.imageSize = parseInt(value.imageSize, 10); }
       if (value.hasOwnProperty('readToMeVoice')) { valueToSave.readToMeVoice = value.readToMeVoice; }
+      if (value.hasOwnProperty('systemInstructions')) { valueToSave.systemInstructions = value.systemInstructions; }
     }
   } catch (e) {
     console.error(e);
@@ -105,6 +111,9 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   const [imageSize, setImageSize] = React.useState<number>(256);
   const [readToMeVoice, setReadToMeVoice] = React.useState<string>(
     settings.readToMeVoice,
+  );
+  const [systemInstructions, setSystemInstructions] = React.useState<string>(
+    settings.systemInstructions,
   );
   // Trial mode state
   const [remainingTrialUses, setRemainingTrialUses] = React.useState<number>(0);
@@ -138,6 +147,10 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
       settings.setReadToMeVoice(resolvedReadToMeVoice);
       SetVoice(resolvedReadToMeVoice);
 
+      let resolvedSystemInstructions = value.systemInstructions ?? 'The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly. You may use markdown syntax in the response as appropriate.';
+      setSystemInstructions(resolvedSystemInstructions);
+      settings.setSystemInstructions(resolvedSystemInstructions);
+
       // If an API key was set, continue to remember it
       setSaveApiKey(value.apiKey !== undefined);
 
@@ -160,6 +173,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
     settings.setImageResponseCount(imageResponseCount);
     settings.setImageSize(imageSize);
     settings.setReadToMeVoice(readToMeVoice);
+    settings.setSystemInstructions(systemInstructions);
 
     close();
 
@@ -170,6 +184,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
       apiKey: saveApiKey ? apiKey : undefined,
       imageSize: imageSize,
       readToMeVoice: readToMeVoice,
+      systemInstructions: systemInstructions,
     });
   };
 
@@ -181,6 +196,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
     setImageResponseCount(settings.imageResponseCount);
     setImageSize(settings.imageSize);
     setReadToMeVoice(settings.readToMeVoice);
+    setSystemInstructions(settings.systemInstructions);
     close();
   };
 
@@ -225,6 +241,14 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             onValueChange={value => setChatModel(value)}>
             {['gpt-3.5-turbo', 'gpt-4', 'gpt-4-turbo-preview'].map(value => <Picker.Item label={value} value={value} key={value}/>)}
           </Picker>
+          <Text style={styles.text}>System Instructions</Text>
+          <FluentTextInput
+            accessibilityLabel="System Instructions"
+            multiline={true}
+            value={systemInstructions}
+            onChangeText={value => setSystemInstructions(value)}
+            placeholder="Instructions that define how the AI assistant should behave and respond..."
+          />
           {/* Trial mode status */}
           {remainingTrialUses > 0 && !apiKey && (
             <View style={styles.trialModeActive}>

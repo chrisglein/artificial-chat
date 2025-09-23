@@ -17,6 +17,7 @@ import { SettingsContext } from './Settings';
 import { FluentButton as Button } from './FluentControls';
 import { Speak } from './Speech';
 import Clipboard from '@react-native-clipboard/clipboard';
+import { WelcomeMessage } from './WelcomeMessage';
 
 enum ChatSource {
   Human,
@@ -35,6 +36,7 @@ type ChatElement = {
   prompt?: string;
   responses?: string[];
   content?: JSX.Element;
+  pinned?: boolean;
 };
 
 // Context for read-only access to the chat log
@@ -43,11 +45,13 @@ const ChatHistoryContext = React.createContext<{
   modifyResponse: (id: number, delta?: any) => void;
   deleteResponse: (id: number) => void;
   add: (response: ChatElement) => void;
+  togglePin: (id: number) => void;
 }>({
   entries: [],
   modifyResponse: () => {},
   deleteResponse: () => {},
   add: () => {},
+  togglePin: () => {},
 });
 
 // Context for being able to drive the chat scroller
@@ -75,8 +79,6 @@ function ChatEntry({
     // If the user hits submit but the text is empty, don't carry that forward
     if (value !== '') {
       submit(value);
-      // Reset to a blank prompt
-      setValue('');
     }
   };
 
@@ -89,6 +91,7 @@ function ChatEntry({
         onChangeText={newValue => setValue(newValue)}
         submitKeyEvents={[{code: 'Enter', shiftKey: false}]}
         onSubmitEditing={submitValue}
+        clearTextOnSubmit={true}
         value={defaultText ?? value}
       />
       <Button
@@ -179,6 +182,7 @@ function Chat({
             style={{flexShrink: 1}}>
             <View
               style={{gap: 12}}>
+              {entries.length === 0 && <WelcomeMessage />}
               {// For each item in the chat log, render the appropriate component
               entries.map((entry) => (
                 <View key={entry.id}>
@@ -187,7 +191,8 @@ function Chat({
                       // Human inputs are always plain text
                       <HumanSection
                         id={entry.id}
-                        content={entry.responses ? entry.responses[0] : ''}/> :
+                        content={entry.responses ? entry.responses[0] : ''}
+                        pinned={entry.pinned}/> :
                       entry.content ?
                         // The element may have provided its own UI
                         entry.content :

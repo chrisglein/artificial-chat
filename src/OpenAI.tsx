@@ -28,7 +28,7 @@ const OpenAiHandler = ({api, options, instructions}: OpenAiHandlerType) => {
 
   let actualInstructions =
     instructions ??
-    'The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly.';
+    'The following is a conversation with an AI assistant. The assistant is helpful, creative, clever, and very friendly. You may use markdown syntax in the response as appropriate.';
 
   switch (api) {
     case OpenAiApi.Completion:
@@ -128,7 +128,7 @@ const CallOpenAi = async ({
   let effectiveApiKey = await getEffectiveApiKey(apiKey);
 
   if (!effectiveApiKey) {
-    const errorMessage = 'To use this app, you need an OpenAI API key. Get one at https://platform.openai.com/account/api-keys and enter it in Settings.';
+    const errorMessage = 'To use this app, you need an OpenAI API key. Get one at https://platform.openai.com/account/api-keys and enter it in the settings menu below (...).';
     onError(errorMessage);
     onComplete();
     return;
