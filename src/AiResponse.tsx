@@ -19,14 +19,14 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import {Speak} from './Speech';
 import {ContentDialog} from './Popups';
 
-type PressableImageProps = {
+type ImageButtonProps = {
   imageUrl: string;
-  prompt: string;
+  alt: string;
   onPress: () => void;
   imageStyle: any;
 };
 
-function PressableImage({imageUrl, prompt, onPress, imageStyle}: PressableImageProps): JSX.Element {
+function ImageButton({imageUrl, alt, onPress, imageStyle}: ImageButtonProps): JSX.Element {
   const [isHovered, setIsHovered] = React.useState(false);
   const [isPressed, setIsPressed] = React.useState(false);
 
@@ -53,11 +53,11 @@ function PressableImage({imageUrl, prompt, onPress, imageStyle}: PressableImageP
       onHoverIn={() => setIsHovered(true)}
       onHoverOut={() => setIsHovered(false)}
       accessibilityRole="imagebutton"
-      accessibilityLabel={`${prompt} - tap to zoom`}
+      accessibilityLabel={alt}
       style={getImageContainerStyle()}>
       <Image
         source={{uri: imageUrl}}
-        alt={prompt}
+        alt={alt}
         style={imageStyle}
       />
     </Pressable>
@@ -101,10 +101,10 @@ function AiImageResponse({
         {flexWrap: 'nowrap', alignItems: 'flex-start'},
       ]}>
       {imageUrls?.map((imageUrl, index) => (
-        <PressableImage
+        <ImageButton
           key={index}
           imageUrl={imageUrl}
-          prompt={prompt || ''}
+          alt={prompt || ''}
           onPress={() => setZoomedImageUrl(imageUrl)}
           imageStyle={styles.dalleImage}
         />
