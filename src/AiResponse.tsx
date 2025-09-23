@@ -31,22 +31,14 @@ function AiImageResponse({
   requestMore,
 }: AiImageResponseProps): JSX.Element {
   const styles = React.useContext(StylesContext);
-  const [zoomedImage, setZoomedImage] = React.useState<string | null>(null);
-
-  const downloadImage = async (imageUrl: string) => {
-    try {
-      await Linking.openURL(imageUrl);
-    } catch (error) {
-      console.error('Failed to download image:', error);
-    }
-  };
+  const [zoomedImageUrl, setZoomedImageUrl] = React.useState<string | null>(null);
 
   const buttons = [
     {
       title: 'Download',
       onPress: () => {
-        if (zoomedImage) {
-          downloadImage(zoomedImage);
+        if (zoomedImageUrl) {
+          Linking.openURL(zoomedImageUrl);
         }
       },
     },
@@ -63,18 +55,17 @@ function AiImageResponse({
         {flexWrap: 'nowrap', alignItems: 'flex-start'},
       ]}>
       {imageUrls?.map((imageUrl, index) => (
-        <View key={index} style={{position: 'relative'}}>
-          <Pressable
-            onPress={() => setZoomedImage(imageUrl)}>
-            <Image
-              accessibilityRole="imagebutton"
-              accessibilityLabel={`${prompt} - tap to zoom`}
-              source={{uri: imageUrl}}
-              alt={prompt}
-              style={styles.dalleImage}
-            />
-          </Pressable>
-        </View>
+        <Pressable
+          key={index}
+          onPress={() => setZoomedImageUrl(imageUrl)}>
+          <Image
+            accessibilityRole="imagebutton"
+            accessibilityLabel={`${prompt} - tap to zoom`}
+            source={{uri: imageUrl}}
+            alt={prompt}
+            style={styles.dalleImage}
+          />
+        </Pressable>
       ))}
       <View style={{flexShrink: 1, gap: 8}}>
         <Text style={styles.text}>
@@ -100,14 +91,16 @@ function AiImageResponse({
       {/* Zoom Dialog */}
       <ContentDialog
         title="Image Viewer"
-        show={zoomedImage !== null}
-        close={() => setZoomedImage(null)}
+        show={zoomedImageUrl !== null}
+        close={() => setZoomedImageUrl(null)}
         defaultButtonIndex={1}
         buttons={buttons}
         maxWidth={600}
         maxHeight={600}>
         <Image
-          source={{uri: zoomedImage}}
+          accessibilityRole="image"
+          accessibilityLabel={`Zoomed view of ${prompt}`}
+          source={{uri: zoomedImageUrl}}
           style={{
             width: 512,
             height: 512,
