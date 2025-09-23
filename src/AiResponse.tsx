@@ -71,9 +71,6 @@ function AiImageResponse({
         <Text style={styles.text}>
           Here is an image created using the following requirements "{prompt}"
         </Text>
-        <Text style={[styles.text, {fontSize: 12, opacity: 0.7}]}>
-          Tap to zoom
-        </Text>
         <View style={[styles.text, {alignSelf: 'flex-end', alignItems: 'flex-end'}]}>
           {rejectImage && (
             <Button
@@ -88,7 +85,6 @@ function AiImageResponse({
         </View>
       </View>
       
-      {/* Zoom Dialog */}
       <ContentDialog
         title="Image Viewer"
         show={zoomedImageUrl !== null}
