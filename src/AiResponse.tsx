@@ -4,6 +4,7 @@ import {
   ActivityIndicator,
   Image,
   Linking,
+  PlatformColor,
   Pressable,
   Text,
   View,
@@ -16,6 +17,52 @@ import {StylesContext} from './Styles';
 import {FeedbackContext} from './Feedback';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {Speak} from './Speech';
+import {ContentDialog} from './Popups';
+
+type ImageButtonProps = {
+  imageUrl: string;
+  alt: string;
+  onPress: () => void;
+  imageStyle: any;
+};
+
+function ImageButton({imageUrl, alt, onPress, imageStyle}: ImageButtonProps): JSX.Element {
+  const [isHovered, setIsHovered] = React.useState(false);
+  const [isPressed, setIsPressed] = React.useState(false);
+
+  const getImageContainerStyle = () => {
+    return {
+      borderWidth: 1,
+      borderRadius: 4,
+      borderColor: (isHovered || isPressed)
+        ? PlatformColor('ControlStrokeColorSecondary')
+        : 'transparent',
+      backgroundColor: isPressed
+        ? PlatformColor('ControlFillColorSecondary')
+        : isHovered
+        ? PlatformColor('ControlFillColorDefault')
+        : 'transparent',
+    };
+  };
+
+  return (
+    <Pressable
+      onPress={onPress}
+      onPressIn={() => setIsPressed(true)}
+      onPressOut={() => setIsPressed(false)}
+      onHoverIn={() => setIsHovered(true)}
+      onHoverOut={() => setIsHovered(false)}
+      accessibilityRole="imagebutton"
+      accessibilityLabel={alt}
+      style={getImageContainerStyle()}>
+      <Image
+        source={{uri: imageUrl}}
+        alt={alt}
+        style={imageStyle}
+      />
+    </Pressable>
+  );
+}
 
 type AiImageResponseProps = {
   imageUrls?: string[];
@@ -30,6 +77,23 @@ function AiImageResponse({
   requestMore,
 }: AiImageResponseProps): JSX.Element {
   const styles = React.useContext(StylesContext);
+  const [zoomedImageUrl, setZoomedImageUrl] = React.useState<string | null>(null);
+
+  const buttons = [
+    {
+      title: 'Download',
+      onPress: () => {
+        if (zoomedImageUrl) {
+          Linking.openURL(zoomedImageUrl);
+        }
+      },
+    },
+    {
+      title: 'Close',
+      onPress: () => { },
+    },
+  ];
+
   return (
     <View
       style={[
@@ -37,21 +101,13 @@ function AiImageResponse({
         {flexWrap: 'nowrap', alignItems: 'flex-start'},
       ]}>
       {imageUrls?.map((imageUrl, index) => (
-        <Pressable
+        <ImageButton
           key={index}
-          onPress={() => {
-            if (imageUrl) {
-              Linking.openURL(imageUrl);
-            }
-          }}>
-          <Image
-            accessibilityRole="imagebutton"
-            accessibilityLabel={prompt}
-            source={{uri: imageUrl}}
-            alt={prompt}
-            style={styles.dalleImage}
-          />
-        </Pressable>
+          imageUrl={imageUrl}
+          alt={prompt || ''}
+          onPress={() => setZoomedImageUrl(imageUrl)}
+          imageStyle={styles.dalleImage}
+        />
       ))}
       <View style={{flexShrink: 1, gap: 8}}>
         <Text style={styles.text}>
@@ -70,6 +126,26 @@ function AiImageResponse({
           />
         </View>
       </View>
+      
+      <ContentDialog
+        title="Image Viewer"
+        show={zoomedImageUrl !== null}
+        close={() => setZoomedImageUrl(null)}
+        defaultButtonIndex={1}
+        buttons={buttons}
+        maxWidth={600}
+        maxHeight={600}>
+        <Image
+          accessibilityRole="image"
+          accessibilityLabel={`Zoomed view of ${prompt}`}
+          source={{uri: zoomedImageUrl}}
+          style={{
+            width: 512,
+            height: 512,
+            resizeMode: 'contain',
+          }}
+        />
+      </ContentDialog>
     </View>
   );
 }
@@ -157,6 +233,7 @@ type AiSectionContentProps = {
 function AiSectionContent({id, content}: AiSectionContentProps): JSX.Element {
   const chatHistory = React.useContext(ChatHistoryContext);
   const firstResult = content.responses ? content.responses[0] : '';
+
   return (
     <AiSection copyValue={firstResult} id={id} pinned={content.pinned}>
       {(() => {
