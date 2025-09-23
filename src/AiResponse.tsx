@@ -4,6 +4,7 @@ import {
   ActivityIndicator,
   Image,
   Linking,
+  PlatformColor,
   Pressable,
   Text,
   View,
@@ -17,6 +18,51 @@ import {FeedbackContext} from './Feedback';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {Speak} from './Speech';
 import {ContentDialog} from './Popups';
+
+type PressableImageProps = {
+  imageUrl: string;
+  prompt: string;
+  onPress: () => void;
+  imageStyle: any;
+};
+
+function PressableImage({imageUrl, prompt, onPress, imageStyle}: PressableImageProps): JSX.Element {
+  const [isHovered, setIsHovered] = React.useState(false);
+  const [isPressed, setIsPressed] = React.useState(false);
+
+  const getImageContainerStyle = () => {
+    return {
+      borderWidth: 1,
+      borderRadius: 4,
+      borderColor: (isHovered || isPressed)
+        ? PlatformColor('ControlStrokeColorSecondary')
+        : 'transparent',
+      backgroundColor: isPressed
+        ? PlatformColor('ControlFillColorSecondary')
+        : isHovered
+        ? PlatformColor('ControlFillColorDefault')
+        : 'transparent',
+    };
+  };
+
+  return (
+    <Pressable
+      onPress={onPress}
+      onPressIn={() => setIsPressed(true)}
+      onPressOut={() => setIsPressed(false)}
+      onHoverIn={() => setIsHovered(true)}
+      onHoverOut={() => setIsHovered(false)}
+      accessibilityRole="imagebutton"
+      accessibilityLabel={`${prompt} - tap to zoom`}
+      style={getImageContainerStyle()}>
+      <Image
+        source={{uri: imageUrl}}
+        alt={prompt}
+        style={imageStyle}
+      />
+    </Pressable>
+  );
+}
 
 type AiImageResponseProps = {
   imageUrls?: string[];
@@ -55,17 +101,13 @@ function AiImageResponse({
         {flexWrap: 'nowrap', alignItems: 'flex-start'},
       ]}>
       {imageUrls?.map((imageUrl, index) => (
-        <Pressable
+        <PressableImage
           key={index}
-          onPress={() => setZoomedImageUrl(imageUrl)}>
-          <Image
-            accessibilityRole="imagebutton"
-            accessibilityLabel={`${prompt} - tap to zoom`}
-            source={{uri: imageUrl}}
-            alt={prompt}
-            style={styles.dalleImage}
-          />
-        </Pressable>
+          imageUrl={imageUrl}
+          prompt={prompt || ''}
+          onPress={() => setZoomedImageUrl(imageUrl)}
+          imageStyle={styles.dalleImage}
+        />
       ))}
       <View style={{flexShrink: 1, gap: 8}}>
         <Text style={styles.text}>
