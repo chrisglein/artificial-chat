@@ -1,9 +1,5 @@
 import NativeLocalAI from './NativeLocalAI';
 
-type LocalAIHandlerType = {
-  instructions?: string;
-};
-
 type CallLocalAIType = {
   instructions?: string;
   identifier?: string;

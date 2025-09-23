@@ -9,9 +9,15 @@
 #include "../../codegen/NativeLocalAISpec.g.h"
 
 // Windows AI Foundry includes for Phi Silica
-#include <winrt/Microsoft.Windows.AI.Text.h>
+// Note: These APIs may require Windows 11 with compatible NPU hardware
 #include <winrt/Windows.Foundation.h>
 #include <winrt/Windows.Foundation.Collections.h>
+
+// Forward declarations for Windows AI APIs (may need adjustment based on actual SDK)
+namespace winrt::Microsoft::Windows::AI::Text
+{
+  struct LanguageModel;
+}
 
 namespace ArtificialChatModules
 {
@@ -32,22 +38,18 @@ namespace ArtificialChatModules
       
       try 
       {
-        // Check if Phi Silica language model is available
-        auto languageModel = winrt::Microsoft::Windows::AI::Text::LanguageModel::GetDefault();
+        // For now, we'll implement a basic check
+        // In a real implementation, this would check for Phi Silica availability
+        // Using Windows AI Foundry APIs or similar hardware detection
         
-        if (languageModel)
-        {
-          capabilities.isSupported = true;
-          capabilities.hasNPU = true; // Assume NPU if Phi Silica is available
-          capabilities.hasGPU = false; // For now, focus on NPU
-          capabilities.modelName = "Phi Silica";
-        }
-        else
-        {
-          capabilities.isSupported = false;
-          capabilities.hasNPU = false;
-          capabilities.hasGPU = false;
-        }
+        // TODO: Replace with actual Phi Silica detection when APIs are available
+        // auto languageModel = winrt::Microsoft::Windows::AI::Text::LanguageModel::GetDefault();
+        
+        // For now, assume not supported until proper API integration
+        capabilities.isSupported = false;
+        capabilities.hasNPU = false;
+        capabilities.hasGPU = false;
+        capabilities.modelName = std::nullopt;
       }
       catch (...)
       {
@@ -55,6 +57,7 @@ namespace ArtificialChatModules
         capabilities.isSupported = false;
         capabilities.hasNPU = false;
         capabilities.hasGPU = false;
+        capabilities.modelName = std::nullopt;
       }
       
       return capabilities;
@@ -65,6 +68,14 @@ namespace ArtificialChatModules
     {
       try 
       {
+        // TODO: Replace with actual Phi Silica implementation when APIs are available
+        // For now, return an error indicating the feature is not yet implemented
+        result.Reject("Local AI text generation is not yet implemented. This feature requires Windows AI Foundry SDK integration with compatible NPU hardware.");
+        co_return;
+        
+        /* 
+        // Future implementation would look like this:
+        
         // Get the default language model
         auto languageModel = winrt::Microsoft::Windows::AI::Text::LanguageModel::GetDefault();
         
@@ -95,7 +106,6 @@ namespace ArtificialChatModules
         std::string responseText = winrt::to_string(response);
         
         // Clean up the response if needed (remove any prompt echo)
-        // This is a simple cleanup - in practice you might want more sophisticated parsing
         size_t assistantPos = responseText.find("Assistant:");
         if (assistantPos != std::string::npos)
         {
@@ -107,6 +117,7 @@ namespace ArtificialChatModules
         responseText.erase(responseText.find_last_not_of(" \t\n\r") + 1);
         
         result.Resolve(responseText);
+        */
       }
       catch (...)
       {
