@@ -164,13 +164,8 @@ function ChatSession(): JSX.Element {
     
     // Update stored chat data with only pinned entries
     try {
-      if (pinnedEntries.length > 0) {
-        await SaveChatData(pinnedEntries);
-      } else {
-        await AsyncStorage.removeItem(chatLogKey);
-        console.debug('Cleared stored chat data');
-      }
-      console.debug('Cleared non-pinned chat data');
+      await AsyncStorage.removeItem(chatLogKey);
+      console.debug('Cleared stored chat data');
     } catch (e) {
       console.error('Error clearing chat data:', e);
     }
