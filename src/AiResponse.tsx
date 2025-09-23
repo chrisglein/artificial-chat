@@ -41,6 +41,21 @@ function AiImageResponse({
     }
   };
 
+  const buttons = [
+    {
+      title: 'Download',
+      onPress: () => {
+        if (zoomedImage) {
+          downloadImage(zoomedImage);
+        }
+      },
+    },
+    {
+      title: 'Close',
+      onPress: () => { },
+    },
+  ];
+
   return (
     <View
       style={[
@@ -85,28 +100,20 @@ function AiImageResponse({
       {/* Zoom Dialog */}
       <ContentDialog
         title="Image Viewer"
-        visible={zoomedImage !== null}
-        onDismiss={() => setZoomedImage(null)}
-        primaryButtonText="Download"
-        onPrimaryButtonPress={() => {
-          if (zoomedImage) {
-            downloadImage(zoomedImage);
-          }
-        }}
-        secondaryButtonText="Close"
-        onSecondaryButtonPress={() => setZoomedImage(null)}>
-        <View style={{alignItems: 'center', maxHeight: 400}}>
-          {zoomedImage && (
-            <Image
-              source={{uri: zoomedImage}}
-              style={{
-                maxWidth: 300,
-                maxHeight: 300,
-                resizeMode: 'contain',
-              }}
-            />
-          )}
-        </View>
+        show={zoomedImage !== null}
+        close={() => setZoomedImage(null)}
+        defaultButtonIndex={1}
+        buttons={buttons}
+        maxWidth={600}
+        maxHeight={600}>
+        <Image
+          source={{uri: zoomedImage}}
+          style={{
+            width: 512,
+            height: 512,
+            resizeMode: 'contain',
+          }}
+        />
       </ContentDialog>
     </View>
   );
