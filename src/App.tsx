@@ -22,7 +22,7 @@ function App(): JSX.Element {
   const [apiKey, setApiKey] = React.useState<string | undefined>(undefined);
   const [detectImageIntent, setDetectImageIntent] = React.useState<boolean>(true);
   const [imageResponseCount, setImageResponseCount] = React.useState<number>(1);
-  const [imageSize, setImageSize] = React.useState<number>(1024);
+  const [imageSize, setImageSize] = React.useState<number>(256);
   const [showSettingsPopup, setShowSettingsPopup] = React.useState(false);
   const [showAboutPopup, setShowAboutPopup] = React.useState(false);
   const [readToMeVoice, setReadToMeVoice] = React.useState<string>('');

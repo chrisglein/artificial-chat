@@ -82,7 +82,7 @@ const OpenAiHandler = ({api, options, instructions}: OpenAiHandlerType) => {
       return {
         url: `${OpenAIUrl}/images/generations`,
         body: (prompt: string) => {
-          let imageSize = options?.imageSize ?? 1024;
+          let imageSize = options?.imageSize ?? 256;
           return {
             prompt: prompt,
             n: options?.responseCount ?? 1,

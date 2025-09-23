@@ -37,7 +37,7 @@ const SettingsContext = React.createContext<SettingsContextType>({
   setDetectImageIntent: () => {},
   imageResponseCount: 1,
   setImageResponseCount: () => {},
-  imageSize: 1024,
+  imageSize: 256,
   setImageSize: () => {},
   aiEndpoint: '',
   setAiEndpoint: () => {},
@@ -130,7 +130,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
       setApiKey(value.apiKey);
       settings.setApiKey(value.apiKey);
 
-      let resolvedImageSize = value.imageSize ?? 1024;
+      let resolvedImageSize = value.imageSize ?? 256;
       setImageSize(resolvedImageSize);
       settings.setImageSize(resolvedImageSize);
 
