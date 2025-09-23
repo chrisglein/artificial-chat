@@ -164,9 +164,8 @@ function Chat({
         return `Prompt: ${content}`;
       } else {
         // AI response
-        const responses = entry.responses || [];
-        if (responses.length > 0) {
-          return `OpenAI: ${responses[0]}`;
+        if (entry.responses?.length > 0) {
+          return `OpenAI: ${entry.responses[0]}`;
         }
         return 'OpenAI: [Loading...]';
       }
@@ -229,14 +228,14 @@ function Chat({
               disableCopy={true}
               moreMenu={[
                 {
-                  title: 'Copy entire chat log',
-                  icon: 0xE8C8,
-                  onPress: () => copyEntireChatLog(),
-                },
-                {
                   title: 'About',
                   icon: 0xE897,
                   onPress: () => popups.setShowAbout(true),
+                },
+                {
+                  title: 'Copy entire chat log',
+                  icon: 0xE8C8,
+                  onPress: () => copyEntireChatLog(),
                 },
                 {
                   title: 'Settings',
