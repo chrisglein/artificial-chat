@@ -16,6 +16,7 @@ import { PopupsContext } from './Popups';
 import { SettingsContext } from './Settings';
 import { FluentButton as Button } from './FluentControls';
 import { Speak } from './Speech';
+import Clipboard from '@react-native-clipboard/clipboard';
 import { WelcomeMessage } from './WelcomeMessage';
 
 enum ChatSource {
@@ -158,6 +159,19 @@ function Chat({
     }
   };
 
+  const copyEntireChatLog = () => {
+    const chatLogText = entries.map((entry) => {
+      const content = entry.responses ? entry.responses[0] : '';
+      if (entry.type === ChatSource.Human) {
+        return `Prompt: ${content}`;
+      } else {
+        return `OpenAI: ${content}`;
+      }
+    }).join('\n\n');
+
+    Clipboard.setString(chatLogText);
+  };
+
   return (
     <FeedbackContext.Provider value={feedbackContext}>
       <ChatScrollContext.Provider value={{scrollToEnd: scrollToEnd}}>
@@ -217,6 +231,11 @@ function Chat({
                   title: 'About',
                   icon: 0xE897,
                   onPress: () => popups.setShowAbout(true),
+                },
+                {
+                  title: 'Copy all',
+                  icon: 0xE8C8,
+                  onPress: () => copyEntireChatLog(),
                 },
                 {
                   title: 'Settings',
