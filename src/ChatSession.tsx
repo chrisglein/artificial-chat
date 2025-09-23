@@ -144,7 +144,12 @@ function ChatSession(): JSX.Element {
         console.error(`Index ${index} is out of bounds`);
       } else {
         modifiedEntries.splice(index, 1);
-        setEntries(modifiedEntries);
+        // Re-index the remaining entries to maintain ID-to-index consistency
+        const reindexedEntries = modifiedEntries.map((entry, newIndex) => ({
+          ...entry,
+          id: newIndex
+        }));
+        setEntries(reindexedEntries);
       }
     },
     [entries],
