@@ -74,8 +74,17 @@ _Use_decl_annotations_ int CALLBACK WinMain(HINSTANCE instance, HINSTANCE, PSTR 
 
   // Get the AppWindow so we can configure its initial title and size
   auto appWindow{reactNativeWin32App.AppWindow()};
-  appWindow.Title(L"artificialChat");
+  appWindow.Title(L"Artificial Chat");
   appWindow.Resize({1000, 1000});
+    HICON hIcon = static_cast<HICON>(LoadImage(
+        instance,
+        MAKEINTRESOURCE(IDI_ICON1),
+        IMAGE_ICON,
+        0, 0,
+        LR_DEFAULTCOLOR
+    ));
+    winrt::Microsoft::UI::IconId appIcon{ reinterpret_cast<uint64_t>(hIcon) };
+    appWindow.SetIcon(appIcon);
 
   // Get the ReactViewOptions so we can set the initial RN component to load
   auto viewOptions{reactNativeWin32App.ReactViewOptions()};
