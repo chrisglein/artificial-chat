@@ -11,6 +11,7 @@ import {
 } from './FluentControls';
 import { GetVoices, SetVoice } from './Speech';
 import { getRemainingTrialUses, MAX_TRIAL_USES } from './TrialMode';
+import { GetLocalAICapabilities } from './LocalAI';
 
 const settingsKey = 'settings';
 
@@ -32,6 +33,8 @@ type SettingsContextType = {
   setReadToMeVoice: (value: string) => void;
   systemInstructions: string;
   setSystemInstructions: (value: string) => void;
+  useLocalAI: boolean;
+  setUseLocalAI: (value: boolean) => void;
 };
 const SettingsContext = React.createContext<SettingsContextType>({
   setApiKey: () => {},
@@ -49,6 +52,8 @@ const SettingsContext = React.createContext<SettingsContextType>({
   setReadToMeVoice: () => {},
   systemInstructions: '',
   setSystemInstructions: () => {},
+  useLocalAI: false,
+  setUseLocalAI: () => {},
 });
 
 // Settings that are saved between app sessions
@@ -57,6 +62,7 @@ type SettingsData = {
   imageSize?: number;
   readToMeVoice?: string;
   systemInstructions?: string;
+  useLocalAI?: boolean;
 };
 
 // Read settings from app storage
@@ -84,6 +90,7 @@ const LoadSettingsData = async () => {
       if (value.hasOwnProperty('imageSize')) { valueToSave.imageSize = parseInt(value.imageSize, 10); }
       if (value.hasOwnProperty('readToMeVoice')) { valueToSave.readToMeVoice = value.readToMeVoice; }
       if (value.hasOwnProperty('systemInstructions')) { valueToSave.systemInstructions = value.systemInstructions; }
+      if (value.hasOwnProperty('useLocalAI')) { valueToSave.useLocalAI = value.useLocalAI; }
     }
   } catch (e) {
     console.error(e);
@@ -114,6 +121,9 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
   );
   const [systemInstructions, setSystemInstructions] = React.useState<string>(
     settings.systemInstructions,
+  );
+  const [useLocalAI, setUseLocalAI] = React.useState<boolean>(
+    settings.useLocalAI,
   );
   // Trial mode state
   const [remainingTrialUses, setRemainingTrialUses] = React.useState<number>(0);
@@ -174,6 +184,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
     settings.setImageSize(imageSize);
     settings.setReadToMeVoice(readToMeVoice);
     settings.setSystemInstructions(systemInstructions);
+    settings.setUseLocalAI(useLocalAI);
 
     close();
 
@@ -185,6 +196,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
       imageSize: imageSize,
       readToMeVoice: readToMeVoice,
       systemInstructions: systemInstructions,
+      useLocalAI: useLocalAI,
     });
   };
 
@@ -197,6 +209,7 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
     setImageSize(settings.imageSize);
     setReadToMeVoice(settings.readToMeVoice);
     setSystemInstructions(settings.systemInstructions);
+    setUseLocalAI(settings.useLocalAI);
     close();
   };
 
@@ -282,6 +295,24 @@ function SettingsPopup({show, close}: SettingsPopupProps): JSX.Element {
             content="https://platform.openai.com/account/api-keys"
             url="https://platform.openai.com/account/api-keys"
           />
+        </DialogSection>
+        <DialogSection header="Local AI">
+          <Checkbox
+            label="Use local AI when available (NPU/GPU)"
+            size="large"
+            checked={useLocalAI}
+            onChange={(event, value) => setUseLocalAI(value)}
+          />
+          <Text style={styles.smallText}>
+            {(() => {
+              const capabilities = GetLocalAICapabilities();
+              if (!capabilities.isSupported) {
+                return 'Local AI is not supported on this device. Compatible NPU/GPU hardware required.';
+              } else {
+                return `Local AI is available${capabilities.modelName ? ` (${capabilities.modelName})` : ''}. Enable to use local hardware for text generation instead of cloud APIs.`;
+              }
+            })()}
+          </Text>
         </DialogSection>
         <DialogSection header="Image Generation">
           <Checkbox

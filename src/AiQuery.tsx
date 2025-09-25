@@ -4,6 +4,10 @@ import {
   OpenAiApi,
   CallOpenAi,
 } from './OpenAI';
+import {
+  CallLocalAI,
+  IsLocalAIAvailable,
+} from './LocalAI';
 import { AiSection } from './AiResponse';
 import {
   ChatSource,
@@ -130,36 +134,66 @@ Respond with the image prompt string in the required format. Do not respond conv
   React.useEffect(() => {
     if (isRequestForImage === false) {
       setIsLoading(true);
-      CallOpenAi({
-        api: OpenAiApi.ChatCompletion,
-        apiKey: settingsContext.apiKey,
-        instructions: settingsContext.systemInstructions,
-        identifier: 'TEXT-ANSWER:',
-        prompt: prompt,
-        options: {
-          endpoint: settingsContext.aiEndpoint,
-          chatModel: settingsContext.chatModel,
-          promptHistory: chatHistory.entries.
-            filter((entry) => { return entry.responses !== undefined && entry.id < id; }).
-            map((entry) => { return {role: entry.type == ChatSource.Human ? 'user' : 'assistant', 'content': entry.responses ? entry.responses[0] : ''}; }),
-        },
-        onError: error => {
-          onResponse({
-            prompt: prompt,
-            responses: [error] ?? [''],
-            contentType: ChatContent.Error});
-        },
-        onResult: result => {
-          onResponse({
-            prompt: prompt,
-            responses: result ?? [''],
-            contentType: ChatContent.Text});
-        },
-        onComplete: () => {
-          setIsLoading(false);
-          chatScroll.scrollToEnd();
-        },
-      });
+      
+      // Check if user prefers local AI and it's available
+      const shouldUseLocalAI = settingsContext.useLocalAI && IsLocalAIAvailable();
+      
+      if (shouldUseLocalAI) {
+        // Use local AI for text generation
+        CallLocalAI({
+          instructions: settingsContext.systemInstructions,
+          identifier: 'LOCAL-TEXT-ANSWER:',
+          prompt: prompt,
+          onError: error => {
+            onResponse({
+              prompt: prompt,
+              responses: [error] ?? [''],
+              contentType: ChatContent.Error});
+          },
+          onResult: result => {
+            onResponse({
+              prompt: prompt,
+              responses: result ?? [''],
+              contentType: ChatContent.Text});
+          },
+          onComplete: () => {
+            setIsLoading(false);
+            chatScroll.scrollToEnd();
+          },
+        });
+      } else {
+        // Use OpenAI for text generation
+        CallOpenAi({
+          api: OpenAiApi.ChatCompletion,
+          apiKey: settingsContext.apiKey,
+          instructions: settingsContext.systemInstructions,
+          identifier: 'TEXT-ANSWER:',
+          prompt: prompt,
+          options: {
+            endpoint: settingsContext.aiEndpoint,
+            chatModel: settingsContext.chatModel,
+            promptHistory: chatHistory.entries.
+              filter((entry) => { return entry.responses !== undefined && entry.id < id; }).
+              map((entry) => { return {role: entry.type == ChatSource.Human ? 'user' : 'assistant', 'content': entry.responses ? entry.responses[0] : ''}; }),
+          },
+          onError: error => {
+            onResponse({
+              prompt: prompt,
+              responses: [error] ?? [''],
+              contentType: ChatContent.Error});
+          },
+          onResult: result => {
+            onResponse({
+              prompt: prompt,
+              responses: result ?? [''],
+              contentType: ChatContent.Text});
+          },
+          onComplete: () => {
+            setIsLoading(false);
+            chatScroll.scrollToEnd();
+          },
+        });
+      }
     } else {
       if (isRequestForImage == true && imagePrompt !== undefined) {
         setIsLoading(true);
@@ -206,7 +240,11 @@ Respond with the image prompt string in the required format. Do not respond conv
             <Text style={styles.text}>Generating image...</Text>
           )
         ) : (
-          <Text style={styles.text}>Generating text...</Text>
+          <Text style={styles.text}>
+            {settingsContext.useLocalAI && IsLocalAIAvailable() 
+              ? 'Generating text using local AI...' 
+              : 'Generating text...'}
+          </Text>
         )
       ) : (
         <Text style={styles.text}>Done loading</Text>
