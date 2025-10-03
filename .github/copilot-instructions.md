@@ -1,155 +1,136 @@
 # Artificial Chat - React Native for Windows
 
-Artificial Chat is a React Native for Windows application that explores conversational AI with rich markdown, code highlighting, and image generation capabilities.
+Artificial Chat is a React Native for Windows application exploring conversational AI with rich markdown, code highlighting, and image generation.
 
-**CRITICAL: Always reference these instructions first and fallback to search or additional commands only when you encounter unexpected information that does not match the information provided here.**
+## Quick Start
 
-## Working Effectively
+### Prerequisites
+- **Node.js 18+** (`node --version`)
+- **Yarn** (`yarn --version`)
+- **Windows OS required** for full builds (Linux/macOS for JavaScript only)
 
-### Prerequisites and Environment Setup
-- **Node.js 18+** is required. Verify with `node --version`
-- **Yarn package manager** is required. Verify with `yarn --version`
-- **Windows environment required for full builds** - this app targets React Native for Windows (RNW)
-- **Linux/macOS can be used for JavaScript development** but cannot build or run the Windows application
-
-### Bootstrap and Dependencies
-- `yarn install` - Install all dependencies. Takes ~60 seconds. NEVER CANCEL.
-- `patch-package` runs automatically post-install to apply required patches
-
-### JavaScript Development (Cross-platform)
-- `npx react-native start` - Start Metro bundler for JavaScript development
-- Metro bundler runs on port 8081 by default
-- JavaScript bundler works on all platforms for development
-
-### Windows Build (Windows environment only)
-- **CRITICAL**: Windows builds require Windows OS with MSBuild and Visual Studio components
-- Install Windows dependencies: Run `node_modules/react-native-windows/Scripts/rnw-dependencies.ps1` from elevated PowerShell
-- More info: https://microsoft.github.io/react-native-windows/docs/rnw-dependencies
-- `yarn windows` - Build and run Windows application. Takes 5-15 minutes on first build. NEVER CANCEL. Set timeout to 30+ minutes.
-- `yarn windows --release` - Release build (takes longer)
-
-### Testing and Quality
-- `yarn test` - Run Jest tests. **NOTE**: Tests will fail on Linux due to React Native Windows module imports. Tests are designed to run in Windows environment with proper RNW dependencies
-- `yarn lint` - Run ESLint to check code quality
-- `yarn lint --fix` - Auto-fix some linting issues
-- **CRITICAL**: Only fix linting issues on lines you are modifying. Do not make linting changes to unrelated files or lines unless the PR is specifically for linting fixes.
-
-## Validation and Manual Testing
-
-### NEVER CANCEL Build Operations
-- **Windows builds take 5-15 minutes minimum, up to 30+ minutes on slow machines**
-- **Metro bundler startup takes 10-30 seconds**
-- **Dependency installation takes ~60 seconds**
-- **Always set timeouts to 60+ minutes for build commands**
-- **NEVER stop or cancel long-running builds - they may appear to hang but are working**
-
-### Required Manual Validation After Changes
-- **ALWAYS run Metro bundler** (`npx react-native start`) to verify JavaScript compiles
-- **ALWAYS run lint check** (`yarn lint`) before completing work - CI will fail on lint errors
-- **On Windows environments**: Build and run the app (`yarn windows`) to verify UI changes
-- **Test core functionality**: Open settings dialog, enter text in chat field, verify UI rendering
-
-### Known Working Commands and Timing
+### Setup and Build
 ```bash
-# Dependencies (60 seconds, warnings expected)
+# Install dependencies (~60 seconds, NEVER CANCEL)
 yarn install
 
-# JavaScript bundler (10-30 seconds startup)
-npx react-native start
+# JavaScript development (all platforms)
+npx react-native start  # Metro bundler on port 8081
 
-# Windows build (5-30 minutes, Windows only)
-yarn windows
+# Windows build (Windows only, 5-30 minutes first time)
+yarn windows            # Debug build
+yarn windows --release  # Release build
 
-# Linting (10-20 seconds)
-yarn lint
+# Quality checks
+yarn lint              # Check code quality
+yarn test              # Run tests (Windows only)
 ```
 
-## Project Structure and Key Locations
+### Windows Build Prerequisites
+Run once in elevated PowerShell:
+```powershell
+node_modules/react-native-windows/Scripts/rnw-dependencies.ps1
+```
+More info: https://microsoft.github.io/react-native-windows/docs/rnw-dependencies
 
-### Source Code (`src/`)
-- `App.tsx` - Root component, provides StylesContext and SettingsContext
-- `Chat.tsx` - Main chat interface with scrolling messages
-- `ChatSession.tsx` - Manages chat history and state
-- `AiQuery.tsx` - Handles OpenAI API integration
-- `AiResponse.tsx` - Renders AI responses with markdown and code
-- `Settings.tsx` - Settings dialog for API keys and preferences
-- `Styles.tsx` - Theme and styling system
+## Project Structure
 
-### Tests (`__tests__/`)
-- `App.test.tsx` - Basic component rendering test
+See detailed instructions for specific directories:
+- **[`src/` - JavaScript/TypeScript code](.github/copilot-instructions-src.md)**
+- **[`windows/` - Windows native code](.github/copilot-instructions-windows.md)**
 
-### Configuration
+### Key Files
+- `src/App.tsx` - Root component with contexts (Styles, Settings, Popups)
+- `src/ChatSession.tsx` - Chat history and state management
+- `src/AiQuery.tsx` - OpenAI integration
+- `src/Settings.tsx` - Settings dialog
 - `package.json` - Dependencies and scripts
-- `metro.config.js` - React Native bundler configuration
-- `babel.config.js` - JavaScript transpilation settings
 - `.eslintrc.js` - Linting rules
-- `windows/` - Windows-specific native code and project files
 
-### Key Dependencies
-- React Native for Windows (check package.json for current version)
-- OpenAI integration for chat and image generation
-- Syntax highlighting and markdown rendering
+## Development Workflow
 
-## Common Issues and Solutions
-
-### Linting Errors
-- **Multiple linting issues may exist in the codebase** 
-- Many are style issues (inline styles, missing semicolons)
-- **Always run `yarn lint` before completing work** - CI requires clean lint
-- **CRITICAL**: Only fix linting issues on lines you are modifying for your changes
-- **Exception**: PRs specifically dedicated to linting fixes can touch multiple unrelated files
-- Some issues require manual fixes (React hooks dependencies, unused variables)
-
-### Test Failures on Linux
-- Jest configuration has issues with React Native Windows imports on non-Windows platforms
-- Tests are designed to run in Windows environment
-- **Do not attempt to fix test configuration unless specifically working on test infrastructure**
-
-### Build Failures
-- **Windows builds require Windows OS** - will fail with "Couldn't determine Windows app config" on other platforms
-- **Missing MSBuild/Visual Studio** - Run RNW dependencies script
-- **Port conflicts** - Metro bundler uses port 8081, ensure it's available
-
-## Development Workflow Best Practices
-
-### Before Making Changes
-- Start Metro bundler: `npx react-native start`
-- Verify current state compiles without errors
-- Check linting baseline: `yarn lint`
+### Before Changes
+1. Start Metro bundler: `npx react-native start`
+2. Check baseline: `yarn lint`
+3. Verify current state works
 
 ### During Development
-- Keep Metro bundler running for fast JavaScript iteration
-- **For UI changes**: Use React Native debugger or log statements
-- **For state changes**: Test settings persistence and chat history
+- Keep Metro bundler running for fast iteration
+- Test incrementally (settings dialog, chat input, etc.)
+- Use React Native debugger for UI issues
 
-### Before Completing Work
-- **ALWAYS run `yarn lint`** - fix critical errors
-- **ALWAYS verify Metro bundler compiles cleanly**
-- **On Windows**: Build and manually test application
-- **Test key scenarios**: Settings dialog, chat input, response rendering
+### Before Completing
+1. **ALWAYS run `yarn lint`** - CI requires clean lint
+2. **ALWAYS verify Metro bundler compiles**
+3. On Windows: Build and manually test (`yarn windows`)
+4. Test core scenarios: settings, chat, AI responses
 
-### Common File Change Patterns
-- **When modifying OpenAI integration**: Check `AiQuery.tsx` and `OpenAI.tsx`
-- **When changing UI styling**: Update `Styles.tsx` and check theme consistency
-- **When adding new components**: Follow existing patterns in `Controls.tsx`
-- **When modifying chat flow**: Update `ChatSession.tsx` and test state management
+## Best Practices
 
-## Performance and Timing Expectations
+### Code Changes
+- **Make minimal changes** - only modify what's necessary for the fix/feature
+- **Don't mix concerns** - separate functional changes from style/lint fixes
+- **Fix lint only on modified lines** unless the PR is specifically for linting
+- **Follow existing patterns** - match the style of surrounding code
 
-### First-time Setup (Windows)
-1. Install RNW dependencies: 5-10 minutes
-2. `yarn install`: ~60 seconds  
-3. First Windows build: 5-30 minutes
-4. Total first-time setup: 15-45 minutes
+### Testing
+- **Test product code, not tests** - avoid tests that only verify test setup
+- **Use existing test patterns** - match the structure of current tests  
+- **Tests must run on Windows** - Jest config requires RNW dependencies
 
-### Regular Development
-1. Metro bundler start: 10-30 seconds
-2. JavaScript changes: Near-instant hot reload
-3. Windows rebuilds: 2-10 minutes for incremental changes
-4. Linting: 10-20 seconds
+### File Changes
+- OpenAI integration: `AiQuery.tsx`, `OpenAI.tsx`
+- UI styling: `Styles.tsx` (use theme, never hardcode colors)
+- New components: Follow patterns in `Controls.tsx`
+- Chat flow: `ChatSession.tsx` (readonly ChatHistoryContext)
 
-### CI Build Times
-- Windows CI builds take 5-15 minutes per architecture/configuration
-- Runs on Windows 2022 with x86/x64 and debug/release matrix
+## PR and Commit Guidelines
 
-**REMEMBER: NEVER CANCEL long-running operations. React Native builds often appear to hang but are working. Always wait for completion or explicit error messages.**
+### Commit Messages
+Write good commit messages that:
+- **Capture WHY (context), not what/how** - git diff shows what changed
+- **Are succinct** - one line summary, optional detailed body
+- **Use imperative mood** - "Fix bug" not "Fixing" or "Fixed"
+
+Good examples:
+- `Fix crash when API key is empty`
+- `Add image generation support`
+- `Improve error messages for API failures`
+
+Reference: https://cbea.ms/git-commit/
+
+### PR Titles
+- **Short summary in imperative mood** - "Fix", "Add", "Improve" (not "Fixing", "Fixed")
+- **Describe the change, not the issue** - title should stand alone
+
+## Common Issues
+
+### Linting
+- Baseline has existing lint issues (don't fix unrelated issues)
+- Run `yarn lint --fix` for auto-fixes
+- Fix React hooks dependencies and unused vars manually
+- **CI requires clean lint** - fix issues in your changes
+
+### Builds
+- **Windows builds need Windows OS** - will fail on Linux/macOS
+- Builds may appear hung - they're working, **NEVER CANCEL**
+- Set timeouts to 60+ minutes for build commands
+- Port 8081 must be available for Metro bundler
+
+### Tests
+- Tests require Windows environment (RNW dependencies)
+- Will fail on Linux due to native module imports
+- Don't fix test infrastructure unless that's your task
+
+## Timing Expectations
+
+| Task | Duration | Notes |
+|------|----------|-------|
+| `yarn install` | ~60 seconds | Warnings expected, NEVER CANCEL |
+| Metro start | 10-30 seconds | Works on all platforms |
+| Windows build (first) | 5-30 minutes | Windows only, NEVER CANCEL |
+| Windows build (incremental) | 2-10 minutes | After code changes |
+| `yarn lint` | 10-20 seconds | - |
+| CI builds | 5-15 minutes | Per arch/config |
+
+**Critical**: React Native builds often appear to hang but are working. Wait for completion or explicit errors.
