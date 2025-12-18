@@ -15,6 +15,7 @@ const SUPPRESS_WELCOME_KEY = 'suppressWelcomeMessage';
 
 function WelcomeMessage(): JSX.Element {
   const [isVisible, setIsVisible] = React.useState(false);
+  const styles = React.useContext(StylesContext);
   
   React.useEffect(() => {
     const checkSuppressed = async () => {
@@ -33,6 +34,7 @@ function WelcomeMessage(): JSX.Element {
   }, []);
 
   const deleteWelcomeMessage = async () => {
+
     try {
       await AsyncStorage.setItem(SUPPRESS_WELCOME_KEY, 'true');
       setIsVisible(false);
@@ -49,8 +51,6 @@ function WelcomeMessage(): JSX.Element {
   menuItems.push(
     {title: 'Don\'t show this again', icon: 0xE74D, onPress: deleteWelcomeMessage}
   );
-
-  const styles = React.useContext(StylesContext);
 
   return (
     <View
